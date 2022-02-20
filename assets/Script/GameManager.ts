@@ -1,6 +1,22 @@
 import {Client} from "@heroiclabs/nakama-js";
+import {RpcResponse} from "@heroiclabs/nakama-js/client";
 
 const {ccclass, property} = cc._decorator;
+
+enum TienTestError {
+    SUCCESS,
+    UNKNOWN
+}
+
+interface TienTestReq {
+    userId: string;
+    time: number;
+}
+
+interface TienTestRes {
+    error: TienTestError;
+    result: string;
+}
 
 @ccclass
 export default class NewClass extends cc.Component {
@@ -30,10 +46,20 @@ export default class NewClass extends cc.Component {
         localStorage.nakamaAuthToken = session.token;
 
         console.info("Authenticated successfully. User id:", session.user_id);
+
+        try {
+            let payload: TienTestReq = {
+                time: new Date().getTime(), userId: session.user_id
+            }
+            console.log("Get here!")
+            let response: RpcResponse = await this.client.rpc(session, "tien_test", payload);
+            console.log("Response: ", response.payload);
+        } catch (error) {
+            console.log("Error: %o", error.message);
+        }
     }
 
     start() {
-
     }
 
     update(dt) {
