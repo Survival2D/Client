@@ -53,7 +53,8 @@ export default class NewClass extends cc.Component {
             }
             console.log("Get here!")
             let response: RpcResponse = await this.client.rpc(session, "tien_test", payload);
-            console.log("Response: ", response.payload);
+            let result: TienTestRes = response.payload as TienTestRes;
+            console.log("Response: ", result.error, result.result);
         } catch (error) {
             console.log("Error: %o", error.message);
         }
