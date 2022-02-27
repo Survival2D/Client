@@ -1,13 +1,14 @@
 class Timer {
-    private readonly OneSecond: number = 1;
+    static readonly OneSecond: number = 1;
 
     private duration: number = 5;
     private autoStart: boolean = true;
 
-    public onSecondElapsed: UnityEvent<int> = null;
-    public onTimerEnd: UnityEvent = null;
+    public onSecondElapsed: Function[] = [];
+    public onTimerEnd: Function[] = [];
 
     public timeRemaining: number = 0;
+    private timeout: number;
 
     private Awake() {
         this.timeRemaining = this.duration;
@@ -20,32 +21,38 @@ class Timer {
 
     private secondElapsed() {
         if (this.timeRemaining == 0) {
-            this.onTimerEnd?.Invoke();
+            this.onTimerEnd.forEach(func => {
+                func.call(this);
+            });
             return;
         }
 
         this.timeRemaining--;
-        this.onSecondElapsed?.Invoke(TimeRemaining);
-        Invoke(nameof(SecondElapsed), this.OneSecond);
+        this.onSecondElapsed.forEach(func => {
+            func.call(this, this.timeRemaining);
+        });
+        this.startTimer();
     }
 
     public startTimer() {
-        Invoke(nameof(SecondElapsed), this.OneSecond);
+        this.timeout = setTimeout(this.secondElapsed, Timer.OneSecond * 1000);
     }
 
     public pauseTimer() {
-        CancelInvoke(nameof(SecondElapsed));
+        clearTimeout(this.timeout);
     }
 
     public stopTimer() {
-        TimeRemaining = duration;
-        CancelInvoke(nameof(SecondElapsed));
+        this.timeRemaining = this.duration;
+        clearTimeout(this.timeout);
     }
 
     public resetTimer() {
         this.timeRemaining = this.duration;
-        CancelInvoke(nameof(SecondElapsed));
-        Invoke(nameof(SecondElapsed), OneSecond);
+        clearTimeout(this.timeout);
+        this.onSecondElapsed.forEach(func => {
+            func.call(this, this.timeRemaining);
+        });
     }
 
 }

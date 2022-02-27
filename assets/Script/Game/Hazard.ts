@@ -1,14 +1,9 @@
-using UnityEngine;
-
-namespace NinjaBattle.Game
-{
-    public class Hazard : MonoBehaviour
+class Hazard
     {
-        #region FIELDS
 
-        private RollbackVar<bool> wasCreated = new RollbackVar<bool>();
-        private SpriteRenderer spriteRenderer = null;
-        private Map map = null;
+        private  wasCreated:boolean = new RollbackVar<bool>();
+        private  spriteRenderer:SpriteRenderer = null;
+        private map:Map = null;
 
         #endregion
 

@@ -22,22 +22,22 @@
     }
 
     private OnConnecting() {
-        onConnecting?.Invoke();
+        this.onConnecting?.call();
     }
 
     private OnConnected() {
-        onConnected?.Invoke();
+        this.onConnected?.call();
     }
 
     private OnDisconnected() {
-        onDisconnected?.Invoke();
+        this.onDisconnected?.Invoke();
     }
 
     private OnLoginSuccess() {
-        onLoginSuccess?.Invoke();
+        this.onLoginSuccess?.Invoke();
     }
 
     private OnLoginFail() {
-        onLoginFail?.Invoke();
+        this.onLoginFail?.Invoke();
     }
 }

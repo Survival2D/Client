@@ -1,31 +1,23 @@
-using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+import Scene = cc.Scene;
 
-namespace NinjaBattle.General
-{
-    public class SceneChanger : MonoBehaviour
-    {
-        #region FIELDS
+class SceneChanger {
 
-        [SerializeField] private float delay = 0f;
-        [SerializeField] private Scenes scene;
+    private delay: number = 0;
+    private scene: Scene;
+    private timeout: number;
 
-        #endregion
 
-        #region BEHAVIORS
-
-        public void ChangeScene()
-        {
-            StartCoroutine(ChangeSceneCoroutine());
-        }
-
-        private IEnumerator ChangeSceneCoroutine()
-        {
-            yield return new WaitForSeconds(delay);
-            SceneManager.LoadScene((int)scene);
-        }
-
-        #endregion
+    public changeScene() {
+        StartCoroutine(ChangeSceneCoroutine());
     }
+
+    private IEnumerator
+
+    ChangeSceneCoroutine() {
+        this.timeout = setTimeout(() => {
+            SceneManager.LoadScene(this.scene)
+        }, this.delay * 1000);
+    }
+
+
 }

@@ -1,22 +1,17 @@
-﻿using System.Collections.Generic;
-using NinjaBattle.General;
-using UnityEngine;
+﻿import Color = cc.Color;
 
-namespace NinjaBattle.Game
-{
-    public class Ninja : MonoBehaviour
+class Ninja
     {
-        #region FIELDS
 
-        private const float JumpScale = 1.5f;
-        private const float NormalScale = 1f;
+        private readonly JumpScale:number = 1.5;
+        private readonly NormalScale:number = 1;
 
-        [SerializeField] private SpriteRenderer spriteRenderer = null;
-        [SerializeField] private List<Color> ninjaColors = new List<Color>();
-        [SerializeField] private SpriteRenderer ninjaSpriteRenderer = null;
-        [SerializeField] private List<AnimationData> ninjaAnimations = new List<AnimationData>();
-        [SerializeField] private AudioClip jumpSound = null;
-        [SerializeField] private AudioClip deathSound = null;
+       private  spriteRenderer:SpriteRenderer = null;
+        private  ninjaColors:Color[] = [];
+        private  ninjaSpriteRenderer:SpriteRenderer = null;
+         private  ninjaAnimations:AnimationData[] = [];
+         private  jumpSound:AudioClip = null;
+        private  deathSound:AudioClip = null;
 
         private Direction currentDirection = Direction.East;
         private RollbackVar<List<Direction>> nextDirections = new RollbackVar<List<Direction>>();

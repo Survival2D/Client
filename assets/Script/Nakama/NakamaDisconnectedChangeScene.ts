@@ -1,6 +1,10 @@
 ﻿class NakamaDisconnectedChangeScene {
-
     private sceneName: string = null;
+    isListening: boolean = false;
+
+    ctor() {
+
+    }
 
 
     private start() {

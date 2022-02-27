@@ -1,36 +1,24 @@
-using TMPro;
-using UnityEngine;
+class TimerText {
 
-namespace NinjaBattle.General
-{
-    public class TimerText : MonoBehaviour
-    {
-        #region FIELDS
+    private format: string = "{0} seconds remaining";
+    private text: cc.Label = null;
+    private timer: Timer = null;
 
-        [SerializeField] private string format = "{0} seconds remaining";
-        [SerializeField] private TMP_Text text = null;
-        [SerializeField] private Timer timer = null;
 
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Start()
-        {
-            timer.onSecondElapsed.AddListener(UpdateText);
-            UpdateText(timer.TimeRemaining);
-        }
-
-        private void OnDestroy()
-        {
-            timer.onSecondElapsed.RemoveListener(UpdateText);
-        }
-
-        private void UpdateText(int seconds)
-        {
-            text.text = string.Format(format, seconds);
-        }
-
-        #endregion
+    private start() {
+        this.timer.onSecondElapsed.push(this.updateText);
+        this.updateText(this.timer.timeRemaining);
     }
+
+    private onDestroy() {
+        let index: number = this.timer.onSecondElapsed.indexOf(this.updateText);
+        if (index >= -1) {
+            this.timer.onSecondElapsed.splice(index, 1);
+        }
+    }
+
+    private updateText(seconds: number) {
+        this.text.string = `${seconds}`;
+    }
+
 }

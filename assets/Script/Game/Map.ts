@@ -1,32 +1,20 @@
-using System.Collections.Generic;
-using Nakama.Helpers;
-using UnityEngine;
+import Vector2 = sp.spine.Vector2;
 
-namespace NinjaBattle.Game
-{
-    public class Map : MonoBehaviour
+class Map
     {
-        #region FIELDS
+      private  hazardPrefab:Hazard = null;
+        private  waterPrefab:GameObject = null;
+       private  wallPrefab:GameObject = null;
+         private  ninjaPrefab:Ninja = null;
+         private  gameCamera:GameCamera = null;
 
-        [SerializeField] private Hazard hazardPrefab = null;
-        [SerializeField] private GameObject waterPrefab = null;
-        [SerializeField] private GameObject wallPrefab = null;
-        [SerializeField] private Ninja ninjaPrefab = null;
-        [SerializeField] private GameCamera gameCamera = null;
+        private  mapWallTiles:Vector2[] = [];
+        private  mapDangerousTiles:Vector2[] = [];
+        private  ninjaDangerousTiles:Vector2[] = [];
 
-        private List<Vector2Int> mapWallTiles = new List<Vector2Int>();
-        private List<Vector2Int> mapDangerousTiles = new List<Vector2Int>();
-        private List<Vector2Int> ninjaDangerousTiles = new List<Vector2Int>();
 
-        #endregion
+        public ninjas:Ninja[]=[];
 
-        #region PROPERTIES
-
-        public List<Ninja> Ninjas { get; private set; } = new List<Ninja>();
-
-        #endregion
-
-        #region BEHAVIORS
 
         public void Initialize(MapData mapData, List<PlayerData> players)
         {

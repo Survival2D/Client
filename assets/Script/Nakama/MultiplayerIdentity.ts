@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-
-namespace Nakama.Helpers
-{
-    public partial class MultiplayerIdentity : MonoBehaviour
+﻿l class MultiplayerIdentity 
     {
         #region FIELDS
 
