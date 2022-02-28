@@ -1,23 +1,9 @@
-using UnityEngine;
-using UnityEngine.Events;
+import Event = cc.Event;
 
-namespace NinjaBattle.General
-{
-    public class OnStart : MonoBehaviour
-    {
-        #region EVENTS
+class OnStart {
+  public onStart: Event = null;
 
-        public UnityEvent onStart = null;
-
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Start()
-        {
-            onStart?.Invoke();
-        }
-
-        #endregion
-    }
+  private start() {
+    this.onStart?.Invoke();
+  }
 }

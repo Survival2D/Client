@@ -1,7 +1,7 @@
 class Hazard
     {
 
-        private  wasCreated:boolean = new RollbackVar<bool>();
+        private  wasCreated:RollbackVar<boolean> = new RollbackVar<boolean>();
         private  spriteRenderer:SpriteRenderer = null;
         private map:Map = null;
 
@@ -44,7 +44,4 @@ class Hazard
             map.RemoveHazard(this);
             Destroy(this.gameObject);
         }
-
-        #endregion
-    }
 }

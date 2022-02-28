@@ -1,64 +1,45 @@
-using System;
-using System.Collections.Generic;
-using NinjaBattle.Game;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace NinjaBattle.General
-{
-    public class PlayerPortrait : MonoBehaviour
+ class PlayerPortrait
     {
-        #region FIELDS
 
-        [SerializeField] private int playerNumber = 0;
-        [SerializeField] private Image portrait = null;
-        [SerializeField] private Color noPlayerColor = Color.white;
-        [SerializeField] private Color connectedPlayerColor = Color.white;
-        [SerializeField] private TMP_Text displayName = null;
-        [SerializeField] private Color youColor = Color.white;
-        [SerializeField] private Color othersColor = Color.white;
+          playerNumber:number = 0;
+           portrait:cc.Sprite = null;
+           noPlayerColor:Color = Color.WHITE;
+          connectedPlayerColor:Color = Color.WHITE;
+         displayName:cc.Label = null;
+         youColor:Color = Color.WHITE;
+          othersColor:Color = Color.WHITE;
 
-        private PlayersManager playersManager = null;
+          playersManager:PlayersManager = null;
 
-        #endregion
 
-        #region PROPERTIES
-
-        public int PlayerNumber { get => playerNumber; set => playerNumber = value; }
-
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Awake()
+        private awake()
         {
-            playersManager = PlayersManager.Instance;
+            this.playersManager = PlayersManager.instance;
         }
 
-        private void Start()
+        private  start()
         {
-            playersManager.onPlayerJoined += PlayerJoined;
-            playersManager.onPlayerLeft += PlayerLeft;
-            playersManager.onPlayersReceived += PlayersReceived;
-            playersManager.onLocalPlayerObtained += LocalPlayerObtained;
-            SetPortrait(playersManager.Players);
+            this.playersManager.onPlayerJoined += PlayerJoined;
+            this.playersManager.onPlayerLeft += PlayerLeft;
+            this.playersManager.onPlayersReceived += PlayersReceived;
+            this.playersManager.onLocalPlayerObtained += LocalPlayerObtained;
+            this.setPortrait(playersManager.Players);
         }
 
-        private void OnDestroy()
+        private  onDestroy()
         {
-            playersManager.onPlayerJoined -= PlayerJoined;
-            playersManager.onPlayerLeft -= PlayerLeft;
-            playersManager.onPlayersReceived -= PlayersReceived;
-            playersManager.onLocalPlayerObtained -= LocalPlayerObtained;
+           this. playersManager.onPlayerJoined -= PlayerJoined;
+            this.playersManager.onPlayerLeft -= PlayerLeft;
+            this.playersManager.onPlayersReceived -= PlayersReceived;
+            this.playersManager.onLocalPlayerObtained -= LocalPlayerObtained;
         }
 
-        private void LocalPlayerObtained(PlayerData player, int playerNumber)
+        private  LocalPlayerObtained( player:PlayerData,  playerNumber:number)
         {
-            displayName.color = this.playerNumber == playerNumber ? youColor : othersColor;
+            this.displayName.node.color = this.playerNumber == playerNumber ? this.youColor : this.othersColor;
         }
 
-        private void PlayersReceived(List<PlayerData> players)
+        private PlayersReceived(List<PlayerData> players)
         {
             SetPortrait(players);
         }

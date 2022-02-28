@@ -1,40 +1,28 @@
-﻿l class MultiplayerIdentity 
-    {
-        #region FIELDS
+﻿class MultiplayerIdentity {
+  private static currentId: number = 0;
 
-        private static int currentId = 0;
+  public id: string = null;
 
-        #endregion
+  public isLocalPlayer(): boolean {
+    return (
+      MultiplayerManager.instance.self != null &&
+      MultiplayerManager.instance.self.sessionId == this.id
+    );
+  }
 
-        #region PROPERTIES
+  private awake() {
+    this.assignIdentity();
+  }
 
-        public string Id { get; private set; }
-        public bool IsLocalPlayer { get => MultiplayerManager.Instance.Self != null && MultiplayerManager.Instance.Self.SessionId == Id; }
+  private assignIdentity() {
+    this.id = String(MultiplayerIdentity.currentId++);
+  }
 
-        #endregion
+  public setId(id: string) {
+    this.id = id;
+  }
 
-        #region BEHAVIORS
-
-        private void Awake()
-        {
-            AssignIdentity();
-        }
-
-        private void AssignIdentity()
-        {
-            Id = currentId++.ToString();
-        }
-
-        public void SetId(string id)
-        {
-            Id = id;
-        }
-
-        public static void ResetIds()
-        {
-            currentId = default(int);
-        }
-
-        #endregion
-    }
+  public static resetIds() {
+    MultiplayerIdentity.currentId = 0;
+  }
 }

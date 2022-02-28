@@ -1,31 +1,14 @@
-using Newtonsoft.Json;
+class PlayerData {
+    readonly PresenceKey = "presence";
+    readonly DisplayNameKey = "displayName";
 
-namespace NinjaBattle.Game
-{
-    public class PlayerData
-    {
-        #region FIELDS
+    presence: PresenceData = null;
+    displayName: string = null;
 
-        readonly PresenceKey = "presence";
-        readonly DisplayNameKey = "displayName";
-
-        #endregion
-
-        #region PROPERTIES
-
-        [JsonProperty(PresenceKey)] public PresenceData Presence { get; private set; }
-        [JsonProperty(DisplayNameKey)] public string DisplayName { get; private set; }
-
-        #endregion
-
-        #region CONSTRUCTORS
-
-        public PlayerData(PresenceData presence, string displayName)
-        {
-            Presence = presence;
-            DisplayName = displayName;
-        }
-
-        #endregion
+    public PlayerData(presence: PresenceData, displayName: string) {
+        this.presence = presence;
+        this.displayName = displayName;
     }
+
+
 }

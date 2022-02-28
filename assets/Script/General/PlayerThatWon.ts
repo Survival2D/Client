@@ -1,26 +1,14 @@
-using Nakama.Helpers;
-using NinjaBattle.Game;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace NinjaBattle.General
-{
-    public class PlayerThatWon : MonoBehaviour
+ class PlayerThatWon
     {
-        #region FIELDS
+         portrait:PlayerPortrait = null;
+          winnerPortrait:Image = null;
+         playersPortrait: Sprite[] = null;
+           nakamaCollectionObject:NakamaCollectionObject = null;
 
-        [SerializeField] private PlayerPortrait portrait = null;
-        [SerializeField] private Image winnerPortrait = null;
-        [SerializeField] private Sprite[] playersPortrait = null;
-        [SerializeField] private NakamaCollectionObject nakamaCollectionObject = null;
 
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Awake()
+        private awake()
         {
-            portrait.PlayerNumber = GameManager.Instance.Winner.Value;
+            this.portrait.PlayerNumber = GameManager.Instance.Winner.Value;
             winnerPortrait.sprite = playersPortrait[GameManager.Instance.Winner.Value];
             if (PlayersManager.Instance.CurrentPlayerNumber == GameManager.Instance.Winner.Value)
             {
@@ -30,6 +18,5 @@ namespace NinjaBattle.General
             }
         }
 
-        #endregion
-    }
+
 }

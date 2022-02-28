@@ -1,39 +1,38 @@
-﻿using UnityEngine;
+﻿enum Direction {
+    North,
+    West,
+    East,
+    South
+}
 
-namespace NinjaBattle.Game
-{
-    public enum Direction
-    {
-        North,
-        West,
-        East,
-        South
+class DirectionMethods {
+    public static toVector2(direction: Direction): Vector2 {
+        switch (direction) {
+            case Direction.North:
+                return new Vector2(0, 1);
+            case Direction.West:
+                return new Vector2(-1, 0);
+            case Direction.East:
+                return new Vector2(1, 0);
+            case Direction.South:
+                return new Vector2(0, -1);
+            default:
+                return new Vector2(0, 0);
+        }
     }
 
-    static class DirectionMethods
-    {
-        public static Vector2Int ToVector2(this Direction direction)
-        {
-            switch (direction)
-            {
-                case Direction.North: return Vector2Int.up;
-                case Direction.West: return Vector2Int.left;
-                case Direction.East: return Vector2Int.right;
-                case Direction.South: return Vector2Int.down;
-                default: return Vector2Int.zero;
-            }
-        }
-
-        public static Direction Opposite(this Direction direction)
-        {
-            switch (direction)
-            {
-                case Direction.North: return Direction.South;
-                case Direction.West: return Direction.East;
-                case Direction.East: return Direction.West;
-                case Direction.South: return Direction.North;
-                default: return Direction.West;
-            }
+    public static opposite(direction: Direction): Direction {
+        switch (direction) {
+            case Direction.North:
+                return Direction.South;
+            case Direction.West:
+                return Direction.East;
+            case Direction.East:
+                return Direction.West;
+            case Direction.South:
+                return Direction.North;
+            default:
+                return Direction.West;
         }
     }
 }

@@ -1,52 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Nakama;
-using Nakama.Helpers;
-using UnityEngine;
-
-namespace NinjaBattle.Game
-{
-    public class PlayersManager : MonoBehaviour
+ class PlayersManager
     {
-        #region FIELDS
+        private  nakamaManager:NakamaManager = null;
+        private  multiplayerManager:MultiplayerManager = null;
+        private  blockJoinsAndLeaves:boolean = false;
 
-        private NakamaManager nakamaManager = null;
-        private MultiplayerManager multiplayerManager = null;
-        private bool blockJoinsAndLeaves = false;
+        // public event Action<List<PlayerData>> onPlayersReceived;
+        // public event Action<PlayerData> onPlayerJoined;
+        // public event Action<PlayerData> onPlayerLeft;
+        // public event Action<PlayerData, int> onLocalPlayerObtained;
 
-        #endregion
+        public static  instance:PlayersManager = null;
+        public players: PlayerData[] = [];
+        public playersCount():number {
+            return this.players.filter(player => player != null).length;
+        }
+        public currentPlayer:PlayerData = null;
+        public currentPlayerNumber:number = -1;
 
-        #region EVENTS
 
-        public event Action<List<PlayerData>> onPlayersReceived;
-        public event Action<PlayerData> onPlayerJoined;
-        public event Action<PlayerData> onPlayerLeft;
-        public event Action<PlayerData, int> onLocalPlayerObtained;
 
-        #endregion
-
-        #region PROPERTIES
-
-        public static PlayersManager Instance { get; private set; } = null;
-        public List<PlayerData> Players { get; private set; } = new List<PlayerData>();
-        public int PlayersCount { get => Players.Count(player => player != null); }
-        public PlayerData CurrentPlayer { get; private set; } = null;
-        public int CurrentPlayerNumber { get; private set; } = -1;
-
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Awake()
+        private  awake()
         {
-            Instance = this;
+            PlayersManager.instance = this;
         }
 
-        private void Start()
+        private  start()
         {
-            multiplayerManager = MultiplayerManager.Instance;
-            nakamaManager = NakamaManager.Instance;
+            this.multiplayerManager = MultiplayerManager.instance;
+            this.nakamaManager = NakamaManager.instance;
             multiplayerManager.onMatchJoin += MatchJoined;
             multiplayerManager.onMatchLeave += ResetLeaved;
             multiplayerManager.Subscribe(MultiplayerManager.Code.Players, SetPlayers);
@@ -54,7 +35,7 @@ namespace NinjaBattle.Game
             multiplayerManager.Subscribe(MultiplayerManager.Code.ChangeScene, MatchStarted);
         }
 
-        private void OnDestroy()
+        private  onDestroy()
         {
             multiplayerManager.onMatchJoin -= MatchJoined;
             multiplayerManager.onMatchLeave -= ResetLeaved;
@@ -63,7 +44,7 @@ namespace NinjaBattle.Game
             multiplayerManager.Unsubscribe(MultiplayerManager.Code.ChangeScene, MatchStarted);
         }
 
-        private void SetPlayers(MultiplayerMessage message)
+        private  SetPlayers( message:MultiplayerMessage)
         {
             Players = message.GetData<List<PlayerData>>();
             onPlayersReceived?.Invoke(Players);
@@ -100,42 +81,40 @@ namespace NinjaBattle.Game
             }
         }
 
-        private void MatchJoined()
+        private matchJoined()
         {
-            nakamaManager.Socket.ReceivedMatchPresence += PlayersChanged;
-            GetCurrentPlayer();
+            this.nakamaManager.Socket.ReceivedMatchPresence += PlayersChanged;
+            this.getCurrentPlayer();
         }
 
-        private void GetCurrentPlayer()
+        private getCurrentPlayer()
         {
-            if (Players == null)
+            if (this.players == null)
                 return;
 
-            if (multiplayerManager.Self == null)
+            if (this.multiplayerManager.Self == null)
                 return;
 
-            if (CurrentPlayer != null)
+            if (this.currentPlayer != null)
                 return;
 
-            CurrentPlayer = Players.Find(player => player.Presence.SessionId == multiplayerManager.Self.SessionId);
-            CurrentPlayerNumber = Players.IndexOf(CurrentPlayer);
-            onLocalPlayerObtained?.Invoke(CurrentPlayer, CurrentPlayerNumber);
+            this.currentPlayer = this.players.find(player=>player.Presence.SessionId = this.multiplayerManager.Self.SessionId);
+
+            this.currentPlayerNumber = this.players.indexOf(this.currentPlayer);
+            this.onLocalPlayerObtained?.Invoke(CurrentPlayer, CurrentPlayerNumber);
         }
 
-        private void ResetLeaved()
+        private  resetLeaved()
         {
-            nakamaManager.Socket.ReceivedMatchPresence -= PlayersChanged;
-            blockJoinsAndLeaves = false;
-            Players = null;
-            CurrentPlayer = null;
-            CurrentPlayerNumber = -1;
+            this.nakamaManager.Socket.ReceivedMatchPresence -= PlayersChanged;
+            this.blockJoinsAndLeaves = false;
+            this.players = null;
+            this.currentPlayer = null;
+            this.currentPlayerNumber = -1;
         }
 
-        public void MatchStarted(MultiplayerMessage message)
+        public matchStarted( message:MultiplayerMessage)
         {
-            blockJoinsAndLeaves = true;
+            this.blockJoinsAndLeaves = true;
         }
-
-        #endregion
-    }
 }

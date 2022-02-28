@@ -1,29 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿class MultiplayerJoinMatchButton {
+  private button: Button = null;
 
-namespace Nakama.Helpers
-{
-    public class MultiplayerJoinMatchButton : MonoBehaviour
-    {
-        #region FIELDS
+  private awake() {
+    this.button.onClick.AddListener(FindMatch);
+  }
 
-        [SerializeField] private Button button = null;
-
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Awake()
-        {
-            button.onClick.AddListener(FindMatch);
-        }
-
-        private void FindMatch()
-        {
-            button.interactable = false;
-            MultiplayerManager.Instance.JoinMatchAsync();
-        }
-
-        #endregion
-    }
+  private findMatch() {
+    this.button.interactable = false;
+    MultiplayerManager.instance.joinMatchAsync();
+  }
 }

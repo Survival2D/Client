@@ -1,25 +1,17 @@
-using Nakama.Helpers;
-using UnityEngine;
+import KEY = cc.macro.KEY;
 
-namespace NinjaBattle.Game
-{
-    public class InputManager : MonoBehaviour
+class InputManager
     {
-        #region FIELDS
 
-        [SerializeField] private int delay = 0;
-        [SerializeField] private KeyCode keyUp = KeyCode.None;
-        [SerializeField] private KeyCode keyLeft = KeyCode.None;
-        [SerializeField] private KeyCode keyRight = KeyCode.None;
-        [SerializeField] private KeyCode keyDown = KeyCode.None;
+        private  delay:number = 0;
+        private  keyUp:KEY = KEY.dpadUp;
+        private  keyLeft = KEY.dpadLeft;
+        private  keyRight = KEY.dpadRight;
+        private  keyDown = KEY.dpadDown;
 
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Update()
+        private update()
         {
-            BattleManager battleManager = BattleManager.Instance;
+            let battleManager:BattleManager = BattleManager.instance;
             if (Input.GetKeyDown(keyUp))
                 SendData(battleManager.CurrentTick - delay, Direction.North);
             else if (Input.GetKeyDown(keyLeft))
@@ -32,11 +24,8 @@ namespace NinjaBattle.Game
                 return;
         }
 
-        private void SendData(int tick, Direction direction)
+        private sendData( tick:number,  direction:Direction)
         {
-            MultiplayerManager.Instance.Send(MultiplayerManager.Code.PlayerInput, new InputData(tick, (int)direction));
+            MultiplayerManager.instance.send(Code.PlayerInput, new InputData(tick, direction));
         }
-
-        #endregion
-    }
 }

@@ -16,7 +16,7 @@ class AudioManager
 
         public static instance:AudioManager = null;
 
-        private  Awake()
+        private  awake()
         {
             AudioManager.instance = this;
             this.musicChannel = gameObject.AddComponent<AudioSource>();
@@ -31,43 +31,42 @@ class AudioManager
             this.soundChannel.volume = SoundVolume;
         }
 
-        public void PlayMusic(AudioClip clip, bool loop = true)
+        public  playMusic( clip:AudioClip,  loop:boolean = true)
         {
-            StopMusic();
-            musicChannel.clip = clip;
-            musicChannel.loop = loop;
-            musicChannel.Play();
+            this.stopMusic();
+            this.musicChannel.clip = clip;
+            this.musicChannel.loop = loop;
+            this.musicChannel.play();
         }
 
-        public void StopMusic()
+        public stopMusic()
         {
-            musicChannel.clip = null;
-            musicChannel.Stop();
+            this.musicChannel.clip = null;
+            this.musicChannel.stop();
         }
 
-        public void PlaySound(AudioClip clip)
+        public  playSound( clip:AudioClip)
         {
-            if (clip == null || currentSoundClips.Contains(clip))
+            if (clip == null || this.currentSoundClips.indexOf(clip)> -1)
                 return;
 
-            soundChannel.PlayOneShot(clip);
+            this.soundChannel.play(clip);
             currentSoundClips.Add(clip);
             StartCoroutine(SoundCooldown(clip, CooldownForSounds));
             StartCoroutine(Dispose(clip, clip.length));
         }
 
-        public IEnumerator SoundCooldown(AudioClip clip, float cooldown)
+        public IEnumerator soundCooldown(AudioClip clip, float cooldown)
         {
             yield return new WaitForSecondsRealtime(cooldown);
             currentSoundClips.Remove(clip);
         }
 
-        public IEnumerator Dispose(AudioClip clip, float cooldown)
+        public IEnumerator dispose(AudioClip clip, float cooldown)
         {
             yield return new WaitForSecondsRealtime(cooldown);
             playingSoundClips.Remove(clip);
         }
 
-        #endregion
-    }
+
 }

@@ -13,7 +13,7 @@ class Ninja
          private  jumpSound:AudioClip = null;
         private  deathSound:AudioClip = null;
 
-        private Direction currentDirection = Direction.East;
+        private  currentDirection:Direction = Direction.East;
         private RollbackVar<List<Direction>> nextDirections = new RollbackVar<List<Direction>>();
         private RollbackVar<Vector2Int> positions = new RollbackVar<Vector2Int>();
         private RollbackVar<Direction> directions = new RollbackVar<Direction>();

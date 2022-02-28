@@ -1,62 +1,34 @@
-using System.Collections.Generic;
+class RollbackVar<T> {
 
-namespace NinjaBattle.Game
-{
-    public class RollbackVar<T>
-    {
-        #region FIELDS
+    private history: Map<number, T> = new Map<number, T>();
 
-        private Dictionary<int, T> history = new Dictionary<int, T>();
+    public get(tick: number): T {
+        return this.history.get(tick);
+    }
 
-        #endregion
+    public set(tick: number, value: T) {
+        this.history.set(tick, value);
+    }
 
-        #region PROPERTIES
+    public has(tick: number): boolean {
+        return this.history.has
+        (tick);
+    }
 
-        public T this[int tick]
-        {
-            get
-            {
-                return history.ContainsKey(tick) ? history[tick] : default(T);
+    public getLastValue(tick: number): T {
+        for (; tick >= 0; tick--)
+            if (this.has(tick))
+                return this.history[tick];
+
+        return null;
+    }
+
+    public eraseFuture(tick: number) {
+        this.history.forEach((value, key) => {
+            if (key > tick) {
+                this.history.delete(key);
             }
+        });
 
-            set
-            {
-                if (history.ContainsKey(tick))
-                    history[tick] = value;
-                else
-                    history.Add(tick, value);
-            }
-        }
-
-        #endregion
-
-        #region BEHAVIORS
-
-        public bool HasValue(int tick)
-        {
-            return history.ContainsKey(tick);
-        }
-
-        public T GetLastValue(int tick)
-        {
-            for (; tick >= 0; tick--)
-                if (HasValue(tick))
-                    return history[tick];
-
-            return default(T);
-        }
-
-        public void EraseFuture(int tick)
-        {
-            List<int> keysToErase = new List<int>();
-            foreach (KeyValuePair<int, T> keyValuePair in history)
-                if (keyValuePair.Key > tick)
-                    keysToErase.Add(keyValuePair.Key);
-
-            foreach (int i in keysToErase)
-                history.Remove(i);
-        }
-
-        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿import {Match, Presence} from "@heroiclabs/nakama-js";
+﻿import {Match, Presence, RpcResponse} from "@heroiclabs/nakama-js";
 import Action = cc.Action;
 
 class MultiplayerManager
@@ -7,8 +7,8 @@ class MultiplayerManager
        sendRate: number= 1 / this.tickRate;
         joinOrCreateMatchRpc:string = "JoinOrCreateMatchRpc";
        logFormat:string = "{0} with code {1}:\n{2}";
-        sendingDataLog:string = "Sending data";
-        receivedDataLog:string = "Received data";
+        static readonly SendingDataLog:string = "Sending data";
+        static readonly SeceivedDataLog:string = "Received data";
 
         enableLog:boolean = false;
 
@@ -43,39 +43,39 @@ class MultiplayerManager
             NakamaManager.instance.Socket.ReceivedMatchState -= Receive;
             NakamaManager.instance.Socket.ReceivedMatchState += Receive;
             NakamaManager.instance.onDisconnected += Disconnected;
-            IApiRpc rpcResult = await NakamaManager.instance.sendRPC(JoinOrCreateMatchRpc);
-            string matchId = rpcResult.Payload;
-            match = await NakamaManager.Instance.Socket.JoinMatchAsync(matchId);
-            onMatchJoin?.Invoke();
+            let rpcResult:RpcResponse = await NakamaManager.instance.sendRPC(JoinOrCreateMatchRpc);
+            let matchId:string = rpcResult.payload;
+            this.match = await NakamaManager.Instance.Socket.JoinMatchAsync(matchId);
+            this.onMatchJoin?.Invoke();
         }
 
-        private void Disconnected()
+        private disconnected()
         {
             NakamaManager.Instance.onDisconnected -= Disconnected;
             NakamaManager.Instance.Socket.ReceivedMatchState -= Receive;
-            match = null;
-            onMatchLeave?.Invoke();
+            this.match = null;
+            this.onMatchLeave?.Invoke();
         }
 
-        public async void LeaveMatchAsync()
+        public async leaveMatchAsync()
         {
             NakamaManager.Instance.onDisconnected -= Disconnected;
             NakamaManager.Instance.Socket.ReceivedMatchState -= Receive;
             await NakamaManager.Instance.Socket.LeaveMatchAsync(match);
-            match = null;
-            onMatchLeave?.Invoke();
+            this.match = null;
+            this.onMatchLeave?.Invoke();
         }
 
-        public void Send(Code code, object data = null)
+        public send( code:Code,  data:object)
         {
-            if (match == null)
+            if (this.match == null)
                 return;
 
-            string json = data != null ? data.Serialize() : string.Empty;
-            if (enableLog)
-                LogData(SendingDataLog, (long)code, json);
+            let json:string = JSON.stringify(data);
+            if (this.enableLog)
+                cc.log(MultiplayerManager.SendingDataLog, code, json);
 
-            NakamaManager.Instance.Socket.SendMatchStateAsync(match.Id, (long)code, json);
+            NakamaManager.instance.socket.SendMatchStateAsync(match.Id, (long)code, json);
         }
 
         public void Send(Code code, byte[] bytes)
@@ -120,9 +120,7 @@ class MultiplayerManager
         logData(description:string, dataCode:number, json:string)
         {
 
-            Debug.Log(string.Format(LogFormat, description, (Code)dataCode, json));
+            console.log(string.Format(LogFormat, description, (Code)dataCode, json));
         }
 
-        #endregion
-    }
 }

@@ -1,29 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿class MultiplayerLeaveMatchButton {
+  private button: Button = null;
 
-namespace Nakama.Helpers
-{
-    public class MultiplayerLeaveMatchButton : MonoBehaviour
-    {
-        #region FIELDS
+  private awake() {
+    this.button.node.on("click", this.leaveMatch, this);
+  }
 
-        [SerializeField] private Button button = null;
-
-        #endregion
-
-        #region BEHAVIORS
-
-        private void Awake()
-        {
-            button.onClick.AddListener(LeaveMatch);
-        }
-
-        private void LeaveMatch()
-        {
-            button.interactable = false;
-            MultiplayerManager.Instance.LeaveMatchAsync();
-        }
-
-        #endregion
-    }
+  private leaveMatch() {
+    this.button.interactable = false;
+    MultiplayerManager.instance.leaveMatchAsync();
+  }
 }
