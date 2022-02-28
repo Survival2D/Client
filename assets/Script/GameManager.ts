@@ -31,7 +31,7 @@ export default class NewClass extends cc.Component {
     client: Client = new Client("defaultkey");
 
     onLoad() {
-        this.connect();
+        // this.connect();
     }
 
     async connect() {
