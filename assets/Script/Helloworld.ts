@@ -19,9 +19,11 @@ export default class Helloworld extends cc.Component {
         this.playerName.string = "Tien No Mo Non";
         this.playerLevel.string = "10";
 
-        let texture = new cc.Texture2D();
-        texture.url = "assets/Texture/avatar.png";
-        this.avatar.spriteFrame.setTexture(texture);
+        cc.resources.load("avatar", cc.Texture2D ,(err: any, texture: cc.Texture2D) => {
+            let spriteFrame = new cc.SpriteFrame();
+            spriteFrame.setTexture(texture);
+            this.avatar.spriteFrame = spriteFrame;
+        });
     }
 
     onPlayNow () {
