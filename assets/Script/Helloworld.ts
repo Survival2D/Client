@@ -1,3 +1,5 @@
+import director = cc.director;
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -27,6 +29,6 @@ export default class Helloworld extends cc.Component {
     }
 
     onPlayNow () {
-        cc.log("DMM playnow here")
+        director.loadScene("InGame");
     }
 }

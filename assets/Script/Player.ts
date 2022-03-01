@@ -8,13 +8,7 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Sprite extends cc.Component {
-
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
+export default class Player extends cc.Component {
 
     isUp: boolean = false;
     isDown: boolean = false;
@@ -23,7 +17,10 @@ export default class Sprite extends cc.Component {
 
 
     @property
-    vel: number = 100;
+    vel: number = 200;
+
+    @property(cc.Node)
+    camera: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -91,6 +88,10 @@ export default class Sprite extends cc.Component {
         else if (this.isRight) this.node.x += this.vel * dt;
         else if (this.isUp) this.node.y += this.vel * dt;
         else if (this.isDown) this.node.y -= this.vel * dt;
+
+        // move camera following player
+        this.camera.x = this.node.x;
+        this.camera.y = this.node.y;
     }
 
     onDestroy () {
