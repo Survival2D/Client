@@ -1,22 +1,26 @@
-﻿import DeviceInfo from "react-native-device-info";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Client, Session, Socket } from "@heroiclabs/nakama-js";
+﻿import { Client, Session, Socket } from "@heroiclabs/nakama-js";
 import { RpcResponse } from "@heroiclabs/nakama-js/client";
+import { v4 as uuid } from "uuid";
+import ccclass = cc._decorator.ccclass;
+import NakamaConnectionData from "./NakamaConnectionData";
 
-class NakamaManager extends cc.Node {
-  readonly udidKey: string = "udid";
+@ccclass
+export default class NakamaManager extends cc.Component {
+  static readonly OnConnecting: string = "NakamaManager.OnConnecting";
+  static readonly OnConnected: string = "NakamaManager.OnConnected";
+  static readonly OnDisconnected: string = "NakamaManager.OnDisconnected";
+  static readonly OnLoginSuccess: string = "NakamaManager.OnLoginSuccess";
+  static readonly OnLoginFail: string = "NakamaManager.OnLoginFail";
 
-  connectionData: NakamaConnectionData = null;
+  connectionData: NakamaConnectionData = new NakamaConnectionData(
+    "127.0.0.1",
+    "7350",
+    "defaultkey"
+  );
 
   client: Client = null;
   session: Session = null;
   socket: Socket = null;
-
-  onConnecting = null;
-  onConnected = null;
-  onDisconnected = null;
-  onLoginSuccess = null;
-  onLoginFail = null;
 
   static instance: NakamaManager = null;
 
@@ -28,7 +32,8 @@ class NakamaManager extends cc.Node {
     return this.socket != null; // && this.socket.adapter.isConnected();
   }
 
-  awake() {
+  start() {
+    cc.log("NakamaManager.start");
     NakamaManager.instance = this;
   }
 
@@ -45,27 +50,27 @@ class NakamaManager extends cc.Node {
 
   loginWithDevice() {
     this.client = new Client(
-      this.connectionData.scheme,
+      this.connectionData.serverKey,
       this.connectionData.host,
       this.connectionData.port
     );
 
-    let deviceId = null;
+    let deviceId: string = uuid();
     // If the user's device ID is already stored, grab that - alternatively get the System's unique device identifier.
     try {
-      const value = AsyncStorage.getItem("@MyApp:deviceKey");
-      if (value !== null) {
-        deviceId = value;
-      } else {
-        // deviceId = DeviceInfo.getUniqueId();
-        deviceId = DeviceInfo.getDeviceId();
-        // Save the user's device ID so it can be retrieved during a later play session for re-authenticating.
-        AsyncStorage.setItem("@MyApp:deviceKey", deviceId).catch(function (
-          error
-        ) {
-          console.log("An error occurred: %o", error);
-        });
-      }
+      // const value = AsyncStorage.getItem("@MyApp:deviceKey");
+      // if (value !== null) {
+      //   deviceId = value;
+      // } else {
+      //   // deviceId = DeviceInfo.getUniqueId();
+      //   deviceId = DeviceInfo.getDeviceId();
+      //   // Save the user's device ID so it can be retrieved during a later play session for re-authenticating.
+      //   AsyncStorage.setItem("@MyApp:deviceKey", deviceId).catch(function (
+      //     error
+      //   ) {
+      //     console.log("An error occurred: %o", error);
+      //   });
+      // }
     } catch (error) {
       console.log("An error occurred: %o", error);
     }
@@ -79,11 +84,9 @@ class NakamaManager extends cc.Node {
 
   loginWithCustomId(customId: string) {
     this.client = new Client(
-      this.connectionData.scheme,
-      this.connectionData.host,
-      this.connectionData.port,
       this.connectionData.serverKey,
-      UnityWebRequestAdapter.Instance
+      this.connectionData.host,
+      this.connectionData.port
     );
     this.loginAsync(
       this.connectionData,
@@ -91,26 +94,28 @@ class NakamaManager extends cc.Node {
     );
   }
 
-  async loginAsync(
-    connectionData,
-    sessionTask: () => Promise<Session>
-  ): NakamaConnectionData {
-    this.onConnecting.call();
-    try {
-      this.session = await sessionTask();
-      this.socket = this.client.createSocket(true);
-      this.socket.connected += this.connected;
-      this.socket.closed += Disconnected;
-      await this.socket.connect(this.session, true);
-      this.dispatchEvent(
-        new cc.Event.EventCustom(GameEventType.LOGIN_SUCCESS, true)
-      );
-    } catch (exception) {
-      console.error(exception);
-      this.dispatchEvent(
-        new cc.Event.EventCustom(GameEventType.LOGIN_FAIL, true)
-      );
-    }
+  async loginAsync(connectionData, sessionTask: Promise<Session>) {
+    this.node.dispatchEvent(
+      new cc.Event.EventCustom(NakamaManager.OnConnecting, true)
+    );
+    sessionTask
+      .then((session) => {
+        this.session = session;
+        this.socket = this.client.createSocket(false);
+        // this.socket.connected += this.connected;
+        // this.socket.closed += Disconnected;
+        this.socket.connect(this.session, true);
+        this.node.dispatchEvent(
+          new cc.Event.EventCustom(NakamaManager.OnLoginSuccess, true)
+        );
+        cc.log("login thanh cong", this.session, this.client);
+      })
+      .catch((exception) => {
+        cc.error(exception);
+        this.node.dispatchEvent(
+          new cc.Event.EventCustom(NakamaManager.OnLoginFail, true)
+        );
+      });
   }
 
   logOut() {
@@ -118,12 +123,14 @@ class NakamaManager extends cc.Node {
   }
 
   connected() {
-    this.dispatchEvent(new cc.Event.EventCustom(GameEventType.CONNECTED, true));
+    this.node.dispatchEvent(
+      new cc.Event.EventCustom(NakamaManager.OnConnected, true)
+    );
   }
 
   disconnected() {
-    this.dispatchEvent(
-      new cc.Event.EventCustom(GameEventType.DISCONNECTED, true)
+    this.node.dispatchEvent(
+      new cc.Event.EventCustom(NakamaManager.OnDisconnected, true)
     );
   }
 

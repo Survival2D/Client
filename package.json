@@ -2,7 +2,10 @@
   "dependencies": {
     "@heroiclabs/nakama-js": "^2.3.0",
     "@react-native-async-storage/async-storage": "^1.16.1",
-    "prettier": "^2.5.1",
+    "@types/uuid": "^8.3.4",
     "react-native-device-info": "^8.4.9"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1"
   }
 }
