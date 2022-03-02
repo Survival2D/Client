@@ -1,14 +1,18 @@
 ﻿import ccclass = cc._decorator.ccclass;
 import NakamaManager from "./NakamaManager";
+import NakamaConnectionData from "./NakamaConnectionData";
 
 @ccclass
 export default class NakamaAutoLogin extends cc.Component {
   private retryTime: number = 5;
 
-  public start() {
+  public onLoad() {
     cc.log("NakamaAutoLogin.start");
     this.node.on(NakamaManager.OnLoginFail, this.loginFailed);
     this.tryLogin();
+    this.node.on(NakamaManager.OnLoginSuccess, () => {
+      cc.log("Tien log bat event");
+    });
   }
 
   public onDestroy() {

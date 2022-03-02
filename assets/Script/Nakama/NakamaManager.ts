@@ -32,7 +32,7 @@ export default class NakamaManager extends cc.Component {
     return this.socket != null; // && this.socket.adapter.isConnected();
   }
 
-  start() {
+  onLoad() {
     cc.log("NakamaManager.start");
     NakamaManager.instance = this;
   }
@@ -48,7 +48,7 @@ export default class NakamaManager extends cc.Component {
     // this.loginAsync(this.connectionData, this.client.authenticateDevice(udid));
   }
 
-  loginWithDevice() {
+  async loginWithDevice() {
     this.client = new Client(
       this.connectionData.serverKey,
       this.connectionData.host,
@@ -75,47 +75,41 @@ export default class NakamaManager extends cc.Component {
       console.log("An error occurred: %o", error);
     }
 
-    this.loginAsync(
+    const session: Session = await this.client.authenticateDevice(deviceId);
+    await this.loginAsync(
       this.connectionData,
       // this.client.authenticateDevice(SystemInfo.deviceUniqueIdentifier)
-      this.client.authenticateDevice(deviceId)
+      session
     );
   }
 
   loginWithCustomId(customId: string) {
-    this.client = new Client(
-      this.connectionData.serverKey,
-      this.connectionData.host,
-      this.connectionData.port
-    );
-    this.loginAsync(
-      this.connectionData,
-      this.client.authenticateCustom(customId)
-    );
+    // this.client = new Client(
+    //   this.connectionData.serverKey,
+    //   this.connectionData.host,
+    //   this.connectionData.port
+    // );
+    // this.loginAsync(
+    //   this.connectionData,
+    //   this.client.authenticateCustom(customId)
+    // );
   }
 
-  async loginAsync(connectionData, sessionTask: Promise<Session>) {
+  async loginAsync(connectionData, session: Session) {
     this.node.dispatchEvent(
       new cc.Event.EventCustom(NakamaManager.OnConnecting, true)
     );
-    sessionTask
-      .then((session) => {
-        this.session = session;
-        this.socket = this.client.createSocket(false);
-        // this.socket.connected += this.connected;
-        // this.socket.closed += Disconnected;
-        this.socket.connect(this.session, true);
-        this.node.dispatchEvent(
-          new cc.Event.EventCustom(NakamaManager.OnLoginSuccess, true)
-        );
-        cc.log("login thanh cong", this.session, this.client);
-      })
-      .catch((exception) => {
-        cc.error(exception);
-        this.node.dispatchEvent(
-          new cc.Event.EventCustom(NakamaManager.OnLoginFail, true)
-        );
-      });
+
+    this.session = session;
+    this.socket = this.client.createSocket(false);
+    // this.socket.connected += this.connected;
+    // this.socket.closed += Disconnected;
+    await this.socket.connect(this.session, true);
+    // .then(() => cc.log("Login thanh cong 2"));
+    this.node.dispatchEvent(
+      new cc.Event.EventCustom(NakamaManager.OnLoginSuccess, true)
+    );
+    cc.log("login thanh cong", this.session, this.client);
   }
 
   logOut() {
@@ -134,8 +128,8 @@ export default class NakamaManager extends cc.Component {
     );
   }
 
-  async sendRPC(rpc: string, payload: object): Promise<RpcResponse> {
+  sendRPC(rpc: string, payload: object): Promise<RpcResponse> {
     if (this.client === null || this.session == null) return null;
-    return await this.client.rpc(this.session, rpc, payload);
+    return this.client.rpc(this.session, rpc, payload);
   }
 }
