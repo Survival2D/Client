@@ -1,50 +1,33 @@
-﻿namespace Nakama.Helpers
-{
-    public class MultiplayerMessage
-    {
-        #region FIELDS
+﻿import { Match } from "@heroiclabs/nakama-js";
 
-        private string json = null;
-        private byte[] bytes = null;
+export default class MultiplayerMessage {
+  json: string = null;
+  bytes = null;
 
-        #endregion
+  dataCode: Code;
+  sessionId: string;
+  userId: string;
+  username: string;
 
-        #region PROPERTIES
-
-        public MultiplayerManager.Code DataCode { get; private set; }
-        public string SessionId { get; private set; }
-        public string UserId { get; private set; }
-        public string Username { get; private set; }
-
-        #endregion
-
-        #region BEHAVIORS
-
-        public MultiplayerMessage(IMatchState matchState)
-        {
-            DataCode = (MultiplayerManager.Code)matchState.OpCode;
-            if (matchState.UserPresence != null)
-            {
-                UserId = matchState.UserPresence.UserId;
-                SessionId = matchState.UserPresence.SessionId;
-                Username = matchState.UserPresence.Username;
-            }
-
-            var encoding = System.Text.Encoding.UTF8;
-            json = encoding.GetString(matchState.State);
-            bytes = matchState.State;
-        }
-
-        public T GetData<T>()
-        {
-            return json.Deserialize<T>();
-        }
-
-        public byte[] GetBytes()
-        {
-            return bytes;
-        }
-
-        #endregion
+  public MultiplayerMessage(matchState: any) {
+    //TODO:check
+    this.dataCode = matchState.opCode as Code;
+    if (matchState.UserPresence != null) {
+      this.userId = matchState.userPresence.userId;
+      this.sessionId = matchState.userPresence.sessionId;
+      this.username = matchState.userPresence.username;
     }
+
+    let encoder = new TextEncoder();
+    this.bytes = encoder.encode(matchState.State);
+    this.json = this.bytes.toString();
+  }
+
+  getData<T>() {
+    // return json.Deserialize<T>();
+  }
+
+  getBytes() {
+    return this.bytes;
+  }
 }

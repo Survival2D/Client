@@ -11,6 +11,7 @@ export default class NakamaManager extends cc.Component {
   static readonly OnDisconnected: string = "NakamaManager.OnDisconnected";
   static readonly OnLoginSuccess: string = "NakamaManager.OnLoginSuccess";
   static readonly OnLoginFail: string = "NakamaManager.OnLoginFail";
+  readonly eventTarget: cc.EventTarget = new cc.EventTarget();
 
   connectionData: NakamaConnectionData = new NakamaConnectionData(
     "127.0.0.1",
@@ -128,7 +129,7 @@ export default class NakamaManager extends cc.Component {
     );
   }
 
-  sendRPC(rpc: string, payload: object): Promise<RpcResponse> {
+  sendRPC(rpc: string, payload?: object): Promise<RpcResponse> {
     if (this.client === null || this.session == null) return null;
     return this.client.rpc(this.session, rpc, payload);
   }

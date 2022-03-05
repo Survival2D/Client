@@ -15,7 +15,7 @@ export default class NakamaAutoLogin extends cc.Component {
     });
   }
 
-  public onDestroy() {
+  public onDestroy(): void {
     this.node.off(NakamaManager.OnLoginFail);
   }
 

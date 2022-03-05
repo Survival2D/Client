@@ -1,94 +1,68 @@
-using Nakama.Helpers;
-using NinjaBattle.General;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+import ccclass = cc._decorator.ccclass;
+import MultiplayerManager from "../Nakama/MultiplayerManager";
+import MultiplayerMessage from "../Nakama/MultiplayerMessage";
 
-namespace NinjaBattle.Game
-{
-    public class GameManager : MonoBehaviour
-    {
-        #region FIELDS
+@ccclass
+export default class GameManager extends cc.Component {
+  public readonly VictoriesRequiredToWin = 3;
 
-        public const int VictoriesRequiredToWin = 3;
+  public static instance: GameManager = null;
+  public playersWins: number[] = [];
+  public winner?: number = 0;
 
-        #endregion
+  private awake() {
+    GameManager.instance = this;
+  }
 
-        #region PROPERTIES
+  start() {
+    // MultiplayerManager.instance.Subscribe(MultiplayerManager.Code.PlayerWon, ReceivedPlayerWonRound);
+    // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.Draw, ReceivedDrawRound);
+    // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.ChangeScene, ReceivedChangeScene);
+    // MultiplayerManager.Instance.onMatchJoin += JoinedMatch;
+    // MultiplayerManager.Instance.onMatchLeave += LeavedMatch;
+  }
 
-        public static GameManager Instance { get; private set; } = null;
-        public int[] PlayersWins { get; private set; } = new int[4];
-        public int? Winner { get; private set; } = 0;
+  onDestroy(): void {
+    // {
+    //     MultiplayerManager.Instance.Unsubscribe(MultiplayerManager.Code.PlayerWon, ReceivedPlayerWonRound);
+    //     MultiplayerManager.Instance.Unsubscribe(MultiplayerManager.Code.Draw, ReceivedDrawRound);
+    //     MultiplayerManager.Instance.Unsubscribe(MultiplayerManager.Code.PlayerInput, ReceivedChangeScene);
+    //     MultiplayerManager.Instance.onMatchJoin -= JoinedMatch;
+    //     MultiplayerManager.Instance.onMatchLeave -= LeavedMatch;
+  }
 
-        #endregion
+  receivedPlayerWonRound(message: MultiplayerMessage) {
+    // PlayerWonData playerWonData = message.GetData<PlayerWonData>();
+    // PlayersWins[playerWonData.PlayerNumber]++;
+    // Winner = playerWonData.PlayerNumber;
+  }
 
-        #region BEHAVIORS
+  receivedDrawRound(message: MultiplayerMessage) {
+    this.winner = null;
+  }
 
-        private void Awake()
-        {
-            Instance = this;
-        }
+  receivedChangeScene(message: MultiplayerMessage) {
+    // SceneManager.LoadScene(message.GetData<int>());
+  }
 
-        private void Start()
-        {
-            MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.PlayerWon, ReceivedPlayerWonRound);
-            MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.Draw, ReceivedDrawRound);
-            MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.ChangeScene, ReceivedChangeScene);
-            MultiplayerManager.Instance.onMatchJoin += JoinedMatch;
-            MultiplayerManager.Instance.onMatchLeave += LeavedMatch;
-        }
+  private joinedMatch() {
+    this.resetPlayerWins();
+    this.goToLobby();
+  }
 
-        private void OnDestroy()
-        {
-            MultiplayerManager.Instance.Unsubscribe(MultiplayerManager.Code.PlayerWon, ReceivedPlayerWonRound);
-            MultiplayerManager.Instance.Unsubscribe(MultiplayerManager.Code.Draw, ReceivedDrawRound);
-            MultiplayerManager.Instance.Unsubscribe(MultiplayerManager.Code.PlayerInput, ReceivedChangeScene);
-            MultiplayerManager.Instance.onMatchJoin -= JoinedMatch;
-            MultiplayerManager.Instance.onMatchLeave -= LeavedMatch;
-        }
+  leavedMatch() {
+    this.goToHome();
+  }
 
-        private void ReceivedPlayerWonRound(MultiplayerMessage message)
-        {
-            PlayerWonData playerWonData = message.GetData<PlayerWonData>();
-            PlayersWins[playerWonData.PlayerNumber]++;
-            Winner = playerWonData.PlayerNumber;
-        }
+  resetPlayerWins() {
+    this.playersWins = new Array(4);
+  }
 
-        private void ReceivedDrawRound(MultiplayerMessage message)
-        {
-            Winner = null;
-        }
+  goToHome() {
+    // SceneManager.LoadScene((int)Scenes.Home);
+  }
 
-        private void ReceivedChangeScene(MultiplayerMessage message)
-        {
-            SceneManager.LoadScene(message.GetData<int>());
-        }
-
-        private void JoinedMatch()
-        {
-            ResetPlayerWins();
-            GoToLobby();
-        }
-
-        private void LeavedMatch()
-        {
-            GoToHome();
-        }
-
-        private void ResetPlayerWins()
-        {
-            PlayersWins = new int[4];
-        }
-
-        private void GoToHome()
-        {
-            SceneManager.LoadScene((int)Scenes.Home);
-        }
-
-        private void GoToLobby()
-        {
-            SceneManager.LoadScene((int)Scenes.Lobby);
-        }
-
-        #endregion
-    }
+  goToLobby() {
+    // SceneManager.LoadScene((int)Scenes.Lobby);
+  }
 }

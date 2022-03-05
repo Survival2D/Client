@@ -32,7 +32,7 @@ export default class NakamaUserManager extends cc.Component {
     this.node.on(NakamaManager.OnLoginSuccess, this.autoLoad);
   }
 
-  public onDestroy() {
+  public onDestroy(): void {
     this.node.off(NakamaManager.OnLoginSuccess);
   }
 

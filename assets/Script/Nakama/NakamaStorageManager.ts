@@ -18,7 +18,7 @@ export default class NakamaStorageManager extends cc.Component {
     this.node.on(NakamaManager.OnLoginSuccess, this.autoLoad);
   }
 
-  onDestroy() {
+  onDestroy(): void {
     this.node.off(NakamaManager.OnLoginSuccess, this.autoLoad);
   }
 

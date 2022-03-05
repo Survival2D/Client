@@ -1,21 +1,21 @@
-﻿class NakamaDisconnectedChangeScene {
-    private sceneName: string = null;
-    isListening: boolean = false;
+﻿import ccclass = cc._decorator.ccclass;
 
-    ctor() {
+@ccclass
+export default class NakamaDisconnectedChangeScene extends cc.Component {
+  private sceneName: string = null;
+  isListening: boolean = false;
 
-    }
+  ctor() {}
 
+  start() {
+    // NakamaManager.instance.onDisconnected += this.disconnected;
+  }
 
-    private start() {
-        NakamaManager.instance.onDisconnected += this.disconnected;
-    }
+  onDestroy() {
+    // NakamaManager.instance.onDisconnected -= this.disconnected;
+  }
 
-    private onDestroy() {
-        NakamaManager.instance.onDisconnected -= this.disconnected;
-    }
-
-    private disconnected() {
-        SceneManager.loadScene(this.sceneName);
-    }
+  private disconnected() {
+    // SceneManager.loadScene(this.sceneName);
+  }
 }

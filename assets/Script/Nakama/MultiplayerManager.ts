@@ -1,126 +1,144 @@
-﻿import {Match, Presence, RpcResponse} from "@heroiclabs/nakama-js";
+﻿import { Match, Presence, RpcResponse } from "@heroiclabs/nakama-js";
 import Action = cc.Action;
+import ccclass = cc._decorator.ccclass;
+import MultiplayerMessage from "./MultiplayerMessage";
+import NakamaManager from "./NakamaManager";
+import { eventHandler } from "../Utils/EventHandler";
 
-class MultiplayerManager
-    {
-   tickRate: number= 5;
-       sendRate: number= 1 / this.tickRate;
-        joinOrCreateMatchRpc:string = "JoinOrCreateMatchRpc";
-       logFormat:string = "{0} with code {1}:\n{2}";
-        static readonly SendingDataLog:string = "Sending data";
-        static readonly SeceivedDataLog:string = "Received data";
+@ccclass
+export default class MultiplayerManager extends cc.Component {
+  static readonly OnLocalTick: string = "MultiplayerManager.OnLocalTick";
+  static readonly OnMatchLeave: string = "MultiplayerManager.OnMatchLeave";
+  static readonly OnMatchJoin: string = "MultiplayerManager.OnMatchJoin";
 
-        enableLog:boolean = false;
+  tickRate: number = 5;
+  sendRate: number = 1 / this.tickRate;
+  joinOrCreateMatchRpc: string = "JoinOrCreateMatchRpc";
+  logFormat: string = "{0} with code {1}:\n{2}";
+  static readonly SendingDataLog: string = "Sending data";
+  static readonly ReceivedDataLog: string = "Received data";
 
-        onReceiveData:Map<Code, Action<MultiplayerMessage>> = new Map<Code, Action<MultiplayerMessage>>();
-         match:Match = null;
+  enableLog: boolean = false;
 
-        onMatchJoin:Action = null;
-        onMatchLeave:Action = null;
-        onLocalTick:Action = null;
+  // onReceiveData: Map<Code, Action<MultiplayerMessage>> = new Map<
+  //   Code,
+  //   Action<MultiplayerMessage>
+  // >();
+  match: Match = null;
 
-        static instance:MultiplayerManager = null;
-        self():Presence { return this.match == null ? null : this.match.self; }
-        isOnMatch():boolean { return this.match != null }
+  onMatchJoin: Action = null;
+  onMatchLeave: Action = null;
+  onLocalTick: Action = null;
 
-        awake()
-        {
-            MultiplayerManager.instance = this;
-        }
+  static instance: MultiplayerManager = null;
+  private interval: NodeJS.Timer;
 
-        start()
-        {
-            InvokeRepeating(nameof(LocalTickPassed), SendRate, SendRate);
-        }
+  self(): Presence {
+    return this.match == null ? null : this.match.self;
+  }
 
-        localTickPassed()
-        {
-            this.onLocalTick?.Invoke();
-        }
+  isOnMatch(): boolean {
+    return this.match != null;
+  }
 
-        joinMatchAsync()
-        {
-            NakamaManager.instance.Socket.ReceivedMatchState -= Receive;
-            NakamaManager.instance.Socket.ReceivedMatchState += Receive;
-            NakamaManager.instance.onDisconnected += Disconnected;
-            let rpcResult:RpcResponse = await NakamaManager.instance.sendRPC(JoinOrCreateMatchRpc);
-            let matchId:string = rpcResult.payload;
-            this.match = await NakamaManager.Instance.Socket.JoinMatchAsync(matchId);
-            this.onMatchJoin?.Invoke();
-        }
+  awake() {
+    MultiplayerManager.instance = this;
+  }
 
-        private disconnected()
-        {
-            NakamaManager.Instance.onDisconnected -= Disconnected;
-            NakamaManager.Instance.Socket.ReceivedMatchState -= Receive;
-            this.match = null;
-            this.onMatchLeave?.Invoke();
-        }
+  start() {
+    this.interval = setInterval(this.localTickPassed, this.sendRate * 1000);
+  }
 
-        public async leaveMatchAsync()
-        {
-            NakamaManager.Instance.onDisconnected -= Disconnected;
-            NakamaManager.Instance.Socket.ReceivedMatchState -= Receive;
-            await NakamaManager.Instance.Socket.LeaveMatchAsync(match);
-            this.match = null;
-            this.onMatchLeave?.Invoke();
-        }
+  localTickPassed() {
+    eventHandler.dispatchEvent(MultiplayerManager.OnLocalTick);
+  }
 
-        public send( code:Code,  data:object)
-        {
-            if (this.match == null)
-                return;
+  async joinMatchAsync() {
+    // NakamaManager.instance.socket.ReceivedMatchState -= Receive;
+    // NakamaManager.instance.socket.ReceivedMatchState += Receive;
+    eventHandler.on(NakamaManager.OnDisconnected, this.disconnected);
+    let rpcResult: RpcResponse = await NakamaManager.instance.sendRPC(
+      this.joinOrCreateMatchRpc
+    );
+    let matchId: string = rpcResult.payload.toString();
+    this.match = await NakamaManager.instance.socket.joinMatch(matchId);
+    eventHandler.dispatchEvent(MultiplayerManager.OnMatchJoin);
+  }
 
-            let json:string = JSON.stringify(data);
-            if (this.enableLog)
-                cc.log(MultiplayerManager.SendingDataLog, code, json);
+  private disconnected() {
+    eventHandler.off(NakamaManager.OnDisconnected, this.disconnected);
+    // NakamaManager.Instance.Socket.ReceivedMatchState -= Receive;
+    this.match = null;
+    eventHandler.dispatchEvent(MultiplayerManager.OnMatchLeave);
+  }
 
-            NakamaManager.instance.socket.SendMatchStateAsync(match.Id, (long)code, json);
-        }
+  public async leaveMatchAsync() {
+    eventHandler.off(NakamaManager.OnDisconnected, this.disconnected);
+    // NakamaManager.Instance.Socket.ReceivedMatchState -= Receive;
+    await NakamaManager.instance.socket.leaveMatch(this.match.match_id);
+    this.match = null;
+    eventHandler.dispatchEvent(MultiplayerManager.OnMatchLeave);
+  }
 
-        public void Send(Code code, byte[] bytes)
-        {
-            if (match == null)
-                return;
+  public async send(code: Code, data: object | []) {
+    if (this.match == null) return;
 
-            if (enableLog)
-                LogData(SendingDataLog, (long)code, String.Empty);
+    let json: string = JSON.stringify(data);
+    if (this.enableLog) cc.log(MultiplayerManager.SendingDataLog, code, json);
 
-            NakamaManager.Instance.Socket.SendMatchStateAsync(match.Id, (long)code, bytes);
-        }
+    await NakamaManager.instance.socket.sendMatchState(
+      this.match.match_id,
+      code,
+      json
+    );
+  }
 
-        private void Receive(IMatchState newState)
-        {
-            if (enableLog)
-            {
-                var encoding = System.Text.Encoding.UTF8;
-                var json = encoding.GetString(newState.State);
-                LogData(ReceivedDataLog, newState.OpCode, json);
-            }
+  receive(newState): void {
+    if (this.enableLog) {
+      let encoder = new TextEncoder();
+      const json = encoder.encode(newState.State);
+      cc.log(MultiplayerManager.ReceivedDataLog, newState.OpCode, json);
+    }
 
-            MultiplayerMessage multiplayerMessage = new MultiplayerMessage(newState);
-            if (onReceiveData.ContainsKey(multiplayerMessage.DataCode))
-                onReceiveData[multiplayerMessage.DataCode]?.Invoke(multiplayerMessage);
-        }
+    // let
+    // multiplayerMessage:MultiplayerMessage = new MultiplayerMessage(newState);
+    // if (this.onReceiveData.has(multiplayerMessage.dataCode))
+    //     onReceiveData[multiplayerMessage.DataCode]?.Invoke(multiplayerMessage);
+  }
 
-        public void Subscribe(Code code, Action<MultiplayerMessage> action)
-        {
-            if (!onReceiveData.ContainsKey(code))
-                onReceiveData.Add(code, null);
-
-            onReceiveData[code] += action;
-        }
-
-        unsubscribe(code:Code, Action<MultiplayerMessage> action)
-        {
-            if (this.onReceiveData.has(code))
-                onReceiveData[code] -= action;
-        }
-
-        logData(description:string, dataCode:number, json:string)
-        {
-
-            console.log(string.Format(LogFormat, description, (Code)dataCode, json));
-        }
-
+  // public
+  // subscribe(Code
+  // code, Action < MultiplayerMessage > action
+  // )
+  // {
+  //     if (!this.onReceiveData.has(code))
+  //         onReceiveData.Add(code, null);
+  //
+  //     onReceiveData[code] += action;
+  // }
+  //
+  // unsubscribe(code
+  // :
+  // Code, Action < MultiplayerMessage > action
+  // )
+  // {
+  //     if (this.onReceiveData.has(code))
+  //         onReceiveData[code] -= action;
+  // }
+  //
+  // logData(description
+  // :
+  // string, dataCode
+  // :
+  // number, json
+  // :
+  // string
+  // )
+  // {
+  //
+  //     console.log(string.Format(LogFormat, description, (Code)
+  //     dataCode, json
+  // ))
+  //     ;
+  // }
 }

@@ -16,7 +16,7 @@ class NakamaDisconnectButton extends cc.Button {
     this.button.clickEvents.push(this.clickEventHandler);
   }
 
-  public onDestroy() {
+  public onDestroy(): void {
     let index = this.button.clickEvents.indexOf(this.clickEventHandler);
     this.button.clickEvents.splice(index, 1);
   }
