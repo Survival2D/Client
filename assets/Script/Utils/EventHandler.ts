@@ -4,17 +4,21 @@
 class EventHandler {
   private readonly eventTarget: cc.EventTarget = new cc.EventTarget();
 
-  on(event: string, callback: () => void) {
+  on(event: string, callback: (...params) => void) {
     this.eventTarget.on(event, callback);
   }
 
-  off(event: string, callback: () => void) {
+  off(event: string, callback: (...params) => void) {
     this.eventTarget.off(event, callback);
   }
 
-  dispatchEvent(event: string | cc.Event) {
+  dispatchEvent(event: string | cc.Event, data?: any) {
     if (event instanceof cc.Event) this.eventTarget.dispatchEvent(event);
-    else this.eventTarget.dispatchEvent(new cc.Event.EventCustom(event, true));
+    else {
+      const eventCustom = new cc.Event.EventCustom(event, true);
+      eventCustom.setUserData(data);
+      this.eventTarget.dispatchEvent(eventCustom);
+    }
   }
 }
 

@@ -1,47 +1,38 @@
-class Hazard
-    {
+import Vector2 = sp.spine.Vector2;
+import Color = cc.Color;
+import { eventHandler } from "../Utils/EventHandler";
+import BattleManager from "./BattleManage";
 
-        private  wasCreated:RollbackVar<boolean> = new RollbackVar<boolean>();
-        private  spriteRenderer:SpriteRenderer = null;
-        private map:Map = null;
+class Hazard {
+  private wasCreated: RollbackVar<boolean> = new RollbackVar<boolean>();
+  private spriteRenderer: SpriteRenderer = null;
+  private map: Map = null;
 
-        #endregion
+  public coordinates: Vector2 = new Vector2();
 
-        #region PROPERTIES
+  awake() {
+    this.spriteRenderer = GetComponent<SpriteRenderer>();
+  }
 
-        public Vector2Int Coordinates { get; private set; } = new Vector2Int();
+  initialize(tick: number, coordinates: Vector2, color: Color, map: Map) {
+    this.map = map;
+    this.spriteRenderer.color = color;
+    this.coordinates = coordinates;
+    this.wasCreated.set(0, false);
 
-        #endregion
+    this.wasCreated.set(tick, true);
+    eventHandler.on(BattleManager.OnRewind, this.rewind);
+  }
 
-        #region BEHAVIORS
+  onDestroy() {
+    eventHandler.off(BattleManager.OnRewind, this.rewind);
+  }
 
-        private void Awake()
-        {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-        }
+  rewind(tick: number) {
+    tick--;
+    if (this.wasCreated.getLastValue(tick) == true) return;
 
-        public void Initialize(int tick, Vector2Int coordinates, Color color, Map map)
-        {
-            this.map = map;
-            spriteRenderer.color = color;
-            Coordinates = coordinates;
-            wasCreated[default(int)] = false;
-            wasCreated[tick] = true;
-            BattleManager.Instance.onRewind += Rewind;
-        }
-
-        private void OnDestroy()
-        {
-            BattleManager.Instance.onRewind -= Rewind;
-        }
-
-        private void Rewind(int tick)
-        {
-            tick--;
-            if (wasCreated.GetLastValue(tick) == true)
-                return;
-
-            map.RemoveHazard(this);
-            Destroy(this.gameObject);
-        }
+    this.map.removeHazard(this);
+    this.destroy(this.gameObject);
+  }
 }

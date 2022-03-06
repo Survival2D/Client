@@ -1,6 +1,12 @@
+import MultiplayerManager from "../Nakama/MultiplayerManager";
+import PlayersManager from "./PlayersManager";
+import MultiplayerMessage from "../Nakama/MultiplayerMessage";
 
-     class BattleManager
+export default class BattleManager
     {
+        readonly static OnTick:string = "BattleManager.OnTick";
+        readonly static OnTickEnd:string = "BattleManager.OnTickEnd";
+        readonly static OnRewind: string = "BattleManager.OnRewind";
 
          tickRate:number = 4.5;
          startDuration:number = 3.5;
@@ -10,44 +16,40 @@
           players:PlayerData[] = null;
          currentMap:MapData = null;
 
-           onTick = null;
-        onTickEnd = null;
-         onRewind = null;
-
 
          tickDuration():number { return  1 / this.tickRate; }
          currentTick:number;
          static instance:BattleManager = null;
          roundEnded;// = new RollbackVar<bool>();
 
-        private  Awake()
+        private  awake()
         {
             BattleManager.instance = this;
         }
 
-        private  Start()
+          start()
         {
-            MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.PlayerInput, ReceivedPlayerInput);
-            players = PlayersManager.Instance.Players;
-            Initialize(players.Count);
-            StartGame();
+            MultiplayerManager.instance.Subscribe(Code.PlayerInput, ReceivedPlayerInput);
+            this.players = PlayersManager.instance.Players;
+            this.initialize(players.Count);
+            this.startGame();
         }
 
-        private void OnDestroy()
+          onDestroy()
         {
             MultiplayerManager.Instance.Unsubscribe(MultiplayerManager.Code.PlayerInput, ReceivedPlayerInput);
         }
 
-        private void ReceivedPlayerInput(MultiplayerMessage message)
+          receivedPlayerInput( message:MultiplayerMessage)
         {
             InputData inputData = message.GetData<InputData>();
-            SetPlayerInput(GetPlayerNumber(message.SessionId), inputData.Tick, (Direction)inputData.Direction);
+            this.setPlayerInput(GetPlayerNumber(message.SessionId), inputData.Tick, (Direction)inputData.Direction);
         }
 
-        private int GetPlayerNumber(string sessionId)
+         getPlayerNumber( sessionId:string):number
         {
-            for (int i = 0; i < players.Count; i++)
-                if (players[i].Presence.SessionId == sessionId)
+            for (let i = 0; i < this.players.length; i++)
+                if (this.players[i].presence.sessionId == sessionId)
                     return i;
 
             return -1;
@@ -84,24 +86,25 @@
             RoundEnded[tick] = true;
         }
 
-        private void ProcessTick()
+        processTick()
         {
             onTick?.Invoke(CurrentTick);
             onTickEnd?.Invoke(CurrentTick);
             CurrentTick++;
         }
 
-        public void SetPlayerInput(int playerNumber, int tick, Direction direction)
+         setPlayerInput( playerNumber:number, int tick, Direction direction)
         {
-            if (tick <= default(int))
+            if (tick <= 0)
                 return;
 
-            if (RoundEnded.GetLastValue(tick))
+            if (this.roundEnded.GetLastValue(tick))
                 return;
 
-            map.GetNinja(playerNumber).SetInput(direction, tick);
-            if (tick < CurrentTick)
+            this.map.GetNinja(playerNumber).SetInput(direction, tick);
+            if (tick < this.currentTick)
             {
+                eventHandler.dispatchEvent(BattleManager)
                 onRewind?.Invoke(tick);
                 while (tick < CurrentTick)
                 {
