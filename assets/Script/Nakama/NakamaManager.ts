@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import ccclass = cc._decorator.ccclass;
 import NakamaConnectionData from "./NakamaConnectionData";
 import LocalStorageKeys from "../Utils/LocalStorageKeys";
+import { eventHandler } from "../Utils/EventHandler";
 
 @ccclass
 export default class NakamaManager extends cc.Component {
@@ -83,7 +84,7 @@ export default class NakamaManager extends cc.Component {
   }
 
   async loginAsync(connectionData, sessionTask: Promise<Session>) {
-    this.node.dispatchEvent(
+    eventHandler.dispatchEvent(
       new cc.Event.EventCustom(NakamaManager.OnConnecting, true)
     );
     sessionTask
@@ -93,14 +94,14 @@ export default class NakamaManager extends cc.Component {
         // this.socket.connected += this.connected;
         // this.socket.closed += Disconnected;
         this.socket.connect(this.session, true);
-        this.node.dispatchEvent(
+        eventHandler.dispatchEvent(
           new cc.Event.EventCustom(NakamaManager.OnLoginSuccess, true)
         );
         cc.log("login thanh cong", this.session, this.client);
       })
       .catch((exception) => {
         cc.error(exception);
-        this.node.dispatchEvent(
+        eventHandler.dispatchEvent(
           new cc.Event.EventCustom(NakamaManager.OnLoginFail, true)
         );
       });
@@ -111,13 +112,13 @@ export default class NakamaManager extends cc.Component {
   }
 
   connected() {
-    this.node.dispatchEvent(
+    eventHandler.dispatchEvent(
       new cc.Event.EventCustom(NakamaManager.OnConnected, true)
     );
   }
 
   disconnected() {
-    this.node.dispatchEvent(
+    eventHandler.dispatchEvent(
       new cc.Event.EventCustom(NakamaManager.OnDisconnected, true)
     );
   }
