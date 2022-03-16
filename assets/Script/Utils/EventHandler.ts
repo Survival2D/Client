@@ -1,18 +1,22 @@
 class EventHandler {
-    private listeners: Function[];
+  private readonly eventTarget: cc.EventTarget = new cc.EventTarget();
 
-    addListener(listener: Function): void {
-        this.listeners.push(listener);
-    }
+  on(event: string, callback: (...params) => void) {
+    this.eventTarget.on(event, callback);
+  }
 
-    removeListener(listener: Function): void {
-        const index = this.listeners.indexOf(listener);
-        if (index >= 1) {
-            this.listeners.splice(index, 1);
-        }
-    }
+  off(event: string, callback: (...params) => void) {
+    this.eventTarget.off(event, callback);
+  }
 
-    invoke(...params: any[]): void {
-        this.listeners.forEach(listener => listener.call(this, params));
+  dispatchEvent(event: string | cc.Event, data?: any) {
+    if (event instanceof cc.Event) this.eventTarget.dispatchEvent(event);
+    else {
+      const eventCustom = new cc.Event.EventCustom(event, true);
+      eventCustom.setUserData(data);
+      this.eventTarget.dispatchEvent(eventCustom);
     }
+  }
 }
+
+export var eventHandler = new EventHandler();
