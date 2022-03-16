@@ -31,9 +31,6 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     camera: cc.Node = null;
 
-    @property(cc.Canvas)
-    canvas: cc.Canvas = null;
-
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -63,7 +60,7 @@ export default class Player extends cc.Component {
     start () {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-        this.canvas.node.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
+        this.camera.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
     }
 
     onKeyDown (event) {
@@ -101,10 +98,10 @@ export default class Player extends cc.Component {
     }
 
     onMouseMove (event) {
-        let dx = event.getLocationX() - this.node.x;
-        let dy = event.getLocationY() - this.node.y;
+        let dx = event.getLocationX() - this.camera.width/2;
+        let dy = event.getLocationY() - this.camera.height/2;
         let angle = Math.atan(-dx/dy) * 180 / Math.PI;
-        if (dy < 0) angle = 180 - angle;
+        if (dy < 0) angle = 180 + angle;
         this.node.angle = angle;
 
         cc.log("dx:", event.getLocationX());
