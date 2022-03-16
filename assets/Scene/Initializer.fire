@@ -680,7 +680,7 @@
     "_id": "2d6yLY5F9Ii7LEbaVUfFs6"
   },
   {
-    "__type__": "30dd2akrC5EnprAe/EJVZvq",
+    "__type__": "f3e65tkzmNFzaPtYFmIGG61",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -690,7 +690,7 @@
     "label": null,
     "text": "hello",
     "client": null,
-    "_id": "b3tBaJshBL9I0vLc77TeK8"
+    "_id": "a9vZ67pEtLe4wMDyf3tDLB"
   },
   {
     "__type__": "cc.Canvas",
