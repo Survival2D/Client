@@ -3,6 +3,7 @@ import { RpcResponse } from "@heroiclabs/nakama-js/client";
 import { v4 as uuid } from "uuid";
 import ccclass = cc._decorator.ccclass;
 import NakamaConnectionData from "./NakamaConnectionData";
+import LocalStorageKeys from "../Utils/LocalStorageKeys";
 
 @ccclass
 export default class NakamaManager extends cc.Component {
@@ -32,7 +33,7 @@ export default class NakamaManager extends cc.Component {
     return this.socket != null; // && this.socket.adapter.isConnected();
   }
 
-  start() {
+  onLoad() {
     cc.log("NakamaManager.start");
     NakamaManager.instance = this;
   }
@@ -48,36 +49,23 @@ export default class NakamaManager extends cc.Component {
     // this.loginAsync(this.connectionData, this.client.authenticateDevice(udid));
   }
 
-  loginWithDevice() {
+  async loginWithDeviceId() {
     this.client = new Client(
       this.connectionData.serverKey,
       this.connectionData.host,
       this.connectionData.port
     );
 
-    let deviceId: string = uuid();
-    // If the user's device ID is already stored, grab that - alternatively get the System's unique device identifier.
-    try {
-      // const value = AsyncStorage.getItem("@MyApp:deviceKey");
-      // if (value !== null) {
-      //   deviceId = value;
-      // } else {
-      //   // deviceId = DeviceInfo.getUniqueId();
-      //   deviceId = DeviceInfo.getDeviceId();
-      //   // Save the user's device ID so it can be retrieved during a later play session for re-authenticating.
-      //   AsyncStorage.setItem("@MyApp:deviceKey", deviceId).catch(function (
-      //     error
-      //   ) {
-      //     console.log("An error occurred: %o", error);
-      //   });
-      // }
-    } catch (error) {
-      console.log("An error occurred: %o", error);
+    let deviceId: string = cc.sys.localStorage.getItem(
+      LocalStorageKeys.DeviceId
+    );
+    if (deviceId === null) {
+      deviceId = uuid();
+      cc.sys.localStorage.setItem(LocalStorageKeys.DeviceId, deviceId);
     }
 
-    this.loginAsync(
+    await this.loginAsync(
       this.connectionData,
-      // this.client.authenticateDevice(SystemInfo.deviceUniqueIdentifier)
       this.client.authenticateDevice(deviceId)
     );
   }
