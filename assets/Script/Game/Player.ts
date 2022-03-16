@@ -101,9 +101,15 @@ export default class Player extends cc.Component {
     }
 
     onMouseMove (event) {
-        let x = event.getLocationX();
-        let y = event.getLocationY();
-        
+        let dx = event.getLocationX() - this.node.x;
+        let dy = event.getLocationY() - this.node.y;
+        let angle = Math.atan(-dx/dy) * 180 / Math.PI;
+        if (dy < 0) angle = 180 - angle;
+        this.node.angle = angle;
+
+        cc.log("dx:", event.getLocationX());
+        cc.log("dy:", event.getLocationX());
+        cc.log("Angle:", angle);
     }
 
     update (dt) {
