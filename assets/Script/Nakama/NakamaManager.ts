@@ -1,130 +1,137 @@
-﻿import { Client, Session, Socket } from "@heroiclabs/nakama-js";
-import { RpcResponse } from "@heroiclabs/nakama-js/client";
-import { v4 as uuid } from "uuid";
+﻿import {Client, Session, Socket} from "@heroiclabs/nakama-js";
+import {RpcResponse} from "@heroiclabs/nakama-js/client";
+import {v4 as uuid} from "uuid";
 import ccclass = cc._decorator.ccclass;
 import NakamaConnectionData from "./NakamaConnectionData";
 import LocalStorageKeys from "../Utils/LocalStorageKeys";
-import { eventHandler } from "../Utils/EventHandler";
+import {eventHandler} from "../Utils/EventHandler";
+import PersistNode from "../Utils/PersistNode";
 
 @ccclass
 export default class NakamaManager extends cc.Component {
-  static readonly OnConnecting: string = "NakamaManager.OnConnecting";
-  static readonly OnConnected: string = "NakamaManager.OnConnected";
-  static readonly OnDisconnected: string = "NakamaManager.OnDisconnected";
-  static readonly OnLoginSuccess: string = "NakamaManager.OnLoginSuccess";
-  static readonly OnLoginFail: string = "NakamaManager.OnLoginFail";
+    static readonly OnConnecting: string = "NakamaManager.OnConnecting";
+    static readonly OnConnected: string = "NakamaManager.OnConnected";
+    static readonly OnDisconnected: string = "NakamaManager.OnDisconnected";
+    static readonly OnLoginSuccess: string = "NakamaManager.OnLoginSuccess";
+    static readonly OnLoginFail: string = "NakamaManager.OnLoginFail";
 
-  connectionData: NakamaConnectionData = new NakamaConnectionData(
-    "127.0.0.1",
-    "7350",
-    "defaultkey"
-  );
-
-  client: Client = null;
-  session: Session = null;
-  socket: Socket = null;
-
-  static instance: NakamaManager = null;
-
-  username(): string {
-    return this.session == null ? "" : this.session.username;
-  }
-
-  isLoggedIn(): boolean {
-    return this.socket != null; // && this.socket.adapter.isConnected();
-  }
-
-  onLoad() {
-    cc.log("NakamaManager.start");
-    NakamaManager.instance = this;
-  }
-
-  onApplicationQuit() {
-    if (this.socket != null) this.socket.disconnect(true);
-  }
-
-  loginWithUdid() {
-    // let udid = PlayerPrefs.GetString(UdidKey, Guid.NewGuid().ToString());
-    // PlayerPrefs.SetString(UdidKey, udid);
-    // this.client = new Client(this.connectionData.scheme, this.connectionData.host, this.connectionData.port, this.connectionData.serverKey, UnityWebRequestAdapter.Instance);
-    // this.loginAsync(this.connectionData, this.client.authenticateDevice(udid));
-  }
-
-  async loginWithDeviceId() {
-    this.client = new Client(
-      this.connectionData.serverKey,
-      this.connectionData.host,
-      this.connectionData.port
+    connectionData: NakamaConnectionData = new NakamaConnectionData(
+        "127.0.0.1",
+        "7350",
+        "defaultkey"
     );
 
-    let deviceId: string = cc.sys.localStorage.getItem(
-      LocalStorageKeys.DeviceId
-    );
-    if (deviceId === null) {
-      deviceId = uuid();
-      cc.sys.localStorage.setItem(LocalStorageKeys.DeviceId, deviceId);
+    client: Client = null;
+    session: Session = null;
+    socket: Socket = null;
+
+    static instance: NakamaManager = null;
+
+    username(): string {
+        return this.session == null ? "" : this.session.username;
     }
 
-    await this.loginAsync(
-      this.connectionData,
-      this.client.authenticateDevice(deviceId)
-    );
-  }
+    isLoggedIn(): boolean {
+        return this.socket != null; // && this.socket.adapter.isConnected();
+    }
 
-  loginWithCustomId(customId: string) {
-    this.client = new Client(
-      this.connectionData.serverKey,
-      this.connectionData.host,
-      this.connectionData.port
-    );
-    this.loginAsync(
-      this.connectionData,
-      this.client.authenticateCustom(customId)
-    );
-  }
+    onLoad() {
+        cc.game.addPersistRootNode(this.node);
+        cc.log("NakamaManager.start");
+        NakamaManager.instance = this;
+    }
 
-  async loginAsync(connectionData, sessionTask: Promise<Session>) {
-    eventHandler.dispatchEvent(
-      new cc.Event.EventCustom(NakamaManager.OnConnecting, true)
-    );
-    sessionTask
-      .then((session) => {
-        this.session = session;
-        this.socket = this.client.createSocket(false);
-        // this.socket.connected += this.connected;
-        // this.socket.closed += Disconnected;
-        this.socket.connect(this.session, true);
-        eventHandler.dispatchEvent(
-          new cc.Event.EventCustom(NakamaManager.OnLoginSuccess, true)
+    onApplicationQuit() {
+        if (this.socket != null) this.socket.disconnect(true);
+    }
+
+    loginWithUdid() {
+        // let udid = PlayerPrefs.GetString(UdidKey, Guid.NewGuid().ToString());
+        // PlayerPrefs.SetString(UdidKey, udid);
+        // this.client = new Client(this.connectionData.scheme, this.connectionData.host, this.connectionData.port, this.connectionData.serverKey, UnityWebRequestAdapter.Instance);
+        // this.loginAsync(this.connectionData, this.client.authenticateDevice(udid));
+    }
+
+    async loginWithDeviceId() {
+        this.client = new Client(
+            this.connectionData.serverKey,
+            this.connectionData.host,
+            this.connectionData.port
         );
-        cc.log("login thanh cong", this.session, this.client);
-      })
-      .catch((exception) => {
-        cc.error(exception);
-        eventHandler.dispatchEvent(
-          new cc.Event.EventCustom(NakamaManager.OnLoginFail, true)
+
+        let deviceId: string = cc.sys.localStorage.getItem(
+            LocalStorageKeys.DeviceId
         );
-      });
-  }
+        if (deviceId === null) {
+            deviceId = uuid();
+            cc.sys.localStorage.setItem(LocalStorageKeys.DeviceId, deviceId);
+        }
 
-  logOut() {
-    this.socket.disconnect(true);
-  }
+        await this.loginAsync(
+            this.connectionData,
+            this.client.authenticateDevice(deviceId)
+        );
+    }
 
-  connected() {
-    eventHandler.dispatchEvent(
-      new cc.Event.EventCustom(NakamaManager.OnConnected, true)
-    );
-  }
+    loginWithCustomId(customId: string) {
+        this.client = new Client(
+            this.connectionData.serverKey,
+            this.connectionData.host,
+            this.connectionData.port
+        );
+        this.loginAsync(
+            this.connectionData,
+            this.client.authenticateCustom(customId)
+        );
+    }
 
-  disconnected() {
-    eventHandler.dispatchEvent(
-      new cc.Event.EventCustom(NakamaManager.OnDisconnected, true)
-    );
-  }
+    async loginAsync(connectionData, sessionTask: Promise<Session>) {
+        eventHandler.dispatchEvent(
+            new cc.Event.EventCustom(NakamaManager.OnConnecting, true)
+        );
+        sessionTask
+            .then((session) => {
+                this.session = session;
+                this.socket = this.client.createSocket(false);
+                // this.socket.connected += this.connected;
+                // this.socket.closed += Disconnected;
+                this.socket.connect(this.session, true);
+                eventHandler.dispatchEvent(
+                    new cc.Event.EventCustom(NakamaManager.OnLoginSuccess, true)
+                );
+                cc.log("login thanh cong", this.session, this.client);
+            })
+            .catch((exception) => {
+                cc.error(exception);
+                eventHandler.dispatchEvent(
+                    new cc.Event.EventCustom(NakamaManager.OnLoginFail, true)
+                );
+            });
+    }
 
-  async sendRPC(rpc: string, payload: object): Promise<RpcResponse> {
-    if (this.client === null || this.session == null) return null;
-    return await this.client.rpc(this.session, rpc, payload);
-  }
+    logOut() {
+        this.socket.disconnect(true);
+    }
+
+    connected() {
+        eventHandler.dispatchEvent(
+            new cc.Event.EventCustom(NakamaManager.OnConnected, true)
+        );
+    }
+
+    disconnected() {
+        eventHandler.dispatchEvent(
+            new cc.Event.EventCustom(NakamaManager.OnDisconnected, true)
+        );
+    }
+
+    async sendRPC(rpc: string, payload: object): Promise<RpcResponse> {
+        cc.log("client, session:", this.client, this.session);
+        if (this.client === null || this.session == null) return null;
+        return await this.client.rpc(this.session, rpc, payload);
+    }
+
+    onDestroy() {
+        cc.log("NakamaManager.onDestroy");
+    }
 }
