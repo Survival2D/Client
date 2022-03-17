@@ -5,18 +5,19 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Obstacle from "./Obstacle";
+import Obstacle from "./Obstacle/Obstacle";
+import Prefab = cc.Prefab;
+import instantiate = cc.instantiate;
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class GameScene extends cc.Component {
 
-    @property(cc.Sprite)
-    player: cc.Sprite = null;
+    @property(Prefab)
+    private bushPrefab: Prefab = null;
 
-    obstacles: Obstacle[];
-
+    private obstacles : Obstacle[];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -33,10 +34,8 @@ export default class GameScene extends cc.Component {
 
     genObstacles (num?: number) {
         for (let i = 0; i < num; i++) {
-            let node = new cc.Node()
-            node.addComponent(Obstacle);
+            let node = instantiate(this.bushPrefab);
             this.node.addChild(node);
-
             this.obstacles.push(node.getComponent(Obstacle));
         }
     }

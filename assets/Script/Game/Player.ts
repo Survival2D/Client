@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import {PlayerColor} from "./GameConstants";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -31,23 +33,29 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     camera: cc.Node = null;
 
+    private color: cc.Color = PlayerColor.basic;
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.genPlayer();
+    }
+
+    genPlayer () {
         let ctx = this.body.getComponent(cc.Graphics);
-        ctx.fillColor = cc.color(200, 200, 200);
-        ctx.circle(0, 0, 30);
+        ctx.fillColor = this.color;
+        ctx.circle(0, 0, 28);
         ctx.fill();
         ctx.stroke();
 
         ctx = this.leftHand.getComponent(cc.Graphics);
-        ctx.fillColor = cc.color(200, 200, 200);
+        ctx.fillColor = this.color;
         ctx.circle(0, 0, 10);
         ctx.fill();
         ctx.stroke();
 
         ctx = this.rightHand.getComponent(cc.Graphics);
-        ctx.fillColor = cc.color(200, 200, 200);
+        ctx.fillColor = this.color;
         ctx.circle(0, 0, 10);
         ctx.fill();
         ctx.stroke();
@@ -103,10 +111,6 @@ export default class Player extends cc.Component {
         let angle = Math.atan(-dx/dy) * 180 / Math.PI;
         if (dy < 0) angle = 180 + angle;
         this.node.angle = angle;
-
-        cc.log("dx:", event.getLocationX());
-        cc.log("dy:", event.getLocationX());
-        cc.log("Angle:", angle);
     }
 
     update (dt) {

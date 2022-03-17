@@ -3,7 +3,7 @@ import director = cc.director;
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Home extends cc.Component {
+export default class HomeScene extends cc.Component {
 
     @property(cc.Button)
     buttonPlayNow: cc.Button = null;
