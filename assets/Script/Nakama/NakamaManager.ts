@@ -36,7 +36,6 @@ export default class NakamaManager extends cc.Component {
     }
 
     onLoad() {
-        cc.game.addPersistRootNode(this.node);
         cc.log("NakamaManager.start");
         NakamaManager.instance = this;
     }
@@ -125,8 +124,7 @@ export default class NakamaManager extends cc.Component {
         );
     }
 
-    async sendRPC(rpc: string, payload: object): Promise<RpcResponse> {
-        cc.log("client, session:", this.client, this.session);
+    async sendRPC(rpc: string, payload: object = {}): Promise<RpcResponse> {
         if (this.client === null || this.session == null) return null;
         return await this.client.rpc(this.session, rpc, payload);
     }

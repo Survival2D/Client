@@ -5,6 +5,7 @@ import MultiplayerMessage from "./MultiplayerMessage";
 import NakamaManager from "./NakamaManager";
 import { eventHandler } from "../Utils/EventHandler";
 import RPCs from "../Utils/RPCs";
+import { JoinMatchData } from "./RPCData";
 
 @ccclass
 export default class MultiplayerManager extends cc.Component {
@@ -55,11 +56,11 @@ export default class MultiplayerManager extends cc.Component {
     eventHandler.on(NakamaManager.OnDisconnected, this.disconnected);
     cc.log("NakamaManager:", NakamaManager.instance);
     let rpcResult: RpcResponse = await NakamaManager.instance.sendRPC(
-      RPCs.JoinOrCreateMatchRpc,
-      {}
+      RPCs.JoinOrCreateMatchRpc
     );
-    cc.log("rpcResult:", rpcResult);
-    let matchId: string = rpcResult.payload.toString();
+    cc.log("rpcResult:", JSON.stringify(rpcResult));
+    let result = rpcResult.payload as JoinMatchData;
+    let matchId: string = result.matchId;
     cc.log("matchId", matchId);
     this.match = await NakamaManager.instance.socket.joinMatch(matchId);
     cc.log("match:", this.match);
