@@ -53,7 +53,7 @@ export default class MultiplayerManager extends cc.Component {
   async joinMatchAsync() {
     // NakamaManager.instance.socket.ReceivedMatchState -= Receive;
     // NakamaManager.instance.socket.ReceivedMatchState += Receive;
-    eventHandler.on(NakamaManager.OnDisconnected, this.disconnected);
+    eventHandler.on(NakamaManager.OnDisconnected, this.disconnected.bind(this));
     cc.log("NakamaManager:", NakamaManager.instance);
     let rpcResult: RpcResponse = await NakamaManager.instance.sendRPC(
       RPCs.JoinOrCreateMatchRpc

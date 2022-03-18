@@ -7,24 +7,24 @@ import { eventHandler } from "../Utils/EventHandler";
 export default class NakamaAutoLogin extends cc.Component {
   private retryTime: number = 5;
 
-  public onLoad() {
+  async onLoad() {
     cc.log("NakamaAutoLogin.start");
-    eventHandler.on(NakamaManager.OnLoginFail, this.loginFailed);
-    this.tryLogin();
+    eventHandler.on(NakamaManager.OnLoginFail, this.loginFailed.bind(this));
+    await this.tryLogin();
     eventHandler.on(NakamaManager.OnLoginSuccess, () => {
-      cc.log("Tien log bat event");
+      cc.log("Tien log bat event On Login Success");
     });
   }
 
-  public onDestroy(): void {
+  onDestroy(): void {
     eventHandler.off(NakamaManager.OnLoginFail, this.loginFailed);
   }
 
-  private async tryLogin() {
+  async tryLogin() {
     await NakamaManager.instance.loginWithDeviceId();
   }
 
-  private loginFailed() {
+  loginFailed() {
     setTimeout(async () => {
       await this.tryLogin();
     }, this.retryTime * 1000);

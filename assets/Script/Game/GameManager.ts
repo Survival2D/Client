@@ -22,8 +22,14 @@ export default class GameManager extends cc.Component {
     // MultiplayerManager.instance.Subscribe(MultiplayerManager.Code.PlayerWon, ReceivedPlayerWonRound);
     // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.Draw, ReceivedDrawRound);
     // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.ChangeScene, ReceivedChangeScene);
-    eventHandler.on(MultiplayerManager.OnMatchJoin, this.joinedMatch);
-    eventHandler.on(MultiplayerManager.OnMatchLeave, this.leavedMatch);
+    eventHandler.on(
+      MultiplayerManager.OnMatchJoin,
+      this.joinedMatch.bind(this)
+    );
+    eventHandler.on(
+      MultiplayerManager.OnMatchLeave,
+      this.leavedMatch.bind(this)
+    );
   }
 
   onDestroy(): void {

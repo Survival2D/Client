@@ -10,7 +10,10 @@ export default class SceneChanger extends cc.Component {
   onLoad() {
     cc.log("SceneChanger::onLoad");
     SceneChanger.instance = this;
-    eventHandler.on(NakamaManager.OnLoginSuccess, this.loadHomeScene);
+    eventHandler.on(
+      NakamaManager.OnLoginSuccess,
+      this.loadHomeScene.bind(this)
+    );
   }
 
   loadHomeScene() {
