@@ -8,6 +8,7 @@
 import Obstacle from "./Obstacle/Obstacle";
 import Prefab = cc.Prefab;
 import instantiate = cc.instantiate;
+import Player from "./Player";
 
 const {ccclass, property} = cc._decorator;
 
@@ -25,17 +26,23 @@ export default class GameScene extends cc.Component {
     @property(Prefab)
     private bushPrefab: Prefab = null;
 
+    @property(Prefab)
+    private playerPrefab: Prefab = null;
+
     @property(cc.Node)
     camera: cc.Node = null;
 
     @property(cc.Node)
     mainPlayer: cc.Node = null;
 
+    private playersMap: Map<number, Player> = null;
+
     private obstacles : Obstacle[];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.obstacles = [];
+        this.playersMap = new Map<number, Player>();
         this.genObstacles(3);
     }
 
@@ -64,6 +71,8 @@ export default class GameScene extends cc.Component {
             case cc.macro.KEY.w:
                 this.isUp = true;
                 break;
+            case cc.macro.KEY.t:
+                this.newPlayerJoin(123);
         }
     }
 
@@ -100,6 +109,18 @@ export default class GameScene extends cc.Component {
         }
     }
 
+    newPlayerJoin (id: number) {
+        if (this.playersMap.has(id)) return;
+        let player = instantiate(this.playerPrefab);
+        this.node.addChild(player);
+        this.playersMap.set(id, player.getComponent(Player));
+    }
+
+    updatePlayerPos (id:number, x: number, y?: number) {
+        if (!this.playersMap.has(id)) return;
+        this.playersMap.get(id).node.setPosition(x, y);
+    }
+
     update (dt) {
         if (this.isLeft && this.isUp) {
             this.mainPlayer.x -= this.vel/1.4 * dt;
@@ -127,6 +148,10 @@ export default class GameScene extends cc.Component {
         // move camera following player
         this.camera.x = this.mainPlayer.x;
         this.camera.y = this.mainPlayer.y;
+
+        // this.playersMap.forEach((e, key) => {
+        //     this.updatePlayerPos(key, e.node.x + this.vel*dt, e.node.y);
+        // })
     }
 
     onDestroy () {
