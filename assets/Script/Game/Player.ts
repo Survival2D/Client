@@ -71,7 +71,5 @@ export default class Player extends cc.Component {
 
     onDestroy () {
         // Cancel keyboard input monitoring
-        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
 }

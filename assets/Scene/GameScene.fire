@@ -882,7 +882,6 @@
       "__id__": 8
     },
     "_enabled": true,
-    "vel": 200,
     "body": {
       "__id__": 12
     },
@@ -894,9 +893,6 @@
     },
     "backPack": {
       "__id__": 9
-    },
-    "camera": {
-      "__id__": 3
     },
     "_id": "5cQLhbcXBFH51utNVAzuxk"
   },
@@ -963,8 +959,15 @@
       "__id__": 2
     },
     "_enabled": true,
+    "vel": 200,
     "bushPrefab": {
       "__uuid__": "2ba26e46-446d-4318-bd53-826626750a15"
+    },
+    "camera": {
+      "__id__": 3
+    },
+    "mainPlayer": {
+      "__id__": 8
     },
     "_id": "92+CqUTplFDry51rRXet/H"
   }
