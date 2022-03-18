@@ -15,6 +15,18 @@ export default class SceneChanger extends cc.Component {
 
   loadHomeScene() {
     cc.log("SceneChanger::loadHomeScene");
-    cc.director.loadScene("Home");
+    cc.director.loadScene("HomeScene");
+  }
+
+  loadLobbyScene() {
+    this.loadGameScene();
+    return; //TODO
+    cc.log("SceneChanger::loadLobbyScene");
+    cc.director.loadScene("LobbyScene");
+  }
+
+  loadGameScene() {
+    cc.log("SceneChanger::loadGameScene");
+    cc.director.loadScene("GameScene");
   }
 }

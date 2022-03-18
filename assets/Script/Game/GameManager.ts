@@ -1,5 +1,8 @@
 import { Client } from "@heroiclabs/nakama-js";
 import { RpcResponse } from "@heroiclabs/nakama-js/client";
+import MultiplayerManager from "../Nakama/MultiplayerManager";
+import { eventHandler } from "../Utils/EventHandler";
+import SceneChanger from "../General/SceneChanger";
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,8 +22,8 @@ export default class GameManager extends cc.Component {
     // MultiplayerManager.instance.Subscribe(MultiplayerManager.Code.PlayerWon, ReceivedPlayerWonRound);
     // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.Draw, ReceivedDrawRound);
     // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.ChangeScene, ReceivedChangeScene);
-    // MultiplayerManager.Instance.onMatchJoin += JoinedMatch;
-    // MultiplayerManager.Instance.onMatchLeave += LeavedMatch;
+    eventHandler.on(MultiplayerManager.OnMatchJoin, this.joinedMatch);
+    eventHandler.on(MultiplayerManager.OnMatchLeave, this.leavedMatch);
   }
 
   onDestroy(): void {
@@ -46,7 +49,9 @@ export default class GameManager extends cc.Component {
   //   // SceneManager.LoadScene(message.GetData<int>());
   // }
 
-  private joinedMatch() {
+  joinedMatch() {
+    cc.log("GameManager", this);
+    cc.log("instance", GameManager.instance);
     this.resetPlayerWins();
     this.goToLobby();
   }
@@ -56,14 +61,15 @@ export default class GameManager extends cc.Component {
   }
 
   resetPlayerWins() {
+    cc.log("ResetPlayerWins");
     this.playersWins = new Array(4);
   }
 
   goToHome() {
-    // SceneManager.LoadScene((int)Scenes.Home);
+    SceneChanger.instance.loadGameScene();
   }
 
   goToLobby() {
-    // SceneManager.LoadScene((int)Scenes.Lobby);
+    SceneChanger.instance.loadLobbyScene();
   }
 }
