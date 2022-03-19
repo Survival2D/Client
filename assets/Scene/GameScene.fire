@@ -963,6 +963,9 @@
     "bushPrefab": {
       "__uuid__": "2ba26e46-446d-4318-bd53-826626750a15"
     },
+    "playerPrefab": {
+      "__uuid__": "1fbaa616-c7ac-4c75-a2c6-3752d6fbb574"
+    },
     "camera": {
       "__id__": 3
     },

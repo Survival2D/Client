@@ -16,7 +16,7 @@ export default class Obstacle extends cc.Component {
 
     y: number = 0;
 
-    setPosition (x?: number, y?: number) {
+    setPosition (x: number, y: number) {
         this.node.setPosition(x, y);
         this.x = x;
         this.y = y;
