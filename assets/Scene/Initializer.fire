@@ -892,7 +892,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "NakamaAutoLogin",
+    "_name": "GameManager",
     "_objFlags": 0,
     "_parent": {
       "__id__": 14
@@ -950,21 +950,21 @@
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "_id": "52uc8Cbu5LK4B25DKDtKG4"
+    "_id": "2d6yLY5F9Ii7LEbaVUfFs6"
   },
   {
-    "__type__": "2a10a6Gs9JGrJk4DzZuTqTD",
+    "__type__": "f3e65tkzmNFzaPtYFmIGG61",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 21
     },
     "_enabled": true,
-    "_id": "45JURjok9Mr6FkX86LQIVU"
+    "_id": "a9vZ67pEtLe4wMDyf3tDLB"
   },
   {
     "__type__": "cc.Node",
-    "_name": "GameManager",
+    "_name": "NakamaAutoLogin",
     "_objFlags": 0,
     "_parent": {
       "__id__": 14
@@ -1022,17 +1022,17 @@
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "_id": "2d6yLY5F9Ii7LEbaVUfFs6"
+    "_id": "52uc8Cbu5LK4B25DKDtKG4"
   },
   {
-    "__type__": "f3e65tkzmNFzaPtYFmIGG61",
+    "__type__": "2a10a6Gs9JGrJk4DzZuTqTD",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 23
     },
     "_enabled": true,
-    "_id": "a9vZ67pEtLe4wMDyf3tDLB"
+    "_id": "45JURjok9Mr6FkX86LQIVU"
   },
   {
     "__type__": "8c18de+zs1I6baqXqshNuvx",
