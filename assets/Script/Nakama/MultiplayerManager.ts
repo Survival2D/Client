@@ -63,6 +63,29 @@ export default class MultiplayerManager extends cc.Component {
     let matchId: string = result.matchId;
     cc.log("matchId", matchId);
     this.match = await NakamaManager.instance.socket.joinMatch(matchId);
+
+    //Test:
+    NakamaManager.instance.socket.onmatchdata = (matchData) => {
+      cc.log("MatchData:", matchData);
+      // switch (matchData.opCode) {
+      //   case opCodes.position:
+      //     // Get the updated position data
+      //     var stateJson = matchData.state;
+      //     var positionState = JSON.parse(stateJson);
+      //
+      //     // Update the GameObject associated with that player
+      //     if (players.hasOwnProperty(matchData.user_presence.session.id)) {
+      //       // Here we would normally do something like smoothly interpolate to the new position, but for this example let's just set the position directly.
+      //       players[matchData.user_presence.session.id].transform.position =
+      //         new Vector3(positionState.s, positionState.y, positionState.z);
+      //     }
+      //     break;
+      //   default:
+      //     console.log("Unsupported op code");
+      //     break;
+      // }
+    };
+
     cc.log("match:", this.match);
     eventHandler.dispatchEvent(MultiplayerManager.OnMatchJoin);
   }
