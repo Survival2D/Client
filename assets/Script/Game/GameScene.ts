@@ -9,6 +9,7 @@ import Obstacle from "./Obstacle/Obstacle";
 import Prefab = cc.Prefab;
 import instantiate = cc.instantiate;
 import Player from "./Player";
+import Bullet from "./MapObject/Bullet";
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,25 +30,30 @@ export default class GameScene extends cc.Component {
     @property(Prefab)
     private playerPrefab: Prefab = null;
 
+    @property(Prefab)
+    bulletPrefab: Prefab = null;
+
     @property(cc.Node)
     camera: cc.Node = null;
 
     @property(cc.Node)
-    mainPlayer: cc.Node = null;
+    mainPlayerNode: cc.Node = null;
 
-    private playersMap: Map<number, Player> = null;
+    private mainPlayer: Player = null;
 
-    private obstacles : Obstacle[];
+    private playersMap: Map<number, Player> = new Map<number, Player>();
+
+    private bullets: Bullet[] = [];
+
+    private obstacles : Obstacle[] = [];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.obstacles = [];
-        this.playersMap = new Map<number, Player>();
-        this.genObstacles(3);
+        this.genObstacles(7);
+        this.mainPlayer = this.mainPlayerNode.getComponent(Player);
     }
 
     start () {
-        cc.log("number of obstacles", this.obstacles.length);
         for (let obs of this.obstacles) {
             obs.setPosition((Math.random()-0.5)*900, (Math.random()-0.5)*700);
         }
@@ -55,6 +61,7 @@ export default class GameScene extends cc.Component {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         this.camera.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
+        this.camera.on(cc.Node.EventType.MOUSE_DOWN, this.onClick, this);
     }
 
     onKeyDown (event) {
@@ -70,6 +77,9 @@ export default class GameScene extends cc.Component {
                 break;
             case cc.macro.KEY.w:
                 this.isUp = true;
+                break;
+            case cc.macro.KEY.f:
+                this.mainPlayer.equipGun(1);
                 break;
             case cc.macro.KEY.t:
                 this.newPlayerJoin(123);
@@ -98,7 +108,15 @@ export default class GameScene extends cc.Component {
         let dy = event.getLocationY() - this.camera.height/2;
         let angle = Math.atan(-dx/dy) * 180 / Math.PI;
         if (dy < 0) angle = 180 + angle;
-        this.mainPlayer.angle = angle;
+        this.mainPlayerNode.angle = angle;
+    }
+
+    onClick (event) {
+        switch (event.getButton()) {
+            case cc.Event.EventMouse.BUTTON_LEFT:
+                this.mainPlayer.fire();
+                break;
+        }
     }
 
     genObstacles (num?: number) {
@@ -121,37 +139,45 @@ export default class GameScene extends cc.Component {
         this.playersMap.get(id).node.setPosition(x, y);
     }
 
+    onFire (x: number, y: number, angle: number) {
+        let node = instantiate(this.bulletPrefab);
+        this.node.addChild(node);
+        let bullet = node.getComponent(Bullet);
+        this.bullets.push(bullet);
+        bullet.setPosition(x, y);
+        bullet.setAngle(angle);
+    }
+
     update (dt) {
         if (this.isLeft && this.isUp) {
-            this.mainPlayer.x -= this.vel/1.4 * dt;
-            this.mainPlayer.y += this.vel/1.4 * dt;
+            this.mainPlayerNode.x -= this.vel/1.4 * dt;
+            this.mainPlayerNode.y += this.vel/1.4 * dt;
         }
         else if (this.isLeft && this.isDown) {
-            this.mainPlayer.x -= this.vel/1.4 * dt;
-            this.mainPlayer.y -= this.vel/1.4 * dt;
+            this.mainPlayerNode.x -= this.vel/1.4 * dt;
+            this.mainPlayerNode.y -= this.vel/1.4 * dt;
         }
         else if (this.isRight && this.isUp) {
-            this.mainPlayer.x += this.vel/1.4 * dt;
-            this.mainPlayer.y += this.vel/1.4 * dt;
+            this.mainPlayerNode.x += this.vel/1.4 * dt;
+            this.mainPlayerNode.y += this.vel/1.4 * dt;
         }
         else if (this.isRight && this.isDown) {
-            this.mainPlayer.x += this.vel/1.4 * dt;
-            this.mainPlayer.y -= this.vel/1.4 * dt;
+            this.mainPlayerNode.x += this.vel/1.4 * dt;
+            this.mainPlayerNode.y -= this.vel/1.4 * dt;
         }
         else if (this.isLeft && this.isRight) {}
         else if (this.isUp && this.isDown) {}
-        else if (this.isLeft) this.mainPlayer.x -= this.vel * dt;
-        else if (this.isRight) this.mainPlayer.x += this.vel * dt;
-        else if (this.isUp) this.mainPlayer.y += this.vel * dt;
-        else if (this.isDown) this.mainPlayer.y -= this.vel * dt;
+        else if (this.isLeft) this.mainPlayerNode.x -= this.vel * dt;
+        else if (this.isRight) this.mainPlayerNode.x += this.vel * dt;
+        else if (this.isUp) this.mainPlayerNode.y += this.vel * dt;
+        else if (this.isDown) this.mainPlayerNode.y -= this.vel * dt;
 
         // move camera following player
-        this.camera.x = this.mainPlayer.x;
-        this.camera.y = this.mainPlayer.y;
+        this.camera.x = this.mainPlayerNode.x;
+        this.camera.y = this.mainPlayerNode.y;
 
-        // this.playersMap.forEach((e, key) => {
-        //     this.updatePlayerPos(key, e.node.x + this.vel*dt, e.node.y);
-        // })
+        // bullets "fly"
+        this.bullets.forEach(e => e.updateFly(dt));
     }
 
     onDestroy () {
@@ -159,5 +185,6 @@ export default class GameScene extends cc.Component {
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         this.camera.off(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
+        this.camera.off(cc.Node.EventType.MOUSE_DOWN, this.onClick, this);
     }
 }

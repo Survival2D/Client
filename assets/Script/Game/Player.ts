@@ -6,6 +6,9 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import {PlayerColor} from "./GameConstants";
+import instantiate = cc.instantiate;
+import GameScene from "./GameScene";
+import Canvas = cc.Canvas;
 
 const {ccclass, property} = cc._decorator;
 
@@ -24,9 +27,14 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     backPack: cc.Node = null;
 
-    private bodyColor: cc.Color = PlayerColor.body[1];
-    private handColor: cc.Color = PlayerColor.hand[1];
-    private backColor: cc.Color = PlayerColor.back[1];
+    @property(cc.Sprite)
+    gun: cc.Sprite = null;
+
+    private bodyColor: cc.Color = PlayerColor.body[0];
+    private handColor: cc.Color = PlayerColor.hand[0];
+    private backColor: cc.Color = PlayerColor.back[0];
+
+    private isEquip: boolean = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -63,9 +71,41 @@ export default class Player extends cc.Component {
         this.leftHand.setPosition(-25, 25);
         this.rightHand.setPosition(25, 25);
         this.backPack.setPosition(0, -10);
+
+        this.gun.node.setPosition(0, 50);
     }
 
     start () {
+        this.gun.node.active = false;
+    }
+
+    equipGun (idx: number) {
+        this.isEquip = !this.isEquip;
+        if (this.isEquip) {
+            this.gun.node.active = true;
+            this.leftHand.setPosition(-10, 50);
+            this.rightHand.setPosition(10, 35);
+        }
+        else {
+            this.unEquipGun();
+        }
+    }
+
+    unEquipGun () {
+        this.gun.node.active = false;
+        this.leftHand.setPosition(-25, 25);
+        this.rightHand.setPosition(25, 25);
+    }
+
+    fire () {
+        if (this.isEquip) {
+            let scene = cc.director.getScene();
+            scene.getChildByName("Canvas").getComponent(GameScene).onFire(this.node.x, this.node.y, this.node.angle);
+        }
+        else this.hit();
+    }
+
+    hit () {
 
     }
 
