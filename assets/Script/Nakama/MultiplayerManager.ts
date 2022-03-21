@@ -5,7 +5,8 @@ import MultiplayerMessage from "./MultiplayerMessage";
 import NakamaManager from "./NakamaManager";
 import { eventHandler } from "../Utils/EventHandler";
 import RPCs from "../Utils/RPCs";
-import { JoinMatchData } from "./RPCData";
+import { JoinMatchData, Position, TestData } from "./RPCData";
+import { Code } from "./OperationCode";
 
 @ccclass
 export default class MultiplayerManager extends cc.Component {
@@ -29,6 +30,7 @@ export default class MultiplayerManager extends cc.Component {
 
   static instance: MultiplayerManager = null;
   private interval: NodeJS.Timer;
+  matchId: string;
 
   self(): Presence {
     return this.match == null ? null : this.match.self;
@@ -63,8 +65,11 @@ export default class MultiplayerManager extends cc.Component {
     let matchId: string = result.matchId;
     cc.log("matchId", matchId);
     this.match = await NakamaManager.instance.socket.joinMatch(matchId);
+    this.matchId = matchId;
 
     //Test:
+    //TODO: đăng ký handle gói tin, cần tách ra
+
     NakamaManager.instance.socket.onmatchdata = (matchData) => {
       cc.log("MatchData:", matchData);
       // switch (matchData.opCode) {

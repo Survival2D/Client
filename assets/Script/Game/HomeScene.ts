@@ -33,7 +33,7 @@ export default class HomeScene extends cc.Component {
   }
 
   async onPlayNow() {
-    // await MultiplayerManager.instance.joinMatchAsync();
+    await MultiplayerManager.instance.joinMatchAsync();
     director.loadScene("GameScene");
   }
 }
