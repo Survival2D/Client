@@ -10,6 +10,7 @@ import Prefab = cc.Prefab;
 import instantiate = cc.instantiate;
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
+import {MatchNetwork} from "./MatchNetwork";
 
 const {ccclass, property} = cc._decorator;
 
@@ -84,6 +85,8 @@ export default class GameScene extends cc.Component {
             case cc.macro.KEY.t:
                 this.newPlayerJoin(123);
         }
+
+        MatchNetwork.getInstance().sendPosition(this.mainPlayerNode.x, this.mainPlayerNode.y);
     }
 
     onKeyUp (event) {
