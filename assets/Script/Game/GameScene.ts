@@ -149,35 +149,57 @@ export default class GameScene extends cc.Component {
     }
 
     update (dt) {
+        this.moveMainPlayer(dt);
+
+        // bullets "fly"
+        this.bullets.forEach(e => e.updateFly(dt));
+    }
+
+    moveMainPlayer (dt) {
+        let newX = this.mainPlayerNode.x, newY = this.mainPlayerNode.y;
         if (this.isLeft && this.isUp) {
-            this.mainPlayerNode.x -= this.vel/1.4 * dt;
-            this.mainPlayerNode.y += this.vel/1.4 * dt;
+            newX -= this.vel/1.4 * dt;
+            newY += this.vel/1.4 * dt;
         }
         else if (this.isLeft && this.isDown) {
-            this.mainPlayerNode.x -= this.vel/1.4 * dt;
-            this.mainPlayerNode.y -= this.vel/1.4 * dt;
+            newX -= this.vel/1.4 * dt;
+            newY -= this.vel/1.4 * dt;
         }
         else if (this.isRight && this.isUp) {
-            this.mainPlayerNode.x += this.vel/1.4 * dt;
-            this.mainPlayerNode.y += this.vel/1.4 * dt;
+            newX += this.vel/1.4 * dt;
+            newY += this.vel/1.4 * dt;
         }
         else if (this.isRight && this.isDown) {
-            this.mainPlayerNode.x += this.vel/1.4 * dt;
-            this.mainPlayerNode.y -= this.vel/1.4 * dt;
+            newX += this.vel/1.4 * dt;
+            newY -= this.vel/1.4 * dt;
         }
         else if (this.isLeft && this.isRight) {}
         else if (this.isUp && this.isDown) {}
-        else if (this.isLeft) this.mainPlayerNode.x -= this.vel * dt;
-        else if (this.isRight) this.mainPlayerNode.x += this.vel * dt;
-        else if (this.isUp) this.mainPlayerNode.y += this.vel * dt;
-        else if (this.isDown) this.mainPlayerNode.y -= this.vel * dt;
+        else if (this.isLeft) newX -= this.vel * dt;
+        else if (this.isRight) newX += this.vel * dt;
+        else if (this.isUp) newY += this.vel * dt;
+        else if (this.isDown) newY -= this.vel * dt;
+
+        for (let e of this.obstacles) {
+            if (e.checkCollision(28, newX, newY)) {
+                if (!e.checkCollision(28, this.mainPlayerNode.x, newY)) {
+                    newX = this.mainPlayerNode.x;
+                }
+                else if (!e.checkCollision(28, newX, this.mainPlayerNode.y)) {
+                    newY = this.mainPlayerNode.y;
+                }
+                else {
+                    return;
+                }
+            }
+        }
+
+        this.mainPlayerNode.x = newX;
+        this.mainPlayerNode.y = newY;
 
         // move camera following player
         this.camera.x = this.mainPlayerNode.x;
         this.camera.y = this.mainPlayerNode.y;
-
-        // bullets "fly"
-        this.bullets.forEach(e => e.updateFly(dt));
     }
 
     onDestroy () {

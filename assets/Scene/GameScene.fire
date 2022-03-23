@@ -264,8 +264,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1000,
-      "height": 800
+      "width": 2000,
+      "height": 1600
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -343,8 +343,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 1000,
-      "height": 800
+      "width": 2000,
+      "height": 1600
     },
     "_resize": 0,
     "_N$layoutType": 0,
@@ -470,14 +470,14 @@
     "playerPrefab": {
       "__uuid__": "1fbaa616-c7ac-4c75-a2c6-3752d6fbb574"
     },
+    "bulletPrefab": {
+      "__uuid__": "64a04f39-613e-4931-ac88-a3d95c60e25c"
+    },
     "camera": {
       "__id__": 3
     },
     "mainPlayerNode": {
       "__id__": 8
-    },
-    "bulletPrefab": {
-      "__uuid__": "64a04f39-613e-4931-ac88-a3d95c60e25c"
     },
     "_id": "92+CqUTplFDry51rRXet/H"
   }

@@ -18,7 +18,9 @@ export default class Bush extends Obstacle {
     @property(cc.Sprite)
     leaf: cc.Sprite = null;
 
-    // onLoad () {}
+    onLoad () {
+        this.r = this.root.node.width/2;
+    }
 
     start () {
 
