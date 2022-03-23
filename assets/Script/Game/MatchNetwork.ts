@@ -1,13 +1,13 @@
 import NakamaManager from "../Nakama/NakamaManager";
 import MultiplayerManager from "../Nakama/MultiplayerManager";
-import {PlayerPosition} from "../Nakama/RPCData";
+import {MatchManager} from "./MatchManager";
 
 export class MatchNetwork {
-     public static instance: MatchNetwork;
+     private static instance: MatchNetwork;
 
      public static getInstance () {
-         if (!MatchNetwork.instance) MatchNetwork.instance = new MatchNetwork();
-         return MatchNetwork.instance;
+         if (!this.instance) this.instance = new MatchNetwork();
+         return this.instance;
      }
 
      subscribeListener () {
@@ -20,18 +20,14 @@ export class MatchNetwork {
      onReceivePacket (code: Code, data: any) {
          switch (code) {
              case Code.PlayerPosition: {
+                 MatchManager.getInstance().onReceivePlayerUpdatePos(data);
                  break;
              }
              default: break;
          }
      }
 
-     async sendPosition (x: number, y: number) {
-         let data: PlayerPosition = {
-             x: x,
-             y: y,
-             userID: NakamaManager.instance.session.user_id,
-         };
-         await MultiplayerManager.instance.send(Code.PlayerPosition, data);
+     async send (code: Code, data: object | []) {
+         await MultiplayerManager.instance.send(code, data);
      }
 }

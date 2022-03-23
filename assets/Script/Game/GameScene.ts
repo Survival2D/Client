@@ -11,6 +11,7 @@ import instantiate = cc.instantiate;
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
 import {MatchNetwork} from "./MatchNetwork";
+import {MatchManager} from "./MatchManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -42,7 +43,7 @@ export default class GameScene extends cc.Component {
 
     private mainPlayer: Player = null;
 
-    private playersMap: Map<number, Player> = new Map<number, Player>();
+    private playersMap: Map<string, Player> = new Map<string, Player>();
 
     private bullets: Bullet[] = [];
 
@@ -55,6 +56,8 @@ export default class GameScene extends cc.Component {
     }
 
     start () {
+        MatchManager.getInstance().setScene(this);
+
         for (let obs of this.obstacles) {
             obs.setPosition((Math.random()-0.5)*900, (Math.random()-0.5)*700);
         }
@@ -83,10 +86,8 @@ export default class GameScene extends cc.Component {
                 this.mainPlayer.equipGun(1);
                 break;
             case cc.macro.KEY.t:
-                this.newPlayerJoin(123);
+                this.newPlayerJoin("123");
         }
-
-        MatchNetwork.getInstance().sendPosition(this.mainPlayerNode.x, this.mainPlayerNode.y);
     }
 
     onKeyUp (event) {
@@ -130,14 +131,14 @@ export default class GameScene extends cc.Component {
         }
     }
 
-    newPlayerJoin (id: number) {
+    newPlayerJoin (id: string) {
         if (this.playersMap.has(id)) return;
         let player = instantiate(this.playerPrefab);
         this.node.addChild(player);
         this.playersMap.set(id, player.getComponent(Player));
     }
 
-    updatePlayerPos (id:number, x: number, y?: number) {
+    updatePlayerPos (id: string, x: number, y?: number) {
         if (!this.playersMap.has(id)) return;
         this.playersMap.get(id).node.setPosition(x, y);
     }
@@ -156,6 +157,8 @@ export default class GameScene extends cc.Component {
 
         // bullets "fly"
         this.bullets.forEach(e => e.updateFly(dt));
+
+        MatchNetwork.getInstance().sendPosition(this.mainPlayerNode.x, this.mainPlayerNode.y);
     }
 
     moveMainPlayer (dt) {

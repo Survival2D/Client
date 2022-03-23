@@ -1,5 +1,4 @@
-import director = cc.director;
-import MultiplayerManager from "../Nakama/MultiplayerManager";
+import {MatchManager} from "./MatchManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -34,6 +33,6 @@ export default class HomeScene extends cc.Component {
 
   async onPlayNow() {
     // await MultiplayerManager.instance.joinMatchAsync();
-    director.loadScene("GameScene");
+    MatchManager.getInstance().newMatch();
   }
 }
