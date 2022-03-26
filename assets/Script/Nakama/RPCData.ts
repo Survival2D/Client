@@ -9,3 +9,10 @@ export interface PlayerPosition {
   x: number;
   y: number;
 }
+
+export interface BulletFire {
+  userID: string;
+  x: number;
+  y: number;
+  angle: number;
+}

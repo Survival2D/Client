@@ -3,6 +3,7 @@ import { RpcResponse } from "@heroiclabs/nakama-js/client";
 import MultiplayerManager from "../Nakama/MultiplayerManager";
 import { eventHandler } from "../Utils/EventHandler";
 import SceneChanger from "../General/SceneChanger";
+import {MatchManager} from "./MatchManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -76,6 +77,6 @@ export default class GameManager extends cc.Component {
   }
 
   goToLobby() {
-    SceneChanger.instance.loadLobbyScene();
+    MatchManager.getInstance().newMatch();
   }
 }

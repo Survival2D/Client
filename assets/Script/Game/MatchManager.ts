@@ -1,7 +1,9 @@
 import GameScene from "./GameScene";
-import {PlayerPosition} from "../Nakama/RPCData";
+import {BulletFire, PlayerPosition} from "../Nakama/RPCData";
 import NakamaManager from "../Nakama/NakamaManager";
 import {MatchNetwork} from "./MatchNetwork";
+import {Code} from "../Nakama/OperationCode";
+import SceneChanger from "../General/SceneChanger";
 
 export class MatchManager {
     private static instance: MatchManager;
@@ -12,9 +14,12 @@ export class MatchManager {
     }
 
     private matchScene: GameScene = null;
+    private network: MatchNetwork = null;
 
     newMatch () {
-        cc.director.loadScene("GameScene");
+        SceneChanger.instance.loadLobbyScene();
+        this.network = new MatchNetwork(this);
+        this.network.subscribeListener();
     }
 
     setScene (scene: GameScene) {
@@ -29,13 +34,28 @@ export class MatchManager {
         let data: PlayerPosition = {
             x: x,
             y: y,
-            userID: NakamaManager.instance.session.user_id,
+            userID: NakamaManager.instance.session.user_id
         }
-        MatchNetwork.getInstance().send(Code.PlayerPosition, data);
+        this.network.send(Code.PlayerPosition, data);
     }
 
     onReceivePlayerUpdatePos (pk: PlayerPosition) {
-        if (!this.inMatch()) return;
+        // cc.log("onReceivePlayerUpdatePos:", pk);
+        if (pk.userID === NakamaManager.instance.session.user_id) this.matchScene.updateMyPlayerPos(pk.x, pk.y);
         this.matchScene.updatePlayerPos(pk.userID, pk.x, pk.y);
+    }
+
+    sendFire (x: number, y: number, angle: number) {
+        let data: BulletFire = {
+            x: x,
+            y: y,
+            angle: angle,
+            userID: NakamaManager.instance.session.user_id
+        }
+        this.network.send(Code.BulletFire, data);
+    }
+
+    onReceiveFire (pk: BulletFire) {
+        this.matchScene.onFire(pk.x, pk.y, pk.angle);
     }
 }

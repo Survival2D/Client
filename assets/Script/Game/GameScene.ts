@@ -10,7 +10,6 @@ import Prefab = cc.Prefab;
 import instantiate = cc.instantiate;
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
-import {MatchNetwork} from "./MatchNetwork";
 import {MatchManager} from "./MatchManager";
 
 const {ccclass, property} = cc._decorator;
@@ -138,6 +137,10 @@ export default class GameScene extends cc.Component {
         this.playersMap.set(id, player.getComponent(Player));
     }
 
+    updateMyPlayerPos (x: number, y?: number) {
+        this.mainPlayerNode.setPosition(x, y);
+    }
+
     updatePlayerPos (id: string, x: number, y?: number) {
         if (!this.playersMap.has(id)) return;
         this.playersMap.get(id).node.setPosition(x, y);
@@ -157,8 +160,6 @@ export default class GameScene extends cc.Component {
 
         // bullets "fly"
         this.bullets.forEach(e => e.updateFly(dt));
-
-        MatchNetwork.getInstance().sendPosition(this.mainPlayerNode.x, this.mainPlayerNode.y);
     }
 
     moveMainPlayer (dt) {
@@ -200,8 +201,8 @@ export default class GameScene extends cc.Component {
             }
         }
 
-        this.mainPlayerNode.x = newX;
-        this.mainPlayerNode.y = newY;
+        this.updateMyPlayerPos(newX, newY);
+        MatchManager.getInstance().sendUpdatePlayerPos(newX, newY);
 
         // move camera following player
         this.camera.x = this.mainPlayerNode.x;

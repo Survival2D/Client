@@ -1,33 +1,38 @@
 import NakamaManager from "../Nakama/NakamaManager";
 import MultiplayerManager from "../Nakama/MultiplayerManager";
 import {MatchManager} from "./MatchManager";
+import {Code} from "../Nakama/OperationCode";
 
 export class MatchNetwork {
-     private static instance: MatchNetwork;
+    private mgr: MatchManager = null;
+    constructor(mgr) {
+        this.mgr = mgr;
+    }
 
-     public static getInstance () {
-         if (!this.instance) this.instance = new MatchNetwork();
-         return this.instance;
-     }
+    subscribeListener () {
+        NakamaManager.instance.socket.onmatchdata = (matchData) => {
+            // cc.log("MatchData:", matchData);
+            this.onReceivePacket(matchData.op_code, matchData.data);
+        };
+    }
 
-     subscribeListener () {
-         NakamaManager.instance.socket.onmatchdata = (matchData) => {
-             cc.log("MatchData:", matchData);
-             this.onReceivePacket(matchData.op_code, matchData.data);
-         };
-     }
+    onReceivePacket (code: Code, data: any) {
+        // cc.log("MATCH NETWORK ON RECEIVE:", code);
+        if (!this.mgr.inMatch()) return;
+        switch (code) {
+            case Code.PlayerPosition: {
+                this.mgr.onReceivePlayerUpdatePos(data);
+                break;
+            }
+            case Code.BulletFire: {
+                this.mgr.onReceiveFire(data);
+                break;
+            }
+            default: break;
+        }
+    }
 
-     onReceivePacket (code: Code, data: any) {
-         switch (code) {
-             case Code.PlayerPosition: {
-                 MatchManager.getInstance().onReceivePlayerUpdatePos(data);
-                 break;
-             }
-             default: break;
-         }
-     }
-
-     async send (code: Code, data: object | []) {
-         await MultiplayerManager.instance.send(code, data);
-     }
+    async send (code: Code, data: object | []) {
+        await MultiplayerManager.instance.send(code, data);
+    }
 }

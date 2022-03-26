@@ -6,7 +6,8 @@ import NakamaManager from "./NakamaManager";
 import { eventHandler } from "../Utils/EventHandler";
 import RPCs from "../Utils/RPCs";
 import { JoinMatchData } from "./RPCData";
-import {MatchNetwork} from "../Game/MatchNetwork";
+import {Code} from "./OperationCode";
+import {MatchManager} from "../Game/MatchManager";
 
 @ccclass
 export default class MultiplayerManager extends cc.Component {
@@ -64,8 +65,6 @@ export default class MultiplayerManager extends cc.Component {
     let matchId: string = result.matchId;
     cc.log("matchId", matchId);
     this.match = await NakamaManager.instance.socket.joinMatch(matchId);
-
-    MatchNetwork.getInstance().subscribeListener();
 
     cc.log("match:", this.match);
     eventHandler.dispatchEvent(MultiplayerManager.OnMatchJoin);
