@@ -61,6 +61,8 @@ export default class GameScene extends cc.Component {
             obs.setPosition((Math.random()-0.5)*900, (Math.random()-0.5)*700);
         }
 
+        MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y);
+
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         this.camera.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
@@ -143,6 +145,7 @@ export default class GameScene extends cc.Component {
 
     updatePlayerPos (id: string, x: number, y?: number) {
         if (!this.playersMap.has(id)) return;
+        cc.log("DMM", x, y);
         this.playersMap.get(id).node.setPosition(x, y);
     }
 
@@ -202,7 +205,8 @@ export default class GameScene extends cc.Component {
         }
 
         this.updateMyPlayerPos(newX, newY);
-        MatchManager.getInstance().sendUpdatePlayerPos(newX, newY);
+        if (newX !== this.mainPlayerNode.x && newY !== this.mainPlayerNode.y)
+            MatchManager.getInstance().sendUpdatePlayerPos(newX, newY);
 
         // move camera following player
         this.camera.x = this.mainPlayerNode.x;

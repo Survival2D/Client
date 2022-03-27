@@ -31,6 +31,7 @@ export class MatchManager {
     }
 
     onReceiveNewPlayerJoin (pk: NewPlayerJoin) {
+        cc.log("NEW PLAYER JOIN, ID: " + pk.userID, typeof pk.userID);
         this.matchScene.newPlayerJoin(pk.userID);
     }
 
@@ -44,9 +45,9 @@ export class MatchManager {
     }
 
     onReceivePlayerUpdatePos (pk: PlayerPosition) {
-        // cc.log("onReceivePlayerUpdatePos:", pk);
+        // cc.log("UPDATE PLAYER POS:", pk);
         if (pk.userID === NakamaManager.instance.session.user_id) this.matchScene.updateMyPlayerPos(pk.x, pk.y);
-        this.matchScene.updatePlayerPos(pk.userID, pk.x, pk.y);
+        else this.matchScene.updatePlayerPos(pk.userID, pk.x, pk.y);
     }
 
     sendFire (x: number, y: number, angle: number) {
