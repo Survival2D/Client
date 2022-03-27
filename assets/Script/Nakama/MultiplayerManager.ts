@@ -88,13 +88,12 @@ export default class MultiplayerManager extends cc.Component {
   public async send(code: Code, data: object | []) {
     if (this.match == null) return;
 
-    let json: string = JSON.stringify(data);
-    if (this.enableLog) cc.log(MultiplayerManager.SendingDataLog, code, json);
+    if (this.enableLog) cc.log(MultiplayerManager.SendingDataLog, code, data);
 
     await NakamaManager.instance.socket.sendMatchState(
       this.match.match_id,
       code,
-      json
+      data
     );
   }
 
