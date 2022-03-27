@@ -35,6 +35,9 @@ export default class GameScene extends cc.Component {
     bulletPrefab: Prefab = null;
 
     @property(cc.Node)
+    map: cc.Node = null;
+
+    @property(cc.Node)
     camera: cc.Node = null;
 
     @property(cc.Node)
@@ -50,7 +53,7 @@ export default class GameScene extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        // this.genObstacles(7);
+        this.genObstacles(7);
         this.mainPlayer = this.mainPlayerNode.getComponent(Player);
     }
 
@@ -67,6 +70,7 @@ export default class GameScene extends cc.Component {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         this.camera.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
         this.camera.on(cc.Node.EventType.MOUSE_DOWN, this.onClick, this);
+        this.camera.on(cc.Node.EventType.MOUSE_WHEEL, this.onScroll, this);
     }
 
     onKeyDown (event) {
@@ -124,10 +128,31 @@ export default class GameScene extends cc.Component {
         }
     }
 
+    onScroll (event) {
+        if (event.getScrollY() > 0) {
+            this.zoomIn();
+        }
+        else {
+            this.zoomOut();
+        }
+    }
+
+    zoomOut () {
+        if (this.map.scale < 1/8) return;
+        this.map.scale /= 2;
+        cc.log("DMM", this.map.scale);
+    }
+
+    zoomIn () {
+        if (this.map.scale >= 1) return;
+        this.map.scale *= 2;
+        cc.log("DMM", this.map.scale);
+    }
+
     genObstacles (num?: number) {
         for (let i = 0; i < num; i++) {
             let node = instantiate(this.bushPrefab);
-            this.node.addChild(node);
+            this.map.addChild(node);
             this.obstacles.push(node.getComponent(Obstacle));
         }
     }
@@ -135,7 +160,7 @@ export default class GameScene extends cc.Component {
     newPlayerJoin (id: string) {
         if (this.playersMap.has(id)) return;
         let player = instantiate(this.playerPrefab);
-        this.node.addChild(player);
+        this.map.addChild(player);
         this.playersMap.set(id, player.getComponent(Player));
     }
 
@@ -151,7 +176,7 @@ export default class GameScene extends cc.Component {
 
     onFire (x: number, y: number, angle: number) {
         let node = instantiate(this.bulletPrefab);
-        this.node.addChild(node);
+        this.map.addChild(node);
         let bullet = node.getComponent(Bullet);
         this.bullets.push(bullet);
         bullet.setPosition(x, y);
@@ -219,5 +244,6 @@ export default class GameScene extends cc.Component {
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         this.camera.off(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
         this.camera.off(cc.Node.EventType.MOUSE_DOWN, this.onClick, this);
+        this.camera.off(cc.Node.EventType.MOUSE_WHEEL, this.onScroll, this);
     }
 }
