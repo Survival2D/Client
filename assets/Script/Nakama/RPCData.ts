@@ -4,6 +4,12 @@ export interface JoinMatchData {
 
 //TODO: define struct data
 
+export interface NewPlayerJoin {
+  userID: string;
+  // x: number;
+  // y: number;
+}
+
 export interface PlayerPosition {
   userID: string;
   x: number;

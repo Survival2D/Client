@@ -4,7 +4,9 @@ import {MatchManager} from "./MatchManager";
 import {Code} from "../Nakama/OperationCode";
 
 export class MatchNetwork {
+
     private mgr: MatchManager = null;
+
     constructor(mgr) {
         this.mgr = mgr;
     }
@@ -17,9 +19,12 @@ export class MatchNetwork {
     }
 
     onReceivePacket (code: Code, data: any) {
-        // cc.log("MATCH NETWORK ON RECEIVE:", code);
         if (!this.mgr.inMatch()) return;
         switch (code) {
+            case Code.PlayerJoined: {
+                this.mgr.onReceiveNewPlayerJoin(data);
+                break;
+            }
             case Code.PlayerPosition: {
                 this.mgr.onReceivePlayerUpdatePos(data);
                 break;

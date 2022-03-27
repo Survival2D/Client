@@ -1,5 +1,5 @@
 import GameScene from "./GameScene";
-import {BulletFire, PlayerPosition} from "../Nakama/RPCData";
+import {BulletFire, NewPlayerJoin, PlayerPosition} from "../Nakama/RPCData";
 import NakamaManager from "../Nakama/NakamaManager";
 import {MatchNetwork} from "./MatchNetwork";
 import {Code} from "../Nakama/OperationCode";
@@ -28,6 +28,10 @@ export class MatchManager {
 
     inMatch () {
         return this.matchScene instanceof GameScene;
+    }
+
+    onReceiveNewPlayerJoin (pk: NewPlayerJoin) {
+        this.matchScene.newPlayerJoin(pk.userID);
     }
 
     sendUpdatePlayerPos (x: number, y: number) {

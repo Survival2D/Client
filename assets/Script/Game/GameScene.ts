@@ -50,7 +50,7 @@ export default class GameScene extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.genObstacles(7);
+        // this.genObstacles(7);
         this.mainPlayer = this.mainPlayerNode.getComponent(Player);
     }
 
