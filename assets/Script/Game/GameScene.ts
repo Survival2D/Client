@@ -64,6 +64,17 @@ export default class GameScene extends cc.Component {
             obs.setPosition((Math.random()-0.5)*900, (Math.random()-0.5)*700);
         }
 
+        let playerPosInValid = false, randX, randY;
+        do {
+            randX = (Math.random() - 0.5) * this.map.width;
+            randY = (Math.random() - 0.5) * this.map.height;
+            for (let e of this.obstacles) {
+                if (e.checkCollision(28, randX, randY)) playerPosInValid = true;
+            }
+        } while (playerPosInValid)
+
+        this.mainPlayerNode.setPosition(randX, randY);
+
         MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y);
 
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -170,7 +181,6 @@ export default class GameScene extends cc.Component {
 
     updatePlayerPos (id: string, x: number, y?: number) {
         if (!this.playersMap.has(id)) return;
-        cc.log("DMM", x, y);
         this.playersMap.get(id).node.setPosition(x, y);
     }
 
