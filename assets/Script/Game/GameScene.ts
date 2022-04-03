@@ -199,6 +199,7 @@ export default class GameScene extends cc.Component {
         let bullet = this.getBullet();
         bullet.setPosition(x, y);
         bullet.setAngle(angle);
+        bullet.fire();
     }
 
     onMainPlayerDied () {
@@ -217,7 +218,7 @@ export default class GameScene extends cc.Component {
 
         // bullets "fly"
         this.bullets.forEach(e => {
-            if (!e.isAvailable()) {
+            if (!e.isHit) {
                 e.updateFly(dt);
                 this.checkHitPlayer(e);
                 this.checkHitObstacle(e);
@@ -275,13 +276,13 @@ export default class GameScene extends cc.Component {
 
     checkHitPlayer (bullet: Bullet): boolean {
         if (this.mainPlayer.checkCollisionPoint(bullet.node.x, bullet.node.y)) {
-            this.mainPlayer.hit();
+            this.mainPlayer.hit(bullet.damage);
             bullet.hit();
             return true;
         }
         this.playersMap.forEach(e => {
             if (e.checkCollisionPoint(bullet.node.x, bullet.node.y)) {
-                e.hit();
+                e.hit(bullet.damage);
                 bullet.hit();
                 return true;
             }

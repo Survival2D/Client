@@ -31,8 +31,8 @@ export class PlayerData {
         return true;
     }
 
-    hit () {
-        this.hp -= 10;
+    takeDamage (damage: number) {
+        this.hp -= damage;
     }
 
     isDead () {

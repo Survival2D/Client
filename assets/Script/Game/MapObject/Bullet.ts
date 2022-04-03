@@ -16,7 +16,11 @@ export default class Bullet extends cc.Component {
     private vx: number = null;
     private vy: number = null;
 
-    private vel: number = 100;
+    private vel: number = 2000;
+
+    public damage: number = 10;
+
+    public isHit: boolean = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -24,8 +28,6 @@ export default class Bullet extends cc.Component {
 
     setPosition (x: number, y?: number) {
         this.node.setPosition(x, y);
-        this.node.active = true;
-        this.trail.node.active = true;
     }
 
     setAngle (angle) {
@@ -38,10 +40,30 @@ export default class Bullet extends cc.Component {
 
     }
 
+    fire () {
+        this.node.active = true;
+        this.trail.node.active = true;
+        this.isHit = false;
+        this.trail.node.scaleX = 0;
+        this.trail.node.stopAllActions();
+        cc.tween(this.trail.node)
+            .to(0.07, {scaleX: 1})
+            .union()
+            .start()
+    }
+
     hit () {
         //TODO: anim hit
-        this.node.active = false;
-        this.trail.node.active = false;
+        this.isHit = true;
+        this.trail.node.stopAllActions();
+        cc.tween(this.trail.node)
+            .to(0.05, {scaleX: 0})
+            .call(() => {
+                this.node.active = false;
+                this.trail.node.active = false;
+            })
+            .union()
+            .start()
     }
 
     isAvailable () {

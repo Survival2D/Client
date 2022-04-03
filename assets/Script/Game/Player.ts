@@ -127,11 +127,12 @@ export default class Player extends cc.Component {
         // TODO: anim fight by hand
     }
 
-    hit () {
+    hit (damage: number) {
         cc.log("DMM bullet hit player");
-        this.data.hit();
+        this.data.takeDamage(damage);
         //TODO: anim hit
 
+        if (this.data.isDead()) this.died();
     }
 
     died () {
