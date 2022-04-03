@@ -1,7 +1,7 @@
-import NakamaManager from "../Nakama/NakamaManager";
-import MultiplayerManager from "../Nakama/MultiplayerManager";
+import NakamaManager from "../../Nakama/NakamaManager";
+import MultiplayerManager from "../../Nakama/MultiplayerManager";
 import {MatchManager} from "./MatchManager";
-import {Code} from "../Nakama/OperationCode";
+import {Code} from "../../Nakama/OperationCode";
 
 export class MatchNetwork {
 

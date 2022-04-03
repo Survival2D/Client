@@ -5,10 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import {PlayerColor} from "./GameConstants";
+import {PlayerColor} from "./Logic/GameConstants";
 import instantiate = cc.instantiate;
 import GameScene from "./GameScene";
 import Canvas = cc.Canvas;
+import {PlayerData} from "./Logic/PlayerData";
+import {MatchManager} from "./Logic/MatchManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -30,9 +32,13 @@ export default class Player extends cc.Component {
     @property(cc.Sprite)
     gun: cc.Sprite = null;
 
+    public r: number = 28;
+
     private bodyColor: cc.Color = PlayerColor.body[0];
     private handColor: cc.Color = PlayerColor.hand[0];
     private backColor: cc.Color = PlayerColor.back[0];
+
+    private data: PlayerData;
 
     private isEquip: boolean = false;
 
@@ -40,6 +46,8 @@ export default class Player extends cc.Component {
 
     onLoad () {
         this.genPlayer();
+
+        this.data = new PlayerData();
     }
 
     genPlayer () {
@@ -79,6 +87,11 @@ export default class Player extends cc.Component {
         this.gun.node.active = false;
     }
 
+    checkCollisionPoint (x:number, y?: number): boolean {
+        let d2 = (this.node.x - x)*(this.node.x - x) + (this.node.y - y)*(this.node.y - y);
+        return d2 <= this.r*this.r;
+    }
+
     equipGun (idx: number) {
         this.isEquip = !this.isEquip;
         if (this.isEquip) {
@@ -99,14 +112,31 @@ export default class Player extends cc.Component {
 
     fire () {
         if (this.isEquip) {
-            let scene = cc.director.getScene();
-            scene.getChildByName("Canvas").getComponent(GameScene).onFire(this.node.x, this.node.y, this.node.angle);
+            if (this.data.fire()) {
+                let dy = Math.cos(this.node.angle * Math.PI/180) * (this.gun.node.width/2 + this.gun.node.y);
+                let dx = - Math.tan(this.node.angle * Math.PI/180) * dy;
+                let scene = cc.director.getScene();
+                scene.getChildByName("Canvas").getComponent(GameScene).onFire(this.node.x + dx, this.node.y + dy, this.node.angle);
+                MatchManager.getInstance().sendFire(this.node.x + dx, this.node.y + dy, this.node.angle);
+            }
         }
-        else this.hit();
+        else this.fight();
+    }
+
+    fight () {
+        // TODO: anim fight by hand
     }
 
     hit () {
+        cc.log("DMM bullet hit player");
+        this.data.hit();
+        //TODO: anim hit
 
+    }
+
+    died () {
+        //TODO: anim died
+        this.node.removeFromParent();
     }
 
     onDestroy () {

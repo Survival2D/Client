@@ -3,7 +3,7 @@ import { RpcResponse } from "@heroiclabs/nakama-js/client";
 import MultiplayerManager from "../Nakama/MultiplayerManager";
 import { eventHandler } from "../Utils/EventHandler";
 import SceneChanger from "../General/SceneChanger";
-import {MatchManager} from "./MatchManager";
+import {MatchManager} from "./Logic/MatchManager";
 
 const { ccclass, property } = cc._decorator;
 

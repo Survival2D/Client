@@ -7,7 +7,7 @@ import { eventHandler } from "../Utils/EventHandler";
 import RPCs from "../Utils/RPCs";
 import { JoinMatchData } from "./RPCData";
 import {Code} from "./OperationCode";
-import {MatchManager} from "../Game/MatchManager";
+import {MatchManager} from "../Game/Logic/MatchManager";
 
 @ccclass
 export default class MultiplayerManager extends cc.Component {

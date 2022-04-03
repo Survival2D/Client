@@ -10,7 +10,7 @@ import Prefab = cc.Prefab;
 import instantiate = cc.instantiate;
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
-import {MatchManager} from "./MatchManager";
+import {MatchManager} from "./Logic/MatchManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -68,8 +68,8 @@ export default class GameScene extends cc.Component {
         do {
             randX = (Math.random() - 0.5) * this.map.width;
             randY = (Math.random() - 0.5) * this.map.height;
-            for (let e of this.obstacles) {
-                if (e.checkCollision(28, randX, randY)) playerPosInValid = true;
+            for (let obs of this.obstacles) {
+                if (obs.checkCollisionCircle(28, randX, randY)) playerPosInValid = true;
             }
         } while (playerPosInValid)
 
@@ -151,13 +151,11 @@ export default class GameScene extends cc.Component {
     zoomOut () {
         if (this.map.scale < 1/8) return;
         this.map.scale /= 2;
-        cc.log("DMM", this.map.scale);
     }
 
     zoomIn () {
         if (this.map.scale >= 1) return;
         this.map.scale *= 2;
-        cc.log("DMM", this.map.scale);
     }
 
     genObstacles (num?: number) {
@@ -166,6 +164,19 @@ export default class GameScene extends cc.Component {
             this.map.addChild(node);
             this.obstacles.push(node.getComponent(Obstacle));
         }
+    }
+
+    getBullet () {
+        for (let bullet of this.bullets) {
+            if (bullet.isAvailable()) return bullet;
+        }
+
+        let node = instantiate(this.bulletPrefab);
+        this.map.addChild(node);
+        let bullet = node.getComponent(Bullet);
+        this.bullets.push(bullet);
+
+        return bullet;
     }
 
     newPlayerJoin (id: string) {
@@ -185,19 +196,33 @@ export default class GameScene extends cc.Component {
     }
 
     onFire (x: number, y: number, angle: number) {
-        let node = instantiate(this.bulletPrefab);
-        this.map.addChild(node);
-        let bullet = node.getComponent(Bullet);
-        this.bullets.push(bullet);
+        let bullet = this.getBullet();
         bullet.setPosition(x, y);
         bullet.setAngle(angle);
+    }
+
+    onMainPlayerDied () {
+        //TODO: anim main player died, end match
+        this.mainPlayer.died();
+    }
+
+    onDied (id: string) {
+        if (!this.playersMap.has(id)) return;
+        this.playersMap.get(id).died();
+        this.playersMap.delete(id);
     }
 
     update (dt) {
         this.moveMainPlayer(dt);
 
         // bullets "fly"
-        this.bullets.forEach(e => e.updateFly(dt));
+        this.bullets.forEach(e => {
+            if (!e.isAvailable()) {
+                e.updateFly(dt);
+                this.checkHitPlayer(e);
+                this.checkHitObstacle(e);
+            }
+        });
     }
 
     moveMainPlayer (dt) {
@@ -225,12 +250,12 @@ export default class GameScene extends cc.Component {
         else if (this.isUp) newY += this.vel * dt;
         else if (this.isDown) newY -= this.vel * dt;
 
-        for (let e of this.obstacles) {
-            if (e.checkCollision(28, newX, newY)) {
-                if (!e.checkCollision(28, this.mainPlayerNode.x, newY)) {
+        for (let obs of this.obstacles) {
+            if (obs.checkCollisionCircle(28, newX, newY)) {
+                if (!obs.checkCollisionCircle(28, this.mainPlayerNode.x, newY)) {
                     newX = this.mainPlayerNode.x;
                 }
-                else if (!e.checkCollision(28, newX, this.mainPlayerNode.y)) {
+                else if (!obs.checkCollisionCircle(28, newX, this.mainPlayerNode.y)) {
                     newY = this.mainPlayerNode.y;
                 }
                 else {
@@ -246,6 +271,33 @@ export default class GameScene extends cc.Component {
         // move camera following player
         this.camera.x = this.mainPlayerNode.x;
         this.camera.y = this.mainPlayerNode.y;
+    }
+
+    checkHitPlayer (bullet: Bullet): boolean {
+        if (this.mainPlayer.checkCollisionPoint(bullet.node.x, bullet.node.y)) {
+            this.mainPlayer.hit();
+            bullet.hit();
+            return true;
+        }
+        this.playersMap.forEach(e => {
+            if (e.checkCollisionPoint(bullet.node.x, bullet.node.y)) {
+                e.hit();
+                bullet.hit();
+                return true;
+            }
+        })
+        return false;
+    }
+
+    checkHitObstacle (bullet: Bullet): boolean {
+        this.obstacles.forEach(e => {
+            if (e.checkCollisionPoint(bullet.node.x, bullet.node.y)) {
+                e.hit();
+                bullet.hit();
+                return true;
+            }
+        })
+        return false;
     }
 
     onDestroy () {

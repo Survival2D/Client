@@ -1,4 +1,4 @@
-import {MatchManager} from "./MatchManager";
+import {MatchManager} from "./Logic/MatchManager";
 import MultiplayerManager from "../Nakama/MultiplayerManager";
 
 const { ccclass, property } = cc._decorator;

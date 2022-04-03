@@ -26,5 +26,15 @@ export default class Bush extends Obstacle {
 
     }
 
+    checkCollisionCircle (r: number, x:number, y?: number): boolean {
+        let d2 = (this.node.x - x)*(this.node.x - x) + (this.node.y - y)*(this.node.y - y);
+        return d2 <= r*r + this.r*this.r + 2*r*this.r;
+    }
+
+    checkCollisionPoint (x:number, y?: number): boolean {
+        let d2 = (this.node.x - x)*(this.node.x - x) + (this.node.y - y)*(this.node.y - y);
+        return d2 <= this.r*this.r;
+    }
+
     // update (dt) {}
 }

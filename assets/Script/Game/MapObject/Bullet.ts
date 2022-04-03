@@ -16,8 +16,7 @@ export default class Bullet extends cc.Component {
     private vx: number = null;
     private vy: number = null;
 
-    @property
-    private vel: number = 2000;
+    private vel: number = 100;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -25,22 +24,28 @@ export default class Bullet extends cc.Component {
 
     setPosition (x: number, y?: number) {
         this.node.setPosition(x, y);
+        this.node.active = true;
+        this.trail.node.active = true;
     }
 
     setAngle (angle) {
-        this.trail.node.angle = angle - 90;
-        this.vy = 1;
-        if (angle > 90) {
-            angle -= 180;
-            this.vy = -1;
-        }
-        let tan = Math.tan(angle * Math.PI/180);
-        this.vy *= Math.sqrt(this.vel*this.vel/(tan*tan + 1));
-        this.vx = -tan*this.vy;
+        this.trail.node.angle = angle + 90;
+        this.vy = Math.cos(angle * Math.PI/180) * this.vel;
+        this.vx = -Math.tan(angle * Math.PI/180) * this.vy;
     }
 
     start () {
 
+    }
+
+    hit () {
+        //TODO: anim hit
+        this.node.active = false;
+        this.trail.node.active = false;
+    }
+
+    isAvailable () {
+        return !this.node.active;
     }
 
     updateFly (dt) {

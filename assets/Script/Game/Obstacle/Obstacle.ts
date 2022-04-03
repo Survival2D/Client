@@ -12,20 +12,22 @@ export default class Obstacle extends cc.Component {
 
     r: number = 0;
 
-    x: number = 0;
-
-    y: number = 0;
-
     setPosition (x: number, y: number) {
         this.node.setPosition(x, y);
-        this.x = x;
-        this.y = y;
     }
 
-    checkCollision (r: number, x:number, y?: number): boolean {
-        let d2 = (this.x - x)*(this.x - x) + (this.y - y)*(this.y - y);
-        return d2 <= r*r + this.r*this.r + 2*r*this.r;
+    checkCollisionCircle (r: number, x:number, y?: number): boolean {
+        return false;
     }
+
+    checkCollisionPoint (x:number, y?: number): boolean {
+        return false;
+    }
+
+    hit () {
+        cc.log("bullet hit obstacle");
+    }
+
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {
