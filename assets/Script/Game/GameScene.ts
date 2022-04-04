@@ -195,6 +195,7 @@ export default class GameScene extends cc.Component {
 
     newPlayerJoin (id: string) {
         if (this.playersMap.has(id)) return;
+        cc.log("Create new player, id:", id);
         let player = instantiate(this.playerPrefab);
         this.map.addChild(player);
         this.playersMap.set(id, player.getComponent(Player));
@@ -281,9 +282,9 @@ export default class GameScene extends cc.Component {
             }
         }
 
-        this.updateMyPlayerPos(newX, newY);
-        if (newX !== this.mainPlayerNode.x && newY !== this.mainPlayerNode.y)
+        if (newX !== this.mainPlayerNode.x || newY !== this.mainPlayerNode.y)
             MatchManager.getInstance().sendUpdatePlayerPos(newX, newY);
+        this.updateMyPlayerPos(newX, newY);
 
         // move camera following player
         this.camera.x = this.mainPlayerNode.x;
