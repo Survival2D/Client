@@ -6,8 +6,6 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import Obstacle from "./Obstacle/Obstacle";
-import Prefab = cc.Prefab;
-import instantiate = cc.instantiate;
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
 import {MatchManager} from "./Logic/MatchManager";
@@ -25,14 +23,14 @@ export default class GameScene extends cc.Component {
     @property
     vel: number = 200;
 
-    @property(Prefab)
-    private bushPrefab: Prefab = null;
+    @property(cc.Prefab)
+    private bushPrefab: cc.Prefab = null;
 
-    @property(Prefab)
-    private playerPrefab: Prefab = null;
+    @property(cc.Prefab)
+    private playerPrefab: cc.Prefab = null;
 
-    @property(Prefab)
-    bulletPrefab: Prefab = null;
+    @property(cc.Prefab)
+    bulletPrefab: cc.Prefab = null;
 
     @property(cc.Node)
     map: cc.Node = null;
@@ -90,7 +88,7 @@ export default class GameScene extends cc.Component {
 
         this.mainPlayerNode.setPosition(randX, randY);
 
-        MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y);
+        MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y, this.mainPlayerNode.angle);
 
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
@@ -114,7 +112,8 @@ export default class GameScene extends cc.Component {
                 this.isUp = true;
                 break;
             case cc.macro.KEY.f:
-                this.mainPlayer.equipGun(1);
+                this.mainPlayer.equipGun();
+                MatchManager.getInstance().sendPlayerEquip(this.mainPlayer.isEquip);
                 break;
             case cc.macro.KEY.t:
                 this.newPlayerJoin("123");
@@ -175,7 +174,7 @@ export default class GameScene extends cc.Component {
 
     genObstacles (num?: number) {
         for (let i = 0; i < num; i++) {
-            let node = instantiate(this.bushPrefab);
+            let node = cc.instantiate(this.bushPrefab);
             this.map.addChild(node);
             this.obstacles.push(node.getComponent(Obstacle));
         }
@@ -186,7 +185,7 @@ export default class GameScene extends cc.Component {
             if (bullet.isAvailable()) return bullet;
         }
 
-        let node = instantiate(this.bulletPrefab);
+        let node = cc.instantiate(this.bulletPrefab);
         this.map.addChild(node);
         let bullet = node.getComponent(Bullet);
         this.bullets.push(bullet);
@@ -197,7 +196,7 @@ export default class GameScene extends cc.Component {
     newPlayerJoin (id: string) {
         if (this.playersMap.has(id)) return;
         cc.log("Create new player, id:", id);
-        let player = instantiate(this.playerPrefab);
+        let player = cc.instantiate(this.playerPrefab);
         this.map.addChild(player);
         this.playersMap.set(id, player.getComponent(Player));
     }
@@ -206,11 +205,12 @@ export default class GameScene extends cc.Component {
         this.mainPlayerNode.setPosition(x, y);
     }
 
-    updatePlayerPos (id: string, x: number, y?: number) {
+    updatePlayerPos (id: string, x: number, y: number, angle: number) {
         if (!this.playersMap.has(id)) {
             this.newPlayerJoin(id);
         }
         this.playersMap.get(id).node.setPosition(x, y);
+        this.playersMap.get(id).node.angle = angle;
     }
 
     onFire (x: number, y: number, angle: number) {
@@ -218,6 +218,13 @@ export default class GameScene extends cc.Component {
         bullet.setPosition(x, y);
         bullet.setAngle(angle);
         bullet.fire();
+    }
+
+    onPlayerEquip (id: string, isEquip: boolean) {
+        if (!this.playersMap.has(id)) {
+            this.newPlayerJoin(id);
+        }
+        this.playersMap.get(id).equipGun();
     }
 
     onMainPlayerDied () {
@@ -283,8 +290,7 @@ export default class GameScene extends cc.Component {
             }
         }
 
-        if (newX !== this.mainPlayerNode.x || newY !== this.mainPlayerNode.y)
-            MatchManager.getInstance().sendUpdatePlayerPos(newX, newY);
+        MatchManager.getInstance().sendUpdatePlayerPos(newX, newY, this.mainPlayerNode.angle);
         this.updateMyPlayerPos(newX, newY);
 
         // move camera following player

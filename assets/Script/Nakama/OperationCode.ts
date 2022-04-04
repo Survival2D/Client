@@ -8,5 +8,6 @@ export enum Code {
 
     // In Match
     PlayerPosition = 101,
-    BulletFire = 102
+    PlayerEquip = 102,
+    BulletFire = 103
 }

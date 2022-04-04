@@ -6,9 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import {PlayerColor} from "./Logic/GameConstants";
-import instantiate = cc.instantiate;
 import GameScene from "./GameScene";
-import Canvas = cc.Canvas;
 import {PlayerData} from "./Logic/PlayerData";
 import {MatchManager} from "./Logic/MatchManager";
 
@@ -40,7 +38,7 @@ export default class Player extends cc.Component {
 
     private data: PlayerData;
 
-    private isEquip: boolean = false;
+    public isEquip: boolean = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -92,7 +90,7 @@ export default class Player extends cc.Component {
         return d2 <= this.r*this.r;
     }
 
-    equipGun (idx: number) {
+    equipGun () {
         this.isEquip = !this.isEquip;
         if (this.isEquip) {
             this.gun.node.active = true;

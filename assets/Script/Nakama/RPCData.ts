@@ -14,6 +14,12 @@ export interface PlayerPosition {
   userID: string;
   x: number;
   y: number;
+  angle: number;
+}
+
+export interface PlayerEquip {
+  userID: string;
+  isEquip: boolean;
 }
 
 export interface BulletFire {
