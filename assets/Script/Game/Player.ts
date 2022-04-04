@@ -135,6 +135,10 @@ export default class Player extends cc.Component {
         if (this.data.isDead()) this.died();
     }
 
+    getHpRatio (): number {
+        return this.data.getHpRatio();
+    }
+
     died () {
         //TODO: anim died
         this.node.removeFromParent();

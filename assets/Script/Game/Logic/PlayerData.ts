@@ -39,7 +39,7 @@ export class PlayerData {
         return this.hp <= 0;
     }
 
-    getHpRatio () {
+    getHpRatio (): number {
         return this.hp/this.maxHp;
     }
 }

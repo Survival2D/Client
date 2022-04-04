@@ -40,6 +40,12 @@ export default class GameScene extends cc.Component {
     @property(cc.Node)
     camera: cc.Node = null;
 
+    @property(cc.Layout)
+    hud: cc.Layout = null;
+
+    @property(cc.ProgressBar)
+    myHpProgress: cc.ProgressBar = null;
+
     @property(cc.Node)
     mainPlayerNode: cc.Node = null;
 
@@ -60,9 +66,17 @@ export default class GameScene extends cc.Component {
     start () {
         MatchManager.getInstance().setScene(this);
 
-        for (let obs of this.obstacles) {
-            obs.setPosition((Math.random()-0.5)*900, (Math.random()-0.5)*700);
-        }
+        // for (let obs of this.obstacles) {
+        //     obs.setPosition((Math.random()-0.5)*900, (Math.random()-0.5)*700);
+        // }
+
+        this.obstacles[0].setPosition(-100, 200);
+        this.obstacles[1].setPosition(-132, 219);
+        this.obstacles[2].setPosition(441, 15);
+        this.obstacles[3].setPosition(607, -333);
+        this.obstacles[4].setPosition(115, -231);
+        this.obstacles[5].setPosition(19, 449);
+        this.obstacles[6].setPosition(-34, 313);
 
         let playerPosInValid = false, randX, randY;
         do {
@@ -191,7 +205,9 @@ export default class GameScene extends cc.Component {
     }
 
     updatePlayerPos (id: string, x: number, y?: number) {
-        if (!this.playersMap.has(id)) return;
+        if (!this.playersMap.has(id)) {
+            this.newPlayerJoin(id);
+        }
         this.playersMap.get(id).node.setPosition(x, y);
     }
 
@@ -272,11 +288,14 @@ export default class GameScene extends cc.Component {
         // move camera following player
         this.camera.x = this.mainPlayerNode.x;
         this.camera.y = this.mainPlayerNode.y;
+        this.hud.node.x = this.mainPlayerNode.x;
+        this.hud.node.y = this.mainPlayerNode.y;
     }
 
     checkHitPlayer (bullet: Bullet): boolean {
         if (this.mainPlayer.checkCollisionPoint(bullet.node.x, bullet.node.y)) {
             this.mainPlayer.hit(bullet.damage);
+            this.myHpProgress.progress = this.mainPlayer.getHpRatio();
             bullet.hit();
             return true;
         }

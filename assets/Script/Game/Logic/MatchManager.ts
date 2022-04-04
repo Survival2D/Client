@@ -31,7 +31,7 @@ export class MatchManager {
     }
 
     onReceiveNewPlayerJoin (pk: NewPlayerJoin) {
-        cc.log("NEW PLAYER JOIN, ID: " + pk.userID, typeof pk.userID);
+        cc.log("NEW PLAYER JOIN, ID: ", pk.userID);
         this.matchScene.newPlayerJoin(pk.userID);
     }
 

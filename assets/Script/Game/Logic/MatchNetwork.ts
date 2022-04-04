@@ -22,7 +22,7 @@ export class MatchNetwork {
         if (!this.mgr.inMatch()) return;
         switch (code) {
             case Code.PlayerJoined: {
-                this.mgr.onReceiveNewPlayerJoin(data);
+                this.mgr.onReceiveNewPlayerJoin(data.presence);
                 break;
             }
             case Code.PlayerPosition: {
