@@ -80,6 +80,7 @@ export default class GameScene extends cc.Component {
 
         let playerPosInValid = false, randX, randY;
         do {
+            playerPosInValid = false;
             randX = (Math.random() - 0.5) * this.map.width;
             randY = (Math.random() - 0.5) * this.map.height;
             for (let obs of this.obstacles) {
