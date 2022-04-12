@@ -9,6 +9,8 @@ import Obstacle from "./Obstacle/Obstacle";
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
 import {MatchManager} from "./Logic/MatchManager";
+import {MapConfig} from "./Logic/GameConstants";
+import MiniMap from "./MiniMap";
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,10 +38,16 @@ export default class GameScene extends cc.Component {
     map: cc.Node = null;
 
     @property(cc.Node)
+    mapGrid: cc.Node = null;
+
+    @property(cc.Node)
     camera: cc.Node = null;
 
     @property(cc.Layout)
     hud: cc.Layout = null;
+
+    @property(cc.Node)
+    miniMapNode: cc.Node = null;
 
     @property(cc.ProgressBar)
     myHpProgress: cc.ProgressBar = null;
@@ -54,39 +62,42 @@ export default class GameScene extends cc.Component {
     private bullets: Bullet[] = [];
 
     private obstacles : Obstacle[] = [];
+
+    private miniMap: MiniMap = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.genObstacles(7);
+        this.map.width = MapConfig.width;
+        this.map.height = MapConfig.height;
+
+        this.drawMapGrid();
+
+        let ctx = this.hud.getComponent(cc.Graphics);
+        ctx.rect(this.miniMapNode.x - this.miniMapNode.width/2, this.miniMapNode.y - this.miniMapNode.height/2, this.miniMapNode.width, this.miniMapNode.height);
+        ctx.stroke();
+
         this.mainPlayer = this.mainPlayerNode.getComponent(Player);
+
+        this.genObstacles();
+
+        this.miniMap = this.miniMapNode.getComponent(MiniMap);
+        this.miniMap.init(this.bushPrefab, this.playerPrefab);
     }
 
     start () {
         MatchManager.getInstance().setScene(this);
 
-        // for (let obs of this.obstacles) {
-        //     obs.setPosition((Math.random()-0.5)*900, (Math.random()-0.5)*700);
-        // }
-
-        this.obstacles[0].setPosition(-100, 200);
-        this.obstacles[1].setPosition(-132, 219);
-        this.obstacles[2].setPosition(441, 15);
-        this.obstacles[3].setPosition(607, -333);
-        this.obstacles[4].setPosition(115, -231);
-        this.obstacles[5].setPosition(19, 449);
-        this.obstacles[6].setPosition(-34, 313);
-
-        let playerPosInValid = false, randX, randY;
-        do {
-            playerPosInValid = false;
-            randX = (Math.random() - 0.5) * this.map.width;
-            randY = (Math.random() - 0.5) * this.map.height;
-            for (let obs of this.obstacles) {
-                if (obs.checkCollisionCircle(28, randX, randY)) playerPosInValid = true;
-            }
-        } while (playerPosInValid)
-
-        this.mainPlayerNode.setPosition(randX, randY);
+        // let playerPosInValid = false, randX, randY;
+        // do {
+        //     playerPosInValid = false;
+        //     randX = (Math.random() - 0.5) * this.map.width;
+        //     randY = (Math.random() - 0.5) * this.map.height;
+        //     for (let obs of this.obstacles) {
+        //         if (obs.checkCollisionCircle(28, randX, randY)) playerPosInValid = true;
+        //     }
+        // } while (playerPosInValid)
+        //
+        // this.mainPlayerNode.setPosition(randX, randY);
 
         MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y, this.mainPlayerNode.angle);
 
@@ -172,11 +183,31 @@ export default class GameScene extends cc.Component {
         this.map.scale *= 2;
     }
 
-    genObstacles (num?: number) {
-        for (let i = 0; i < num; i++) {
+    drawMapGrid () {
+        let ctx = this.mapGrid.getComponent(cc.Graphics);
+        let start = -MapConfig.width/2;
+        while (start < MapConfig.width/2) {
+            start += 250;
+            ctx.moveTo(start, -MapConfig.height/2);
+            ctx.lineTo(start, MapConfig.height/2);
+            ctx.stroke();
+        }
+        start = -MapConfig.height/2;
+        while (start < MapConfig.height/2) {
+            start += 250;
+            ctx.moveTo(-MapConfig.width/2, start);
+            ctx.lineTo(MapConfig.width/2, start);
+            ctx.stroke();
+        }
+    }
+
+    genObstacles () {
+        for (let i = 0; i < MapConfig.numObs; i++) {
             let node = cc.instantiate(this.bushPrefab);
             this.map.addChild(node);
             this.obstacles.push(node.getComponent(Obstacle));
+
+            node.setPosition(MapConfig.obsPos[i].x, MapConfig.obsPos[i].y);
         }
     }
 
@@ -203,6 +234,8 @@ export default class GameScene extends cc.Component {
 
     updateMyPlayerPos (x: number, y?: number) {
         this.mainPlayerNode.setPosition(x, y);
+
+        this.miniMap.updateMyPlayerPos(x, y);
     }
 
     updatePlayerPos (id: string, x: number, y: number, angle: number) {

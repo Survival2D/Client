@@ -51,6 +51,7 @@ export default class Player extends cc.Component {
     genPlayer () {
         let ctx = this.body.getComponent(cc.Graphics);
         ctx.fillColor = this.bodyColor;
+        ctx.strokeColor = this.bodyColor;
         ctx.circle(0, 0, 28);
         ctx.fill();
         ctx.stroke();
