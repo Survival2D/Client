@@ -1,6 +1,6 @@
 ﻿import {Client, Session, Socket} from "@heroiclabs/nakama-js";
 import {RpcResponse} from "@heroiclabs/nakama-js/client";
-import {v4 as uuid} from "uuid";
+import {v4} from "uuid";
 import ccclass = cc._decorator.ccclass;
 import NakamaConnectionData from "./NakamaConnectionData";
 import LocalStorageKeys from "../Utils/LocalStorageKeys";
@@ -62,7 +62,7 @@ export default class NakamaManager extends cc.Component {
             LocalStorageKeys.DeviceId
         );
         if (deviceId === null) {
-            deviceId = uuid();
+            deviceId = v4();
             cc.sys.localStorage.setItem(LocalStorageKeys.DeviceId, deviceId);
         }
 
