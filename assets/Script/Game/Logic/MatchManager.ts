@@ -36,13 +36,13 @@ export class MatchManager {
     }
 
     sendUpdatePlayerPos (x: number, y: number, angle: number) {
-        // let data: PlayerPosition = {
-        //     x: x,
-        //     y: y,
-        //     angle: angle,
-        //     userID: NakamaManager.instance.session.user_id
-        // }
-        // this.network.send(Code.PlayerPosition, data);
+        let data: PlayerPosition = {
+            x: x,
+            y: y,
+            angle: angle,
+            userID: NakamaManager.instance.session.user_id
+        }
+        this.network.send(Code.PlayerPosition, data);
     }
 
     onReceivePlayerUpdatePos (pk: PlayerPosition) {
@@ -52,13 +52,13 @@ export class MatchManager {
     }
 
     sendFire (x: number, y: number, angle: number) {
-        // let data: BulletFire = {
-        //     x: x,
-        //     y: y,
-        //     angle: angle,
-        //     userID: NakamaManager.instance.session.user_id
-        // }
-        // this.network.send(Code.BulletFire, data);
+        let data: BulletFire = {
+            x: x,
+            y: y,
+            angle: angle,
+            userID: NakamaManager.instance.session.user_id
+        }
+        this.network.send(Code.BulletFire, data);
     }
 
     onReceiveFire (pk: BulletFire) {
@@ -66,11 +66,11 @@ export class MatchManager {
     }
 
     sendPlayerEquip (isEquip: boolean) {
-        // let data: PlayerEquip = {
-        //     isEquip: isEquip,
-        //     userID: NakamaManager.instance.session.user_id
-        // }
-        // this.network.send(Code.PlayerEquip, data);
+        let data: PlayerEquip = {
+            isEquip: isEquip,
+            userID: NakamaManager.instance.session.user_id
+        }
+        this.network.send(Code.PlayerEquip, data);
     }
 
     onReceivePlayerEquip (pk: PlayerEquip) {
