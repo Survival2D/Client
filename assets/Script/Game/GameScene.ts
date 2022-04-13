@@ -81,7 +81,7 @@ export default class GameScene extends cc.Component {
         this.genObstacles();
 
         this.miniMap = this.miniMapNode.getComponent(MiniMap);
-        this.miniMap.init(this.bushPrefab, this.playerPrefab);
+        this.miniMap.init(this.bushPrefab);
     }
 
     start () {

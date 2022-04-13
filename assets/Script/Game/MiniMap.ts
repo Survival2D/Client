@@ -1,4 +1,4 @@
-import {MapConfig} from "./Logic/GameConstants";
+import {MapConfig, PlayerColor} from "./Logic/GameConstants";
 import Obstacle from "./Obstacle/Obstacle";
 import Player from "./Player";
 
@@ -12,12 +12,14 @@ export default class MiniMap extends cc.Component {
     @property(cc.Node)
     grid: cc.Node = null;
 
+    @property(cc.Node)
+    mainPlayer: cc.Node = null;
+
     private bushPrefab: cc.Prefab;
-    private playerPrefab: cc.Prefab;
+
+    private playerColor: cc.Color = PlayerColor.body[0];
 
     private obstacles : Obstacle[] = [];
-
-    private mainPlayer: Player;
 
     onLoad () {
         this.bg.node.width = MapConfig.width;
@@ -25,18 +27,20 @@ export default class MiniMap extends cc.Component {
         this.bg.node.scale = MapConfig.mapScale;
     }
 
-    init (bushPrefab, playerPrefab) {
+    init (bushPrefab) {
         this.drawMapGrid();
 
         this.bushPrefab = bushPrefab;
-        this.playerPrefab = playerPrefab;
-
-        let node = cc.instantiate(this.playerPrefab);
-        this.node.addChild(node);
-        node.scale = MapConfig.mapScale;
-        this.mainPlayer = node.getComponent(Player);
 
         this.genObstacles();
+
+        let ctx = this.mainPlayer.getComponent(cc.Graphics);
+        ctx.fillColor = this.playerColor;
+        ctx.strokeColor = this.playerColor;
+        ctx.circle(0, 0, 28);
+        ctx.fill();
+        ctx.stroke();
+        this.mainPlayer.scale = MapConfig.mapScale * 2;
     }
 
     drawMapGrid () {
