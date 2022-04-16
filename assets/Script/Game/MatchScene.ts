@@ -15,7 +15,7 @@ import MiniMap from "./MiniMap";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class GameScene extends cc.Component {
+export default class MatchScene extends cc.Component {
 
     private isUp: boolean = false;
     private isDown: boolean = false;
@@ -87,17 +87,17 @@ export default class GameScene extends cc.Component {
     start () {
         MatchManager.getInstance().setScene(this);
 
-        // let playerPosInValid = false, randX, randY;
-        // do {
-        //     playerPosInValid = false;
-        //     randX = (Math.random() - 0.5) * this.map.width;
-        //     randY = (Math.random() - 0.5) * this.map.height;
-        //     for (let obs of this.obstacles) {
-        //         if (obs.checkCollisionCircle(28, randX, randY)) playerPosInValid = true;
-        //     }
-        // } while (playerPosInValid)
-        //
-        // this.mainPlayerNode.setPosition(randX, randY);
+        let playerPosInValid = false, randX, randY;
+        do {
+            playerPosInValid = false;
+            randX = (Math.random() - 0.5) * this.map.width;
+            randY = (Math.random() - 0.5) * this.map.height;
+            for (let obs of this.obstacles) {
+                if (obs.checkCollisionCircle(28, randX, randY)) playerPosInValid = true;
+            }
+        } while (playerPosInValid)
+
+        this.mainPlayerNode.setPosition(randX, randY);
 
         MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y, this.mainPlayerNode.angle);
 
@@ -184,6 +184,7 @@ export default class GameScene extends cc.Component {
     }
 
     drawMapGrid () {
+        this.mapGrid.zIndex = -2;
         let ctx = this.mapGrid.getComponent(cc.Graphics);
         let start = -MapConfig.width/2;
         while (start < MapConfig.width/2) {
@@ -217,7 +218,7 @@ export default class GameScene extends cc.Component {
         }
 
         let node = cc.instantiate(this.bulletPrefab);
-        this.map.addChild(node);
+        this.map.addChild(node, -1);
         let bullet = node.getComponent(Bullet);
         this.bullets.push(bullet);
 

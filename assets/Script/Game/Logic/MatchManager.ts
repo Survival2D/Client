@@ -1,4 +1,4 @@
-import GameScene from "../GameScene";
+import MatchScene from "../MatchScene";
 import {BulletFire, NewPlayerJoin, PlayerEquip, PlayerPosition} from "../../Nakama/RPCData";
 import NakamaManager from "../../Nakama/NakamaManager";
 import {MatchNetwork} from "./MatchNetwork";
@@ -13,21 +13,21 @@ export class MatchManager {
         return this.instance;
     }
 
-    private matchScene: GameScene = null;
+    private matchScene: MatchScene = null;
     private network: MatchNetwork = null;
 
     newMatch () {
-        SceneChanger.instance.loadLobbyScene();
+        SceneChanger.instance.loadMatchScene();
         this.network = new MatchNetwork(this);
         this.network.subscribeListener();
     }
 
-    setScene (scene: GameScene) {
+    setScene (scene: MatchScene) {
         this.matchScene = scene;
     }
 
     inMatch () {
-        return this.matchScene instanceof GameScene;
+        return this.matchScene instanceof MatchScene;
     }
 
     onReceiveNewPlayerJoin (pk: NewPlayerJoin) {

@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import {PlayerColor} from "./Logic/GameConstants";
-import GameScene from "./GameScene";
+import MatchScene from "./MatchScene";
 import {PlayerData} from "./Logic/PlayerData";
 import {MatchManager} from "./Logic/MatchManager";
 
@@ -115,7 +115,7 @@ export default class Player extends cc.Component {
                 let dy = Math.cos(this.node.angle * Math.PI/180) * (this.gun.node.width/2 + this.gun.node.y);
                 let dx = - Math.tan(this.node.angle * Math.PI/180) * dy;
                 let scene = cc.director.getScene();
-                scene.getChildByName("Canvas").getComponent(GameScene).onFire(this.node.x + dx, this.node.y + dy, this.node.angle);
+                scene.getChildByName("Canvas").getComponent(MatchScene).onFire(this.node.x + dx, this.node.y + dy, this.node.angle);
                 MatchManager.getInstance().sendFire(this.node.x + dx, this.node.y + dy, this.node.angle);
             }
         }

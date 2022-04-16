@@ -22,14 +22,12 @@ export default class SceneChanger extends cc.Component {
   }
 
   loadLobbyScene() {
-    this.loadGameScene();
-    return; //TODO
     cc.log("SceneChanger::loadLobbyScene");
     cc.director.loadScene("LobbyScene");
   }
 
-  loadGameScene() {
-    cc.log("SceneChanger::loadGameScene");
-    cc.director.loadScene("GameScene");
+  loadMatchScene() {
+    cc.log("SceneChanger::loadMatchScene");
+    cc.director.loadScene("MatchScene");
   }
 }
