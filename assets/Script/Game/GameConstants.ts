@@ -1,5 +1,3 @@
-import {Position} from "../../Utils/ExtendComponent";
-
 export class PlayerColor {
     static body : cc.Color[] = [
         cc.color().fromHEX("#f8c574"),
@@ -26,7 +24,7 @@ export class PlayerColor {
 
 export class MapConfig {
     static numObs: number = 10;
-    static obsPos: Position[] = [
+    static obsPos = [
         {x: -100, y: 200},
         {x: -132, y: 2019},
         {x: 441, y: 15},
@@ -41,4 +39,8 @@ export class MapConfig {
     static width: number = 3000;
     static height: number = 2500;
     static mapScale: number = 1/10;
+}
+
+export class Config {
+    public static IS_ONLINE = true;
 }

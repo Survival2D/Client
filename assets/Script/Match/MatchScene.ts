@@ -9,7 +9,7 @@ import Obstacle from "./Obstacle/Obstacle";
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
 import {MatchManager} from "./Logic/MatchManager";
-import {MapConfig} from "./Logic/GameConstants";
+import {MapConfig} from "../Game/GameConstants";
 import MiniMap from "./MiniMap";
 
 const {ccclass, property} = cc._decorator;
@@ -97,7 +97,8 @@ export default class MatchScene extends cc.Component {
             }
         } while (playerPosInValid)
 
-        this.mainPlayerNode.setPosition(randX, randY);
+        MatchManager.getInstance().updateMainPlayerPos(randX, randY, 0);
+        // this.mainPlayerNode.setPosition(randX, randY);
 
         MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y, this.mainPlayerNode.angle);
 
@@ -123,11 +124,11 @@ export default class MatchScene extends cc.Component {
                 this.isUp = true;
                 break;
             case cc.macro.KEY.f:
-                this.mainPlayer.equipGun();
+                this.toggleMainPlayerEquip();
                 MatchManager.getInstance().sendPlayerEquip(this.mainPlayer.isEquip);
                 break;
             case cc.macro.KEY.t:
-                this.newPlayerJoin("123");
+                MatchManager.getInstance().createNewPlayer("123");
         }
     }
 
@@ -233,7 +234,7 @@ export default class MatchScene extends cc.Component {
         this.playersMap.set(id, player.getComponent(Player));
     }
 
-    updateMyPlayerPos (x: number, y?: number) {
+    updateMyPlayerPos (x: number, y: number) {
         this.mainPlayerNode.setPosition(x, y);
 
         this.miniMap.updateMyPlayerPos(x, y);
@@ -241,7 +242,7 @@ export default class MatchScene extends cc.Component {
 
     updatePlayerPos (id: string, x: number, y: number, angle: number) {
         if (!this.playersMap.has(id)) {
-            this.newPlayerJoin(id);
+            MatchManager.getInstance().createNewPlayer(id);
         }
         this.playersMap.get(id).node.setPosition(x, y);
         this.playersMap.get(id).node.angle = angle;
@@ -254,11 +255,15 @@ export default class MatchScene extends cc.Component {
         bullet.fire();
     }
 
+    toggleMainPlayerEquip () {
+        this.mainPlayer.toggleEquipGun();
+    }
+
     onPlayerEquip (id: string, isEquip: boolean) {
         if (!this.playersMap.has(id)) {
-            this.newPlayerJoin(id);
+            MatchManager.getInstance().createNewPlayer(id);
         }
-        this.playersMap.get(id).equipGun();
+        this.playersMap.get(id).setEquipGun(isEquip);
     }
 
     onMainPlayerDied () {
@@ -325,7 +330,7 @@ export default class MatchScene extends cc.Component {
         }
 
         MatchManager.getInstance().sendUpdatePlayerPos(newX, newY, this.mainPlayerNode.angle);
-        this.updateMyPlayerPos(newX, newY);
+        MatchManager.getInstance().updateMainPlayerPos(newX, newY, this.mainPlayerNode.angle);
 
         // move camera following player
         this.camera.x = this.mainPlayerNode.x;

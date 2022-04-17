@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import {PlayerColor} from "./Logic/GameConstants";
+import {PlayerColor} from "../Game/GameConstants";
 import MatchScene from "./MatchScene";
 import {PlayerData} from "./Logic/PlayerData";
 import {MatchManager} from "./Logic/MatchManager";
@@ -86,21 +86,27 @@ export default class Player extends cc.Component {
         this.gun.node.active = false;
     }
 
-    checkCollisionPoint (x:number, y?: number): boolean {
+    checkCollisionPoint (x:number, y: number): boolean {
         let d2 = (this.node.x - x)*(this.node.x - x) + (this.node.y - y)*(this.node.y - y);
         return d2 <= this.r*this.r;
     }
 
-    equipGun () {
+    setEquipGun (bool: boolean) {
+        this.isEquip = bool;
+        if (bool) this.equipGun();
+        else this.unEquipGun();
+    }
+
+    toggleEquipGun () {
         this.isEquip = !this.isEquip;
-        if (this.isEquip) {
-            this.gun.node.active = true;
-            this.leftHand.setPosition(-10, 50);
-            this.rightHand.setPosition(10, 35);
-        }
-        else {
-            this.unEquipGun();
-        }
+        if (this.isEquip) this.equipGun();
+        else this.unEquipGun();
+    }
+
+    equipGun () {
+        this.gun.node.active = true;
+        this.leftHand.setPosition(-10, 50);
+        this.rightHand.setPosition(10, 35);
     }
 
     unEquipGun () {

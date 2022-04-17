@@ -16,11 +16,11 @@ export default class Obstacle extends cc.Component {
         this.node.setPosition(x, y);
     }
 
-    checkCollisionCircle (r: number, x:number, y?: number): boolean {
+    checkCollisionCircle (r: number, x:number, y: number): boolean {
         return false;
     }
 
-    checkCollisionPoint (x:number, y?: number): boolean {
+    checkCollisionPoint (x:number, y: number): boolean {
         return false;
     }
 

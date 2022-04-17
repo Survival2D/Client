@@ -1,4 +1,4 @@
-import {MapConfig, PlayerColor} from "./Logic/GameConstants";
+import {MapConfig, PlayerColor} from "../Game/GameConstants";
 import Obstacle from "./Obstacle/Obstacle";
 import Player from "./Player";
 

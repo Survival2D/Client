@@ -1,11 +1,13 @@
-﻿import ccclass = cc._decorator.ccclass;
-import NakamaManager from "./NakamaManager";
+﻿import NakamaManager from "./NakamaManager";
 import NakamaConnectionData from "./NakamaConnectionData";
 import { eventHandler } from "../Utils/EventHandler";
 
-@ccclass
-export default class NakamaAutoLogin extends cc.Component {
+export default class NakamaAutoLogin {
   private retryTime: number = 5;
+
+  static init() {
+    new NakamaAutoLogin().onLoad();
+  }
 
   async onLoad() {
     cc.log("NakamaAutoLogin.start");

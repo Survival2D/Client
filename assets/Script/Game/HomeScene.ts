@@ -1,5 +1,6 @@
-import {MatchManager} from "./Logic/MatchManager";
+import {MatchManager} from "../Match/Logic/MatchManager";
 import MultiplayerManager from "../Nakama/MultiplayerManager";
+import {Config} from "./GameConstants";
 
 const { ccclass, property } = cc._decorator;
 
@@ -21,19 +22,21 @@ export default class HomeScene extends cc.Component {
     this.playerName.string = "Tien No Mo Non";
     this.playerLevel.string = "10";
 
-    cc.resources.load(
-      "avatar",
-      cc.Texture2D,
-      (err: any, texture: cc.Texture2D) => {
-        let spriteFrame = new cc.SpriteFrame();
-        spriteFrame.setTexture(texture);
-        this.avatar.spriteFrame = spriteFrame;
-      }
-    );
+    // cc.resources.load(
+    //   "avatar",
+    //   cc.Texture2D,
+    //   (err: any, texture: cc.Texture2D) => {
+    //     let spriteFrame = new cc.SpriteFrame();
+    //     spriteFrame.setTexture(texture);
+    //     this.avatar.spriteFrame = spriteFrame;
+    //   }
+    // );
   }
 
   async onPlayNow() {
-    await MultiplayerManager.instance.joinMatchAsync();
-    // MatchManager.getInstance().newMatch();
+    if (Config.IS_ONLINE) await MultiplayerManager.instance.joinMatchAsync();
+    else {
+      MatchManager.getInstance().newMatch();
+    }
   }
 }

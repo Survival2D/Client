@@ -1,14 +1,11 @@
 ﻿import {Client, Session, Socket} from "@heroiclabs/nakama-js";
 import {RpcResponse} from "@heroiclabs/nakama-js/client";
 import {v4} from "uuid";
-import ccclass = cc._decorator.ccclass;
 import NakamaConnectionData from "./NakamaConnectionData";
 import LocalStorageKeys from "../Utils/LocalStorageKeys";
 import {eventHandler} from "../Utils/EventHandler";
-import PersistNode from "../Utils/PersistNode";
 
-@ccclass
-export default class NakamaManager extends cc.Component {
+export default class NakamaManager {
     static readonly OnConnecting: string = "NakamaManager.OnConnecting";
     static readonly OnConnected: string = "NakamaManager.OnConnected";
     static readonly OnDisconnected: string = "NakamaManager.OnDisconnected";
@@ -35,9 +32,9 @@ export default class NakamaManager extends cc.Component {
         return this.socket != null; // && this.socket.adapter.isConnected();
     }
 
-    onLoad() {
-        cc.log("NakamaManager.start");
-        NakamaManager.instance = this;
+    static init() {
+        cc.log("NakamaManager::init");
+        NakamaManager.instance = new NakamaManager();
     }
 
     onApplicationQuit() {

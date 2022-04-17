@@ -3,33 +3,37 @@ import { RpcResponse } from "@heroiclabs/nakama-js/client";
 import MultiplayerManager from "../Nakama/MultiplayerManager";
 import { eventHandler } from "../Utils/EventHandler";
 import SceneChanger from "../General/SceneChanger";
-import {MatchManager} from "./Logic/MatchManager";
+import {MatchManager} from "../Match/Logic/MatchManager";
+import {UserInfo} from "./UserInfo";
+import NakamaManager from "../Nakama/NakamaManager";
 
-const { ccclass, property } = cc._decorator;
-
-@ccclass
-export default class GameManager extends cc.Component {
+export default class GameManager {
   public readonly VictoriesRequiredToWin = 3;
 
   public static instance: GameManager = null;
   public playersWins: number[] = [];
   public winner?: number = 0;
 
-  onLoad() {
-    GameManager.instance = this;
-  }
+  public userInfo = new UserInfo();
 
-  start() {
+  static init() {
+    GameManager.instance = new GameManager();
+
+    eventHandler.on(
+        NakamaManager.OnLoginSuccess,
+        () => {GameManager.instance.userInfo = new UserInfo(NakamaManager.instance.session.user_id);}
+    );
+
     // MultiplayerManager.instance.Subscribe(MultiplayerManager.Code.PlayerWon, ReceivedPlayerWonRound);
     // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.Draw, ReceivedDrawRound);
     // MultiplayerManager.Instance.Subscribe(MultiplayerManager.Code.ChangeScene, ReceivedChangeScene);
     eventHandler.on(
-      MultiplayerManager.OnMatchJoin,
-      this.joinedMatch.bind(this)
+        MultiplayerManager.OnMatchJoin,
+        GameManager.instance.joinedMatch.bind(GameManager.instance)
     );
     eventHandler.on(
-      MultiplayerManager.OnMatchLeave,
-      this.leavedMatch.bind(this)
+        MultiplayerManager.OnMatchLeave,
+        GameManager.instance.leavedMatch.bind(GameManager.instance)
     );
   }
 
@@ -73,7 +77,7 @@ export default class GameManager extends cc.Component {
   }
 
   goToHome() {
-    SceneChanger.instance.loadGameScene();
+    SceneChanger.instance.loadHomeScene();
   }
 
   goToLobby() {

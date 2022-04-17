@@ -1,18 +1,15 @@
-import ccclass = cc._decorator.ccclass;
 import { eventHandler } from "../Utils/EventHandler";
 import NakamaManager from "../Nakama/NakamaManager";
-import property = cc._decorator.property;
 
-@ccclass
-export default class SceneChanger extends cc.Component {
+export default class SceneChanger {
   static instance: SceneChanger;
 
-  onLoad() {
-    cc.log("SceneChanger::onLoad");
-    SceneChanger.instance = this;
+  static init() {
+    cc.log("SceneChanger::init");
+    SceneChanger.instance = new SceneChanger();
     eventHandler.on(
-      NakamaManager.OnLoginSuccess,
-      this.loadHomeScene.bind(this)
+        NakamaManager.OnLoginSuccess,
+        SceneChanger.instance.loadHomeScene.bind(this)
     );
   }
 

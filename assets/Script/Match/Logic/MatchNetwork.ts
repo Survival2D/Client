@@ -2,6 +2,7 @@ import NakamaManager from "../../Nakama/NakamaManager";
 import MultiplayerManager from "../../Nakama/MultiplayerManager";
 import {MatchManager} from "./MatchManager";
 import {Code} from "../../Nakama/OperationCode";
+import {Config} from "../../Game/GameConstants";
 
 export class MatchNetwork {
 
@@ -12,6 +13,7 @@ export class MatchNetwork {
     }
 
     subscribeListener () {
+        if (!Config.IS_ONLINE) return;
         NakamaManager.instance.socket.onmatchdata = (matchData) => {
             // cc.log("MatchData:", matchData);
             this.onReceivePacket(matchData.op_code, matchData.data);
@@ -42,6 +44,7 @@ export class MatchNetwork {
     }
 
     async send (code: Code, data: object | []) {
+        if (!Config.IS_ONLINE) return;
         await MultiplayerManager.instance.send(code, data);
     }
 }

@@ -1,16 +1,12 @@
 ﻿import { Match, Presence, RpcResponse } from "@heroiclabs/nakama-js";
-import Action = cc.Action;
-import ccclass = cc._decorator.ccclass;
 import MultiplayerMessage from "./MultiplayerMessage";
 import NakamaManager from "./NakamaManager";
 import { eventHandler } from "../Utils/EventHandler";
 import RPCs from "../Utils/RPCs";
 import { JoinMatchData } from "./RPCData";
 import {Code} from "./OperationCode";
-import {MatchManager} from "../Game/Logic/MatchManager";
 
-@ccclass
-export default class MultiplayerManager extends cc.Component {
+export default class MultiplayerManager {
   static readonly OnLocalTick: string = "MultiplayerManager.OnLocalTick";
   static readonly OnMatchLeave: string = "MultiplayerManager.OnMatchLeave";
   static readonly OnMatchJoin: string = "MultiplayerManager.OnMatchJoin";
@@ -40,12 +36,9 @@ export default class MultiplayerManager extends cc.Component {
     return this.match != null;
   }
 
-  onLoad() {
-    MultiplayerManager.instance = this;
-  }
-
-  start() {
-    this.interval = setInterval(this.localTickPassed, this.sendRate * 1000);
+  static init() {
+    MultiplayerManager.instance = new MultiplayerManager();
+    MultiplayerManager.instance.interval = setInterval(MultiplayerManager.instance.localTickPassed, MultiplayerManager.instance.sendRate * 1000);
   }
 
   localTickPassed() {

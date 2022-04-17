@@ -1,6 +1,6 @@
 export class PlayerData {
     public name: string;
-    public id: string;
+    public readonly id: string;
     public colorId: number = 0;
 
     private hp: number;
@@ -9,20 +9,14 @@ export class PlayerData {
     private maxHp = 100;
     private maxBullets = 100;
 
-    constructor (id?: string, name?: string) {
-        this.id = id;
-        this.name = name;
+    constructor (id?: string) {
+        if (id !== undefined) this.id = id;
 
         this.hp = this.maxHp;
     }
 
     loadBullet () {
         this.nBullets = this.maxBullets;
-    }
-
-    heal (hp: number) {
-        this.hp += hp;
-        if (this.hp > this.maxHp) this.hp = this.maxHp;
     }
 
     fire () {
@@ -33,6 +27,16 @@ export class PlayerData {
 
     takeDamage (damage: number) {
         this.hp -= damage;
+    }
+
+    heal (hp: number) {
+        this.hp += hp;
+        if (this.hp > this.maxHp) this.hp = this.maxHp;
+    }
+
+    setHp (hp: number) {
+        if (hp < 0) this.hp = 0;
+        this.hp = (hp > this.maxHp ? this.maxHp : hp);
     }
 
     isDead () {
