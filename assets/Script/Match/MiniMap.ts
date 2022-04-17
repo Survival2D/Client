@@ -1,5 +1,5 @@
 import {MapConfig, PlayerColor} from "../Game/GameConstants";
-import Obstacle from "./Obstacle/Obstacle";
+import Obstacle from "./MapObject/Obstacle/Obstacle";
 import Player from "./Player";
 
 const {ccclass, property} = cc._decorator;

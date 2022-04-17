@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Obstacle from "./Obstacle/Obstacle";
+import Obstacle from "./MapObject/Obstacle/Obstacle";
 import Player from "./Player";
 import Bullet from "./MapObject/Bullet";
 import {MatchManager} from "./Logic/MatchManager";
@@ -124,8 +124,7 @@ export default class MatchScene extends cc.Component {
                 this.isUp = true;
                 break;
             case cc.macro.KEY.f:
-                this.toggleMainPlayerEquip();
-                MatchManager.getInstance().sendPlayerEquip(this.mainPlayer.isEquip);
+                this.mainPlayer.toggleEquipGun();
                 break;
             case cc.macro.KEY.t:
                 MatchManager.getInstance().createNewPlayer("123");
@@ -237,6 +236,12 @@ export default class MatchScene extends cc.Component {
     updateMyPlayerPos (x: number, y: number) {
         this.mainPlayerNode.setPosition(x, y);
 
+        // move camera following player
+        this.camera.x = this.mainPlayerNode.x;
+        this.camera.y = this.mainPlayerNode.y;
+        this.hud.node.x = this.mainPlayerNode.x;
+        this.hud.node.y = this.mainPlayerNode.y;
+
         this.miniMap.updateMyPlayerPos(x, y);
     }
 
@@ -253,10 +258,6 @@ export default class MatchScene extends cc.Component {
         bullet.setPosition(x, y);
         bullet.setAngle(angle);
         bullet.fire();
-    }
-
-    toggleMainPlayerEquip () {
-        this.mainPlayer.toggleEquipGun();
     }
 
     onPlayerEquip (id: string, isEquip: boolean) {
@@ -331,12 +332,6 @@ export default class MatchScene extends cc.Component {
 
         MatchManager.getInstance().sendUpdatePlayerPos(newX, newY, this.mainPlayerNode.angle);
         MatchManager.getInstance().updateMainPlayerPos(newX, newY, this.mainPlayerNode.angle);
-
-        // move camera following player
-        this.camera.x = this.mainPlayerNode.x;
-        this.camera.y = this.mainPlayerNode.y;
-        this.hud.node.x = this.mainPlayerNode.x;
-        this.hud.node.y = this.mainPlayerNode.y;
     }
 
     checkHitPlayer (bullet: Bullet): boolean {

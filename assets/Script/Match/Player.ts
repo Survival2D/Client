@@ -101,6 +101,7 @@ export default class Player extends cc.Component {
         this.isEquip = !this.isEquip;
         if (this.isEquip) this.equipGun();
         else this.unEquipGun();
+        MatchManager.getInstance().sendPlayerEquip(this.isEquip);
     }
 
     equipGun () {

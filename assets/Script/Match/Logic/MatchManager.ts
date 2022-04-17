@@ -20,6 +20,8 @@ export class MatchManager {
     private mainPlayerLogic: PlayerLogic;
     private playerLogicsMap: Map<string, PlayerLogic>;
 
+    private obstacleLogics: [];
+
     newMatch () {
         this.playerLogicsMap = new Map<string, PlayerLogic>();
         this.mainPlayerLogic = new PlayerLogic();
@@ -132,5 +134,12 @@ export class MatchManager {
             // main player died, end match
             this.matchScene.onMainPlayerDied();
         }
+    }
+
+
+    // for calculating input from scene
+
+    calculateMovePlayer (newX: number, newY: number) {
+
     }
 }
