@@ -39,6 +39,13 @@ export class MapConfig {
     static width: number = 3000;
     static height: number = 2500;
     static mapScale: number = 1/10;
+
+    static lootItemId = {
+        gun: 0,
+        ammo: 1,
+        chest: 2,
+        helmet: 3
+    }
 }
 
 export class Config {

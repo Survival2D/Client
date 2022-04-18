@@ -1358,6 +1358,9 @@
     "bulletPrefab": {
       "__uuid__": "64a04f39-613e-4931-ac88-a3d95c60e25c"
     },
+    "lootItem": {
+      "__uuid__": "4a326d5e-ae13-4303-8beb-3af1386eeecf"
+    },
     "map": {
       "__id__": 5
     },

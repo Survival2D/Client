@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "8abf5521-bd26-42dd-b598-e352915ec14d",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 683,
+  "height": 683,
+  "platformSettings": {},
+  "subMetas": {
+    "loot-medical-bandage": {
+      "ver": "1.0.6",
+      "uuid": "5f8e9242-8dba-44cc-abd5-e40f7c88337c",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "8abf5521-bd26-42dd-b598-e352915ec14d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 63,
+      "trimY": 33,
+      "width": 557,
+      "height": 617,
+      "rawWidth": 683,
+      "rawHeight": 683,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

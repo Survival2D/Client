@@ -11,11 +11,20 @@ import Bullet from "./MapObject/Bullet";
 import {MatchManager} from "./Logic/MatchManager";
 import {MapConfig} from "../Game/GameConstants";
 import MiniMap from "./MiniMap";
+import LootItem from "./MapObject/LootItem";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class MatchScene extends cc.Component {
+
+    private mapZIndex = {
+        grid: -3,
+        item: -2,
+        bullet: -1,
+        player: 0,
+        obs: 1
+    }
 
     private isUp: boolean = false;
     private isDown: boolean = false;
@@ -33,6 +42,9 @@ export default class MatchScene extends cc.Component {
 
     @property(cc.Prefab)
     bulletPrefab: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    lootItem: cc.Prefab = null;
 
     @property(cc.Node)
     map: cc.Node = null;
@@ -61,9 +73,12 @@ export default class MatchScene extends cc.Component {
 
     private bullets: Bullet[] = [];
 
-    private obstacles : Obstacle[] = [];
+    private obstacles: Obstacle[] = [];
 
     private miniMap: MiniMap = null;
+
+    private expiredTime: number = 0;
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -98,7 +113,8 @@ export default class MatchScene extends cc.Component {
         } while (playerPosInValid)
 
         MatchManager.getInstance().updateMainPlayerPos(randX, randY, 0);
-        // this.mainPlayerNode.setPosition(randX, randY);
+
+        this.genLootItem(randX + 200, randY + 200);
 
         MatchManager.getInstance().sendUpdatePlayerPos(this.mainPlayerNode.x, this.mainPlayerNode.y, this.mainPlayerNode.angle);
 
@@ -107,6 +123,8 @@ export default class MatchScene extends cc.Component {
         this.camera.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
         this.camera.on(cc.Node.EventType.MOUSE_DOWN, this.onClick, this);
         this.camera.on(cc.Node.EventType.MOUSE_WHEEL, this.onScroll, this);
+
+        this.expiredTime = 0;
     }
 
     onKeyDown (event) {
@@ -184,7 +202,7 @@ export default class MatchScene extends cc.Component {
     }
 
     drawMapGrid () {
-        this.mapGrid.zIndex = -2;
+        this.mapGrid.zIndex = this.mapZIndex.grid;
         let ctx = this.mapGrid.getComponent(cc.Graphics);
         let start = -MapConfig.width/2;
         while (start < MapConfig.width/2) {
@@ -205,11 +223,34 @@ export default class MatchScene extends cc.Component {
     genObstacles () {
         for (let i = 0; i < MapConfig.numObs; i++) {
             let node = cc.instantiate(this.bushPrefab);
-            this.map.addChild(node);
+            this.map.addChild(node, this.mapZIndex.obs);
             this.obstacles.push(node.getComponent(Obstacle));
 
             node.setPosition(MapConfig.obsPos[i].x, MapConfig.obsPos[i].y);
         }
+    }
+
+    genLootItem (x?: number, y?: number) {
+        let randX, randY;
+        if (x === undefined) {
+            let invalid = false;
+            do {
+                invalid = false;
+                randX = (Math.random() - 0.5) * this.map.width;
+                randY = (Math.random() - 0.5) * this.map.height;
+                for (let obs of this.obstacles) {
+                    if (obs.checkCollisionCircle(28, randX, randY)) invalid = true;
+                }
+            } while (invalid)
+        }
+        else {
+            randX = x;
+            randY = y;
+        }
+        let loot = cc.instantiate(this.lootItem);
+        loot.getComponent(LootItem).setItemId(0);
+        this.map.addChild(loot, this.mapZIndex.item);
+        loot.setPosition(randX, randY);
     }
 
     getBullet () {
@@ -218,7 +259,7 @@ export default class MatchScene extends cc.Component {
         }
 
         let node = cc.instantiate(this.bulletPrefab);
-        this.map.addChild(node, -1);
+        this.map.addChild(node, this.mapZIndex.bullet);
         let bullet = node.getComponent(Bullet);
         this.bullets.push(bullet);
 
@@ -229,7 +270,7 @@ export default class MatchScene extends cc.Component {
         if (this.playersMap.has(id)) return;
         cc.log("Create new player, id:", id);
         let player = cc.instantiate(this.playerPrefab);
-        this.map.addChild(player);
+        this.map.addChild(player, this.mapZIndex.player);
         this.playersMap.set(id, player.getComponent(Player));
     }
 
@@ -289,6 +330,14 @@ export default class MatchScene extends cc.Component {
                 this.checkHitObstacle(e);
             }
         });
+
+        // gen items
+        if (this.expiredTime >= 2) {
+            this.expiredTime -= 2;
+            this.genLootItem();
+        }
+
+        this.expiredTime += dt;
     }
 
     moveMainPlayer (dt) {

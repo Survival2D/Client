@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "8b943860-844a-423c-9385-329dfc7a60f5",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 779,
+  "height": 779,
+  "platformSettings": {},
+  "subMetas": {
+    "loot-circle-outer-01": {
+      "ver": "1.0.6",
+      "uuid": "a949ea26-75fd-4360-b2ae-de8aa9c64d08",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "8b943860-844a-423c-9385-329dfc7a60f5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 6,
+      "trimY": 5,
+      "width": 767,
+      "height": 769,
+      "rawWidth": 779,
+      "rawHeight": 779,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -26,6 +26,9 @@ export default class Initializer extends cc.Component {
         MultiplayerManager.init();
         GameManager.init();
         NakamaAutoLogin.init();
+
+        //preload resources
+        cc.resources.preloadDir('loot', cc.SpriteFrame);
     }
 
     // update (dt) {}

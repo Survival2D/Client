@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "36343616-2225-4bb1-9455-a81d9d9a6946",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 683,
+  "height": 683,
+  "platformSettings": {},
+  "subMetas": {
+    "loot-chest-01": {
+      "ver": "1.0.6",
+      "uuid": "9bcfede4-bbf8-483d-848c-d601e69763c0",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "36343616-2225-4bb1-9455-a81d9d9a6946",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 26,
+      "trimY": 26,
+      "width": 631,
+      "height": 631,
+      "rawWidth": 683,
+      "rawHeight": 683,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
