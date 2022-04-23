@@ -70,6 +70,9 @@ export default class MatchScene extends cc.Component {
         this.map.width = MapConfig.width;
         this.map.height = MapConfig.height;
 
+        this.camera.width = this.node.width;
+        this.camera.height = this.node.height;
+
         this.drawMapGrid();
 
         let ctx = this.hud.getComponent(cc.Graphics);
@@ -189,14 +192,14 @@ export default class MatchScene extends cc.Component {
         let ctx = this.mapGrid.getComponent(cc.Graphics);
         let start = -MapConfig.width/2;
         while (start < MapConfig.width/2) {
-            start += 250;
+            start += 300;
             ctx.moveTo(start, -MapConfig.height/2);
             ctx.lineTo(start, MapConfig.height/2);
             ctx.stroke();
         }
         start = -MapConfig.height/2;
         while (start < MapConfig.height/2) {
-            start += 250;
+            start += 300;
             ctx.moveTo(-MapConfig.width/2, start);
             ctx.lineTo(MapConfig.width/2, start);
             ctx.stroke();

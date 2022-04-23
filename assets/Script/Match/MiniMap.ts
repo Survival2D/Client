@@ -48,14 +48,14 @@ export default class MiniMap extends cc.Component {
         ctx.lineWidth /= MapConfig.mapScale;
         let start = -MapConfig.width/2;
         while (start < MapConfig.width/2) {
-            start += 250;
+            start += 300;
             ctx.moveTo(start, -MapConfig.height/2);
             ctx.lineTo(start, MapConfig.height/2);
             ctx.stroke();
         }
         start = -MapConfig.height/2;
         while (start < MapConfig.height/2) {
-            start += 250;
+            start += 300;
             ctx.moveTo(-MapConfig.width/2, start);
             ctx.lineTo(MapConfig.width/2, start);
             ctx.stroke();
