@@ -13,7 +13,7 @@ export default class NakamaManager {
     static readonly OnLoginFail: string = "NakamaManager.OnLoginFail";
 
     connectionData: NakamaConnectionData = new NakamaConnectionData(
-        "138.2.95.97",
+        "127.0.0.1",
         "7350",
         "defaultkey"
     );
@@ -53,7 +53,7 @@ export default class NakamaManager {
             this.connectionData.serverKey,
             this.connectionData.host,
             this.connectionData.port,
-            true
+            this.connectionData.useSSL
         );
 
         let deviceId: string = cc.sys.localStorage.getItem(
@@ -89,7 +89,7 @@ export default class NakamaManager {
         sessionTask
             .then((session) => {
                 this.session = session;
-                this.socket = this.client.createSocket(true);
+                this.socket = this.client.createSocket(this.connectionData.useSSL);
                 // this.socket.connected += this.connected;
                 // this.socket.closed += Disconnected;
                 this.socket.connect(this.session, true);
