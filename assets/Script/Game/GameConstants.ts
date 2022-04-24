@@ -43,4 +43,14 @@ export class MapConfig {
 
 export class Config {
     public static IS_ONLINE = true;
+
+    public static IS_DEV = false;
+
+    public static IP_DEV = "127.0.0.1";
+    public static PORT_DEV = "7350";
+
+    public static IP_LIVE = "survival2d.live";
+    public static PORT_LIVE = "7350";
+
+    public static USE_SSL = false;
 }

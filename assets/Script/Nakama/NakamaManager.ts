@@ -4,6 +4,7 @@ import {v4} from "uuid";
 import NakamaConnectionData from "./NakamaConnectionData";
 import LocalStorageKeys from "../Utils/LocalStorageKeys";
 import {eventHandler} from "../Utils/EventHandler";
+import {Config} from "../Game/GameConstants";
 
 export default class NakamaManager {
     static readonly OnConnecting: string = "NakamaManager.OnConnecting";
@@ -13,8 +14,8 @@ export default class NakamaManager {
     static readonly OnLoginFail: string = "NakamaManager.OnLoginFail";
 
     connectionData: NakamaConnectionData = new NakamaConnectionData(
-        "127.0.0.1",
-        "7350",
+        Config.IS_DEV ? Config.IP_DEV : Config.IP_LIVE,
+        Config.IS_DEV ? Config.PORT_DEV : Config.PORT_LIVE,
         "defaultkey"
     );
 
@@ -53,7 +54,7 @@ export default class NakamaManager {
             this.connectionData.serverKey,
             this.connectionData.host,
             this.connectionData.port,
-            this.connectionData.useSSL
+            Config.USE_SSL
         );
 
         let deviceId: string = cc.sys.localStorage.getItem(
@@ -89,7 +90,7 @@ export default class NakamaManager {
         sessionTask
             .then((session) => {
                 this.session = session;
-                this.socket = this.client.createSocket(this.connectionData.useSSL);
+                this.socket = this.client.createSocket(Config.USE_SSL);
                 // this.socket.connected += this.connected;
                 // this.socket.closed += Disconnected;
                 this.socket.connect(this.session, true);

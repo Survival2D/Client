@@ -4,8 +4,6 @@ export default class NakamaConnectionData {
   port: string = null;
   serverKey: string = null;
 
-  readonly useSSL = false;
-
   constructor(
     // scheme?: string,
     host?: string,
