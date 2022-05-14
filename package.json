@@ -1,6 +1,8 @@
 {
-  "dependencies": {
-    "@heroiclabs/nakama-js": "^2.3.0",
-    "uuid": "^8.3.2"
+  "name": "Client",
+  "uuid": "7e1f6029-1dc8-44b9-ac4b-5420fefeffd1",
+  "version": "3.5.0",
+  "creator": {
+    "version": "3.5.0"
   }
 }
