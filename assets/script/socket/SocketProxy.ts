@@ -1,6 +1,6 @@
 // import Ezy from '../lib/ezyfox-server-es6-client'
-import Ezy from 'ezyfox-es6-client';
-import Mvc from 'mvc-es6';
+import Ezy from 'ezyfox-es6-client/index.js'
+import Mvc from 'mvc-es6/index.js'
 import {Command, ErrorCodes, SOCKET_URL} from "./SocketConstants";
 
 class SocketProxy {
