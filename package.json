@@ -1,11 +1,8 @@
 {
   "name": "Client",
-  "uuid": "7e1f6029-1dc8-44b9-ac4b-5420fefeffd1",
-  "version": "3.5.0",
+  "uuid": "d7114ebe-8f10-4dd2-95b0-e456d48a7f17",
+  "version": "3.5.1",
   "creator": {
-    "version": "3.5.0"
-  },
-  "dependencies": {
-    "@heroiclabs/nakama-js": "^2.3.0"
+    "version": "3.5.1"
   }
 }
