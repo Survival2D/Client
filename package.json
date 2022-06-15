@@ -1,11 +1,6 @@
 {
-  "name": "Client",
-  "uuid": "7e1f6029-1dc8-44b9-ac4b-5420fefeffd1",
-  "version": "3.5.0",
-  "creator": {
-    "version": "3.5.0"
-  },
   "dependencies": {
-    "@heroiclabs/nakama-js": "^2.3.0"
+    "ezyfox-es6-client": "^1.2.1",
+    "mvc-es6": "^1.1.1"
   }
 }
