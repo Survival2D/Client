@@ -4,5 +4,8 @@
   "version": "3.5.1",
   "creator": {
     "version": "3.5.1"
+  },
+  "dependencies": {
+    "ezyfox-es6-client": "^1.2.1"
   }
 }
