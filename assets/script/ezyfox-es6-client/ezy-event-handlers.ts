@@ -1,0 +1,156 @@
+import Const from './ezy-constants';
+import Util from './ezy-util';
+
+export class EzyConnectionSuccessHandler {
+    constructor() {
+        this.clientType = 'JSEMACS6';
+        this.clientVersion = '1.2.1';
+    }
+
+    handle() {
+        this.sendHandshakeRequest();
+        this.postHandle();
+    }
+
+    postHandle() {}
+
+    sendHandshakeRequest() {
+        var request = this.newHandshakeRequest();
+        this.client.sendRequest(Const.EzyCommand.HANDSHAKE, request);
+    }
+
+    newHandshakeRequest() {
+        var clientId = this.getClientId();
+        var clientKey = this.getClientKey();
+        var enableEncryption = false;
+        var token = this.getStoredToken();
+        var request = [
+            clientId,
+            clientKey,
+            this.clientType,
+            this.clientVersion,
+            enableEncryption,
+            token,
+        ];
+        return request;
+    }
+
+    getClientKey() {
+        return '';
+    }
+
+    getClientId() {
+        const guid = Util.EzyGuid.generate();
+        return guid;
+    }
+
+    getStoredToken() {
+        return '';
+    }
+}
+
+//======================================
+
+export class EzyConnectionFailureHandler {
+    handle(event) {
+        Util.EzyLogger.console('connection failure, reason = ' + event.reason);
+        var config = this.client.config;
+        var reconnectConfig = config.reconnect;
+        var should = this.shouldReconnect(event);
+        var must = reconnectConfig.enable && should;
+        var reconnecting = false;
+        this.client.status = Const.EzyConnectionStatus.FAILURE;
+        if (must) {
+            reconnecting = this.client.reconnect();
+        }
+        if (reconnecting) {
+            this.onReconnecting(event);
+        } else {
+            this.onConnectionFailed(event);
+        }
+        this.postHandle(event);
+    }
+
+    shouldReconnect(event) {
+        return true;
+    }
+
+    onReconnecting(event) {}
+
+    onConnectionFailed(event) {}
+
+    postHandle(event) {}
+}
+
+//======================================
+
+export class EzyDisconnectionHandler {
+    handle(event) {
+        var reason = event.reason;
+        const reasonName = Const.EzyDisconnectReasonNames.parse(reason);
+        Util.EzyLogger.console('handle disconnection, reason = ' + reasonName);
+        this.preHandle(event);
+        var config = this.client.config;
+        var reconnectConfig = config.reconnect;
+        var should = this.shouldReconnect(event);
+        var mustReconnect =
+            reconnectConfig.enable &&
+            reason !== Const.EzyDisconnectReason.UNAUTHORIZED &&
+            reason !== Const.EzyDisconnectReason.CLOSE &&
+            should;
+        var reconnecting = false;
+        this.client.status = Const.EzyConnectionStatus.DISCONNECTED;
+        if (mustReconnect) {
+            reconnecting = this.client.reconnect();
+        }
+        if (reconnecting) {
+            this.onReconnecting(event);
+        } else {
+            this.onDisconnected(event);
+        }
+        this.postHandle(event);
+    }
+
+    preHandle(event) {}
+
+    shouldReconnect(event) {
+        var reason = event.reason;
+        if (reason === Const.EzyDisconnectReason.ANOTHER_SESSION_LOGIN)
+            return false;
+        return true;
+    }
+
+    onReconnecting(event) {}
+
+    onDisconnected(event) {}
+
+    postHandle(event) {}
+}
+
+//======================================
+
+class EzyEventHandlers {
+    constructor(client) {
+        this.handlers = {};
+        this.client = client;
+        this.pingSchedule = client.pingSchedule;
+    }
+
+    addHandler(eventType, handler) {
+        handler.client = this.client;
+        handler.pingSchedule = this.pingSchedule;
+        this.handlers[eventType] = handler;
+    }
+
+    getHandler(eventType) {
+        var handler = this.handlers[eventType];
+        return handler;
+    }
+}
+
+export default {
+    EzyConnectionSuccessHandler,
+    EzyConnectionFailureHandler,
+    EzyDisconnectionHandler,
+    EzyEventHandlers,
+};
