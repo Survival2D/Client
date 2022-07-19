@@ -1,0 +1,4 @@
+simulator
+Debug.win32
+*.obj
+.vs

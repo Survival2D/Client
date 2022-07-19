@@ -54,7 +54,7 @@ var HelloWorldLayer = cc.Layer.extend({
             y: size.height / 2
         });
         this.addChild(this.sprite, 0);
-
+        cc.log("Tien log o day")
         return true;
     }
 });
