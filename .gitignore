@@ -1,4 +1,11 @@
 simulator
+build
 Debug.win32
 *.obj
 .vs
+# .idea
+.externalNativeBuild
+.gradle
+*.apk
+debug
+*.iml
