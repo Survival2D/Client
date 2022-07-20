@@ -1,6 +1,7 @@
 *.apk
 *.iml
 *.obj
+.cxx
 .externalNativeBuild
 .gradle
 .idea
