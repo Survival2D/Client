@@ -12,7 +12,11 @@
     "modules" : ["cocos2d"],
 
     "jsList" : [
+        "src/ezyclient.js",
+
+        "src/socket.js",
         "src/resource.js",
-        "src/app.js"
+        "src/app.js",
+        "src/test.js"
     ]
 }
