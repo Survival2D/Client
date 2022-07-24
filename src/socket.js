@@ -41,11 +41,23 @@ setupPlugin.addDataHandler("spin", function (plugin, data) {
 
 cc.log("Start connect");
 client.connect("ws://127.0.0.1:2208/ws");
-cc.log("End connect")
 
 var sendSpinRequest = function () {
     var plugin = client.getPlugin();
     if (plugin != null) {
         plugin.send("spin");
+    }
+}
+
+var sendTestRequest = function () {
+    cc.log("sendTestRequest");
+    var plugin = client.getPlugin();
+    if (plugin != null) {
+        plugin.send("test", {
+            "arr": [1, 2, 3, 4],
+            "obj": {
+                "key": "value"
+            }
+        });
     }
 }
