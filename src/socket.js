@@ -1,7 +1,7 @@
 EzyLogger.debug = true;
 
-const ZONE_NAME = "survival2d";
-const PLUGIN_NAME = "survival2d";
+var ZONE_NAME = "survival2d";
+var PLUGIN_NAME = "survival2d";
 
 var handshakeHandler = new EzyHandshakeHandler();
 handshakeHandler.getLoginRequest = function (context) {
