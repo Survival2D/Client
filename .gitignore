@@ -10,7 +10,8 @@ Debug.win32
 Release.win32
 build
 debug
-release
+dist
+node_modules
 publish
+release
 simulator
-/script
