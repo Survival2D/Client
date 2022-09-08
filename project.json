@@ -14,9 +14,16 @@
     "jsList" : [
         "src/ezyclient.js",
 
-        "src/socket.js",
         "src/resource.js",
         "src/app.js",
-        "src/test.js"
+
+        "src/Base/BaseLayer.js",
+        "src/Base/SceneManager.js",
+
+        "src/Network/GameClient.js",
+        "src/Network/InPacket.js",
+
+        "src/Game/LoginScene.js",
+        "src/Game/HomeScene.js"
     ]
 }
