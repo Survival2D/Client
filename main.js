@@ -105,7 +105,8 @@ cc.game.onStart = function(){
 
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
-        SceneManager.getInstance().openLoginScene();
+        // SceneManager.getInstance().openLoginScene();
+        SceneManager.getInstance().openGameScene();
     }, this);
 };
 cc.game.run();

@@ -17,6 +17,10 @@ var BaseLayer = cc.Layer.extend({
         this.setAnchorPoint(0.5,0.5);
     },
 
+    onExit: function () {
+        this._super();
+    },
+
     loadCss: function (json) {
         var jsonLayout = ccs.load("res/ui/" + json);
         this._layout = jsonLayout.node;
@@ -50,14 +54,14 @@ var BaseLayer = cc.Layer.extend({
 
         if(p == null)
         {
-            cc.log("###################### getControl error parent " + cName);
+            cc.log("### getControl error parent " + cName);
             return null;
         }
         var control = ccui.Helper.seekWidgetByName(p,cName);
         if (control == null) control = p.getChildByName(cName);
         if(control == null)
         {
-            cc.log("###################### getControl error control " + cName);
+            cc.log("### getControl error control " + cName);
             return null;
         }
 

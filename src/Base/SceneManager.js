@@ -43,6 +43,16 @@ var SceneManager = cc.Class.extend({
 
         cc.director.runScene(scene);
         return layer;
+    },
+
+    openGameScene: function () {
+        var scene = new cc.Scene();
+        var layer = new GameScene();
+        scene.addChild(layer);
+        layer.setTag(SceneManager.MAIN_LAYER_TAG);
+
+        cc.director.runScene(scene);
+        return layer;
     }
 });
 

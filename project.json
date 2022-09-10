@@ -20,10 +20,15 @@
         "src/Base/BaseLayer.js",
         "src/Base/SceneManager.js",
 
+        "src/Utils/GameMath.js",
+
         "src/Network/GameClient.js",
         "src/Network/InPacket.js",
 
+        "src/Game/Controller.js",
+        "src/Game/GameConfig.js",
         "src/Game/LoginScene.js",
-        "src/Game/HomeScene.js"
+        "src/Game/HomeScene.js",
+        "src/Game/GameScene.js"
     ]
 }
