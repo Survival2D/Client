@@ -13,12 +13,9 @@ var GameScene = BaseLayer.extend({
     initGUI: function () {
         this.ground = this.getControl("ground");
 
-        var drawNode = new cc.DrawNode();
-        drawNode.drawDot(cc.p(0, 0), 30, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 30, 0, 10000, false, 3, cc.color("#000000"));
-        this.addChild(drawNode);
-        drawNode.setPosition(cc.winSize.width/2, cc.winSize.height/2);
-        this.player = drawNode;
+        this.player = new PlayerUI();
+        this.addChild(this.player);
+        this.player.setPosition(cc.winSize.width/2, cc.winSize.height/2);
     },
 
     initKeyBoardController: function () {

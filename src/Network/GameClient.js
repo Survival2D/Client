@@ -67,6 +67,16 @@ var GameClient = cc.Class.extend({
         });
     },
 
+    /**
+     * @param {OutPacket} pk
+     */
+    sendPacket: function (pk) {
+        var plugin = this.client.getPlugin();
+        if (plugin != null) {
+            plugin.send(pk.cmdId, pk.data);
+        }
+    },
+
     sendSpinRequest: function () {
         var plugin = this.client.getPlugin();
         if (plugin != null) {

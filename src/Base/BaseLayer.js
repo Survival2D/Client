@@ -70,44 +70,16 @@ var BaseLayer = cc.Layer.extend({
         return control;
     },
 
-    customButton: function (name, tag, parent, action) {
-        if(action === undefined)
-            action = true;
-
+    customButton: function (name, listener, target, parent) {
         var btn = this.getControl(name, parent);
         if(!btn) return null;
-        btn.setPressedActionEnabled(action);
-        btn.setTag(tag);
-        btn.addTouchEventListener(this.onTouchEventHandler, this);
+        btn.setPressedActionEnabled(true);
+        if (target === undefined) target = this;
+        btn.addTouchEventListener(function (sender, type) {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                listener.call(target);
+            }
+        }, this);
         return btn;
-    },
-
-    onTouchEventHandler: function(sender,type){
-        switch (type){
-            case ccui.Widget.TOUCH_BEGAN:
-                this.onButtonTouched(sender,sender.getTag());
-                break;
-            case ccui.Widget.TOUCH_ENDED:
-                this.onButtonRelease(sender, sender.getTag());
-                break;
-            case ccui.Widget.TOUCH_CANCELED:
-                this.onButtonCanceled(sender, sender.getTag());
-                break;
-        }
-    },
-
-    /**
-     * @abstract
-     */
-    onButtonRelease: function(button,id){},
-
-    /**
-     * @abstract
-     */
-    onButtonTouched: function(button,id){},
-
-    /**
-     * @abstract
-     */
-    onButtonCanceled: function(button,id){},
+    }
 })

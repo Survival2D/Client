@@ -17,18 +17,25 @@
         "src/resource.js",
         "src/app.js",
 
+        "src/Constant.js",
+
         "src/Base/BaseLayer.js",
         "src/Base/SceneManager.js",
 
         "src/Utils/GameMath.js",
 
+        "src/Network/Command.js",
         "src/Network/GameClient.js",
         "src/Network/InPacket.js",
+        "src/Network/OutPacket.js",
 
         "src/Game/Controller.js",
         "src/Game/GameConfig.js",
+        "src/Game/GameManager.js",
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",
-        "src/Game/GameScene.js"
+        "src/Game/LobbyScene.js",
+        "src/Game/GameScene.js",
+        "src/Game/PlayerUI.js"
     ]
 }

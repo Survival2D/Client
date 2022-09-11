@@ -10,18 +10,27 @@ var HomeScene = BaseLayer.extend({
 
     initGUI: function () {
         this.lblGameTitle = this.getControl("lblGameTitle");
-        this.lblName = this.getControl("lblPlayerName");
-        this.customButton("btnFindMatch", HomeScene.BTN_FIND_MATCH);
+        this.lblName = this.getControl("lblName");
+        this.customButton("btnFindMatch", this.onFindMatch, this);
+        this.customButton("btnFindSquad", this.onFindSquad, this);
+        this.customButton("btnCreateSquad", this.onCreateSquad, this);
     },
 
-    onButtonRelease: function (btn, tag) {
-        switch (tag) {
-            case HomeScene.BTN_FIND_MATCH:
-                break;
-        }
+    onEnter: function () {
+        this._super();
+    },
+
+    onFindMatch: function () {
+        GameManager.getInstance().findMatch();
+    },
+
+    onFindSquad: function () {
+        GameManager.getInstance().findSquad();
+    },
+
+    onCreateSquad: function () {
+        GameManager.getInstance().createSquad();
     }
 });
 
 HomeScene.className = "HomeScene";
-
-HomeScene.BTN_FIND_MATCH = 1;
