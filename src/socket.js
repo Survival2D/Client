@@ -56,8 +56,23 @@ var sendTestRequest = function () {
         plugin.send("test", {
             "arr": [1, 2, 3, 4],
             "obj": {
-                "key": "value"
-            }
+                key: "value"
+            },
+            "tests": [
+                {
+                    name: "test1",
+                    position: {
+                        x: 0,
+                        y: 1
+                    }
+                }, {
+                    name: "tiennmnon",
+                    position: {
+                        x: 0.2,
+                        y: 1.3
+                    }
+                }
+            ]
         });
     }
 }
