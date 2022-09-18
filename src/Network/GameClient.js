@@ -51,10 +51,10 @@ var GameClient = cc.Class.extend({
         this.client.connect("ws://127.0.0.1:2208/ws");
         cc.log("End connect");
 
-        cc.log("Tien log o day");
-        setInterval(() => {
-            this.sendSpinRequest();
-        }, 1000);
+        // cc.log("Tien log o day");
+        // setInterval(() => {
+        //     this.sendSpinRequest();
+        // }, 1000);
     },
 
     initListener: function () {
