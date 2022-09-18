@@ -10,19 +10,15 @@ var LoginScene = BaseLayer.extend({
 
     initGUI: function () {
         this.lblGameTitle = this.getControl("lblGameTitle");
-        this.customButton("btnLogin", LoginScene.BTN_LOGIN);
+        this.customButton("btnLogin", this.onLogin, this);
     },
 
     onEnter: function () {
         this._super();
     },
 
-    onButtonRelease: function (btn, tag) {
-        switch (tag) {
-            case LoginScene.BTN_LOGIN:
-                GameClient.newInstance().connectClientServer();
-                break;
-        }
+    onLogin: function () {
+        GameClient.newInstance().connectClientServer();
     }
 });
 
