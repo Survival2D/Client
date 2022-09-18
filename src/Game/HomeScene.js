@@ -12,8 +12,8 @@ var HomeScene = BaseLayer.extend({
         this.lblGameTitle = this.getControl("lblGameTitle");
         this.lblName = this.getControl("lblName");
         this.customButton("btnFindMatch", this.onFindMatch, this);
-        this.customButton("btnFindSquad", this.onFindSquad, this);
-        this.customButton("btnCreateSquad", this.onCreateSquad, this);
+        this.customButton("btnJoinTeam", this.onJoinTeam, this);
+        this.customButton("btnCreateTeam", this.onCreateTeam, this);
     },
 
     onEnter: function () {
@@ -27,11 +27,11 @@ var HomeScene = BaseLayer.extend({
         GameManager.getInstance().findMatch();
     },
 
-    onFindSquad: function () {
+    onJoinTeam: function () {
         GameManager.getInstance().joinTeam();
     },
 
-    onCreateSquad: function () {
+    onCreateTeam: function () {
         GameManager.getInstance().createTeam();
     }
 });
