@@ -18,6 +18,9 @@ var HomeScene = BaseLayer.extend({
 
     onEnter: function () {
         this._super();
+
+        var userData = GameManager.getInstance().userData;
+        this.lblName.setString(userData.username);
     },
 
     onFindMatch: function () {
@@ -25,11 +28,11 @@ var HomeScene = BaseLayer.extend({
     },
 
     onFindSquad: function () {
-        GameManager.getInstance().findSquad();
+        GameManager.getInstance().joinTeam();
     },
 
     onCreateSquad: function () {
-        GameManager.getInstance().createSquad();
+        GameManager.getInstance().createTeam();
     }
 });
 

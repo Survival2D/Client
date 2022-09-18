@@ -13,3 +13,37 @@ var InPacket = cc.Class.extend({
         }
     }
 });
+
+var ReceivedUserInfo = InPacket.extend({
+    ctor: function (data) {
+        this.username = null;
+
+        this.parseData(data);
+    }
+});
+
+var ReceivedFindMatch = InPacket.extend({
+    ctor: function (data) {
+        this.result = null;
+        this.gameId = null;
+
+        this.parseData(data);
+    }
+});
+
+var ReceivedCreateTeam = InPacket.extend({
+    ctor: function (data) {
+        this.teamId = null;
+
+        this.parseData(data);
+    }
+});
+
+var ReceivedJoinTeam = InPacket.extend({
+    ctor: function (data) {
+        this.result = null;
+        this.teamId = null;
+
+        this.parseData(data);
+    }
+});

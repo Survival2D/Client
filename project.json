@@ -32,6 +32,9 @@
         "src/Game/Controller.js",
         "src/Game/GameConfig.js",
         "src/Game/GameManager.js",
+        "src/Game/MatchManager.js",
+        "src/Game/UserData.js",
+
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",
         "src/Game/LobbyScene.js",

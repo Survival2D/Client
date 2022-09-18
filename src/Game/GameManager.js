@@ -4,23 +4,43 @@
 
 var GameManager = cc.Class.extend({
     ctor: function () {
-
+        this.userData = new UserData();
+        this.match = null;
     },
 
     findMatch: function () {
+        GameClient.getInstance().sendFindMatch();
+    },
+
+    joinTeam: function () {
+        GameClient.getInstance().sendJoinTeam();
+    },
+
+    createTeam: function () {
+        GameClient.getInstance().sendCreateTeam();
+    },
+
+    findMatchWithTeam: function () {
         SceneManager.getInstance().openGameScene();
     },
 
-    findSquad: function () {
-        SceneManager.getInstance().openLobbyScene();
+    onReceivedFindMatch: function (error, gameId) {
+        if (!error) {
+            this.match = new MatchManager();
+            this.match.newMatch(gameId);
+        }
     },
 
-    createSquad: function () {
-        SceneManager.getInstance().openLobbyScene();
+    onReceivedCreateTeam: function (error, teamId) {
+        if (!error) {
+            SceneManager.getInstance().openLobbyScene();
+        }
     },
 
-    findMatchWithSquad: function () {
-        SceneManager.getInstance().openGameScene();
+    onReceivedJoinTeam: function (error, teamId) {
+        if (!error) {
+            SceneManager.getInstance().openLobbyScene();
+        }
     }
 });
 

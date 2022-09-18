@@ -4,6 +4,11 @@
 
 var Cmd = Cmd || {};
 
+Cmd.GET_USER_INFO = "getUserInfo";
+Cmd.CREATE_TEAM = "createTeam";
+Cmd.JOIN_TEAM = "joinTeam";
+Cmd.FIND_MATCH = "findMatch";
+
 Cmd.MOVE = "move";
 Cmd.JOIN_LOBBY = "joinLobby";
 Cmd.ANOTHER_EXIT_MMO_ROOM = "anotherExitMMORoom";

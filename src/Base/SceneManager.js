@@ -68,6 +68,9 @@ var SceneManager = cc.Class.extend({
 
 SceneManager.MAIN_LAYER_TAG = 101;
 
+/**
+ * @returns {SceneManager}
+ */
 SceneManager.getInstance = function () {
     if (!this._instance) this._instance = new SceneManager();
     return this._instance;

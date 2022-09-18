@@ -30,8 +30,8 @@ var GameClient = cc.Class.extend({
         var pluginInfoHandler = new EzyPluginInfoHandler();
         pluginInfoHandler.postHandle = function (plugin, data) {
             console.log("setup socket client completed");
-            SceneManager.getInstance().openHomeScene();
-        };
+            this.sendGetUserInfo();
+        }.bind(this);
 
         var disconnectionHandler = new EzyDisconnectionHandler();
         disconnectionHandler.preHandle = function (event) {
@@ -65,6 +65,31 @@ var GameClient = cc.Class.extend({
             // prize = data.result;
             // playGame.prototype.spin();
         });
+
+        setupPlugin.addDataHandler(Cmd.GET_USER_INFO, function (plugin, data) {
+            cc.log("RECEIVED GET_USER_INFO", JSON.stringify(data));
+            var pk = new ReceivedUserInfo(data);
+            GameManager.getInstance().userData.setUserData(pk.username);
+            SceneManager.getInstance().openHomeScene();
+        });
+
+        setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
+            cc.log("RECEIVED FIND_MATCH", JSON.stringify(data));
+            var pk = new ReceivedFindMatch(data);
+            GameManager.getInstance().onReceivedFindMatch(pk.result, pk.gameId);
+        });
+
+        setupPlugin.addDataHandler(Cmd.CREATE_TEAM, function (plugin, data) {
+            cc.log("RECEIVED CREATE_TEAM", JSON.stringify(data));
+            var pk = new ReceivedCreateTeam(data);
+            GameManager.getInstance().onReceivedCreateTeam(0, pk.teamId);
+        });
+
+        setupPlugin.addDataHandler(Cmd.JOIN_TEAM, function (plugin, data) {
+            cc.log("RECEIVED JOIN_TEAM", JSON.stringify(data));
+            var pk = new ReceivedJoinTeam(data);
+            GameManager.getInstance().onReceivedJoinTeam(pk.result, pk.teamId);
+        });
     },
 
     /**
@@ -82,14 +107,48 @@ var GameClient = cc.Class.extend({
         if (plugin != null) {
             plugin.send("spin");
         }
+    },
+
+    sendGetUserInfo: function () {
+        var plugin = this.client.getPlugin();
+        if (plugin != null) {
+            plugin.send(Cmd.GET_USER_INFO);
+        }
+    },
+
+    sendFindMatch: function () {
+        var plugin = this.client.getPlugin();
+        if (plugin != null) {
+            plugin.send(Cmd.FIND_MATCH);
+        }
+    },
+
+    sendCreateTeam: function () {
+        var plugin = this.client.getPlugin();
+        if (plugin != null) {
+            plugin.send(Cmd.CREATE_TEAM);
+        }
+    },
+
+    sendJoinTeam: function (teamId = -1) {
+        var plugin = this.client.getPlugin();
+        if (plugin != null) {
+            plugin.send(Cmd.JOIN_TEAM, {teamId: teamId});
+        }
     }
 });
 
+/**
+ * @returns {GameClient}
+ */
 GameClient.getInstance = function () {
     if (!this._instance) this._instance = new GameClient();
     return this._instance;
 }
 
+/**
+ * @returns {GameClient}
+ */
 GameClient.newInstance = function () {
     this._instance = new GameClient();
     return this._instance;
