@@ -17,11 +17,11 @@ gm.Position = function (x, y) {
 }
 
 /**
- * gm.Position creator
+ * gm.Position creator (wrap cc.p)
  * @function
  * @param {Number} x
  * @param {Number} y
- * @returns {cc.Point}
+ * @returns {gm.Position}
  */
 gm.p = function (x, y) {
     return cc.p(x, y);
@@ -82,4 +82,20 @@ gm.normalizeVector = function (vector) {
         vector.x /= length;
         vector.y /= length;
     }
+};
+
+/**
+ * @param degree
+ * @returns {number} radiant
+ */
+gm.degToRad = function (degree) {
+    return degree * Math.PI / 180;
+}
+
+/**
+ * @param radiant
+ * @returns {number} degree
+ */
+gm.radToDeg = function (radiant) {
+    return radiant * 180 / Math.PI;
 }

@@ -8,14 +8,17 @@ var GameScene = BaseLayer.extend({
         this.loadCss("GameScene.json");
         this.controller = new Controller();
         this.initKeyBoardController();
+        this.initMouseController();
     },
 
     initGUI: function () {
         this.ground = this.getControl("ground");
 
-        this.player = new PlayerUI();
-        this.addChild(this.player);
-        this.player.setPosition(cc.winSize.width/2, cc.winSize.height/2);
+        this.myPlayer = new PlayerUI();
+        this.addChild(this.myPlayer);
+        this.myPlayer.setPosition(cc.winSize.width/2, cc.winSize.height/2);
+        var userData = GameManager.getInstance().userData;
+        this.myPlayer.setPlayerUIInfo(userData.username);
     },
 
     initKeyBoardController: function () {
@@ -31,6 +34,25 @@ var GameScene = BaseLayer.extend({
         }, this);
     },
 
+    initMouseController: function () {
+        var that = this;
+        cc.eventManager.addListener({
+            event: cc.EventListener.MOUSE,
+            onMouseDown: function (event) {
+                that.controller.onMouseDown(event.getLocationX(), event.getLocationY());
+            },
+            onMouseUp: function (event) {
+                that.controller.onMouseUp(event.getLocationX(), event.getLocationY());
+            },
+            onMouseMove: function (event) {
+                that.controller.onMouseMove(event.getLocationX(), event.getLocationY());
+            },
+            onMouseScroll: function (event) {
+                that.controller.onMouseScroll();
+            },
+        }, this);
+    },
+
     onEnter: function () {
         this._super();
         this.ground.setContentSize(4000, 3000);
@@ -43,16 +65,13 @@ var GameScene = BaseLayer.extend({
         this._super();
     },
 
-    onButtonRelease: function (btn, tag) {
-        switch (tag) {
-
-        }
-    },
-
     update: function (dt) {
         var unitVector = this.controller.calculateMovementVector();
-        var newPos = gm.calculatePosition(this.player.getPosition(), unitVector, Config.PLAYER_BASE_SPEED);
-        this.player.setPosition(newPos);
+        var newPos = gm.calculatePosition(this.myPlayer.getPosition(), unitVector, Config.PLAYER_BASE_SPEED);
+        this.myPlayer.setPosition(newPos);
+
+        var deg = gm.radToDeg(this.controller.calculateRotation(this.myPlayer.getPosition()));
+        this.myPlayer.setRotation(deg);
     }
 });
 

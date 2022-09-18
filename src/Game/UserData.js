@@ -4,7 +4,7 @@
 
 var UserData = cc.Class.extend({
     ctor: function () {
-        this.username = "";
+        this.username = "quantm7";
     },
 
     setUserData: function (username) {

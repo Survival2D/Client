@@ -8,10 +8,12 @@ var Controller = cc.Class.extend({
         this.isDown = false;
         this.isLeft = false;
         this.isRight = false;
+
+        this.destPos = gm.p(0, 0);
     },
 
     onKeyPressed: function (keyCode) {
-        cc.log(" Key Press: " + keyCode);
+        Controller.log(" Key Press: " + keyCode);
         switch (keyCode) {
             case cc.KEY.w:
                 this.isUp = true;
@@ -29,7 +31,7 @@ var Controller = cc.Class.extend({
     },
 
     onKeyReleased: function (keyCode) {
-        cc.log(" Key Release: " + keyCode);
+        Controller.log(" Key Release: " + keyCode);
         switch (keyCode) {
             case cc.KEY.w:
                 this.isUp = false;
@@ -46,6 +48,23 @@ var Controller = cc.Class.extend({
         }
     },
 
+    onMouseDown: function (x = 0, y = 0) {
+        Controller.log("Mouse Down: " + x + ", " + y);
+    },
+
+    onMouseUp: function (x = 0, y = 0) {
+        Controller.log("Mouse Up: " + x + ", " + y);
+    },
+
+    onMouseMove: function (x = 0, y = 0) {
+        Controller.log("Mouse Move: " + x + ", " + y);
+        this.destPos = gm.p(x, y);
+    },
+
+    onMouseScroll: function () {
+
+    },
+
     /**
      * @returns {gm.Vector}
      */
@@ -60,5 +79,20 @@ var Controller = cc.Class.extend({
         vector.normalize();
 
         return vector;
+    },
+
+    calculateRotation: function (originPos = gm.p(0, 0)) {
+        var dx = this.destPos.x - originPos.x;
+        var dy = this.destPos.y - originPos.y;
+        var angle = Math.atan(dx/dy);
+        if (dy < 0) angle = Math.PI + angle;
+
+        return angle;
     }
 });
+
+Controller.ENABLE_LOG_INPUT = false;
+
+Controller.log = function () {
+    if (Controller.ENABLE_LOG_INPUT) cc.log.apply(null, arguments);
+}
