@@ -18,7 +18,7 @@ var GameClient = cc.Class.extend({
 
         var handshakeHandler = new EzyHandshakeHandler();
         handshakeHandler.getLoginRequest = function (context) {
-            return [ZONE_NAME, "Guest", "123456", []];
+            return [ZONE_NAME, "", "", []];
         };
 
         var userLoginHandler = new EzyLoginSuccessHandler();
