@@ -10,6 +10,10 @@ var LoginScene = BaseLayer.extend({
 
     initGUI: function () {
         this.lblGameTitle = this.getControl("lblGameTitle");
+
+        this.tfUsername = this.getControl("tfUsername");
+        this.tfPassword = this.getControl("tfPassword");
+
         this.customButton("btnLogin", this.onLogin, this);
     },
 
@@ -18,7 +22,13 @@ var LoginScene = BaseLayer.extend({
     },
 
     onLogin: function () {
-        GameClient.newInstance().connectClientServer();
+        var username = this.tfUsername.getString();
+        var password = this.tfPassword.getString();
+        cc.log("username: ", username);
+        cc.log("password: ", password);
+        if (!username) username = "";
+        if (!password) password = "";
+        GameClient.newInstance().connectClientServer(username, password);
     }
 });
 

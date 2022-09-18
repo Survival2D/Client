@@ -13,12 +13,12 @@ var GameClient = cc.Class.extend({
         this.client = null;
     },
 
-    connectClientServer: function () {
+    connectClientServer: function (username, password) {
         EzyLogger.debug = true;
 
         var handshakeHandler = new EzyHandshakeHandler();
         handshakeHandler.getLoginRequest = function (context) {
-            return [ZONE_NAME, "", "", []];
+            return [ZONE_NAME, username, password, []];
         };
 
         var userLoginHandler = new EzyLoginSuccessHandler();

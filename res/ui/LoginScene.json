@@ -15,7 +15,7 @@
         "Tag": 29,
         "Children": [
           {
-            "FontSize": 40,
+            "FontSize": 50,
             "LabelText": "Survival 2D",
             "HorizontalAlignmentType": "HT_Center",
             "OutlineColor": {
@@ -34,8 +34,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
-              "Y": 500.184
+              "X": 639.9999,
+              "Y": 554.4
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -47,21 +47,21 @@
             "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.5,
-              "Y": 0.6947
+              "Y": 0.77
             },
             "PreSize": {
-              "X": 0.1555,
-              "Y": 0.0625
+              "X": 0.2016,
+              "Y": 0.0792
             },
-            "LeftMargin": 540.5,
-            "RightMargin": 540.5,
-            "TopMargin": 197.316,
-            "BottomMargin": 477.684,
+            "LeftMargin": 510.9999,
+            "RightMargin": 511.0001,
+            "TopMargin": 137.1,
+            "BottomMargin": 525.9,
             "Tag": 31,
             "ActionTag": 810016060,
             "Size": {
-              "X": 199.0,
-              "Y": 45.0
+              "X": 258.0,
+              "Y": 57.0
             },
             "Name": "lblGameTitle",
             "ctype": "TextObjectData"
@@ -112,7 +112,7 @@
             },
             "Position": {
               "X": 640.0,
-              "Y": 278.784
+              "Y": 216.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -124,16 +124,16 @@
             "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.5,
-              "Y": 0.3872
+              "Y": 0.3
             },
             "PreSize": {
-              "X": 0.1563,
+              "X": 0.1562,
               "Y": 0.1111
             },
             "LeftMargin": 540.0,
             "RightMargin": 540.0,
-            "TopMargin": 401.216,
-            "BottomMargin": 238.784,
+            "TopMargin": 464.0,
+            "BottomMargin": 176.0,
             "Tag": 30,
             "ActionTag": 871770775,
             "Size": {
@@ -142,6 +142,199 @@
             },
             "Name": "btnLogin",
             "ctype": "ButtonObjectData"
+          },
+          {
+            "FontSize": 40,
+            "IsCustomSize": true,
+            "LabelText": "",
+            "PlaceHolderText": "Guest",
+            "MaxLengthText": 10,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 576.0,
+              "Y": 417.6
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.45,
+              "Y": 0.58
+            },
+            "PreSize": {
+              "X": 0.1562,
+              "Y": 0.0625
+            },
+            "LeftMargin": 576.0,
+            "RightMargin": 504.0,
+            "TopMargin": 279.9,
+            "BottomMargin": 395.1,
+            "Tag": 10,
+            "ActionTag": -433531359,
+            "Size": {
+              "X": 200.0,
+              "Y": 45.0
+            },
+            "Name": "tfUsername",
+            "ctype": "TextFieldObjectData"
+          },
+          {
+            "FontSize": 40,
+            "IsCustomSize": true,
+            "LabelText": "",
+            "PlaceHolderText": "******",
+            "MaxLengthText": 10,
+            "PasswordEnable": true,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 576.0,
+              "Y": 360.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.45,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.1562,
+              "Y": 0.0625
+            },
+            "LeftMargin": 576.0,
+            "RightMargin": 504.0,
+            "TopMargin": 337.5,
+            "BottomMargin": 337.5,
+            "Tag": 11,
+            "ActionTag": 2040157027,
+            "Size": {
+              "X": 200.0,
+              "Y": 45.0
+            },
+            "Name": "tfPassword",
+            "ctype": "TextFieldObjectData"
+          },
+          {
+            "FontSize": 40,
+            "LabelText": "Name",
+            "HorizontalAlignmentType": "HT_Right",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 550.4,
+              "Y": 417.6
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.43,
+              "Y": 0.58
+            },
+            "PreSize": {
+              "X": 0.0836,
+              "Y": 0.0625
+            },
+            "LeftMargin": 443.4,
+            "RightMargin": 729.6,
+            "TopMargin": 279.9,
+            "BottomMargin": 395.1,
+            "Tag": 12,
+            "ActionTag": 1513703005,
+            "Size": {
+              "X": 107.0,
+              "Y": 45.0
+            },
+            "Name": "lblUsername",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 40,
+            "LabelText": "Password",
+            "HorizontalAlignmentType": "HT_Right",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 550.4,
+              "Y": 360.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.43,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.1352,
+              "Y": 0.0625
+            },
+            "LeftMargin": 377.4,
+            "RightMargin": 729.6,
+            "TopMargin": 337.5,
+            "BottomMargin": 337.5,
+            "Tag": 13,
+            "ActionTag": -2012903210,
+            "Size": {
+              "X": 173.0,
+              "Y": 45.0
+            },
+            "Name": "lblPassword",
+            "ctype": "TextObjectData"
           }
         ],
         "Size": {
