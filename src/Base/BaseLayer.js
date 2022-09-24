@@ -26,7 +26,7 @@ var BaseLayer = cc.Layer.extend({
         this._layout = jsonLayout.node;
         this._action = jsonLayout.action;
         this._layout.setContentSize(cc.director.getWinSize());
-        ccui.Helper.doLayout(this._layout);
+        ccui.helper.doLayout(this._layout);
         this.addChild(this._layout);
 
         this.initGUI();
@@ -45,7 +45,7 @@ var BaseLayer = cc.Layer.extend({
         }
         else if(typeof parent === 'string')
         {
-            p = ccui.Helper.seekWidgetByName(this._layout, parent);
+            p = ccui.helper.seekWidgetByName(this._layout, parent);
         }
         else
         {
@@ -57,7 +57,7 @@ var BaseLayer = cc.Layer.extend({
             cc.log("### getControl error parent " + cName);
             return null;
         }
-        var control = ccui.Helper.seekWidgetByName(p,cName);
+        var control = ccui.helper.seekWidgetByName(p,cName);
         if (control == null) control = p.getChildByName(cName);
         if(control == null)
         {
