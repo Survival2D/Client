@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 var res = {
-
+  LOGIN_SCENE: "res/ui/LoginScene.json",
 };
 
 var g_resources = [];
