@@ -220,7 +220,7 @@
           },
           {
             "FontSize": 28,
-            "ButtonText": "Create Squad",
+            "ButtonText": "Create Team",
             "TextColor": {
               "R": 65,
               "G": 65,
