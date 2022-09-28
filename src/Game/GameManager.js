@@ -41,6 +41,13 @@ var GameManager = cc.Class.extend({
         if (!error) {
             SceneManager.getInstance().openLobbyScene();
         }
+    },
+
+    /**
+     * @returns {null|MatchManager}
+     */
+    getCurrentMatch: function () {
+        return this.match;
     }
 });
 

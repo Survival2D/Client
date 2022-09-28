@@ -30,13 +30,15 @@
             "ColorVector": {
               "ScaleY": 1.0
             },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
             "TouchEnable": true,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 638.1226,
+              "X": 640.0,
               "Y": 360.0
             },
             "Scale": {
@@ -48,7 +50,7 @@
             "PositionPercentXEnabled": true,
             "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.4985,
+              "X": 0.5,
               "Y": 0.5
             },
             "PercentWidthEnable": true,
@@ -59,8 +61,6 @@
               "X": 1.0,
               "Y": 1.0
             },
-            "LeftMargin": -1.8774,
-            "RightMargin": 1.8774,
             "Tag": 9,
             "ActionTag": 573504242,
             "Size": {

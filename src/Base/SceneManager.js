@@ -55,6 +55,9 @@ var SceneManager = cc.Class.extend({
         return layer;
     },
 
+    /**
+     * @returns {GameScene}
+     */
     openGameScene: function () {
         var scene = new cc.Scene();
         var layer = new GameScene();

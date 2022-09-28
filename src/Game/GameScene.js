@@ -65,13 +65,28 @@ var GameScene = BaseLayer.extend({
         this._super();
     },
 
+    updateMatchView: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        if (!match) return;
+        this.playerUIs = [];
+        for (let player of match.players) {
+            let playerUI = new PlayerUI();
+            this.addChild(playerUI);
+            playerUI.setPosition(cc.winSize.width/2, cc.winSize.height/2);
+            playerUI.setPlayerUIInfo(player.username);
+            this.playerUIs.push(playerUI);
+        }
+    },
+
     update: function (dt) {
         var unitVector = this.controller.calculateMovementVector();
         var newPos = gm.calculatePosition(this.myPlayer.getPosition(), unitVector, Config.PLAYER_BASE_SPEED);
         this.myPlayer.setPosition(newPos);
 
         var deg = gm.radToDeg(this.controller.calculateRotation(this.myPlayer.getPosition()));
-        this.myPlayer.setRotation(deg);
+        this.myPlayer.setPlayerRotation(deg);
+
+        GameClient.getInstance().sendPlayerMoveAction(newPos, deg);
     }
 });
 

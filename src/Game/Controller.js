@@ -2,7 +2,7 @@
  * Created by quantm7 on 9/10/2022.
  */
 
-var Controller = cc.Class.extend({
+const Controller = cc.Class.extend({
     ctor: function () {
         this.isUp = false;
         this.isDown = false;
@@ -33,6 +33,7 @@ var Controller = cc.Class.extend({
     onKeyReleased: function (keyCode) {
         Controller.log(" Key Release: " + keyCode);
         switch (keyCode) {
+            // move keyboard
             case cc.KEY.w:
                 this.isUp = false;
                 break;
@@ -44,6 +45,11 @@ var Controller = cc.Class.extend({
                 break;
             case cc.KEY.d:
                 this.isRight = false;
+                break;
+
+            // control keyboard
+            case cc.KEY.f:
+
                 break;
         }
     },
@@ -82,9 +88,9 @@ var Controller = cc.Class.extend({
     },
 
     calculateRotation: function (originPos = gm.p(0, 0)) {
-        var dx = this.destPos.x - originPos.x;
-        var dy = this.destPos.y - originPos.y;
-        var angle = Math.atan(dx/dy);
+        let dx = this.destPos.x - originPos.x;
+        let dy = this.destPos.y - originPos.y;
+        let angle = Math.atan(dx/dy);
         if (dy < 0) angle = Math.PI + angle;
 
         return angle;

@@ -90,6 +90,10 @@ var GameClient = cc.Class.extend({
             var pk = new ReceivedJoinTeam(data);
             GameManager.getInstance().onReceivedJoinTeam(pk.result, pk.teamId);
         });
+
+        setupPlugin.addDataHandler(Cmd.MATCH_INFO, function (plugin, data) {
+            cc.log("RECEIVED MATCH_INFO", JSON.stringify(data));
+        });
     },
 
     /**
@@ -134,6 +138,13 @@ var GameClient = cc.Class.extend({
         var plugin = this.client.getPlugin();
         if (plugin != null) {
             plugin.send(Cmd.JOIN_TEAM, {teamId: teamId});
+        }
+    },
+
+    sendPlayerMoveAction: function (pos = gm.p(0, 0), rotation = 0) {
+        let plugin = this.client.getPlugin();
+        if (plugin != null) {
+            plugin.send(Cmd.PLAYER_MOVE, {position: pos, rotation: rotation});
         }
     }
 });
