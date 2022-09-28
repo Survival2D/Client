@@ -13,7 +13,7 @@ const MatchManager = cc.Class.extend({
 
     newMatch: function (matchId) {
         this.matchId = "";
-        this.scene = SceneManager.getInstance().openGameScene();
+        this.scene = SceneManager.getInstance().openMatchScene();
         this.scene.updateMatchView();
     }
 });

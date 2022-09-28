@@ -86,10 +86,12 @@ var MatchScene = BaseLayer.extend({
 
         let oldRotation = this.myPlayer.getPlayerRotation();
         let rotation = gm.radToDeg(this.controller.calculateRotation(this.myPlayer.getPosition()));
+        rotation = Math.round(rotation);
         this.myPlayer.setPlayerRotation(rotation);
 
-        if (oldPos.x !== newPos.x || oldPos.y || newPos.y || oldRotation !== rotation)
+        if (oldRotation !== rotation) {
             GameClient.getInstance().sendPlayerMoveAction(newPos, rotation);
+        }
     }
 });
 

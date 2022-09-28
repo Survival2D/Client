@@ -22,7 +22,7 @@ var BaseLayer = cc.Layer.extend({
     },
 
     loadCss: function (json) {
-        var jsonLayout = ccs.load("res/ui/" + json);
+        var jsonLayout = ccs.load(json);
         this._layout = jsonLayout.node;
         this._action = jsonLayout.action;
         this._layout.setContentSize(cc.director.getWinSize());
