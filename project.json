@@ -44,7 +44,7 @@
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",
         "src/Game/LobbyScene.js",
-        "src/Game/GameScene.js",
+        "src/Game/MatchScene.js",
         "src/Game/PlayerUI.js"
     ]
 }

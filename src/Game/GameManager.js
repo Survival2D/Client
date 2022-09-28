@@ -21,7 +21,7 @@ var GameManager = cc.Class.extend({
     },
 
     findMatchWithTeam: function () {
-        SceneManager.getInstance().openGameScene();
+
     },
 
     onReceivedFindMatch: function (error, gameId) {

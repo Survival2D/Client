@@ -56,11 +56,11 @@ var SceneManager = cc.Class.extend({
     },
 
     /**
-     * @returns {GameScene}
+     * @returns {MatchScene}
      */
     openGameScene: function () {
         var scene = new cc.Scene();
-        var layer = new GameScene();
+        var layer = new MatchScene();
         scene.addChild(layer);
         layer.setTag(SceneManager.MAIN_LAYER_TAG);
 

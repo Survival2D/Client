@@ -24,6 +24,9 @@
 
 var res = {
   LOGIN_SCENE: "res/ui/LoginScene.json",
+  LOBBY_SCENE: "res/ui/LobbyScene.json",
+  HOME_SCENE: "res/ui/HomeScene.json",
+  MATCH_SCENE: "res/ui/MatchScene.json",
 };
 
 var g_resources = [];

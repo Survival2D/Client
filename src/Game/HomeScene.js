@@ -5,7 +5,7 @@
 var HomeScene = BaseLayer.extend({
     ctor: function () {
         this._super(HomeScene.className);
-        this.loadCss("HomeScene.json");
+        this.loadCss(res.HOME_SCENE);
     },
 
     initGUI: function () {
@@ -19,8 +19,8 @@ var HomeScene = BaseLayer.extend({
     onEnter: function () {
         this._super();
 
-        var userData = GameManager.getInstance().userData;
-        this.lblName.setString(userData.username);
+        let userData = GameManager.getInstance().userData;
+        this.lblName.setString("Player: " + userData.username);
     },
 
     onFindMatch: function () {

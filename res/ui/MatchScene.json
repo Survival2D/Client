@@ -1,7 +1,7 @@
 {
   "ID": "37719ff9-52a0-4103-b88c-aa56b4c73c06",
   "Version": "3.10.0.0",
-  "Name": "GameScene",
+  "Name": "MatchScene",
   "Content": {
     "Content": {
       "Animation": {

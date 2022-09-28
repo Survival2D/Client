@@ -2,10 +2,10 @@
  * Created by quantm7 on 9/10/2022.
  */
 
-var GameScene = BaseLayer.extend({
+var MatchScene = BaseLayer.extend({
     ctor: function () {
-        this._super(GameScene.className);
-        this.loadCss("GameScene.json");
+        this._super(MatchScene.className);
+        this.loadCss(res.MATCH_SCENE);
         this.controller = new Controller();
         this.initKeyBoardController();
         this.initMouseController();
@@ -79,15 +79,18 @@ var GameScene = BaseLayer.extend({
     },
 
     update: function (dt) {
-        var unitVector = this.controller.calculateMovementVector();
-        var newPos = gm.calculatePosition(this.myPlayer.getPosition(), unitVector, Config.PLAYER_BASE_SPEED);
+        let oldPos = this.myPlayer.getPosition();
+        let unitVector = this.controller.calculateMovementVector();
+        let newPos = gm.calculatePosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
         this.myPlayer.setPosition(newPos);
 
-        var deg = gm.radToDeg(this.controller.calculateRotation(this.myPlayer.getPosition()));
-        this.myPlayer.setPlayerRotation(deg);
+        let oldRotation = this.myPlayer.getPlayerRotation();
+        let rotation = gm.radToDeg(this.controller.calculateRotation(this.myPlayer.getPosition()));
+        this.myPlayer.setPlayerRotation(rotation);
 
-        GameClient.getInstance().sendPlayerMoveAction(newPos, deg);
+        if (oldPos.x !== newPos.x || oldPos.y || newPos.y || oldRotation !== rotation)
+            GameClient.getInstance().sendPlayerMoveAction(newPos, rotation);
     }
 });
 
-GameScene.className = "GameScene";
+MatchScene.className = "MatchScene";

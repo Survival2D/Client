@@ -5,7 +5,7 @@
 var LobbyScene = BaseLayer.extend({
     ctor: function () {
         this._super(LobbyScene.className);
-        this.loadCss("LobbyScene.json");
+        this.loadCss(res.LOBBY_SCENE);
     },
 
     initGUI: function () {
@@ -14,7 +14,7 @@ var LobbyScene = BaseLayer.extend({
     },
 
     onStart: function () {
-        GameManager.getInstance().findMatchWithSquad();
+        GameManager.getInstance().findMatchWithTeam();
     }
 });
 

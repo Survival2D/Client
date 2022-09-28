@@ -59,6 +59,10 @@ const PlayerUI = cc.Node.extend({
         this._body.setRotation(deg);
     },
 
+    getPlayerRotation: function () {
+        return this._body.getRotation();
+    },
+
     equipGun: function (id) {
         this._gun.changeGun(id);
         this._gun.setVisible(true);
