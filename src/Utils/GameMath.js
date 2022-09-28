@@ -24,7 +24,7 @@ gm.Position = function (x, y) {
  * @returns {gm.Position}
  */
 gm.p = function (x, y) {
-    return cc.p(x, y);
+    return new gm.Position(x, y);
 }
 
 /**

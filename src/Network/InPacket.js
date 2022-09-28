@@ -2,128 +2,139 @@
  * Created by quantm7 on 9/8/2022.
  */
 
-var InPacket = cc.Class.extend({
-    ctor: function () {
-
+const InPacket = cc.Class.extend({
+    ctor: function (data) {
+        this.parseData(this, data);
     },
 
-    parseData: function (data) {
-        for (var key in this) {
-            if (data[key]) this[key] = data[key];
+    /**
+     * recursive function that parse all data field of a node
+     * @param node
+     * @param data
+     */
+    parseData: function (node, data) {
+        for (let key in node) {
+            let childNode = node[key];
+            let childData = data[key];
+            if (typeof childData != "undefined") {
+                if (typeof childNode == "object") this.parseData(childNode, childData);
+                else childNode = childData;
+            }
         }
     }
 });
 
-var ReceivedUserInfo = InPacket.extend({
-    ctor: function (data) {
-        this.username = null;
-
-        this.parseData(data);
-    }
-});
-
-var ReceivedFindMatch = InPacket.extend({
-    ctor: function (data) {
-        this.result = null;
-        this.gameId = null;
-
-        this.parseData(data);
-    }
-});
-
-var ReceivedCreateTeam = InPacket.extend({
-    ctor: function (data) {
-        this.teamId = null;
-
-        this.parseData(data);
-    }
-});
-
-var ReceivedJoinTeam = InPacket.extend({
-    ctor: function (data) {
-        this.result = null;
-        this.teamId = null;
-
-        this.parseData(data);
-    }
-});
-
-var ReceivedNewPlayerJoin = InPacket.extend({
+const ReceivedUserInfo = InPacket.extend({
     ctor: function (data) {
         this.username = "";
-        this.uid = 0;
-        this.teamId = 0;
-
-        this.parseData(data);
+        
+        this._super(data);
     }
 });
 
-var ReceivedNewTeamJoin = InPacket.extend({
+const ReceivedFindMatch = InPacket.extend({
+    ctor: function (data) {
+        this.result = 0;
+        this.gameId = 0;
+
+        this._super(data);
+    }
+});
+
+const ReceivedCreateTeam = InPacket.extend({
+    ctor: function (data) {
+        this.teamId = 0;
+
+        this._super(data);
+    }
+});
+
+const ReceivedJoinTeam = InPacket.extend({
+    ctor: function (data) {
+        this.result = 0;
+        this.teamId = 0;
+
+        this._super(data);
+    }
+});
+
+const ReceivedNewPlayerJoin = InPacket.extend({
+    ctor: function (data) {
+        this.username = "";
+        this.teamId = 0;
+
+        this._super(data);
+    }
+});
+
+const ReceivedNewTeamJoin = InPacket.extend({
     ctor: function (data) {
         this.teamId = 0;
         this.players = [];
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedPlayerMoveAction = InPacket.extend({
+const ReceivedPlayerMoveAction = InPacket.extend({
     ctor: function (data) {
-        this.uid = 0;
-        this.x = 0;
-        this.y = 0;
+        this.username = "";
+        this.position = new gm.Position(0, 0);
         this.angle = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedPlayerState = InPacket.extend({
+const ReceivedPlayerState = InPacket.extend({
     ctor: function (data) {
-        this.uid = 0;
+        this.username = "";
 
-        this.x = 0;
-        this.y = 0;
+        this.position = new gm.Position(0, 0);
         this.angle = 0;
 
         this.weaponId = 0;
         this.helmetId = 0;
         this.armorId = 0;
+
         this.speed = 0;
 
-        this.parseData(data);
+        this.hp = 0;
+
+        this._super(data);
     }
 });
 
-var ReceivedBulletFired = InPacket.extend({
+const ReceivedBulletFired = InPacket.extend({
     ctor: function (data) {
         this.x = 0;
         this.y = 0;
+        this.angle = 0;
 
         this.type = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedPlayerHit = InPacket.extend({
+const ReceivedPlayerHit = InPacket.extend({
     ctor: function (data) {
         this.uid = 0;
         this.hp = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedPlayerDead = InPacket.extend({
+const ReceivedPlayerDead = InPacket.extend({
     ctor: function (data) {
         this.uid = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedObstacleSpawn = InPacket.extend({
+const ReceivedObstacleSpawn = InPacket.extend({
     ctor: function (data) {
         this.id = 0;
 
@@ -134,29 +145,29 @@ var ReceivedObstacleSpawn = InPacket.extend({
 
         this.hp = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedObstacleHit = InPacket.extend({
+const ReceivedObstacleHit = InPacket.extend({
     ctor: function (data) {
         this.id = 0;
 
         this.hp = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedObstacleDestroyed = InPacket.extend({
+const ReceivedObstacleDestroyed = InPacket.extend({
     ctor: function (data) {
         this.id = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedItemSpawn = InPacket.extend({
+const ReceivedItemSpawn = InPacket.extend({
     ctor: function (data) {
         this.id = 0;
 
@@ -165,11 +176,11 @@ var ReceivedItemSpawn = InPacket.extend({
         this.x = 0;
         this.y = 0;
 
-        this.parseData(data);
+        this._super(data);
     }
 });
 
-var ReceivedUpdateGameState = InPacket.extend({
+const ReceivedUpdateGameState = InPacket.extend({
     ctor: function (data) {
         this.gameId = 0;
 
@@ -179,6 +190,13 @@ var ReceivedUpdateGameState = InPacket.extend({
 
         this.items = [];
 
-        this.parseData(data);
+        this._super(data);
+    }
+});
+
+const ReceivedGameConfig = InPacket.extend({
+    ctor: function (data) {
+
+        this._super(data);
     }
 });
