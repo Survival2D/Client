@@ -2,22 +2,23 @@
  * Created by quantm7 on 9/11/2022.
  */
 
-var GameManager = cc.Class.extend({
+const GameManager = cc.Class.extend({
     ctor: function () {
         this.userData = new UserData();
         this.match = null;
     },
 
     findMatch: function () {
-        GameClient.getInstance().sendFindMatch();
+        GameClient.getInstance().sendEmptyPacket(Cmd.FIND_MATCH);
     },
 
     joinTeam: function () {
-        GameClient.getInstance().sendJoinTeam();
+        let pk = new SendJoinTeam(0);
+        GameClient.getInstance().sendPacket(pk);
     },
 
     createTeam: function () {
-        GameClient.getInstance().sendCreateTeam();
+        GameClient.getInstance().sendEmptyPacket(Cmd.CREATE_TEAM);
     },
 
     findMatchWithTeam: function () {

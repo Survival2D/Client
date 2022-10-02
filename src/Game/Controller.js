@@ -15,6 +15,7 @@ const Controller = cc.Class.extend({
     onKeyPressed: function (keyCode) {
         Controller.log(" Key Press: " + keyCode);
         switch (keyCode) {
+            // move keys
             case cc.KEY.w:
                 this.isUp = true;
                 break;
@@ -33,7 +34,7 @@ const Controller = cc.Class.extend({
     onKeyReleased: function (keyCode) {
         Controller.log(" Key Release: " + keyCode);
         switch (keyCode) {
-            // move keyboard
+            // move keys
             case cc.KEY.w:
                 this.isUp = false;
                 break;
@@ -47,9 +48,9 @@ const Controller = cc.Class.extend({
                 this.isRight = false;
                 break;
 
-            // control keyboard
+            // control keys
             case cc.KEY.f:
-
+                this.pickItem();
                 break;
         }
     },
@@ -70,6 +71,14 @@ const Controller = cc.Class.extend({
     onMouseScroll: function () {
 
     },
+
+    // dispatch controller event functions group
+
+    pickItem: function () {
+        GameManager.getInstance().getCurrentMatch().scene.pickItem();
+    },
+
+    // get data from controller functions group
 
     /**
      * @returns {gm.Vector}

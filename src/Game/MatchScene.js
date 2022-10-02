@@ -9,6 +9,8 @@ var MatchScene = BaseLayer.extend({
         this.controller = new Controller();
         this.initKeyBoardController();
         this.initMouseController();
+
+        this.playerUIs = [];
     },
 
     initGUI: function () {
@@ -17,8 +19,8 @@ var MatchScene = BaseLayer.extend({
         this.myPlayer = new PlayerUI();
         this.addChild(this.myPlayer);
         this.myPlayer.setPosition(cc.winSize.width/2, cc.winSize.height/2);
-        var userData = GameManager.getInstance().userData;
-        this.myPlayer.setPlayerUIInfo(userData.username);
+        this.myPlayer.setMyPlayer(true);
+        this.myPlayer.unEquip();
     },
 
     initKeyBoardController: function () {
@@ -57,6 +59,8 @@ var MatchScene = BaseLayer.extend({
         this._super();
         this.ground.setContentSize(4000, 3000);
 
+        this.updateMatchView();
+
         this.scheduleUpdate();
     },
 
@@ -68,13 +72,15 @@ var MatchScene = BaseLayer.extend({
     updateMatchView: function () {
         let match = GameManager.getInstance().getCurrentMatch();
         if (!match) return;
-        this.playerUIs = [];
         for (let player of match.players) {
-            let playerUI = new PlayerUI();
-            this.addChild(playerUI);
+            let playerUI = this.playerUIs[player.playerId];
+            if (!playerUI) {
+                playerUI = new PlayerUI();
+                this.addChild(playerUI);
+                this.playerUIs[player.playerId] = playerUI;
+            }
             playerUI.setPosition(cc.winSize.width/2, cc.winSize.height/2);
             playerUI.setPlayerUIInfo(player.username);
-            this.playerUIs.push(playerUI);
         }
     },
 
@@ -90,9 +96,15 @@ var MatchScene = BaseLayer.extend({
         this.myPlayer.setPlayerRotation(rotation);
 
         if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || oldRotation !== rotation) {
-            GameClient.getInstance().sendPlayerMoveAction(newPos, rotation);
+            let pk = SendPlayerMoveAction(newPos, rotation);
+            GameClient.getInstance().sendPacket(pk);
         }
-    }
+    },
+
+    pickItem: function () {
+        if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
+        else this.myPlayer.equipGun();
+    },
 });
 
 MatchScene.className = "MatchScene";

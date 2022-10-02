@@ -3,7 +3,11 @@
  */
 
 const InPacket = cc.Class.extend({
-    ctor: function (data) {
+    ctor: function () {
+
+    },
+
+    autoParseData: function (data) {
         this.parseData(this, data);
     },
 
@@ -28,7 +32,7 @@ const ReceivedUserInfo = InPacket.extend({
     ctor: function (data) {
         this.username = "";
         
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -37,7 +41,7 @@ const ReceivedFindMatch = InPacket.extend({
         this.result = 0;
         this.gameId = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -45,7 +49,7 @@ const ReceivedCreateTeam = InPacket.extend({
     ctor: function (data) {
         this.teamId = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -54,7 +58,7 @@ const ReceivedJoinTeam = InPacket.extend({
         this.result = 0;
         this.teamId = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -63,7 +67,7 @@ const ReceivedNewPlayerJoin = InPacket.extend({
         this.username = "";
         this.teamId = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -72,7 +76,7 @@ const ReceivedNewTeamJoin = InPacket.extend({
         this.teamId = 0;
         this.players = [];
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -80,9 +84,9 @@ const ReceivedPlayerMoveAction = InPacket.extend({
     ctor: function (data) {
         this.username = "";
         this.position = new gm.Position(0, 0);
-        this.angle = 0;
+        this.rotation = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -101,7 +105,7 @@ const ReceivedPlayerState = InPacket.extend({
 
         this.hp = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -113,7 +117,7 @@ const ReceivedBulletFired = InPacket.extend({
 
         this.type = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -122,7 +126,7 @@ const ReceivedPlayerHit = InPacket.extend({
         this.uid = 0;
         this.hp = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -130,7 +134,7 @@ const ReceivedPlayerDead = InPacket.extend({
     ctor: function (data) {
         this.uid = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -145,7 +149,7 @@ const ReceivedObstacleSpawn = InPacket.extend({
 
         this.hp = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -155,7 +159,7 @@ const ReceivedObstacleHit = InPacket.extend({
 
         this.hp = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -163,7 +167,7 @@ const ReceivedObstacleDestroyed = InPacket.extend({
     ctor: function (data) {
         this.id = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
@@ -176,27 +180,34 @@ const ReceivedItemSpawn = InPacket.extend({
         this.x = 0;
         this.y = 0;
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });
 
-const ReceivedUpdateGameState = InPacket.extend({
+const ReceivedUpdateMatchInfo = InPacket.extend({
     ctor: function (data) {
-        this.gameId = 0;
-
         this.teams = [];
+
+        this.players = [];
+        if (data.players) {
+            for (let username in data.players) {
+                let playerData = data.players[username];
+                let obj = new PlayerData();
+                obj.username = obj.playerId;
+                this.parseData(obj, playerData);
+                this.players[username] = obj;
+            }
+        }
 
         this.obstacles = [];
 
         this.items = [];
-
-        this._super(data);
     }
 });
 
 const ReceivedGameConfig = InPacket.extend({
     ctor: function (data) {
 
-        this._super(data);
+        this.autoParseData(data);
     }
 });

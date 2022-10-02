@@ -5,5 +5,10 @@
 const PlayerData = cc.Class.extend({
     ctor: function () {
         this.username = "";
+        this.playerId = "";
+        this.position = gm.p(0, 0);
+        this.rotation = 0;
+        this.speed = 0;
+        this.team = 0;
     }
 });

@@ -21,10 +21,6 @@ var SceneManager = cc.Class.extend({
         return curScene.getChildByTag(SceneManager.MAIN_LAYER_TAG);
     },
 
-    checkMainLayer: function (layer) {
-        return (this.getMainLayer() instanceof layer);
-    },
-
     openLoginScene: function () {
         var scene = new cc.Scene();
         var layer = new LoginScene();

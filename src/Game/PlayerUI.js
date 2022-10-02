@@ -11,23 +11,25 @@ const PlayerUI = cc.Node.extend({
     initPlayerUI: function () {
         let drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 30, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 30, 0, 10000, false, 3, cc.color("#000000"));
+        drawNode.drawCircle(cc.p(0, 0), 30, 0, 10000, false, 2, cc.color("#000000"));
         this.addChild(drawNode);
         this._body = drawNode;
 
         drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 3, cc.color("#000000"));
+        drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
         this._body.addChild(drawNode);
         drawNode.setPosition(-20, 25);
         this._leftArm = drawNode;
+        this._leftArm.defaultPosition = this._leftArm.getPosition();
 
         drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 3, cc.color("#000000"));
+        drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
         this._body.addChild(drawNode);
         drawNode.setPosition(20, 25);
         this._rightArm = drawNode;
+        this._rightArm.defaultPosition = this._rightArm.getPosition();
 
 
         let lbl = new ccui.Text("Name");
@@ -37,8 +39,9 @@ const PlayerUI = cc.Node.extend({
         this._name = lbl;
 
         let gun = new PlayerGunUI();
+        gun.setAnchorPoint(0.5, 0);
         this._body.addChild(gun);
-        gun.setPosition(0, 20);
+        gun.setPosition(0, 0);
         this._gun = gun;
     },
 
@@ -48,10 +51,10 @@ const PlayerUI = cc.Node.extend({
 
     setMyPlayer: function (isMyPlayer = true) {
         if (isMyPlayer) {
-
+            this._name.setVisible(false);
         }
         else {
-
+            this._name.setVisible(true);
         }
     },
 
@@ -64,21 +67,25 @@ const PlayerUI = cc.Node.extend({
     },
 
     equipGun: function (id) {
-        this._gun.changeGun(id);
         this._gun.setVisible(true);
+        this._leftArm.setPosition(-10, 37);
+        this._rightArm.setPosition(10, 25);
+    },
+
+    unEquip: function () {
+        this._gun.setVisible(false);
+        this._leftArm.setPosition(this._leftArm.defaultPosition);
+        this._rightArm.setPosition(this._rightArm.defaultPosition);
+    },
+
+    isEquip: function () {
+        return this._gun.isVisible();
     }
 });
 
 const PlayerGunUI = ccui.ImageView.extend({
     ctor: function (id) {
         this._id = null;
-        this._super();
-        this.changeGun(id);
-    },
-
-    changeGun: function (id) {
-        if (id === this._id) return;
-        this._id = id || 0;
-        this.loadTexture("res/Game/Player/gun_1.png");
+        this._super("res/Game/Player/gun_1.png");
     }
 })

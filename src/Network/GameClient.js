@@ -30,7 +30,7 @@ var GameClient = cc.Class.extend({
         var pluginInfoHandler = new EzyPluginInfoHandler();
         pluginInfoHandler.postHandle = function (plugin, data) {
             console.log("setup socket client completed");
-            this.sendGetUserInfo();
+            this.sendEmptyPacket(Cmd.GET_USER_INFO);
         }.bind(this);
 
         var disconnectionHandler = new EzyDisconnectionHandler();
@@ -58,7 +58,7 @@ var GameClient = cc.Class.extend({
     },
 
     initListener: function () {
-        var setupPlugin = this.client.setup.setupPlugin(PLUGIN_NAME);
+        let setupPlugin = this.client.setup.setupPlugin(PLUGIN_NAME);
 
         setupPlugin.addDataHandler("spin", function (plugin, data) {
             cc.log("RECEIVED spin", JSON.stringify(data));
@@ -68,31 +68,39 @@ var GameClient = cc.Class.extend({
 
         setupPlugin.addDataHandler(Cmd.GET_USER_INFO, function (plugin, data) {
             cc.log("RECEIVED GET_USER_INFO", JSON.stringify(data));
-            var pk = new ReceivedUserInfo(data);
+            let pk = new ReceivedUserInfo(data);
             GameManager.getInstance().userData.setUserData(pk.username);
             SceneManager.getInstance().openHomeScene();
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
             cc.log("RECEIVED FIND_MATCH", JSON.stringify(data));
-            var pk = new ReceivedFindMatch(data);
+            let pk = new ReceivedFindMatch(data);
             GameManager.getInstance().onReceivedFindMatch(pk.result, pk.gameId);
         });
 
         setupPlugin.addDataHandler(Cmd.CREATE_TEAM, function (plugin, data) {
             cc.log("RECEIVED CREATE_TEAM", JSON.stringify(data));
-            var pk = new ReceivedCreateTeam(data);
+            let pk = new ReceivedCreateTeam(data);
             GameManager.getInstance().onReceivedCreateTeam(0, pk.teamId);
         });
 
         setupPlugin.addDataHandler(Cmd.JOIN_TEAM, function (plugin, data) {
             cc.log("RECEIVED JOIN_TEAM", JSON.stringify(data));
-            var pk = new ReceivedJoinTeam(data);
+            let pk = new ReceivedJoinTeam(data);
             GameManager.getInstance().onReceivedJoinTeam(pk.result, pk.teamId);
         });
 
         setupPlugin.addDataHandler(Cmd.MATCH_INFO, function (plugin, data) {
             cc.log("RECEIVED MATCH_INFO", JSON.stringify(data));
+            let pk = new ReceivedUpdateMatchInfo(data);
+            GameManager.getInstance().getCurrentMatch().updateMatchInfo();
+        });
+
+        setupPlugin.addDataHandler(Cmd.PLAYER_MOVE, function (plugin, data) {
+            cc.log("RECEIVED PLAYER_MOVE", JSON.stringify(data));
+            let pk = new ReceivedPlayerMoveAction(data);
+            GameManager.getInstance().getCurrentMatch().updatePlayerMove(pk.position, pk.rotation);
         });
     },
 
@@ -106,45 +114,17 @@ var GameClient = cc.Class.extend({
         }
     },
 
+    sendEmptyPacket: function (cmd) {
+        let plugin = this.client.getPlugin();
+        if (plugin != null) {
+            plugin.send(cmd);
+        }
+    },
+
     sendSpinRequest: function () {
         var plugin = this.client.getPlugin();
         if (plugin != null) {
             plugin.send("spin");
-        }
-    },
-
-    sendGetUserInfo: function () {
-        var plugin = this.client.getPlugin();
-        if (plugin != null) {
-            plugin.send(Cmd.GET_USER_INFO);
-        }
-    },
-
-    sendFindMatch: function () {
-        var plugin = this.client.getPlugin();
-        if (plugin != null) {
-            plugin.send(Cmd.FIND_MATCH);
-        }
-    },
-
-    sendCreateTeam: function () {
-        var plugin = this.client.getPlugin();
-        if (plugin != null) {
-            plugin.send(Cmd.CREATE_TEAM);
-        }
-    },
-
-    sendJoinTeam: function (teamId = -1) {
-        var plugin = this.client.getPlugin();
-        if (plugin != null) {
-            plugin.send(Cmd.JOIN_TEAM, {teamId: teamId});
-        }
-    },
-
-    sendPlayerMoveAction: function (pos = gm.p(0, 0), rotation = 0) {
-        let plugin = this.client.getPlugin();
-        if (plugin != null) {
-            plugin.send(Cmd.PLAYER_MOVE, {position: pos, rotation: rotation});
         }
     }
 });
