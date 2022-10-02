@@ -57,6 +57,7 @@ const Controller = cc.Class.extend({
 
     onMouseDown: function (x = 0, y = 0) {
         Controller.log("Mouse Down: " + x + ", " + y);
+        // GameManager.getInstance().getCurrentMatch().scene.fire(gm.p(x, y));
     },
 
     onMouseUp: function (x = 0, y = 0) {

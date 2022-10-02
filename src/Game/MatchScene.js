@@ -12,6 +12,7 @@ var MatchScene = BaseLayer.extend({
 
         this.playerUIs = [];
         this.bullets = [];
+        this.workingBullets = [];
     },
 
     initGUI: function () {
@@ -38,7 +39,7 @@ var MatchScene = BaseLayer.extend({
     },
 
     initMouseController: function () {
-        var that = this;
+        let that = this;
         cc.eventManager.addListener({
             event: cc.EventListener.MOUSE,
             onMouseDown: function (event) {
@@ -83,7 +84,7 @@ var MatchScene = BaseLayer.extend({
                 playerUI.unEquip();
                 this.playerUIs[player.playerId] = playerUI;
             }
-            playerUI.setPosition(cc.winSize.width/2, cc.winSize.height/2);
+            playerUI.setPosition(player.position);
             playerUI.setPlayerUIInfo(player.username);
         }
     },
@@ -103,6 +104,10 @@ var MatchScene = BaseLayer.extend({
             let pk = new SendPlayerMoveAction(unitVector, rotation);
             GameClient.getInstance().sendPacket(pk);
         }
+
+        for (let bullet of this.workingBullets) {
+            bullet.updateBullet(dt);
+        }
     },
 
     pickItem: function () {
@@ -110,9 +115,14 @@ var MatchScene = BaseLayer.extend({
         else this.myPlayer.equipGun();
     },
 
-    fire: function () {
+    fire: function (destPos = gm.p(0, 0)) {
         if (this.myPlayer.isEquip()) {
-
+            let bullet = this.getBulletFromPool();
+            this.workingBullets.push(bullet);
+            bullet.setPosition(this.myPlayer.getPosition());
+            let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
+            bullet.setMoveDirection(vector);
+            bullet.animFire();
         }
     },
 
@@ -121,7 +131,10 @@ var MatchScene = BaseLayer.extend({
      */
     getBulletFromPool: function () {
         for (let bullet of this.bullets) {
-            if (!bullet.isVisible()) return bullet;
+            if (!bullet.isVisible()) {
+                bullet.setVisible(true);
+                return bullet;
+            }
         }
 
         let bullet = new BulletUI();
