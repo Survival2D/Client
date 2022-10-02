@@ -100,7 +100,7 @@ var GameClient = cc.Class.extend({
         setupPlugin.addDataHandler(Cmd.PLAYER_MOVE, function (plugin, data) {
             let pk = new ReceivedPlayerMoveAction(data);
             cc.log("RECEIVED PLAYER_MOVE", JSON.stringify(pk));
-            GameManager.getInstance().getCurrentMatch().updatePlayerMove(pk.position, pk.rotation);
+            GameManager.getInstance().getCurrentMatch().updatePlayerMove(pk.username, pk.position, pk.rotation);
         });
     },
 
