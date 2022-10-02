@@ -100,7 +100,7 @@ var MatchScene = BaseLayer.extend({
         this.myPlayer.setPlayerRotation(rotation);
 
         if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || oldRotation !== rotation) {
-            let pk = new SendPlayerMoveAction(newPos, rotation);
+            let pk = new SendPlayerMoveAction(unitVector, rotation);
             GameClient.getInstance().sendPacket(pk);
         }
     },

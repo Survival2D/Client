@@ -19,10 +19,10 @@ const SendJoinTeam = OutPacket.extend({
 });
 
 const SendPlayerMoveAction = OutPacket.extend({
-    ctor: function (pos, rotation) {
+    ctor: function (direction, rotation) {
         this._super(Cmd.PLAYER_MOVE);
         this.data = {
-            position: pos,
+            direction: direction,
             rotation: rotation
         }
     }
