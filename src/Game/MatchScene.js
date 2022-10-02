@@ -85,6 +85,7 @@ var MatchScene = BaseLayer.extend({
                 this.playerUIs[player.playerId] = playerUI;
             }
             playerUI.setPosition(player.position);
+            playerUI.setPlayerRotation(player.rotation);
             playerUI.setPlayerUIInfo(player.username);
         }
     },
