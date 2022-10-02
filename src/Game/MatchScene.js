@@ -11,6 +11,7 @@ var MatchScene = BaseLayer.extend({
         this.initMouseController();
 
         this.playerUIs = [];
+        this.bullets = [];
     },
 
     initGUI: function () {
@@ -24,7 +25,7 @@ var MatchScene = BaseLayer.extend({
     },
 
     initKeyBoardController: function () {
-        var that = this;
+        let that = this;
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function (keyCode, event) {
@@ -72,11 +73,14 @@ var MatchScene = BaseLayer.extend({
     updateMatchView: function () {
         let match = GameManager.getInstance().getCurrentMatch();
         if (!match) return;
-        for (let player of match.players) {
+        for (let playerId in match.players) {
+            let player = match.players[playerId];
+            if (player.playerId === GameManager.getInstance().userData.username) continue;
             let playerUI = this.playerUIs[player.playerId];
             if (!playerUI) {
                 playerUI = new PlayerUI();
                 this.addChild(playerUI);
+                playerUI.unEquip();
                 this.playerUIs[player.playerId] = playerUI;
             }
             playerUI.setPosition(cc.winSize.width/2, cc.winSize.height/2);
@@ -96,7 +100,7 @@ var MatchScene = BaseLayer.extend({
         this.myPlayer.setPlayerRotation(rotation);
 
         if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || oldRotation !== rotation) {
-            let pk = SendPlayerMoveAction(newPos, rotation);
+            let pk = new SendPlayerMoveAction(newPos, rotation);
             GameClient.getInstance().sendPacket(pk);
         }
     },
@@ -105,6 +109,31 @@ var MatchScene = BaseLayer.extend({
         if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
         else this.myPlayer.equipGun();
     },
+
+    fire: function () {
+        if (this.myPlayer.isEquip()) {
+
+        }
+    },
+
+    /**
+     * @returns {BulletUI}
+     */
+    getBulletFromPool: function () {
+        for (let bullet of this.bullets) {
+            if (!bullet.isVisible()) return bullet;
+        }
+
+        let bullet = new BulletUI();
+        this.addChild(bullet, MatchScene.Z_ORDER.BULLET);
+        return bullet;
+    }
 });
 
 MatchScene.className = "MatchScene";
+
+MatchScene.Z_ORDER = {
+    BG: 0,
+    PLAYER: 1,
+    BULLET: 2
+}

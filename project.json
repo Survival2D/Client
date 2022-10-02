@@ -32,6 +32,7 @@
         "src/Network/GameClient.js",
         "src/Network/InPacket.js",
         "src/Network/OutPacket.js",
+        "src/Network/ErrorCode.js",
 
         "src/Game/Controller.js",
         "src/Game/GameConfig.js",
@@ -45,6 +46,8 @@
         "src/Game/HomeScene.js",
         "src/Game/LobbyScene.js",
         "src/Game/MatchScene.js",
-        "src/Game/PlayerUI.js"
+
+        "src/Game/PlayerUI.js",
+        "src/Game/BulletUI.js"
     ]
 }

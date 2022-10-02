@@ -26,20 +26,20 @@ const GameManager = cc.Class.extend({
     },
 
     onReceivedFindMatch: function (error, gameId) {
-        if (!error) {
+        if (error === ErrorCode.SUCCESS) {
             this.match = new MatchManager();
             this.match.newMatch(gameId);
         }
     },
 
     onReceivedCreateTeam: function (error, teamId) {
-        if (!error) {
+        if (error === ErrorCode.SUCCESS) {
             SceneManager.getInstance().openLobbyScene();
         }
     },
 
     onReceivedJoinTeam: function (error, teamId) {
-        if (!error) {
+        if (error === ErrorCode.SUCCESS) {
             SceneManager.getInstance().openLobbyScene();
         }
     },

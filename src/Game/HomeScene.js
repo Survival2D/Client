@@ -11,6 +11,7 @@ var HomeScene = BaseLayer.extend({
     initGUI: function () {
         this.lblGameTitle = this.getControl("lblGameTitle");
         this.lblName = this.getControl("lblName");
+        this.lblName.ignoreContentAdaptWithSize(true);
         this.customButton("btnFindMatch", this.onFindMatch, this);
         this.customButton("btnJoinTeam", this.onJoinTeam, this);
         this.customButton("btnCreateTeam", this.onCreateTeam, this);

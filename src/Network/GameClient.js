@@ -67,39 +67,39 @@ var GameClient = cc.Class.extend({
         });
 
         setupPlugin.addDataHandler(Cmd.GET_USER_INFO, function (plugin, data) {
-            cc.log("RECEIVED GET_USER_INFO", JSON.stringify(data));
             let pk = new ReceivedUserInfo(data);
+            cc.log("RECEIVED GET_USER_INFO", JSON.stringify(pk));
             GameManager.getInstance().userData.setUserData(pk.username);
             SceneManager.getInstance().openHomeScene();
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
-            cc.log("RECEIVED FIND_MATCH", JSON.stringify(data));
             let pk = new ReceivedFindMatch(data);
+            cc.log("RECEIVED FIND_MATCH", JSON.stringify(pk));
             GameManager.getInstance().onReceivedFindMatch(pk.result, pk.gameId);
         });
 
         setupPlugin.addDataHandler(Cmd.CREATE_TEAM, function (plugin, data) {
-            cc.log("RECEIVED CREATE_TEAM", JSON.stringify(data));
             let pk = new ReceivedCreateTeam(data);
-            GameManager.getInstance().onReceivedCreateTeam(0, pk.teamId);
+            cc.log("RECEIVED CREATE_TEAM", JSON.stringify(pk));
+            GameManager.getInstance().onReceivedCreateTeam(ErrorCode.SUCCESS, pk.teamId);
         });
 
         setupPlugin.addDataHandler(Cmd.JOIN_TEAM, function (plugin, data) {
-            cc.log("RECEIVED JOIN_TEAM", JSON.stringify(data));
             let pk = new ReceivedJoinTeam(data);
+            cc.log("RECEIVED JOIN_TEAM", JSON.stringify(pk));
             GameManager.getInstance().onReceivedJoinTeam(pk.result, pk.teamId);
         });
 
         setupPlugin.addDataHandler(Cmd.MATCH_INFO, function (plugin, data) {
-            cc.log("RECEIVED MATCH_INFO", JSON.stringify(data));
             let pk = new ReceivedUpdateMatchInfo(data);
-            GameManager.getInstance().getCurrentMatch().updateMatchInfo();
+            cc.log("RECEIVED MATCH_INFO", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().updateMatchInfo(pk.players);
         });
 
         setupPlugin.addDataHandler(Cmd.PLAYER_MOVE, function (plugin, data) {
-            cc.log("RECEIVED PLAYER_MOVE", JSON.stringify(data));
             let pk = new ReceivedPlayerMoveAction(data);
+            cc.log("RECEIVED PLAYER_MOVE", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().updatePlayerMove(pk.position, pk.rotation);
         });
     },

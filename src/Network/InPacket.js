@@ -18,11 +18,9 @@ const InPacket = cc.Class.extend({
      */
     parseData: function (node, data) {
         for (let key in node) {
-            let childNode = node[key];
-            let childData = data[key];
-            if (typeof childData != "undefined") {
-                if (typeof childNode == "object") this.parseData(childNode, childData);
-                else childNode = childData;
+            if (typeof data[key] != "undefined") {
+                if (typeof node[key] == "object") this.parseData(node[key], data[key]);
+                else node[key] = data[key];
             }
         }
     }
@@ -189,13 +187,12 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
         this.teams = [];
 
         this.players = [];
-        if (data.players) {
-            for (let username in data.players) {
-                let playerData = data.players[username];
-                let obj = new PlayerData();
-                obj.username = obj.playerId;
-                this.parseData(obj, playerData);
-                this.players[username] = obj;
+        if (typeof data["players"] != "undefined") {
+            for (let playerId in data.players) {
+                let playerData = new PlayerData();
+                this.parseData(playerData, data.players[playerId]);
+                playerData.username = playerData.playerId;
+                this.players[playerId] = playerData;
             }
         }
 
