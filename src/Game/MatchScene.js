@@ -99,8 +99,8 @@ var MatchScene = BaseLayer.extend({
         this.setMyPlayerPosition(newPos);
 
         let oldRotation = this.myPlayer.getPlayerRotation();
-        let rotation = gm.radToDeg(this.controller.calculateRotation(this.myPlayer.getPosition()));
-        rotation = Math.round(rotation);
+        let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
+        rotation = Math.round(gm.radToDeg(rotation));
         this.myPlayer.setPlayerRotation(rotation);
 
         if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || oldRotation !== rotation) {
@@ -125,16 +125,18 @@ var MatchScene = BaseLayer.extend({
         return false;
     },
 
-    logicPosToScenePos: function (pos) {
+    ground2ScenePosition: function (pos) {
         return this.ground.convertToWorldSpace(pos);
     },
 
-    scenePosToLogicPos: function (pos) {
+    scene2GroundPosition: function (pos) {
         return this.ground.convertToNodeSpace(pos);
     },
 
     setMyPlayerPosition: function (pos) {
         this.myPlayer.setPosition(pos);
+        let scenePos = this.ground2ScenePosition(pos);
+        this.ground.setPosition(this.ground.x + cc.winSize.width/2 - scenePos.x, this.ground.y + cc.winSize.height/2 - scenePos.y);
     },
 
     pickItem: function () {
@@ -143,6 +145,7 @@ var MatchScene = BaseLayer.extend({
     },
 
     fire: function (destPos = gm.p(0, 0)) {
+        destPos = this.scene2GroundPosition(destPos);
         if (this.myPlayer.isEquip()) {
             let bullet = this.getBulletFromPool();
             this.workingBullets.push(bullet);
