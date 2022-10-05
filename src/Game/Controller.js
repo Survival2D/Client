@@ -57,7 +57,7 @@ const Controller = cc.Class.extend({
 
     onMouseDown: function (x = 0, y = 0) {
         Controller.log("Mouse Down: " + x + ", " + y);
-        // GameManager.getInstance().getCurrentMatch().scene.fire(gm.p(x, y));
+        GameManager.getInstance().getCurrentMatch().scene.fire(gm.p(x, y));
     },
 
     onMouseUp: function (x = 0, y = 0) {
@@ -98,12 +98,7 @@ const Controller = cc.Class.extend({
     },
 
     calculateRotation: function (originPos = gm.p(0, 0)) {
-        let dx = this.destPos.x - originPos.x;
-        let dy = this.destPos.y - originPos.y;
-        let angle = Math.atan(dx/dy);
-        if (dy < 0) angle = Math.PI + angle;
-
-        return angle;
+        return gm.calculateVectorAngleInclination(originPos, this.destPos);
     }
 });
 

@@ -8,6 +8,9 @@ const MatchManager = cc.Class.extend({
 
         this.players = [];
 
+        this.mapWidth = 1280;
+        this.mapHeight = 720;
+
         this.scene = null;
     },
 

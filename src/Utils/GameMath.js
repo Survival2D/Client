@@ -61,16 +61,36 @@ gm.vector = function (x, y) {
 };
 
 /**
- * @param {cc.Point} oldPos
+ * @param {gm.Position|cc.Point} oldPos
  * @param {gm.Vector} unitVector
  * @param {number=} speed
+ * @return {gm.Position} next position
  */
-gm.calculatePosition = function (oldPos, unitVector, speed) {
+gm.calculateNextPosition = function (oldPos, unitVector, speed) {
     if (speed === undefined) {
         speed = 1;
     }
 
     return gm.p(oldPos.x + unitVector.x * speed, oldPos.y + unitVector.y * speed);
+};
+
+/**
+ * @param {gm.Vector|gm.Position} vectorOrOriginPos
+ * @param {gm.Position=} destPos
+ * @returns {number} angle between a vector (from originPos to destPos) and the positive haft of x axis
+ */
+gm.calculateVectorAngleInclination = function (vectorOrOriginPos, destPos) {
+    let originPos = vectorOrOriginPos;
+    if (destPos === undefined) {
+        originPos = gm.p(0, 0);
+        destPos = gm.calculateNextPosition(originPos, vectorOrOriginPos);
+    }
+    let dx = destPos.x - originPos.x;
+    let dy = destPos.y - originPos.y;
+    let angle = Math.atan(dy/dx);
+    if (dx < 0) angle = Math.PI + angle;
+    if (angle > Math.PI) angle = angle - 2 * Math.PI;
+    return angle;
 };
 
 /**

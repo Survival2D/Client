@@ -19,7 +19,7 @@ var MatchScene = BaseLayer.extend({
         this.ground = this.getControl("ground");
 
         this.myPlayer = new PlayerUI();
-        this.addChild(this.myPlayer);
+        this.addChild(this.myPlayer, MatchScene.Z_ORDER.PLAYER);
         this.myPlayer.setPosition(cc.winSize.width/2, cc.winSize.height/2);
         this.myPlayer.setMyPlayer(true);
         this.myPlayer.unEquip();
@@ -80,7 +80,7 @@ var MatchScene = BaseLayer.extend({
             let playerUI = this.playerUIs[player.playerId];
             if (!playerUI) {
                 playerUI = new PlayerUI();
-                this.addChild(playerUI);
+                this.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
                 playerUI.unEquip();
                 this.playerUIs[player.playerId] = playerUI;
             }
@@ -93,7 +93,7 @@ var MatchScene = BaseLayer.extend({
     update: function (dt) {
         let oldPos = this.myPlayer.getPosition();
         let unitVector = this.controller.calculateMovementVector();
-        let newPos = gm.calculatePosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
+        let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
         this.myPlayer.setPosition(newPos);
 
         let oldRotation = this.myPlayer.getPlayerRotation();
@@ -106,9 +106,21 @@ var MatchScene = BaseLayer.extend({
             GameClient.getInstance().sendPacket(pk);
         }
 
-        for (let bullet of this.workingBullets) {
-            bullet.updateBullet(dt);
+        for (let i = 0; i < this.workingBullets.length; i++) {
+            let bullet = this.workingBullets[i];
+            if (this.checkCollision(bullet.getPosition())) {
+                this.workingBullets.splice(i, 1);
+                i--;
+                bullet.setVisible(false);
+            }
+            else bullet.updateBullet(dt);
         }
+    },
+
+    checkCollision: function (pos = gm.p(0, 0)) {
+        let match = GameManager.getInstance().getCurrentMatch();
+        if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
+        return false;
     },
 
     pickItem: function () {
@@ -140,6 +152,7 @@ var MatchScene = BaseLayer.extend({
 
         let bullet = new BulletUI();
         this.addChild(bullet, MatchScene.Z_ORDER.BULLET);
+        this.bullets.push(bullet);
         return bullet;
     }
 });

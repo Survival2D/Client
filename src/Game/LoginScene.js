@@ -29,6 +29,8 @@ var LoginScene = BaseLayer.extend({
         if (!username) username = "";
         if (!password) password = "";
         GameClient.newInstance().connectClientServer(username, password);
+
+        GameManager.getInstance().onReceivedFindMatch(0, 1);
     }
 });
 
