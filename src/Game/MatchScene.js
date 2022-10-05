@@ -19,8 +19,8 @@ var MatchScene = BaseLayer.extend({
         this.ground = this.getControl("ground");
 
         this.myPlayer = new PlayerUI();
-        this.addChild(this.myPlayer, MatchScene.Z_ORDER.PLAYER);
-        this.myPlayer.setPosition(cc.winSize.width/2, cc.winSize.height/2);
+        this.ground.addChild(this.myPlayer, MatchScene.Z_ORDER.PLAYER);
+        this.myPlayer.setPosition(0, 0);
         this.myPlayer.setMyPlayer(true);
         this.myPlayer.unEquip();
     },
@@ -59,7 +59,6 @@ var MatchScene = BaseLayer.extend({
 
     onEnter: function () {
         this._super();
-        this.ground.setContentSize(4000, 3000);
 
         this.updateMatchView();
 
@@ -74,13 +73,16 @@ var MatchScene = BaseLayer.extend({
     updateMatchView: function () {
         let match = GameManager.getInstance().getCurrentMatch();
         if (!match) return;
+
+        this.ground.setContentSize(match.mapWidth, match.mapHeight);
+
         for (let playerId in match.players) {
             let player = match.players[playerId];
             if (player.playerId === GameManager.getInstance().userData.username) continue;
             let playerUI = this.playerUIs[player.playerId];
             if (!playerUI) {
                 playerUI = new PlayerUI();
-                this.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
+                this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
                 playerUI.unEquip();
                 this.playerUIs[player.playerId] = playerUI;
             }
@@ -94,7 +96,7 @@ var MatchScene = BaseLayer.extend({
         let oldPos = this.myPlayer.getPosition();
         let unitVector = this.controller.calculateMovementVector();
         let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-        this.myPlayer.setPosition(newPos);
+        this.setMyPlayerPosition(newPos);
 
         let oldRotation = this.myPlayer.getPlayerRotation();
         let rotation = gm.radToDeg(this.controller.calculateRotation(this.myPlayer.getPosition()));
@@ -121,6 +123,18 @@ var MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
         return false;
+    },
+
+    logicPosToScenePos: function (pos) {
+        return this.ground.convertToWorldSpace(pos);
+    },
+
+    scenePosToLogicPos: function (pos) {
+        return this.ground.convertToNodeSpace(pos);
+    },
+
+    setMyPlayerPosition: function (pos) {
+        this.myPlayer.setPosition(pos);
     },
 
     pickItem: function () {
@@ -151,7 +165,7 @@ var MatchScene = BaseLayer.extend({
         }
 
         let bullet = new BulletUI();
-        this.addChild(bullet, MatchScene.Z_ORDER.BULLET);
+        this.ground.addChild(bullet, MatchScene.Z_ORDER.BULLET);
         this.bullets.push(bullet);
         return bullet;
     }
