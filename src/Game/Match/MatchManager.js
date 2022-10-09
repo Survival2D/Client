@@ -11,6 +11,16 @@ const MatchManager = cc.Class.extend({
         this.mapWidth = 1280;
         this.mapHeight = 720;
 
+        this.obstacles = [];
+        for (let i = 0; i < 10; i++) {
+            let obstacleData = new ObstacleData();
+            obstacleData.type = 1;
+            let x = Math.round(Math.random() * this.mapWidth);
+            let y = Math.round(Math.random() * this.mapHeight);
+            obstacleData.position = gm.p(x, y);
+            this.obstacles.push(obstacleData);
+        }
+
         this.scene = null;
     },
 

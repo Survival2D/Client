@@ -34,20 +34,21 @@
         "src/Network/OutPacket.js",
         "src/Network/ErrorCode.js",
 
-        "src/Game/Controller.js",
         "src/Game/GameConfig.js",
         "src/Game/GameManager.js",
-        "src/Game/MatchManager.js",
         "src/Game/UserData.js",
 
-        "src/Game/PlayerData.js",
+        "src/Game/Match/Controller.js",
+        "src/Game/Match/MatchManager.js",
+        "src/Game/Match/PlayerData.js",
+        "src/Game/Match/ObstacleData.js",
+        "src/Game/Match/MatchScene.js",
+        "src/Game/Match/PlayerUI.js",
+        "src/Game/Match/BulletUI.js",
+        "src/Game/Match/ObstacleUI.js",
 
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",
-        "src/Game/LobbyScene.js",
-        "src/Game/MatchScene.js",
-
-        "src/Game/PlayerUI.js",
-        "src/Game/BulletUI.js"
+        "src/Game/LobbyScene.js"
     ]
 }

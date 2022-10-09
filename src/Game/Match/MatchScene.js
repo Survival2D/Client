@@ -11,6 +11,7 @@ var MatchScene = BaseLayer.extend({
         this.initMouseController();
 
         this.playerUIs = [];
+        this.obsstacleUIs = [];
         this.bullets = [];
         this.workingBullets = [];
     },
@@ -89,6 +90,18 @@ var MatchScene = BaseLayer.extend({
             playerUI.setPosition(player.position);
             playerUI.setPlayerRotation(player.rotation);
             playerUI.setPlayerUIInfo(player.username);
+        }
+
+        for (let obsUI of this.obsstacleUIs) {
+            obsUI.removeFromParent(true);
+        }
+        this.obsstacleUIs = [];
+
+        for (let obs of match.obstacles) {
+            let obsUI = new TreeUI();
+            this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
+            obsUI.setPosition(obs.position);
+            this.obsstacleUIs.push(obsUI);
         }
     },
 
@@ -184,5 +197,6 @@ MatchScene.className = "MatchScene";
 MatchScene.Z_ORDER = {
     BG: 0,
     PLAYER: 1,
-    BULLET: 2
+    BULLET: 2,
+    OBSTACLE: 3
 }

@@ -11,7 +11,6 @@ const PlayerUI = cc.Node.extend({
     initPlayerUI: function () {
         let drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 30, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 30, 0, 10000, false, 2, cc.color("#000000"));
         this.addChild(drawNode);
         this._body = drawNode;
 
