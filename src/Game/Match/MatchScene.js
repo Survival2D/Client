@@ -21,7 +21,7 @@ var MatchScene = BaseLayer.extend({
 
         this.myPlayer = new PlayerUI();
         this.ground.addChild(this.myPlayer, MatchScene.Z_ORDER.PLAYER);
-        this.myPlayer.setPosition(0, 0);
+        this.myPlayer.setPosition(30, 30);
         this.myPlayer.setMyPlayer(true);
         this.myPlayer.unEquip();
     },
@@ -109,7 +109,8 @@ var MatchScene = BaseLayer.extend({
         let oldPos = this.myPlayer.getPosition();
         let unitVector = this.controller.calculateMovementVector();
         let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-        this.setMyPlayerPosition(newPos);
+        if (this.checkCollision(newPos, 30)) newPos = oldPos;
+        else this.setMyPlayerPosition(newPos);
 
         let oldRotation = this.myPlayer.getPlayerRotation();
         let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
@@ -132,9 +133,12 @@ var MatchScene = BaseLayer.extend({
         }
     },
 
-    checkCollision: function (pos = gm.p(0, 0)) {
+    checkCollision: function (pos = gm.p(0, 0), radius = 0) {
         let match = GameManager.getInstance().getCurrentMatch();
-        if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
+        if (pos.x - radius < 0 || pos.x + radius > match.mapWidth || pos.y - radius < 0 || pos.y + radius > match.mapHeight) return true;
+        for (let obs of match.obstacles) {
+            if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
+        }
         return false;
     },
 

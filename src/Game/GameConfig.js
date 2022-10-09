@@ -10,4 +10,4 @@ Config.FPS = 60;
  * SPEED: pixel per frame
  */
 Config.PLAYER_BASE_SPEED = 10;
-Config.BULLET_BASE_SPEED = 50;
+Config.BULLET_BASE_SPEED = 30;
