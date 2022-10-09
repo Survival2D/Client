@@ -139,21 +139,26 @@ var MatchScene = BaseLayer.extend({
         this.ground.setPosition(this.ground.x + cc.winSize.width/2 - scenePos.x, this.ground.y + cc.winSize.height/2 - scenePos.y);
     },
 
-    pickItem: function () {
+    myPlayerPickItem: function () {
+        // fake
         if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
         else this.myPlayer.equipGun();
     },
 
-    fire: function (destPos = gm.p(0, 0)) {
+    myPlayerFire: function (destPos = gm.p(0, 0)) {
         destPos = this.scene2GroundPosition(destPos);
         if (this.myPlayer.isEquip()) {
-            let bullet = this.getBulletFromPool();
-            this.workingBullets.push(bullet);
-            bullet.setPosition(this.myPlayer.getPosition());
             let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
-            bullet.setMoveDirection(vector);
-            bullet.animFire();
+            this.fire(this.myPlayer.getPosition(), vector);
         }
+    },
+
+    fire: function (pos, vector) {
+        let bullet = this.getBulletFromPool();
+        this.workingBullets.push(bullet);
+        bullet.setPosition(pos);
+        bullet.setMoveDirection(vector);
+        bullet.animFire();
     },
 
     /**

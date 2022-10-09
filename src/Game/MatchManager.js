@@ -40,5 +40,9 @@ const MatchManager = cc.Class.extend({
         player.rotation = rotation;
 
         if (this.isInMatch()) this.scene.updateMatchView();
+    },
+
+    receivedFiredBullet: function (pos, vector) {
+        if (this.isInMatch()) this.scene.fire(pos, vector);
     }
 });
