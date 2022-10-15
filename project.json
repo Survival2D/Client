@@ -46,6 +46,7 @@
         "src/Game/Match/PlayerUI.js",
         "src/Game/Match/BulletUI.js",
         "src/Game/Match/ObstacleUI.js",
+        "src/Game/Match/MiniMap.js",
 
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",

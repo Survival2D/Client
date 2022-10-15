@@ -1,7 +1,7 @@
 {
-  "ID": "37719ff9-52a0-4103-b88c-aa56b4c73c06",
+  "ID": "44afa495-a9cc-4e74-a7bb-f2b45bc26b3a",
   "Version": "3.10.0.0",
-  "Name": "MatchScene",
+  "Name": "MiniMapUI",
   "Content": {
     "Content": {
       "Animation": {
@@ -12,15 +12,69 @@
       },
       "AnimationList": [],
       "ObjectData": {
-        "Tag": 8,
+        "Tag": 18,
         "Children": [
           {
             "ClipAble": false,
             "ComboBoxIndex": 1,
             "SingleColor": {
-              "R": 128,
-              "G": 175,
-              "B": 73
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 640.0,
+              "Y": 360.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PercentWidthEnable": true,
+            "PercentHeightEnable": true,
+            "PercentWidthEnabled": true,
+            "PercentHeightEnabled": true,
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 23,
+            "ActionTag": 654757454,
+            "Size": {
+              "X": 1280.0,
+              "Y": 720.0
+            },
+            "Name": "bg",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "ClipAble": false,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 143,
+              "G": 190,
+              "B": 88
             },
             "FirstColor": {
               "R": 150,
@@ -61,68 +115,13 @@
               "X": 1.0,
               "Y": 1.0
             },
-            "Tag": 9,
-            "ActionTag": 573504242,
+            "Tag": 20,
+            "ActionTag": 825624250,
             "Size": {
               "X": 1280.0,
               "Y": 720.0
             },
             "Name": "ground",
-            "ctype": "PanelObjectData"
-          },
-          {
-            "ClipAble": false,
-            "BackColorAlpha": 102,
-            "SingleColor": {
-              "R": 150,
-              "G": 200
-            },
-            "FirstColor": {
-              "R": 150,
-              "G": 200
-            },
-            "EndColor": {},
-            "ColorVector": {
-              "ScaleY": 1.0
-            },
-            "Scale9Width": 1,
-            "Scale9Height": 1,
-            "TouchEnable": true,
-            "AnchorPoint": {
-              "ScaleX": 0.5,
-              "ScaleY": 0.5
-            },
-            "Position": {
-              "X": 640.0,
-              "Y": 360.0
-            },
-            "Scale": {
-              "ScaleX": 1.0,
-              "ScaleY": 1.0
-            },
-            "CColor": {},
-            "IconVisible": false,
-            "PositionPercentXEnabled": true,
-            "PositionPercentYEnabled": true,
-            "PrePosition": {
-              "X": 0.5,
-              "Y": 0.5
-            },
-            "PercentWidthEnable": true,
-            "PercentHeightEnable": true,
-            "PercentWidthEnabled": true,
-            "PercentHeightEnabled": true,
-            "PreSize": {
-              "X": 1.0,
-              "Y": 1.0
-            },
-            "Tag": 22,
-            "ActionTag": 1453773296,
-            "Size": {
-              "X": 1280.0,
-              "Y": 720.0
-            },
-            "Name": "hud",
             "ctype": "PanelObjectData"
           }
         ],
@@ -130,12 +129,12 @@
           "X": 1280.0,
           "Y": 720.0
         },
-        "Name": "Scene",
-        "ctype": "SingleNodeObjectData"
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
       },
       "UsedResources": [],
       "ctype": "GameFileData"
     }
   },
-  "Type": "Scene"
+  "Type": "Layer"
 }

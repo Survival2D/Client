@@ -11,3 +11,5 @@ Config.FPS = 60;
  */
 Config.PLAYER_BASE_SPEED = 10;
 Config.BULLET_BASE_SPEED = 30;
+
+Config.MINI_MAP_SCALE = 0.3;

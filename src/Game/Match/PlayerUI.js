@@ -88,4 +88,18 @@ const PlayerGunUI = ccui.ImageView.extend({
         this._id = null;
         this._super("res/Game/Player/gun_1.png");
     }
-})
+});
+
+const MiniPlayerUI = cc.Node.extend({
+    ctor: function () {
+        this._super();
+        this.initPlayerUI();
+    },
+
+    initPlayerUI: function () {
+        let drawNode = new cc.DrawNode();
+        drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
+        this.addChild(drawNode);
+        this._body = drawNode;
+    }
+});

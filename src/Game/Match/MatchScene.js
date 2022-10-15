@@ -2,7 +2,7 @@
  * Created by quantm7 on 9/10/2022.
  */
 
-var MatchScene = BaseLayer.extend({
+const MatchScene = BaseLayer.extend({
     ctor: function () {
         this._super(MatchScene.className);
         this.loadCss(res.MATCH_SCENE);
@@ -11,7 +11,7 @@ var MatchScene = BaseLayer.extend({
         this.initMouseController();
 
         this.playerUIs = [];
-        this.obsstacleUIs = [];
+        this.obstacleUIs = [];
         this.bullets = [];
         this.workingBullets = [];
     },
@@ -24,6 +24,13 @@ var MatchScene = BaseLayer.extend({
         this.myPlayer.setPosition(30, 30);
         this.myPlayer.setMyPlayer(true);
         this.myPlayer.unEquip();
+
+        this.hud = this.getControl("hud");
+
+        this.miniMap = new MiniMap();
+        this.hud.addChild(this.miniMap);
+        this.miniMap.setAnchorPoint(0, 0);
+        this.miniMap.setPosition(30, 30);
     },
 
     initKeyBoardController: function () {
@@ -76,6 +83,19 @@ var MatchScene = BaseLayer.extend({
         if (!match) return;
 
         this.ground.setContentSize(match.mapWidth, match.mapHeight);
+        let drawNode = new cc.DrawNode();
+        let x = 200, y = 200;
+        while (x < match.mapWidth) {
+            drawNode.drawSegment(cc.p(x, 0), cc.p(x, match.mapHeight), 3, cc.color(0, 0, 0, 40));
+            x += 200;
+        }
+        while (y < match.mapHeight) {
+            drawNode.drawSegment(cc.p(0, y), cc.p(match.mapWidth, y), 3, cc.color(0, 0, 0, 40));
+            y += 200;
+        }
+        this.ground.addChild(drawNode, MatchScene.Z_ORDER.BG);
+
+        this.miniMap.updateMiniMapView();
 
         for (let playerId in match.players) {
             let player = match.players[playerId];
@@ -92,16 +112,16 @@ var MatchScene = BaseLayer.extend({
             playerUI.setPlayerUIInfo(player.username);
         }
 
-        for (let obsUI of this.obsstacleUIs) {
+        for (let obsUI of this.obstacleUIs) {
             obsUI.removeFromParent(true);
         }
-        this.obsstacleUIs = [];
+        this.obstacleUIs = [];
 
         for (let obs of match.obstacles) {
             let obsUI = new TreeUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
-            this.obsstacleUIs.push(obsUI);
+            this.obstacleUIs.push(obsUI);
         }
     },
 
@@ -154,6 +174,7 @@ var MatchScene = BaseLayer.extend({
         this.myPlayer.setPosition(pos);
         let scenePos = this.ground2ScenePosition(pos);
         this.ground.setPosition(this.ground.x + cc.winSize.width/2 - scenePos.x, this.ground.y + cc.winSize.height/2 - scenePos.y);
+        this.miniMap.setMyPlayerPosition(pos);
     },
 
     myPlayerPickItem: function () {

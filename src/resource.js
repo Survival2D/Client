@@ -27,6 +27,8 @@ var res = {
   LOBBY_SCENE: "res/ui/LobbyScene.json",
   HOME_SCENE: "res/ui/HomeScene.json",
   MATCH_SCENE: "res/ui/MatchScene.json",
+
+  MINIMAP_LAYER: "res/ui/MiniMapUI.json",
 };
 
 var g_resources = [];

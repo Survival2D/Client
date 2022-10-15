@@ -2,7 +2,7 @@
  * Created by quantm7 on 8/7/2022.
  */
 
-var BaseLayer = cc.Layer.extend({
+const BaseLayer = cc.Layer.extend({
     ctor: function (id) {
         this._super();
 
@@ -22,7 +22,7 @@ var BaseLayer = cc.Layer.extend({
     },
 
     loadCss: function (json) {
-        var jsonLayout = ccs.load(json);
+        let jsonLayout = ccs.load(json);
         this._layout = jsonLayout.node;
         this._action = jsonLayout.action;
         this._layout.setContentSize(cc.director.getWinSize());
@@ -38,7 +38,7 @@ var BaseLayer = cc.Layer.extend({
     initGUI: function () {},
 
     getControl: function (cName,parent) {
-        var p = null;
+        let p = null;
         if(typeof  parent === 'undefined')
         {
             p = this._layout;
@@ -57,7 +57,7 @@ var BaseLayer = cc.Layer.extend({
             cc.log("### getControl error parent " + cName);
             return null;
         }
-        var control = ccui.helper.seekWidgetByName(p,cName);
+        let control = ccui.helper.seekWidgetByName(p,cName);
         if (control == null) control = p.getChildByName(cName);
         if(control == null)
         {
@@ -71,7 +71,7 @@ var BaseLayer = cc.Layer.extend({
     },
 
     customButton: function (name, listener, target, parent) {
-        var btn = this.getControl(name, parent);
+        let btn = this.getControl(name, parent);
         if(!btn) return null;
         btn.setPressedActionEnabled(true);
         if (target === undefined) target = this;
