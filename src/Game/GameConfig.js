@@ -2,9 +2,11 @@
  * Created by quantm7 on 9/10/2022.
  */
 
-var Config = function () {};
+const Config = function () {};
 
 Config.FPS = 60;
+
+Config.IS_OFFLINE = false;
 
 /**
  * SPEED: pixel per frame

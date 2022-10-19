@@ -40,7 +40,17 @@ const MatchManager = cc.Class.extend({
         if (this.isInMatch()) this.scene.updateMatchView();
     },
 
-    updatePlayerMove: function (playerId, pos, rotation) {
+    updateMyPlayerMove: function (vector, rotation) {
+        let player = this.players[GameManager.getInstance().userData.username];
+        player.position.x += vector.x;
+        player.position.y += vector.y;
+        player.rotation = rotation;
+
+        let pk = new SendPlayerMoveAction(vector, rotation);
+        GameClient.getInstance().sendPacket(pk);
+    },
+
+    receivedPlayerMove: function (playerId, pos, rotation) {
         let player = this.players[playerId];
         if (!player) {
             cc.log("Warning: we dont have player " + playerId + " in match");

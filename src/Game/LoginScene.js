@@ -30,7 +30,7 @@ var LoginScene = BaseLayer.extend({
         if (!password) password = "";
         GameClient.newInstance().connectClientServer(username, password);
 
-        GameManager.getInstance().onReceivedFindMatch(0, 1);
+        if (Config.IS_OFFLINE) GameManager.getInstance().onReceivedFindMatch(0, 1);
     }
 });
 

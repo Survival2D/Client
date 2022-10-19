@@ -126,11 +126,16 @@ const MatchScene = BaseLayer.extend({
     },
 
     update: function (dt) {
+        let match = GameManager.getInstance().getCurrentMatch();
+
         let oldPos = this.myPlayer.getPosition();
         let unitVector = this.controller.calculateMovementVector();
         let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-        if (this.checkCollision(newPos, 30)) newPos = oldPos;
-        else this.setMyPlayerPosition(newPos);
+        if (this.checkCollision(newPos, 30)) {
+            newPos = oldPos;
+        }
+
+        this.setMyPlayerPosition(newPos);
 
         let oldRotation = this.myPlayer.getPlayerRotation();
         let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
@@ -138,8 +143,7 @@ const MatchScene = BaseLayer.extend({
         this.myPlayer.setPlayerRotation(rotation);
 
         if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || oldRotation !== rotation) {
-            let pk = new SendPlayerMoveAction(unitVector, rotation);
-            GameClient.getInstance().sendPacket(pk);
+            match.updateMyPlayerMove(gm.vector(newPos.x - oldPos.x, newPos.y - oldPos.y), rotation);
         }
 
         for (let i = 0; i < this.workingBullets.length; i++) {
