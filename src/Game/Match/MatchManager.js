@@ -7,6 +7,7 @@ const MatchManager = cc.Class.extend({
         this.matchId = "";
 
         this.players = [];
+        this.myPlayer = new PlayerData();
 
         this.mapWidth = 1600;
         this.mapHeight = 800;
@@ -26,6 +27,7 @@ const MatchManager = cc.Class.extend({
 
     newMatch: function (matchId) {
         this.matchId = "";
+        this.myPlayer.position = gm.p(30, 30);
         this.scene = SceneManager.getInstance().openMatchScene();
         this.scene.updateMatchView();
     },
@@ -36,15 +38,15 @@ const MatchManager = cc.Class.extend({
 
     updateMatchInfo: function (players) {
         this.players = players;
+        this.myPlayer = this.players[GameManager.getInstance().userData.username];
 
         if (this.isInMatch()) this.scene.updateMatchView();
     },
 
     updateMyPlayerMove: function (vector, rotation) {
-        let player = this.players[GameManager.getInstance().userData.username];
-        player.position.x += vector.x;
-        player.position.y += vector.y;
-        player.rotation = rotation;
+        this.myPlayer.position.x += vector.x;
+        this.myPlayer.position.y += vector.y;
+        this.myPlayer.rotation = rotation;
 
         let pk = new SendPlayerMoveAction(vector, rotation);
         GameClient.getInstance().sendPacket(pk);

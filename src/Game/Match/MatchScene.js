@@ -128,7 +128,7 @@ const MatchScene = BaseLayer.extend({
     update: function (dt) {
         let match = GameManager.getInstance().getCurrentMatch();
 
-        let oldPos = this.myPlayer.getPosition();
+        let oldPos = match.myPlayer.position;
         let unitVector = this.controller.calculateMovementVector();
         let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
         if (this.checkCollision(newPos, 30)) {
@@ -137,12 +137,11 @@ const MatchScene = BaseLayer.extend({
 
         this.setMyPlayerPosition(newPos);
 
-        let oldRotation = this.myPlayer.getPlayerRotation();
         let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
         rotation = Math.round(gm.radToDeg(rotation));
         this.myPlayer.setPlayerRotation(rotation);
 
-        if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || oldRotation !== rotation) {
+        if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || match.myPlayer.rotation !== rotation) {
             match.updateMyPlayerMove(gm.vector(newPos.x - oldPos.x, newPos.y - oldPos.y), rotation);
         }
 
