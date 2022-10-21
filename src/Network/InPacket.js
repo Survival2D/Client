@@ -191,7 +191,7 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
             for (let playerId in data.players) {
                 let playerData = new PlayerData();
                 this.parseData(playerData, data.players[playerId]);
-                playerData.username = playerData.playerId;
+                playerData.username = playerData.playerId = playerId;
                 this.players[playerId] = playerData;
             }
         }
