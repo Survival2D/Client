@@ -58,12 +58,12 @@ const PlayerUI = cc.Node.extend({
     },
 
     setPlayerRotation: function (deg) {
-        let uiRotation = - deg;
+        let uiRotation = -deg;
         this._body.setRotation(uiRotation);
     },
 
     getPlayerRotation: function () {
-        return this._body.getRotation();
+        return -this._body.getRotation();
     },
 
     equipGun: function (id) {
@@ -80,6 +80,25 @@ const PlayerUI = cc.Node.extend({
 
     isEquip: function () {
         return this._gun.isVisible();
+    },
+
+    animAttack: function () {
+        if (!this.isEquip()) {
+            if (Math.random() > 0.5) {
+                this._leftArm.stopAllActions();
+                this._leftArm.runAction(cc.sequence(
+                    cc.moveTo(0.1, 40, 10).easing(cc.easeSineIn()),
+                    cc.moveTo(0.1, this._leftArm.defaultPosition).easing(cc.easeSineOut())
+                ));
+            }
+            else {
+                this._rightArm.stopAllActions();
+                this._rightArm.runAction(cc.sequence(
+                    cc.moveTo(0.1, 40, -10).easing(cc.easeSineIn()),
+                    cc.moveTo(0.1, this._rightArm.defaultPosition).easing(cc.easeSineOut())
+                ));
+            }
+        }
     }
 });
 

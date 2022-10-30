@@ -14,6 +14,8 @@ const MatchScene = BaseLayer.extend({
         this.obstacleUIs = [];
         this.bullets = [];
         this.workingBullets = [];
+
+        this._cooldownAttack = 0;
     },
 
     initGUI: function () {
@@ -145,6 +147,15 @@ const MatchScene = BaseLayer.extend({
             match.updateMyPlayerMove(gm.vector(newPos.x - oldPos.x, newPos.y - oldPos.y), rotation);
         }
 
+        let isAttack = this.controller.checkAttacking();
+        if (isAttack && this._cooldownAttack <= 0) {
+            this.myPlayerFire(this.controller.getDestPosition());
+            if (this.myPlayer.isEquip()) this._cooldownAttack = Config.COOLDOWN_FIRE;
+            else this._cooldownAttack = Config.COOLDOWN_ATTACK;
+        }
+
+        if (this._cooldownAttack > 0) this._cooldownAttack -= dt;
+
         for (let i = 0; i < this.workingBullets.length; i++) {
             let bullet = this.workingBullets[i];
             if (this.checkCollision(bullet.getPosition())) {
@@ -191,6 +202,9 @@ const MatchScene = BaseLayer.extend({
         if (this.myPlayer.isEquip()) {
             let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
             this.fire(this.myPlayer.getPosition(), vector);
+        }
+        else {
+            this.myPlayer.animAttack();
         }
     },
 

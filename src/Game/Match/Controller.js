@@ -10,6 +10,7 @@ const Controller = cc.Class.extend({
         this.isRight = false;
 
         this.destPos = gm.p(0, 0);
+        this.isAttacking = false;
     },
 
     onKeyPressed: function (keyCode) {
@@ -57,7 +58,7 @@ const Controller = cc.Class.extend({
 
     onMouseDown: function (x = 0, y = 0) {
         Controller.log("Mouse Down: " + x + ", " + y);
-        GameManager.getInstance().getCurrentMatch().scene.myPlayerFire(gm.p(x, y));
+        this.isAttacking = true;
     },
 
     onMouseUp: function (x = 0, y = 0) {
@@ -79,8 +80,15 @@ const Controller = cc.Class.extend({
         GameManager.getInstance().getCurrentMatch().scene.myPlayerPickItem();
     },
 
-    fire: function () {
-        GameManager.getInstance().getCurrentMatch().scene.myPlayerFire();
+    checkAttacking: function () {
+        let isAttack = this.isAttacking;
+        this.isAttacking = false;
+
+        return isAttack;
+    },
+
+    getDestPosition: function () {
+        return this.destPos;
     },
 
     // get data from controller functions group
