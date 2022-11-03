@@ -213,9 +213,18 @@ const MatchScene = BaseLayer.extend({
         GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
     },
 
-    playerAttack: function (username, direction) {
+    playerChangeWeapon: function (username, weaponId) {
         let playerUI = this.playerUIs[username];
         if (playerUI) {
+            if (weaponId) playerUI.equipGun();
+            else playerUI.unEquip();
+        }
+    },
+
+    playerAttack: function (username, weaponId, direction) {
+        let playerUI = this.playerUIs[username];
+        if (playerUI) {
+            playerUI.equipGun();
             let rotation = gm.calculateVectorAngleInclination(direction);
             rotation = Math.round(gm.radToDeg(rotation));
             playerUI.setPlayerRotation(rotation);

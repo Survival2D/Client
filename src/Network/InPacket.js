@@ -98,6 +98,15 @@ const ReceivedPlayerAttackAction = InPacket.extend({
     }
 });
 
+const ReceivedPlayerChangeWeapon = InPacket.extend({
+    ctor: function (data) {
+        this.username = "";
+        this.weaponId = 0;
+
+        this.autoParseData(data);
+    }
+});
+
 const ReceivedCreateBullet = InPacket.extend({
     ctor: function (data) {
         this.bullet = new BulletData();

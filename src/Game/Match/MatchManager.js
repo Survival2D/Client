@@ -79,7 +79,17 @@ const MatchManager = cc.Class.extend({
             return;
         }
 
-        if (this.isInMatch()) this.scene.playerAttack(username, direction);
+        if (this.isInMatch()) this.scene.playerAttack(username, weaponId, direction);
+    },
+
+    receivedPlayerChangeWeapon: function (username, weaponId) {
+        let player = this.players[username];
+        if (!player) {
+            cc.log("Warning: we dont have player " + username + " in match");
+            return;
+        }
+
+        if (this.isInMatch()) this.scene.playerChangeWeapon(username, weaponId);
     },
 
     /**
