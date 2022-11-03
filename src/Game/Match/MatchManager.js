@@ -36,6 +36,9 @@ const MatchManager = cc.Class.extend({
         return SceneManager.getInstance().getMainLayer() instanceof MatchScene && this.scene !== null;
     },
 
+    /**
+     * @param {PlayerData[]} players
+     */
     updateMatchInfo: function (players) {
         this.players = players;
         this.myPlayer = this.players[GameManager.getInstance().userData.username];
@@ -52,10 +55,15 @@ const MatchManager = cc.Class.extend({
         GameClient.getInstance().sendPacket(pk);
     },
 
-    receivedPlayerMove: function (playerId, pos, rotation) {
-        let player = this.players[playerId];
+    updateMyPlayerWeapon: function (slot) {
+        let pk = new SendPlayerChangeWeapon(slot);
+        GameClient.getInstance().sendPacket(pk);
+    },
+
+    receivedPlayerMove: function (username, pos, rotation) {
+        let player = this.players[username];
         if (!player) {
-            cc.log("Warning: we dont have player " + playerId + " in match");
+            cc.log("Warning: we dont have player " + username + " in match");
             return;
         }
         player.position = pos;
@@ -64,7 +72,20 @@ const MatchManager = cc.Class.extend({
         if (this.isInMatch()) this.scene.updateMatchView();
     },
 
-    receivedFiredBullet: function (pos, vector) {
-        if (this.isInMatch()) this.scene.fire(pos, vector);
+    receivedPlayerAttack: function (username, weaponId, direction) {
+        let player = this.players[username];
+        if (!player) {
+            cc.log("Warning: we dont have player " + username + " in match");
+            return;
+        }
+
+        if (this.isInMatch()) this.scene.playerAttack(username, direction);
+    },
+
+    /**
+     * @param {BulletData} bullet
+     */
+    receivedCreateBullet: function (bullet) {
+        if (this.isInMatch()) this.scene.fire(bullet.rawPosition, bullet.direction);
     }
 });

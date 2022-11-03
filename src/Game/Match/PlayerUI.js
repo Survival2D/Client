@@ -16,7 +16,7 @@ const PlayerUI = cc.Node.extend({
 
         drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
+        // drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
         this._body.addChild(drawNode);
         drawNode.setPosition(25, 20);
         this._leftArm = drawNode;
@@ -24,7 +24,7 @@ const PlayerUI = cc.Node.extend({
 
         drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
+        // drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
         this._body.addChild(drawNode);
         drawNode.setPosition(25, -20);
         this._rightArm = drawNode;

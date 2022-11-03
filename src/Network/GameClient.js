@@ -102,6 +102,18 @@ var GameClient = cc.Class.extend({
             cc.log("RECEIVED PLAYER_MOVE", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedPlayerMove(pk.username, pk.position, pk.rotation);
         });
+
+        setupPlugin.addDataHandler(Cmd.PLAYER_ATTACK, function (plugin, data) {
+            let pk = new ReceivedPlayerAttackAction(data);
+            cc.log("RECEIVED PLAYER_ATTACK", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(pk.username, pk.weaponId, pk.direction);
+        });
+
+        setupPlugin.addDataHandler(Cmd.CREATE_BULLET, function (plugin, data) {
+            let pk = new ReceivedCreateBullet(data);
+            cc.log("RECEIVED CREATE_BULLET", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedCreateBullet(pk.bullet);
+        });
     },
 
     /**

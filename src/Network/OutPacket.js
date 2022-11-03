@@ -26,4 +26,13 @@ const SendPlayerMoveAction = OutPacket.extend({
             rotation: rotation
         }
     }
-})
+});
+
+const SendPlayerChangeWeapon = OutPacket.extend({
+    ctor: function (slot) {
+        this._super(Cmd.CHANGE_WEAPON);
+        this.data = {
+            slot: slot
+        }
+    }
+});

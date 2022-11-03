@@ -149,7 +149,7 @@ const MatchScene = BaseLayer.extend({
 
         let isAttack = this.controller.checkAttacking();
         if (isAttack && this._cooldownAttack <= 0) {
-            this.myPlayerFire(this.controller.getDestPosition());
+            this.myPlayerAttack(this.controller.getDestPosition());
             if (this.myPlayer.isEquip()) this._cooldownAttack = Config.COOLDOWN_FIRE;
             else this._cooldownAttack = Config.COOLDOWN_ATTACK;
         }
@@ -195,9 +195,12 @@ const MatchScene = BaseLayer.extend({
         // fake
         if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
         else this.myPlayer.equipGun();
+
+        let match = GameManager.getInstance().getCurrentMatch();
+        match.updateMyPlayerWeapon(this.myPlayer.isEquip() ? 1 : 0);
     },
 
-    myPlayerFire: function (destPos = gm.p(0, 0)) {
+    myPlayerAttack: function (destPos = gm.p(0, 0)) {
         destPos = this.scene2GroundPosition(destPos);
         if (this.myPlayer.isEquip()) {
             let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
@@ -206,13 +209,25 @@ const MatchScene = BaseLayer.extend({
         else {
             this.myPlayer.animAttack();
         }
+
+        GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
     },
 
-    fire: function (pos, vector) {
+    playerAttack: function (username, direction) {
+        let playerUI = this.playerUIs[username];
+        if (playerUI) {
+            let rotation = gm.calculateVectorAngleInclination(direction);
+            rotation = Math.round(gm.radToDeg(rotation));
+            playerUI.setPlayerRotation(rotation);
+            playerUI.animAttack();
+        }
+    },
+
+    fire: function (pos, direction) {
         let bullet = this.getBulletFromPool();
         this.workingBullets.push(bullet);
         bullet.setPosition(pos);
-        bullet.setMoveDirection(vector);
+        bullet.setMoveDirection(direction);
         bullet.animFire();
     },
 
