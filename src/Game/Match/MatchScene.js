@@ -140,8 +140,8 @@ const MatchScene = BaseLayer.extend({
         this.setMyPlayerPosition(newPos);
 
         let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
-        rotation = Math.round(gm.radToDeg(rotation));
-        this.myPlayer.setPlayerRotation(rotation);
+        let degRotation = Math.round(gm.radToDeg(rotation));
+        this.myPlayer.setPlayerRotation(degRotation);
 
         if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || match.myPlayer.rotation !== rotation) {
             match.updateMyPlayerMove(gm.vector(newPos.x - oldPos.x, newPos.y - oldPos.y), rotation);
