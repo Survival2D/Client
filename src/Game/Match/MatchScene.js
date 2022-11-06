@@ -4,18 +4,18 @@
 
 const MatchScene = BaseLayer.extend({
     ctor: function () {
-        this._super(MatchScene.className);
-        this.loadCss(res.MATCH_SCENE);
-        this.controller = new Controller();
-        this.initKeyBoardController();
-        this.initMouseController();
-
         this.playerUIs = [];
         this.obstacleUIs = [];
         this.bullets = [];
         this.workingBullets = [];
 
         this._cooldownAttack = 0;
+
+        this._super(MatchScene.className);
+        this.loadCss(res.MATCH_SCENE);
+        this.controller = new Controller();
+        this.initKeyBoardController();
+        this.initMouseController();
     },
 
     initGUI: function () {
@@ -27,12 +27,19 @@ const MatchScene = BaseLayer.extend({
         this.myPlayer.setMyPlayer(true);
         this.myPlayer.unEquip();
 
+        this.playerUIs[GameManager.getInstance().userData.username] = this.myPlayer;
+
         this.hud = this.getControl("hud");
 
         this.miniMap = new MiniMap();
         this.hud.addChild(this.miniMap);
         this.miniMap.setAnchorPoint(0, 0);
         this.miniMap.setPosition(30, 30);
+
+        this.myHp = this.getControl("myHp", this.hud);
+        this.myHp.bar = this.getControl("bar", this.myHp);
+        this.myHp.bar.defaultWidth = this.myHp.bar.getContentSize().width;
+        this.myHp.barShadow = this.getControl("barShadow", this.myHp);
     },
 
     initKeyBoardController: function () {
@@ -125,6 +132,8 @@ const MatchScene = BaseLayer.extend({
             obsUI.setPosition(obs.position);
             this.obstacleUIs.push(obsUI);
         }
+
+        this.updateMyHpProgress(match.myPlayer.hp);
     },
 
     update: function (dt) {
@@ -229,6 +238,33 @@ const MatchScene = BaseLayer.extend({
             rotation = Math.round(gm.radToDeg(rotation));
             playerUI.setPlayerRotation(rotation);
             playerUI.animAttack();
+        }
+    },
+
+    playerHit: function (username, oldHp) {
+        let playerUI = this.playerUIs[username];
+        if (playerUI) {
+            playerUI.animHit();
+        }
+
+        if (username === GameManager.getInstance().userData.username) {
+            this.updateMyHpProgress(GameManager.getInstance().getCurrentMatch().myPlayer.hp, oldHp);
+        }
+    },
+
+    updateMyHpProgress: function (curHp, oldHp) {
+        let width = this.myHp.bar.defaultWidth * curHp / Config.PLAYER_MAX_HP;
+        this.myHp.bar.setContentSize(width, this.myHp.bar.height);
+
+        if (!oldHp) oldHp = curHp;
+
+        let oldWidth = this.myHp.bar.defaultWidth * oldHp / Config.PLAYER_MAX_HP;
+        this.myHp.barShadow.setContentSize(oldWidth, this.myHp.barShadow.height);
+        this.myHp.barShadow.setScaleX(1);
+
+        if (oldHp !== curHp) {
+            this.myHp.barShadow.stopAllActions();
+            this.myHp.barShadow.runAction(cc.scaleTo(0.5, width/ oldWidth, 1));
         }
     },
 

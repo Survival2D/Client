@@ -28,6 +28,9 @@ const MatchManager = cc.Class.extend({
     newMatch: function (matchId) {
         this.matchId = "";
         this.myPlayer.position = gm.p(30, 30);
+        this.myPlayer.hp = Config.PLAYER_MAX_HP;
+        this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
+        this.players[GameManager.getInstance().userData.username] = this.myPlayer;
         this.scene = SceneManager.getInstance().openMatchScene();
         this.scene.updateMatchView();
     },
@@ -66,6 +69,9 @@ const MatchManager = cc.Class.extend({
             cc.log("Warning: we dont have player " + username + " in match");
             return;
         }
+
+        if (username === GameManager.getInstance().userData.username) return;
+
         player.position = pos;
         player.rotation = rotation;
 
@@ -79,6 +85,8 @@ const MatchManager = cc.Class.extend({
             return;
         }
 
+        if (username === GameManager.getInstance().userData.username) return;
+
         if (this.isInMatch()) this.scene.playerAttack(username, weaponId, direction);
     },
 
@@ -89,6 +97,8 @@ const MatchManager = cc.Class.extend({
             return;
         }
 
+        if (username === GameManager.getInstance().userData.username) return;
+
         if (this.isInMatch()) this.scene.playerChangeWeapon(username, weaponId);
     },
 
@@ -97,5 +107,18 @@ const MatchManager = cc.Class.extend({
      */
     receivedCreateBullet: function (bullet) {
         if (this.isInMatch()) this.scene.fire(bullet.rawPosition, bullet.direction);
+    },
+
+    receivedPlayerHit: function (username, damage) {
+        let player = this.players[username];
+        if (!player) {
+            cc.log("Warning: we dont have player " + username + " in match");
+            return;
+        }
+
+        let oldHp = player.hp;
+        player.hp -= damage;
+
+        if (this.isInMatch()) this.scene.playerHit(username, oldHp);
     }
 });

@@ -37,7 +37,6 @@ const MiniMap = ccui.Layout.extend({
         this.addChild(drawNode);
 
         this.bg = ccui.helper.seekWidgetByName(this._layout, "bg");
-        cc.log("DMM ", JSON.stringify(this.bg.getPosition()))
     },
 
     updateMiniMapView: function () {

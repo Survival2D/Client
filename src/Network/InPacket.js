@@ -219,6 +219,7 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
                 let playerData = new PlayerData();
                 this.parseData(playerData, data.players[playerId]);
                 playerData.username = playerData.playerId = playerId;
+                playerData.hp = Config.PLAYER_MAX_HP;
                 this.players[playerId] = playerData;
             }
         }

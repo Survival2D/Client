@@ -99,6 +99,10 @@ const PlayerUI = cc.Node.extend({
                 ));
             }
         }
+    },
+
+    animHit: function () {
+
     }
 });
 

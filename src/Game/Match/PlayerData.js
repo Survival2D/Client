@@ -10,5 +10,6 @@ const PlayerData = cc.Class.extend({
         this.rotation = 0;
         this.speed = 0;
         this.team = 0;
+        this.hp = 0;
     }
 });
