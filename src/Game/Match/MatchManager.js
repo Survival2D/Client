@@ -129,6 +129,6 @@ const MatchManager = cc.Class.extend({
             return;
         }
 
-        if (this.isInMatch()) this.scene.playerTakeDamage(username, oldHp);
+        if (this.isInMatch()) this.scene.playerDead(username);
     }
 });

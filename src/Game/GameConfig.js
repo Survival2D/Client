@@ -6,13 +6,13 @@ const Config = function () {};
 
 Config.FPS = 60;
 
-Config.IS_OFFLINE = true;
+Config.IS_OFFLINE = false;
 
 /**
  * SPEED: pixel per frame
  */
 Config.PLAYER_BASE_SPEED = 10;
-Config.BULLET_BASE_SPEED = 1;
+Config.BULLET_BASE_SPEED = 20;
 
 Config.PLAYER_MAX_HP = 100;
 
