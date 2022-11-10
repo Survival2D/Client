@@ -9,8 +9,8 @@ const MatchManager = cc.Class.extend({
         this.players = [];
         this.myPlayer = new PlayerData();
 
-        this.mapWidth = 1600;
-        this.mapHeight = 800;
+        this.mapWidth = 10000;
+        this.mapHeight = 10000;
 
         this.obstacles = [];
         for (let i = 0; i < 10; i++) {

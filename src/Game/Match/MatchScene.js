@@ -98,11 +98,11 @@ const MatchScene = BaseLayer.extend({
         let x = 500, y = 500;
         while (x < match.mapWidth) {
             drawNode.drawSegment(cc.p(x, 0), cc.p(x, match.mapHeight), 3, cc.color(0, 0, 0, 40));
-            x += 200;
+            x += 500;
         }
         while (y < match.mapHeight) {
             drawNode.drawSegment(cc.p(0, y), cc.p(match.mapWidth, y), 3, cc.color(0, 0, 0, 40));
-            y += 200;
+            y += 500;
         }
         this.ground.addChild(drawNode, MatchScene.Z_ORDER.BG);
         this.crossline = drawNode;
