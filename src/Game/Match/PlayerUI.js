@@ -101,8 +101,21 @@ const PlayerUI = cc.Node.extend({
         }
     },
 
-    animHit: function () {
+    animTakeDamage: function () {
+        this.stopAllActions();
+        this.runAction(cc.sequence(
+            cc.fadeTo(0.1, 50),
+            cc.fadeIn(0.1)
+        ));
+    },
 
+    animDead: function () {
+        this.stopAllActions();
+        this.runAction(cc.spawn(
+            cc.fadeOut(0.1),
+            cc.scaleTo(0.1, 1.5),
+            cc.removeSelf(true)
+        ));
     }
 });
 

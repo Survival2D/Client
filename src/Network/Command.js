@@ -14,3 +14,5 @@ Cmd.PLAYER_MOVE = "playerMove";
 Cmd.PLAYER_ATTACK = "playerAttack";
 Cmd.CREATE_BULLET = "createBullet";
 Cmd.CHANGE_WEAPON = "changeWeapon";
+Cmd.PLAYER_TAKE_DAMAGE = "playerTakeDamage";
+Cmd.PLAYER_DEAD = "playerDead";

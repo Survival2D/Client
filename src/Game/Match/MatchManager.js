@@ -109,7 +109,7 @@ const MatchManager = cc.Class.extend({
         if (this.isInMatch()) this.scene.fire(bullet.rawPosition, bullet.direction);
     },
 
-    receivedPlayerHit: function (username, damage) {
+    receivedPlayerTakeDamage: function (username, hp) {
         let player = this.players[username];
         if (!player) {
             cc.log("Warning: we dont have player " + username + " in match");
@@ -117,8 +117,18 @@ const MatchManager = cc.Class.extend({
         }
 
         let oldHp = player.hp;
-        player.hp -= damage;
+        player.hp = hp;
 
-        if (this.isInMatch()) this.scene.playerHit(username, oldHp);
+        if (this.isInMatch()) this.scene.playerTakeDamage(username, oldHp);
+    },
+
+    receivedPlayerDead: function (username) {
+        let player = this.players[username];
+        if (!player) {
+            cc.log("Warning: we dont have player " + username + " in match");
+            return;
+        }
+
+        if (this.isInMatch()) this.scene.playerTakeDamage(username, oldHp);
     }
 });

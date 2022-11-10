@@ -146,9 +146,9 @@ const ReceivedBulletFired = InPacket.extend({
     }
 });
 
-const ReceivedPlayerHit = InPacket.extend({
+const ReceivedPlayerTakeDamage = InPacket.extend({
     ctor: function (data) {
-        this.uid = 0;
+        this.username = "";
         this.hp = 0;
 
         this.autoParseData(data);
@@ -157,7 +157,7 @@ const ReceivedPlayerHit = InPacket.extend({
 
 const ReceivedPlayerDead = InPacket.extend({
     ctor: function (data) {
-        this.uid = 0;
+        this.username = "";
 
         this.autoParseData(data);
     }

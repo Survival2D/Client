@@ -241,10 +241,10 @@ const MatchScene = BaseLayer.extend({
         }
     },
 
-    playerHit: function (username, oldHp) {
+    playerTakeDamage: function (username, oldHp) {
         let playerUI = this.playerUIs[username];
         if (playerUI) {
-            playerUI.animHit();
+            playerUI.animTakeDamage();
         }
 
         if (username === GameManager.getInstance().userData.username) {
@@ -265,6 +265,31 @@ const MatchScene = BaseLayer.extend({
         if (oldHp !== curHp) {
             this.myHp.barShadow.stopAllActions();
             this.myHp.barShadow.runAction(cc.scaleTo(0.5, width/ oldWidth, 1));
+        }
+    },
+
+    playerDead: function (username) {
+        let playerUI = this.playerUIs[username];
+        if (playerUI) {
+            playerUI.animDead();
+
+            let spr = new cc.Sprite("res/Game/Player/dead_blood.png");
+            this.ground.addChild(spr, MatchScene.Z_ORDER.BG);
+            spr.setPosition(playerUI.getPosition());
+            spr.runAction(cc.sequence(
+                cc.spawn(
+                    cc.moveTo(1, 0, -30).easing(cc.easeOut(2)),
+                    cc.sequence(
+                        cc.delayTime(0.7),
+                        cc.fadeOut(0.3)
+                    )
+                ),
+                cc.removeSelf(true)
+            ));
+        }
+
+        if (username === GameManager.getInstance().userData.username) {
+            // TODO: end game
         }
     },
 

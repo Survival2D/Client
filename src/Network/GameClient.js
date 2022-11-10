@@ -120,6 +120,18 @@ var GameClient = cc.Class.extend({
             cc.log("RECEIVED CREATE_BULLET", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedCreateBullet(pk.bullet);
         });
+
+        setupPlugin.addDataHandler(Cmd.PLAYER_TAKE_DAMAGE, function (plugin, data) {
+            let pk = new ReceivedPlayerTakeDamage(data);
+            cc.log("RECEIVED PLAYER_TAKE_DAMAGE", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedPlayerTakeDamage(pk.username, pk.hp);
+        });
+
+        setupPlugin.addDataHandler(Cmd.PLAYER_DEAD, function (plugin, data) {
+            let pk = new ReceivedPlayerDead(data);
+            cc.log("RECEIVED PLAYER_DEAD", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedPlayerDead(pk.username);
+        });
     },
 
     /**
