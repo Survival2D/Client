@@ -112,7 +112,7 @@ var GameClient = cc.Class.extend({
         setupPlugin.addDataHandler(Cmd.CHANGE_WEAPON, function (plugin, data) {
             let pk = new ReceivedPlayerChangeWeapon(data);
             cc.log("RECEIVED CHANGE_WEAPON", JSON.stringify(pk));
-            GameManager.getInstance().getCurrentMatch().receivedPlayerChangeWeapon(pk.username, pk.weaponId);
+            GameManager.getInstance().getCurrentMatch().receivedPlayerChangeWeapon(pk.username, pk.slot);
         });
 
         setupPlugin.addDataHandler(Cmd.CREATE_BULLET, function (plugin, data) {
