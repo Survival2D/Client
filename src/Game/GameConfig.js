@@ -12,7 +12,7 @@ Config.IS_OFFLINE = true;
  * SPEED: pixel per frame
  */
 Config.PLAYER_BASE_SPEED = 10;
-Config.BULLET_BASE_SPEED = 30;
+Config.BULLET_BASE_SPEED = 1;
 
 Config.PLAYER_MAX_HP = 100;
 
