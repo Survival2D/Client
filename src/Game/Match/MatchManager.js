@@ -70,7 +70,7 @@ const MatchManager = cc.Class.extend({
             return;
         }
 
-        // if (username === GameManager.getInstance().userData.username) return;
+        if (username === GameManager.getInstance().userData.username) return;
 
         player.position = pos;
         player.rotation = rotation;
