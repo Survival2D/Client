@@ -75,7 +75,7 @@ const MatchManager = cc.Class.extend({
         player.position = pos;
         player.rotation = rotation;
 
-        if (this.isInMatch()) this.scene.updateMatchView();
+        if (this.isInMatch()) this.scene.playerMove(username, pos, rotation);
     },
 
     receivedPlayerAttack: function (username, weaponId, direction) {

@@ -92,8 +92,10 @@ const MatchScene = BaseLayer.extend({
         if (!match) return;
 
         this.ground.setContentSize(match.mapWidth, match.mapHeight);
+
+        if (this.crossline) this.crossline.removeFromParent(true);
         let drawNode = new cc.DrawNode();
-        let x = 200, y = 200;
+        let x = 500, y = 500;
         while (x < match.mapWidth) {
             drawNode.drawSegment(cc.p(x, 0), cc.p(x, match.mapHeight), 3, cc.color(0, 0, 0, 40));
             x += 200;
@@ -103,19 +105,19 @@ const MatchScene = BaseLayer.extend({
             y += 200;
         }
         this.ground.addChild(drawNode, MatchScene.Z_ORDER.BG);
+        this.crossline = drawNode;
 
         this.miniMap.updateMiniMapView();
 
         for (let playerId in match.players) {
             let player = match.players[playerId];
-            if (player.playerId === GameManager.getInstance().userData.username) continue;
             let playerUI = this.playerUIs[player.playerId];
             if (!playerUI) {
                 playerUI = new PlayerUI();
                 this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
-                playerUI.unEquip();
                 this.playerUIs[player.playerId] = playerUI;
             }
+            playerUI.unEquip();
             playerUI.setPosition(player.position);
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
             playerUI.setPlayerUIInfo(player.username);
@@ -198,6 +200,14 @@ const MatchScene = BaseLayer.extend({
         let scenePos = this.ground2ScenePosition(pos);
         this.ground.setPosition(this.ground.x + cc.winSize.width/2 - scenePos.x, this.ground.y + cc.winSize.height/2 - scenePos.y);
         this.miniMap.setMyPlayerPosition(pos);
+    },
+
+    playerMove: function (username, position, rotation) {
+        let playerUI = this.playerUIs[username];
+        if (playerUI) {
+            playerUI.setPosition(position);
+            playerUI.setPlayerRotation(Math.round(gm.radToDeg(rotation)));
+        }
     },
 
     myPlayerPickItem: function () {
@@ -290,6 +300,8 @@ const MatchScene = BaseLayer.extend({
 
         if (username === GameManager.getInstance().userData.username) {
             // TODO: end game
+            this.hud.stopAllActions();
+            this.hud.runAction(cc.fadeOut(0.3));
         }
     },
 

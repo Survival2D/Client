@@ -6,7 +6,7 @@ const Config = function () {};
 
 Config.FPS = 60;
 
-Config.IS_OFFLINE = false;
+Config.IS_OFFLINE = true;
 
 /**
  * SPEED: pixel per frame
