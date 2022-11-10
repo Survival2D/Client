@@ -141,28 +141,30 @@ const MatchScene = BaseLayer.extend({
     update: function (dt) {
         let match = GameManager.getInstance().getCurrentMatch();
 
-        let oldPos = match.myPlayer.position;
-        let unitVector = this.controller.calculateMovementVector();
-        let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-        if (this.checkCollision(newPos, 30)) {
-            newPos = oldPos;
-        }
+        if (!match.myPlayer.isDead()) {
+            let oldPos = match.myPlayer.position;
+            let unitVector = this.controller.calculateMovementVector();
+            let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
+            if (this.checkCollision(newPos, 30)) {
+                newPos = oldPos;
+            }
 
-        this.setMyPlayerPosition(newPos);
+            this.setMyPlayerPosition(newPos);
 
-        let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
-        let degRotation = Math.round(gm.radToDeg(rotation));
-        this.myPlayer.setPlayerRotation(degRotation);
+            let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
+            let degRotation = Math.round(gm.radToDeg(rotation));
+            this.myPlayer.setPlayerRotation(degRotation);
 
-        if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || match.myPlayer.rotation !== rotation) {
-            match.updateMyPlayerMove(gm.vector(newPos.x - oldPos.x, newPos.y - oldPos.y), rotation);
-        }
+            if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || match.myPlayer.rotation !== rotation) {
+                match.updateMyPlayerMove(gm.vector(newPos.x - oldPos.x, newPos.y - oldPos.y), rotation);
+            }
 
-        let isAttack = this.controller.checkAttacking();
-        if (isAttack && this._cooldownAttack <= 0) {
-            this.myPlayerAttack(this.controller.getDestPosition());
-            if (this.myPlayer.isEquip()) this._cooldownAttack = Config.COOLDOWN_FIRE;
-            else this._cooldownAttack = Config.COOLDOWN_ATTACK;
+            let isAttack = this.controller.checkAttacking();
+            if (isAttack && this._cooldownAttack <= 0) {
+                this.myPlayerAttack(this.controller.getDestPosition());
+                if (this.myPlayer.isEquip()) this._cooldownAttack = Config.COOLDOWN_FIRE;
+                else this._cooldownAttack = Config.COOLDOWN_ATTACK;
+            }
         }
 
         if (this._cooldownAttack > 0) this._cooldownAttack -= dt;
