@@ -101,7 +101,7 @@ const ReceivedPlayerAttackAction = InPacket.extend({
 const ReceivedPlayerChangeWeapon = InPacket.extend({
     ctor: function (data) {
         this.username = "";
-        this.weaponId = 0;
+        this.slot = 0;
 
         this.autoParseData(data);
     }
