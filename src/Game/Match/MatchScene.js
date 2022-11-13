@@ -40,6 +40,22 @@ const MatchScene = BaseLayer.extend({
         this.myHp.bar = this.getControl("bar", this.myHp);
         this.myHp.bar.defaultWidth = this.myHp.bar.getContentSize().width;
         this.myHp.barShadow = this.getControl("barShadow", this.myHp);
+
+        let pWeaponPack = this.getControl("pWeaponPack", this.hud);
+        this.weaponSlotFist = this.getControl("slotFist", pWeaponPack);
+        this.weaponSlotGun = this.getControl("slotGun", pWeaponPack);
+
+        this.weaponSlotFist.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.FIST);
+            }
+        }, this);
+
+        this.weaponSlotGun.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.GUN);
+            }
+        }, this);
     },
 
     initKeyBoardController: function () {
@@ -59,23 +75,39 @@ const MatchScene = BaseLayer.extend({
         let that = this;
         cc.eventManager.addListener({
             event: cc.EventListener.MOUSE,
-            onMouseDown: function (event) {
-                that.controller.onMouseDown(event.getLocationX(), event.getLocationY());
-            },
-            onMouseUp: function (event) {
-                that.controller.onMouseUp(event.getLocationX(), event.getLocationY());
-            },
+            // onMouseDown: function (event) {
+            //     that.controller.onMouseDown(event.getLocationX(), event.getLocationY());
+            // },
+            // onMouseUp: function (event) {
+            //     that.controller.onMouseUp(event.getLocationX(), event.getLocationY());
+            // },
             onMouseMove: function (event) {
                 that.controller.onMouseMove(event.getLocationX(), event.getLocationY());
             },
             onMouseScroll: function (event) {
                 that.controller.onMouseScroll();
             },
-        }, this);
+        }, this.ground);
+
+        this.ground.addTouchEventListener((sender, type) => {
+            switch (type) {
+                case ccui.Widget.TOUCH_BEGAN:
+                    that.controller.onMouseDown(sender.getTouchBeganPosition().x, sender.getTouchBeganPosition().y);
+                    break;
+                case ccui.Widget.TOUCH_ENDED:
+                    that.controller.onMouseUp(sender.getTouchEndPosition().x, sender.getTouchEndPosition().y);
+                    break;
+            }
+        }, this)
     },
 
     onEnter: function () {
         this._super();
+
+        this.weaponSlotFist.setScale(1.2);
+        this.weaponSlotFist.setOpacity(255);
+        this.weaponSlotGun.setScale(1);
+        this.weaponSlotGun.setOpacity(100);
 
         this.updateMatchView();
 
@@ -213,12 +245,29 @@ const MatchScene = BaseLayer.extend({
     },
 
     myPlayerPickItem: function () {
-        // fake
-        if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
-        else this.myPlayer.equipGun();
 
+    },
+
+    myPlayerChangeWeapon: function (slot) {
         let match = GameManager.getInstance().getCurrentMatch();
-        match.updateMyPlayerWeapon(this.myPlayer.isEquip() ? 1 : 0);
+        if (match.myPlayer.isDead()) return;
+
+        if (slot === PlayerData.WEAPON_SLOT.FIST) {
+            if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
+            this.weaponSlotFist.setScale(1.2);
+            this.weaponSlotFist.setOpacity(255);
+            this.weaponSlotGun.setScale(1);
+            this.weaponSlotGun.setOpacity(100);
+        }
+        else {
+            if (!this.myPlayer.isEquip()) this.myPlayer.equipGun();
+            this.weaponSlotGun.setScale(1.2);
+            this.weaponSlotGun.setOpacity(255);
+            this.weaponSlotFist.setScale(1);
+            this.weaponSlotFist.setOpacity(100);
+        }
+
+        match.updateMyPlayerWeapon(slot);
     },
 
     myPlayerAttack: function (destPos = gm.p(0, 0)) {
@@ -287,13 +336,20 @@ const MatchScene = BaseLayer.extend({
 
             let spr = new cc.Sprite("res/Game/Player/dead_blood.png");
             this.ground.addChild(spr, MatchScene.Z_ORDER.BG);
+            spr.setColor(cc.color("#CA2400"));
             spr.setPosition(playerUI.getPosition());
+            spr.setOpacity(0);
+            spr.setScale(0.1);
             spr.runAction(cc.sequence(
                 cc.spawn(
-                    cc.moveTo(1, 0, -30).easing(cc.easeOut(2)),
+                    cc.fadeIn(0.3),
                     cc.sequence(
-                        cc.delayTime(0.7),
-                        cc.fadeOut(0.3)
+                        cc.scaleTo(0.1, 0.3).easing(cc.easeIn(2)),
+                        cc.scaleTo(1, 0.5)
+                    ),
+                    cc.sequence(
+                        cc.delayTime(1),
+                        cc.fadeOut(0.7)
                     )
                 ),
                 cc.removeSelf(true)

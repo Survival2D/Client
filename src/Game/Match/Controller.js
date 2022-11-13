@@ -53,6 +53,12 @@ const Controller = cc.Class.extend({
             case cc.KEY.f:
                 this.pickItem();
                 break;
+            case cc.KEY.num1:
+                this.changeWeaponSlot(PlayerData.WEAPON_SLOT.GUN);
+                break;
+            case cc.KEY.num2:
+                this.changeWeaponSlot(PlayerData.WEAPON_SLOT.FIST);
+                break;
         }
     },
 
@@ -78,6 +84,11 @@ const Controller = cc.Class.extend({
 
     pickItem: function () {
         GameManager.getInstance().getCurrentMatch().scene.myPlayerPickItem();
+        GameManager.getInstance().getCurrentMatch().receivedPlayerDead(GameManager.getInstance().userData.username);
+    },
+
+    changeWeaponSlot: function (slot) {
+        GameManager.getInstance().getCurrentMatch().scene.myPlayerChangeWeapon(slot);
     },
 
     checkAttacking: function () {

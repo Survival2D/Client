@@ -17,3 +17,8 @@ const PlayerData = cc.Class.extend({
         return this.hp <= 0;
     }
 });
+
+PlayerData.WEAPON_SLOT = {
+    FIST: 0,
+    GUN: 1
+}

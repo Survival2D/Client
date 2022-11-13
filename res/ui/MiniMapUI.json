@@ -30,7 +30,8 @@
             "ColorVector": {
               "ScaleY": 1.0
             },
-            "TouchEnable": true,
+            "Scale9Width": 1,
+            "Scale9Height": 1,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
@@ -86,7 +87,6 @@
             },
             "Scale9Width": 1,
             "Scale9Height": 1,
-            "TouchEnable": true,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
