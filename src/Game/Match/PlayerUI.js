@@ -16,16 +16,16 @@ const PlayerUI = cc.Node.extend({
 
         drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        // drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
-        this._body.addChild(drawNode);
+        drawNode.drawCircle(cc.p(0, 0), 10, 0, 1000, false, 3, cc.color("#000000"));
+        this._body.addChild(drawNode, 1);
         drawNode.setPosition(25, 20);
         this._leftArm = drawNode;
         this._leftArm.defaultPosition = this._leftArm.getPosition();
 
         drawNode = new cc.DrawNode();
         drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        // drawNode.drawCircle(cc.p(0, 0), 10, 0, 10000, false, 2, cc.color("#000000"));
-        this._body.addChild(drawNode);
+        drawNode.drawCircle(cc.p(0, 0), 10, 0, 1000, false, 3, cc.color("#000000"));
+        this._body.addChild(drawNode, 1);
         drawNode.setPosition(25, -20);
         this._rightArm = drawNode;
         this._rightArm.defaultPosition = this._rightArm.getPosition();
@@ -40,7 +40,7 @@ const PlayerUI = cc.Node.extend({
         let gun = new PlayerGunUI();
         gun.setAnchorPoint(0, 0.5);
         this._body.addChild(gun);
-        gun.setPosition(10, 0);
+        gun.setPosition(15, 0);
         this._gun = gun;
     },
 
@@ -68,8 +68,8 @@ const PlayerUI = cc.Node.extend({
 
     equipGun: function (id) {
         this._gun.setVisible(true);
-        this._leftArm.setPosition(37, 10);
-        this._rightArm.setPosition(25, -10);
+        this._leftArm.setPosition(47, 5);
+        this._rightArm.setPosition(15, -3);
     },
 
     unEquip: function () {

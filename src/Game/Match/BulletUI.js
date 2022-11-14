@@ -8,7 +8,7 @@ const BulletUI = cc.Node.extend({
 
         this.trail = new cc.Sprite("res/Game/bullet_trail.png");
         this.addChild(this.trail);
-        this.trail.setAnchorPoint(0, 0.5);
+        this.trail.setAnchorPoint(1, 0.5);
         this.trail.setPosition(0, 0);
         this.trail.setVisible(false);
     },
@@ -24,8 +24,10 @@ const BulletUI = cc.Node.extend({
     animFire: function () {
         this.trail.setVisible(true);
         this.trail.setScale(0);
+        this.trail.setOpacity(0);
         this.trail.stopAllActions();
-        this.trail.runAction(cc.scaleTo(0.15, 1).easing(cc.easeOut(2)));
+        this.trail.runAction(cc.scaleTo(0.3, 1).easing(cc.easeOut(2)));
+        this.trail.runAction(cc.fadeIn(0.2));
     },
 
     updateBullet: function (dt) {

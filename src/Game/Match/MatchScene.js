@@ -161,7 +161,12 @@ const MatchScene = BaseLayer.extend({
         this.obstacleUIs = [];
 
         for (let obs of match.obstacles) {
-            let obsUI = new TreeUI();
+            let obsUI;
+            if (obs.type === ObstacleData.TYPE.TREE) obsUI = new TreeUI();
+            if (obs.type === ObstacleData.TYPE.CRATE) {
+                obsUI = new CrateUI();
+                obsUI.setContentSize(obs.width, obs.height);
+            }
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
             this.obstacleUIs.push(obsUI);
@@ -216,7 +221,11 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         if (pos.x - radius < 0 || pos.x + radius > match.mapWidth || pos.y - radius < 0 || pos.y + radius > match.mapHeight) return true;
         for (let obs of match.obstacles) {
-            if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
+            if (obs instanceof TreeData)
+                if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
+            if (obs instanceof CrateData)
+                if (gm.checkCollisionCircleRectangle(pos, radius,
+                    gm.p(obs.position.x - obs.width/2, obs.position.y - obs.height/2), obs.width, obs.height)) return true;
         }
         return false;
     },
@@ -294,7 +303,8 @@ const MatchScene = BaseLayer.extend({
     playerAttack: function (username, weaponId, direction) {
         let playerUI = this.playerUIs[username];
         if (playerUI) {
-            playerUI.equipGun();
+            if (weaponId) playerUI.equipGun();
+            else playerUI.unEquip();
             let rotation = gm.calculateVectorAngleInclination(direction);
             rotation = Math.round(gm.radToDeg(rotation));
             playerUI.setPlayerRotation(rotation);

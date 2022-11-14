@@ -87,7 +87,10 @@ gm.calculateVectorAngleInclination = function (vectorOrOriginPos, destPos) {
     }
     let dx = destPos.x - originPos.x;
     let dy = destPos.y - originPos.y;
-    if (dx === 0) return 0;
+    if (dx === 0) {
+        if (dy >= 0) return Math.PI/2;
+        else return -Math.PI/2;
+    }
     let angle = Math.atan(dy/dx);
     if (dx < 0) angle = Math.PI + angle;
     if (angle > Math.PI) angle = angle - 2 * Math.PI;

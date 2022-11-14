@@ -9,13 +9,19 @@ const MatchManager = cc.Class.extend({
         this.players = [];
         this.myPlayer = new PlayerData();
 
-        this.mapWidth = 10000;
-        this.mapHeight = 10000;
+        this.mapWidth = 1000;
+        this.mapHeight = 1000;
 
         this.obstacles = [];
         for (let i = 0; i < 10; i++) {
-            let obstacleData = new ObstacleData();
-            obstacleData.type = 1;
+            let obstacleData = new TreeData();
+            let x = Math.round(Math.random() * this.mapWidth);
+            let y = Math.round(Math.random() * this.mapHeight);
+            obstacleData.position = gm.p(x, y);
+            this.obstacles.push(obstacleData);
+        }
+        for (let i = 0; i < 10; i++) {
+            let obstacleData = new CrateData();
             let x = Math.round(Math.random() * this.mapWidth);
             let y = Math.round(Math.random() * this.mapHeight);
             obstacleData.position = gm.p(x, y);

@@ -3,16 +3,23 @@
  */
 
 const ObstacleUI = ccui.ImageView.extend({
-    ctor: function (type) {
-        this._super();
-        this.type = type;
+    ctor: function (path, textureType) {
+        this._super(path, textureType);
+        this.type = 0;
+        this.ignoreContentAdaptWithSize(false);
     }
 });
 
 const TreeUI = ObstacleUI.extend({
     ctor: function () {
-        this._super(1);
-        this.radius = 10;
-        this.loadTexture("res/Game/Obstacle/tree.png");
+        this._super("res/Game/Obstacle/tree.png", ccui.Widget.LOCAL_TEXTURE);
+        this.type = ObstacleData.TYPE.TREE;
+    }
+});
+
+const CrateUI = ObstacleUI.extend({
+    ctor: function () {
+        this._super("res/Game/Obstacle/crate.png", ccui.Widget.LOCAL_TEXTURE);
+        this.type = ObstacleData.TYPE.CRATE;
     }
 });
