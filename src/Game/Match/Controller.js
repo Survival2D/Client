@@ -84,7 +84,6 @@ const Controller = cc.Class.extend({
 
     pickItem: function () {
         GameManager.getInstance().getCurrentMatch().scene.myPlayerPickItem();
-        GameManager.getInstance().getCurrentMatch().receivedPlayerDead(GameManager.getInstance().userData.username);
     },
 
     changeWeaponSlot: function (slot) {
