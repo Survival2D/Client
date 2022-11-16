@@ -132,6 +132,8 @@
                 "ColorVector": {
                   "ScaleY": 1.0
                 },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
                 "AnchorPoint": {
                   "ScaleX": 1.0
                 },
@@ -275,7 +277,7 @@
                           "ScaleY": 0.482
                         },
                         "Position": {
-                          "X": 35.0662,
+                          "X": 35.065,
                           "Y": 30.0
                         },
                         "Scale": {
@@ -296,8 +298,8 @@
                         "HorizontalEdge": "LeftEdge",
                         "LeftMargin": 5.0,
                         "RightMargin": 85.0,
-                        "TopMargin": 4.0998,
-                        "BottomMargin": 5.9002,
+                        "TopMargin": 4.1,
+                        "BottomMargin": 5.9,
                         "Tag": 16,
                         "ActionTag": -1716081700,
                         "Size": {
@@ -543,7 +545,7 @@
                           "ScaleY": 0.482
                         },
                         "Position": {
-                          "X": 35.0662,
+                          "X": 35.065,
                           "Y": 30.0
                         },
                         "Scale": {
@@ -564,8 +566,8 @@
                         "HorizontalEdge": "LeftEdge",
                         "LeftMargin": 5.0,
                         "RightMargin": 85.0,
-                        "TopMargin": 4.0998,
-                        "BottomMargin": 5.9002,
+                        "TopMargin": 4.1,
+                        "BottomMargin": 5.9,
                         "Tag": 19,
                         "ActionTag": 1198688773,
                         "Size": {
@@ -653,12 +655,12 @@
                         "ShadowOffsetX": 2.0,
                         "ShadowOffsetY": -2.0,
                         "AnchorPoint": {
-                          "ScaleX": 0.3606,
-                          "ScaleY": 0.5218
+                          "ScaleX": 1.0,
+                          "ScaleY": 0.5
                         },
                         "Position": {
-                          "X": 119.1305,
-                          "Y": 45.0
+                          "X": 130.0,
+                          "Y": 44.238
                         },
                         "Scale": {
                           "ScaleX": 1.0,
@@ -668,18 +670,18 @@
                         "IconVisible": false,
                         "PositionPercentYEnabled": true,
                         "PrePosition": {
-                          "X": 0.8509,
-                          "Y": 0.75
+                          "X": 0.9286,
+                          "Y": 0.7373
                         },
                         "PreSize": {
                           "X": 0.1071,
                           "Y": 0.5833
                         },
                         "HorizontalEdge": "RightEdge",
-                        "LeftMargin": 113.7212,
-                        "RightMargin": 11.2788,
-                        "TopMargin": -1.7364,
-                        "BottomMargin": 26.7364,
+                        "LeftMargin": 115.0,
+                        "RightMargin": 10.0,
+                        "TopMargin": -1.738,
+                        "BottomMargin": 26.738,
                         "Tag": 32,
                         "ActionTag": 798266342,
                         "Size": {
@@ -705,6 +707,229 @@
                   "Y": 200.0
                 },
                 "Name": "pWeaponPack",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "ClipAble": false,
+                "BackColorAlpha": 102,
+                "SingleColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "Position": {
+                  "X": 1270.0,
+                  "Y": 710.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.9922,
+                  "Y": 0.9861
+                },
+                "PreSize": {
+                  "X": 0.0781,
+                  "Y": 0.1389
+                },
+                "HorizontalEdge": "RightEdge",
+                "VerticalEdge": "TopEdge",
+                "LeftMargin": 1170.0,
+                "RightMargin": 10.0,
+                "TopMargin": 10.0,
+                "BottomMargin": 610.0,
+                "Tag": 25,
+                "Children": [
+                  {
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Common/square_rounded.png",
+                      "Plist": ""
+                    },
+                    "Scale9Enable": true,
+                    "Scale9OriginX": 21,
+                    "Scale9OriginY": 21,
+                    "Scale9Width": 22,
+                    "Scale9Height": 22,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 50.0,
+                      "Y": 50.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 1.0,
+                      "Y": 1.0
+                    },
+                    "Tag": 26,
+                    "ActionTag": -33044820,
+                    "Size": {
+                      "X": 100.0,
+                      "Y": 100.0
+                    },
+                    "Alpha": 103,
+                    "Name": "bg",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FontSize": 23,
+                    "LabelText": "Alive",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "Font/Roboto-Regular.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 50.0,
+                      "Y": 25.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.25
+                    },
+                    "PreSize": {
+                      "X": 0.53,
+                      "Y": 0.27
+                    },
+                    "LeftMargin": 23.5,
+                    "RightMargin": 23.5,
+                    "TopMargin": 61.5,
+                    "BottomMargin": 11.5,
+                    "Tag": 28,
+                    "ActionTag": 1558497086,
+                    "Size": {
+                      "X": 53.0,
+                      "Y": 27.0
+                    },
+                    "Name": "text",
+                    "ctype": "TextObjectData"
+                  },
+                  {
+                    "FontSize": 40,
+                    "LabelText": "1",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "Font/Roboto-Bold.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 50.0,
+                      "Y": 70.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.7
+                    },
+                    "PreSize": {
+                      "X": 0.19,
+                      "Y": 0.47
+                    },
+                    "LeftMargin": 40.5,
+                    "RightMargin": 40.5,
+                    "TopMargin": 6.5,
+                    "BottomMargin": 46.5,
+                    "Tag": 29,
+                    "ActionTag": -1401308788,
+                    "Size": {
+                      "X": 19.0,
+                      "Y": 47.0
+                    },
+                    "Name": "num",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 1837452016,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 100.0
+                },
+                "Name": "numPlayerLeft",
                 "ctype": "PanelObjectData"
               },
               {
@@ -871,6 +1096,170 @@
                 },
                 "Name": "myHp",
                 "ctype": "PanelObjectData"
+              },
+              {
+                "ClipAble": false,
+                "BackColorAlpha": 102,
+                "SingleColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 640.0,
+                  "Y": 670.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9306
+                },
+                "PreSize": {
+                  "X": 0.0781,
+                  "Y": 0.1389
+                },
+                "VerticalEdge": "TopEdge",
+                "LeftMargin": 590.0,
+                "RightMargin": 590.0,
+                "BottomMargin": 620.0,
+                "Tag": 30,
+                "Children": [
+                  {
+                    "FlipY": true,
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Common/trapezoid.png",
+                      "Plist": ""
+                    },
+                    "Scale9OriginX": 21,
+                    "Scale9OriginY": 21,
+                    "Scale9Width": 470,
+                    "Scale9Height": 470,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 50.0,
+                      "Y": 102.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 1.02
+                    },
+                    "PreSize": {
+                      "X": 5.12,
+                      "Y": 2.56
+                    },
+                    "VerticalEdge": "TopEdge",
+                    "LeftMargin": -206.0,
+                    "RightMargin": -206.0,
+                    "TopMargin": -130.0,
+                    "BottomMargin": -26.0,
+                    "Tag": 31,
+                    "ActionTag": -12242884,
+                    "Size": {
+                      "X": 512.0,
+                      "Y": 256.0
+                    },
+                    "Alpha": 103,
+                    "Name": "bg",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FontSize": 23,
+                    "LabelText": "SURVIVAL 2D",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "Font/Roboto-Bold.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 49.9999,
+                      "Y": 70.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.7
+                    },
+                    "PreSize": {
+                      "X": 1.44,
+                      "Y": 0.27
+                    },
+                    "LeftMargin": -22.0001,
+                    "RightMargin": -21.9999,
+                    "TopMargin": 16.5,
+                    "BottomMargin": 56.5,
+                    "Tag": 32,
+                    "ActionTag": 1928431273,
+                    "Size": {
+                      "X": 144.0,
+                      "Y": 27.0
+                    },
+                    "Name": "text",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 163115261,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 100.0
+                },
+                "Name": "pTitle",
+                "ctype": "PanelObjectData"
               }
             ],
             "ActionTag": 1453773296,
@@ -891,6 +1280,7 @@
       },
       "UsedResources": [
         "Common/square_rounded.png",
+        "Common/trapezoid.png",
         "Font/Roboto-Bold.ttf",
         "Font/Roboto-Regular.ttf",
         "Game/loot-weapon-bar.png",

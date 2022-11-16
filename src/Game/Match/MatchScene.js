@@ -31,6 +31,9 @@ const MatchScene = BaseLayer.extend({
 
         this.hud = this.getControl("hud");
 
+        let pPlayerLeft = this.getControl("numPlayerLeft", this.hud);
+        this.numPlayerLeft = this.getControl("num", pPlayerLeft);
+
         this.miniMap = new MiniMap();
         this.hud.addChild(this.miniMap);
         this.miniMap.setAnchorPoint(0, 0);
@@ -173,6 +176,8 @@ const MatchScene = BaseLayer.extend({
         }
 
         this.updateMyHpProgress(match.myPlayer.hp);
+
+        this.numPlayerLeft.setString(match.players.filter(e => !e.isDead()).length);
     },
 
     update: function (dt) {
@@ -371,6 +376,8 @@ const MatchScene = BaseLayer.extend({
             this.hud.stopAllActions();
             this.hud.runAction(cc.fadeOut(0.3));
         }
+
+        this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().players.filter(e => !e.isDead()).length);
     },
 
     fire: function (pos, direction) {
