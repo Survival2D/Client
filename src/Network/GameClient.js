@@ -132,6 +132,18 @@ var GameClient = cc.Class.extend({
             cc.log("RECEIVED PLAYER_DEAD", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedPlayerDead(pk.username);
         });
+
+        setupPlugin.addDataHandler(Cmd.OBSTACLE_TAKE_DAMAGE, function (plugin, data) {
+            let pk = new ReceivedObstacleTakeDamage(data);
+            cc.log("RECEIVED OBSTACLE_TAKE_DAMAGE", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedObstacleTakeDamage(pk.obstacleId, pk.hp);
+        });
+
+        setupPlugin.addDataHandler(Cmd.OBSTACLE_DESTROYED, function (plugin, data) {
+            let pk = new ReceivedObstacleDestroyed(data);
+            cc.log("RECEIVED OBSTACLE_DESTROYED", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedObstacleDestroyed(pk.obstacleId);
+        });
     },
 
     /**

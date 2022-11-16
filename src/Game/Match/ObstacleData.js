@@ -2,10 +2,27 @@
  * Created by quantm7 on 10/9/2022.
  */
 
-const ObstacleData = cc.Class.extend({
+const ObstacleData = MapObjectData.extend({
     ctor: function () {
-        this.type = 0;
-        this.position = gm.p(0, 0);
+        this._obstacleType = 0;
+        this.hp = 0;
+        this.maxHp = 0;
+    },
+
+    setObstacleId: function (id) {
+        this._objectId = id;
+    },
+
+    getObstacleId: function () {
+        return this._objectId;
+    },
+
+    setObstacleType: function (type) {
+        this._obstacleType = type;
+    },
+
+    getObstacleType: function () {
+        return this._obstacleType;
     }
 });
 
@@ -14,16 +31,31 @@ ObstacleData.TYPE = {
     CRATE: 2
 };
 
+ObstacleData.createObstacleByType = function (type) {
+    let obs = new ObstacleData();
+
+    switch (type) {
+        case ObstacleData.TYPE.TREE:
+            obs = new TreeData();
+            break;
+        case ObstacleData.TYPE.CRATE:
+            obs = new CrateData();
+            break;
+    }
+
+    obs.setObstacleType(type);
+
+    return obs;
+};
+
 const TreeData = cc.Class.extend({
     ctor: function () {
-        this.type = ObstacleData.TYPE.TREE;
         this.radius = 35;
     }
 });
 
 const CrateData = cc.Class.extend({
     ctor: function () {
-        this.type = ObstacleData.TYPE.CRATE;
         this.width = 100;
         this.height = 100;
         this.numHitToBreak = 5;

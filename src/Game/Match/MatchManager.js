@@ -55,6 +55,18 @@ const MatchManager = cc.Class.extend({
         if (this.isInMatch()) this.scene.updateMatchView();
     },
 
+    /**
+     * @param {number} obstacleId
+     * @return {null|ObstacleData}
+     */
+    getObstacleById: function (obstacleId) {
+        for (let obs of this.obstacles) {
+            if (obs.getObstacleId() === obstacleId) return obs;
+        }
+
+        return null
+    },
+
     updateMyPlayerMove: function (vector, rotation) {
         this.myPlayer.position.x += vector.x;
         this.myPlayer.position.y += vector.y;
@@ -138,5 +150,29 @@ const MatchManager = cc.Class.extend({
         player.hp = 0;
 
         if (this.isInMatch()) this.scene.playerDead(username);
+    },
+
+    receivedObstacleTakeDamage: function (obstacleId, hp) {
+        let obs = this.getObstacleById(obstacleId);
+        if (!obs) {
+            cc.log("Warning: we dont have obstacle " + obstacleId + " in match");
+            return;
+        }
+
+        obs.hp = hp;
+
+        if (this.isInMatch()) this.scene.obstacleTakeDamage(obstacleId);
+    },
+
+    receivedObstacleDestroyed: function (obstacleId) {
+        let obs = this.getObstacleById(obstacleId);
+        if (!obs) {
+            cc.log("Warning: we dont have obstacle " + obstacleId + " in match");
+            return;
+        }
+
+        obs.hp = 0;
+
+        if (this.isInMatch()) this.scene.obstacleDestroyed(obstacleId);
     }
 });

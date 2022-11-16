@@ -165,8 +165,8 @@ const MatchScene = BaseLayer.extend({
 
         for (let obs of match.obstacles) {
             let obsUI;
-            if (obs.type === ObstacleData.TYPE.TREE) obsUI = new TreeUI();
-            if (obs.type === ObstacleData.TYPE.CRATE) {
+            if (obs instanceof TreeData) obsUI = new TreeUI();
+            if (obs instanceof CrateData) {
                 obsUI = new CrateUI();
                 obsUI.setContentSize(obs.width, obs.height);
             }
@@ -403,6 +403,34 @@ const MatchScene = BaseLayer.extend({
         this.ground.addChild(bullet, MatchScene.Z_ORDER.BULLET);
         this.bullets.push(bullet);
         return bullet;
+    },
+
+    /**
+     * @param {number} obstacleId
+     * @return {null|ObstacleUI}
+     */
+    getObstacleUIById: function (obstacleId) {
+        for (let obsUI of this.obstacleUIs) {
+            if (obsUI.getObstacleId() === obstacleId) return obsUI;
+        }
+
+        return null;
+    },
+
+    obstacleTakeDamage: function (obstacleId) {
+        let obs = GameManager.getInstance().getCurrentMatch().getObstacleById(obstacleId);
+        let obsUI = this.getObstacleUIById(obstacleId);
+        if (obsUI) {
+            let hpRatio = obs.maxHp === 0 ? 0 : obs.hp / obs.maxHp;
+            obsUI.animTakeDamage(hpRatio);
+        }
+    },
+
+    obstacleDestroyed: function (obstacleId) {
+        let obsUI = this.getObstacleUIById(obstacleId);
+        if (obsUI) {
+            obsUI.animDestroyed();
+        }
     }
 });
 

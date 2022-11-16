@@ -42,6 +42,7 @@
         "src/Game/Match/MatchManager.js",
         "src/Game/Match/PlayerData.js",
         "src/Game/Match/BulletData.js",
+        "src/Game/Match/MapObjectData.js",
         "src/Game/Match/ObstacleData.js",
         "src/Game/Match/MatchScene.js",
         "src/Game/Match/PlayerUI.js",

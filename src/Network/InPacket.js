@@ -115,37 +115,6 @@ const ReceivedCreateBullet = InPacket.extend({
     }
 });
 
-const ReceivedPlayerState = InPacket.extend({
-    ctor: function (data) {
-        this.username = "";
-
-        this.position = new gm.Position(0, 0);
-        this.angle = 0;
-
-        this.weaponId = 0;
-        this.helmetId = 0;
-        this.armorId = 0;
-
-        this.speed = 0;
-
-        this.hp = 0;
-
-        this.autoParseData(data);
-    }
-});
-
-const ReceivedBulletFired = InPacket.extend({
-    ctor: function (data) {
-        this.x = 0;
-        this.y = 0;
-        this.angle = 0;
-
-        this.type = 0;
-
-        this.autoParseData(data);
-    }
-});
-
 const ReceivedPlayerTakeDamage = InPacket.extend({
     ctor: function (data) {
         this.username = "";
@@ -178,10 +147,9 @@ const ReceivedObstacleSpawn = InPacket.extend({
     }
 });
 
-const ReceivedObstacleHit = InPacket.extend({
+const ReceivedObstacleTakeDamage = InPacket.extend({
     ctor: function (data) {
-        this.id = 0;
-
+        this.obstacleId = 0;
         this.hp = 0;
 
         this.autoParseData(data);
@@ -190,7 +158,7 @@ const ReceivedObstacleHit = InPacket.extend({
 
 const ReceivedObstacleDestroyed = InPacket.extend({
     ctor: function (data) {
-        this.id = 0;
+        this.obstacleId = 0;
 
         this.autoParseData(data);
     }
