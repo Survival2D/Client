@@ -48,13 +48,13 @@ ObstacleData.createObstacleByType = function (type) {
     return obs;
 };
 
-const TreeData = cc.Class.extend({
+const TreeData = ObstacleData.extend({
     ctor: function () {
         this.radius = 35;
     }
 });
 
-const CrateData = cc.Class.extend({
+const CrateData = ObstacleData.extend({
     ctor: function () {
         this.width = 100;
         this.height = 100;

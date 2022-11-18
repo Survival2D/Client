@@ -121,7 +121,6 @@ const Controller = cc.Class.extend({
 
     calculateRotation: function (originPos = gm.p(0, 0)) {
         let rotation = gm.calculateVectorAngleInclination(originPos, this.destPos);
-        cc.log("ROTATION", rotation);
         return gm.calculateVectorAngleInclination(originPos, this.destPos);
     }
 });

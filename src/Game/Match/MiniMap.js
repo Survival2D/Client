@@ -52,8 +52,8 @@ const MiniMap = ccui.Layout.extend({
 
         for (let obs of match.obstacles) {
             let obsUI;
-            if (obs.type === ObstacleData.TYPE.TREE) obsUI = new TreeUI();
-            if (obs.type === ObstacleData.TYPE.CRATE) {
+            if (obs instanceof TreeData) obsUI = new TreeUI();
+            if (obs instanceof CrateData) {
                 obsUI = new CrateUI();
                 obsUI.setContentSize(obs.width, obs.height);
             }

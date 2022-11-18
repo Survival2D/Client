@@ -18,6 +18,7 @@ const MatchManager = cc.Class.extend({
             let x = Math.round(Math.random() * this.mapWidth);
             let y = Math.round(Math.random() * this.mapHeight);
             obstacleData.position = gm.p(x, y);
+            obstacleData.setObstacleId(i);
             this.obstacles.push(obstacleData);
         }
         for (let i = 0; i < 10; i++) {
@@ -25,6 +26,7 @@ const MatchManager = cc.Class.extend({
             let x = Math.round(Math.random() * this.mapWidth);
             let y = Math.round(Math.random() * this.mapHeight);
             obstacleData.position = gm.p(x, y);
+            obstacleData.setObstacleId(10 + i);
             this.obstacles.push(obstacleData);
         }
 

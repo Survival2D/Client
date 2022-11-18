@@ -172,6 +172,7 @@ const MatchScene = BaseLayer.extend({
             }
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
+            obsUI.setObstacleId(obs.getObstacleId());
             this.obstacleUIs.push(obsUI);
         }
 
@@ -187,7 +188,7 @@ const MatchScene = BaseLayer.extend({
             let oldPos = match.myPlayer.position;
             let unitVector = this.controller.calculateMovementVector();
             let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-            if (this.checkCollision(newPos, 30)) {
+            if (this.checkPlayerCollision(newPos, 30)) {
                 newPos = oldPos;
             }
 
@@ -213,7 +214,7 @@ const MatchScene = BaseLayer.extend({
 
         for (let i = 0; i < this.workingBullets.length; i++) {
             let bullet = this.workingBullets[i];
-            if (this.checkCollision(bullet.getPosition())) {
+            if (this.checkBulletCollision(bullet.getPosition())) {
                 this.workingBullets.splice(i, 1);
                 i--;
                 bullet.setVisible(false);
@@ -222,8 +223,9 @@ const MatchScene = BaseLayer.extend({
         }
     },
 
-    checkCollision: function (pos = gm.p(0, 0), radius = 0) {
+    checkPlayerCollision: function (pos = gm.p(0, 0)) {
         let match = GameManager.getInstance().getCurrentMatch();
+        let radius = 30;
         if (pos.x - radius < 0 || pos.x + radius > match.mapWidth || pos.y - radius < 0 || pos.y + radius > match.mapHeight) return true;
         for (let obs of match.obstacles) {
             if (obs instanceof TreeData)
@@ -231,6 +233,26 @@ const MatchScene = BaseLayer.extend({
             if (obs instanceof CrateData)
                 if (gm.checkCollisionCircleRectangle(pos, radius,
                     gm.p(obs.position.x - obs.width/2, obs.position.y - obs.height/2), obs.width, obs.height)) return true;
+        }
+        return false;
+    },
+
+    checkBulletCollision: function (pos = gm.p(0, 0)) {
+        let match = GameManager.getInstance().getCurrentMatch();
+        let radius = 30;
+        if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
+        for (let obs of match.obstacles) {
+            if (obs instanceof TreeData)
+                if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) {
+                    this.obstacleTakeDamage(obs.getObstacleId());
+                    return true;
+                }
+            if (obs instanceof CrateData)
+                if (gm.checkCollisionCircleRectangle(pos, radius,
+                    gm.p(obs.position.x - obs.width/2, obs.position.y - obs.height/2), obs.width, obs.height)) {
+                    this.obstacleTakeDamage(obs.getObstacleId());
+                    return true;
+                }
         }
         return false;
     },
