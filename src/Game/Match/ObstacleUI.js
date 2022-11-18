@@ -28,12 +28,21 @@ const ObstacleUI = ccui.ImageView.extend({
             if (!piece.isVisible()) return piece;
         }
 
-        let piece = new cc.DrawNode();
-        piece.drawDot(cc.p(0, 0), 5, this.getPieceColor());
+        let piece = new ccui.ImageView("res/Game/Player/circle.png");
+        piece.ignoreContentAdaptWithSize(false);
+        piece.setColor(this.getPieceColor());
+        piece.setContentSize(15, 15);
         this.addChild(piece);
         this._brokenPieces.push(piece);
 
         return piece;
+    },
+
+    /**
+     * @return {cc.Color}
+     */
+    getPieceColor: function () {
+
     },
 
     animTakeDamage: function (hpRatio) {
@@ -43,10 +52,12 @@ const ObstacleUI = ccui.ImageView.extend({
 
         let piece = this.createBrokenPiece();
         piece.setVisible(true);
-        piece.setPosition(Math.random() * this.width/2, Math.random() * this.height/2);
+        piece.setPosition(this.width/4 + Math.random() * this.width/2, this.height/4 + Math.random() * this.height/2);
         piece.setScale(0);
+        piece.setOpacity(255);
         let randX = (10 + Math.random() * 20) * (Math.random() > 0.5 ? 1: -1);
         let randY = (10 + Math.random() * 20) * (Math.random() > 0.5 ? 1: -1);
+        piece.stopAllActions();
         piece.runAction(cc.sequence(
             cc.spawn(
                 cc.moveBy(0.7, randX, randY).easing(cc.easeSineOut()),

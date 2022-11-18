@@ -9,26 +9,42 @@ const PlayerUI = cc.Node.extend({
     },
 
     initPlayerUI: function () {
-        let drawNode = new cc.DrawNode();
-        drawNode.drawDot(cc.p(0, 0), 30, cc.color("#f8c574"));
-        this.addChild(drawNode);
-        this._body = drawNode;
+        let body = new ccui.ImageView("res/Game/Player/circle.png");
+        body.ignoreContentAdaptWithSize(false);
+        body.setColor(cc.color("#f8c574"));
+        body.setContentSize(60, 60);
+        this.addChild(body);
+        this._body = body;
 
-        drawNode = new cc.DrawNode();
-        drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 10, 0, 1000, false, 3, cc.color("#000000"));
-        this._body.addChild(drawNode, 1);
-        drawNode.setPosition(25, 20);
-        this._leftArm = drawNode;
+        let arm = new ccui.ImageView("res/Game/Player/circle.png");
+        arm.ignoreContentAdaptWithSize(false);
+        arm.setColor(cc.color("#f8c574"));
+        arm.setContentSize(20, 20);
+        this._body.addChild(arm, 1);
+        arm.setPosition(this._body.width/2 + 25, this._body.height/2 + 20);
+        this._leftArm = arm;
         this._leftArm.defaultPosition = this._leftArm.getPosition();
+        let armBorder = new ccui.ImageView("res/Game/Player/circle.png");
+        armBorder.ignoreContentAdaptWithSize(false);
+        armBorder.setColor(cc.color("#000000"));
+        armBorder.setContentSize(28, 28);
+        arm.addChild(armBorder, - 1);
+        armBorder.setPosition(arm.width/2, arm.height/2);
 
-        drawNode = new cc.DrawNode();
-        drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
-        drawNode.drawCircle(cc.p(0, 0), 10, 0, 1000, false, 3, cc.color("#000000"));
-        this._body.addChild(drawNode, 1);
-        drawNode.setPosition(25, -20);
-        this._rightArm = drawNode;
+        arm = new ccui.ImageView("res/Game/Player/circle.png");
+        arm.ignoreContentAdaptWithSize(false);
+        arm.setColor(cc.color("#f8c574"));
+        arm.setContentSize(20, 20);
+        this._body.addChild(arm, 1);
+        arm.setPosition(this._body.width/2 + 25, this._body.height/2 - 20);
+        this._rightArm = arm;
         this._rightArm.defaultPosition = this._rightArm.getPosition();
+        armBorder = new ccui.ImageView("res/Game/Player/circle.png");
+        armBorder.ignoreContentAdaptWithSize(false);
+        armBorder.setColor(cc.color("#000000"));
+        armBorder.setContentSize(28, 28);
+        arm.addChild(armBorder, - 1);
+        armBorder.setPosition(arm.width/2, arm.height/2);
 
 
         let lbl = new ccui.Text("Name");
@@ -39,8 +55,8 @@ const PlayerUI = cc.Node.extend({
 
         let gun = new PlayerGunUI();
         gun.setAnchorPoint(0, 0.5);
-        this._body.addChild(gun);
-        gun.setPosition(15, 0);
+        this._body.addChild(gun, -1);
+        gun.setPosition(this._body.width/2 + 15, this._body.height/2);
         this._gun = gun;
     },
 
@@ -68,8 +84,8 @@ const PlayerUI = cc.Node.extend({
 
     equipGun: function (id) {
         this._gun.setVisible(true);
-        this._leftArm.setPosition(47, 5);
-        this._rightArm.setPosition(15, -3);
+        this._leftArm.setPosition(this._body.width/2 + 48, this._body.height/2 + 5);
+        this._rightArm.setPosition(this._body.width/2 + 20, this._body.height/2 - 3);
     },
 
     unEquip: function () {
