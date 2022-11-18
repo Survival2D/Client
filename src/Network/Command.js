@@ -2,7 +2,7 @@
  * Created by quantm7 on 9/11/2022.
  */
 
-const Cmd = Cmd || {};
+const Cmd = {};
 
 Cmd.PING_PONG = "ping";
 
@@ -20,6 +20,7 @@ Cmd.PLAYER_TAKE_DAMAGE = "playerTakeDamage";
 Cmd.PLAYER_DEAD = "playerDead";
 Cmd.OBSTACLE_TAKE_DAMAGE = "obstacleTakeDamage";
 Cmd.OBSTACLE_DESTROYED = "obstacleDestroyed";
+Cmd.CREATE_ITEM = "createItem";
 Cmd.TAKE_ITEM = "takeItem";
 Cmd.DROP_ITEM = "dropItem";
 Cmd.PLAYER_RELOAD = "playerReload";

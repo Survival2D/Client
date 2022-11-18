@@ -6,6 +6,7 @@ const MatchScene = BaseLayer.extend({
     ctor: function () {
         this.playerUIs = [];
         this.obstacleUIs = [];
+        this.itemUIs = [];
         this.bullets = [];
         this.workingBullets = [];
 
@@ -164,6 +165,7 @@ const MatchScene = BaseLayer.extend({
         this.obstacleUIs = [];
 
         for (let obs of match.obstacles) {
+            cc.log("DMM ", JSON.stringify(obs.position));
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) {
@@ -172,8 +174,17 @@ const MatchScene = BaseLayer.extend({
             }
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
-            obsUI.setObstacleId(obs.getObstacleId());
+            obsUI.setObstacleId(obs.getObjectId());
             this.obstacleUIs.push(obsUI);
+        }
+
+        for (let itemUI of this.itemUIs) {
+            itemUI.removeFromParent(true);
+        }
+        this.itemUIs = [];
+
+        for (let item of match.items) {
+            this.createItem(item);
         }
 
         this.updateMyHpProgress(match.myPlayer.hp);
@@ -244,13 +255,13 @@ const MatchScene = BaseLayer.extend({
         for (let obs of match.obstacles) {
             if (obs instanceof TreeData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) {
-                    this.obstacleTakeDamage(obs.getObstacleId());
+                    this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
             if (obs instanceof CrateData)
                 if (gm.checkCollisionCircleRectangle(pos, radius,
                     gm.p(obs.position.x - obs.width/2, obs.position.y - obs.height/2), obs.width, obs.height)) {
-                    this.obstacleTakeDamage(obs.getObstacleId());
+                    this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
         }
@@ -281,7 +292,17 @@ const MatchScene = BaseLayer.extend({
     },
 
     myPlayerPickItem: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        for (let item of match.items) {
+            if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, 30, item.radius)) {
+                let pk = new SendPlayerTakeItem(item.getObjectId());
+                GameClient.getInstance().sendPacket(pk);
 
+                if (Config.IS_OFFLINE)
+                    match.receivedPlayerTakeItem(GameManager.getInstance().userData.username, item.getObjectId());
+                return;
+            }
+        }
     },
 
     myPlayerChangeWeapon: function (slot) {
@@ -453,6 +474,30 @@ const MatchScene = BaseLayer.extend({
         if (obsUI) {
             obsUI.animDestroyed();
         }
+    },
+
+    /**
+     * @param {ItemData} item
+     */
+    createItem: function (item) {
+        let itemUI;
+        if (item instanceof ItemGunData) itemUI = new ItemGunUI();
+        if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
+        this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);
+        itemUI.setPosition(item.position);
+        itemUI.setItemId(item.getObjectId());
+        this.itemUIs.push(itemUI);
+    },
+
+    playerTakeItem: function (itemId) {
+        for (let i = 0; i < this.itemUIs.length; i++) {
+            let itemUI = this.itemUIs[i];
+            if (itemUI.getItemId() === itemId) {
+                this.itemUIs.splice(i, 1);
+
+                itemUI.animTaken();
+            }
+        }
     }
 });
 
@@ -460,7 +505,8 @@ MatchScene.className = "MatchScene";
 
 MatchScene.Z_ORDER = {
     BG: 0,
-    PLAYER: 1,
-    BULLET: 2,
-    OBSTACLE: 3
+    ITEM: 1,
+    PLAYER: 2,
+    BULLET: 3,
+    OBSTACLE: 4
 }

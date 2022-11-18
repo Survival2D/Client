@@ -164,16 +164,12 @@ const ReceivedObstacleDestroyed = InPacket.extend({
     }
 });
 
-const ReceivedItemSpawn = InPacket.extend({
+const ReceivedItemCreated = InPacket.extend({
     ctor: function (data) {
-        this.id = 0;
-
-        this.type = 0;
-
-        this.x = 0;
-        this.y = 0;
-
-        this.autoParseData(data);
+        this.item = ItemData.createItemByType(data.item.itemType);
+        this.item.position = gm.p(data.position.x, data.position.y);
+        this.item.setObjectId(data.id);
+        this.item.setNumBullets(data.item.numBullet);
     }
 });
 
@@ -193,6 +189,16 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
         }
 
         this.obstacles = [];
+        if (typeof data["objects"] != "undefined") {
+            for (let key in data["objects"]) {
+                let object = data["objects"][key];
+                let obs = ObstacleData.createObstacleByType(object["type"]);
+                obs.position = gm.p(object["position"]["x"], object["position"]["y"]);
+                obs.setObjectId(object["id"]);
+                obs.hp = 100;
+                this.obstacles.push(obs);
+            }
+        }
 
         this.items = [];
     }

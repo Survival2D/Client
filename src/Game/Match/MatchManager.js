@@ -9,25 +9,49 @@ const MatchManager = cc.Class.extend({
         this.players = [];
         this.myPlayer = new PlayerData();
 
-        this.mapWidth = 1000;
-        this.mapHeight = 1000;
+        this.mapWidth = 10000;
+        this.mapHeight = 10000;
 
         this.obstacles = [];
-        for (let i = 0; i < 10; i++) {
-            let obstacleData = new TreeData();
-            let x = Math.round(Math.random() * this.mapWidth);
-            let y = Math.round(Math.random() * this.mapHeight);
-            obstacleData.position = gm.p(x, y);
-            obstacleData.setObstacleId(i);
-            this.obstacles.push(obstacleData);
-        }
-        for (let i = 0; i < 10; i++) {
-            let obstacleData = new CrateData();
-            let x = Math.round(Math.random() * this.mapWidth);
-            let y = Math.round(Math.random() * this.mapHeight);
-            obstacleData.position = gm.p(x, y);
-            obstacleData.setObstacleId(10 + i);
-            this.obstacles.push(obstacleData);
+        this.items = [];
+
+        if (Config.IS_OFFLINE) {
+            this.mapWidth = 2000;
+            this.mapHeight = 1500;
+
+            // for (let i = 0; i < 10; i++) {
+            //     let obstacleData = new TreeData();
+            //     let x = Math.round(Math.random() * this.mapWidth);
+            //     let y = Math.round(Math.random() * this.mapHeight);
+            //     obstacleData.position = gm.p(x, y);
+            //     obstacleData.setObjectId(i);
+            //     this.obstacles.push(obstacleData);
+            // }
+            // for (let i = 0; i < 10; i++) {
+            //     let obstacleData = new CrateData();
+            //     let x = Math.round(Math.random() * this.mapWidth);
+            //     let y = Math.round(Math.random() * this.mapHeight);
+            //     obstacleData.position = gm.p(x, y);
+            //     obstacleData.setObjectId(10 + i);
+            //     this.obstacles.push(obstacleData);
+            // }
+
+            for (let i = 0; i < 1; i++) {
+                let itemData = new ItemGunData();
+                let x = Math.round(Math.random() * this.mapWidth);
+                let y = Math.round(Math.random() * this.mapHeight);
+                itemData.position = gm.p(x, y);
+                itemData.setObjectId(i);
+                this.items.push(itemData);
+            }
+            for (let i = 0; i < 2; i++) {
+                let itemData = new ItemBulletData();
+                let x = Math.round(Math.random() * this.mapWidth);
+                let y = Math.round(Math.random() * this.mapHeight);
+                itemData.position = gm.p(x, y);
+                itemData.setObjectId(i);
+                this.items.push(itemData);
+            }
         }
 
         this.scene = null;
@@ -49,10 +73,13 @@ const MatchManager = cc.Class.extend({
 
     /**
      * @param {PlayerData[]} players
+     * @param {ObstacleData[]} obstacles
      */
-    updateMatchInfo: function (players) {
+    updateMatchInfo: function (players, obstacles) {
         this.players = players;
         this.myPlayer = this.players[GameManager.getInstance().userData.username];
+
+        this.obstacles = obstacles;
 
         if (this.isInMatch()) this.scene.updateMatchView();
     },
@@ -63,7 +90,35 @@ const MatchManager = cc.Class.extend({
      */
     getObstacleById: function (obstacleId) {
         for (let obs of this.obstacles) {
-            if (obs.getObstacleId() === obstacleId) return obs;
+            if (obs.getObjectId() === obstacleId) return obs;
+        }
+
+        return null
+    },
+
+    /**
+     * @param {number} itemId
+     * @return {null|ItemData}
+     */
+    getItemById: function (itemId) {
+        for (let item of this.items) {
+            if (item.getObjectId() === itemId) return item;
+        }
+
+        return null
+    },
+
+    /**
+     * @param {number} itemId
+     * @return {null|ItemData}
+     */
+    getItemAndRemoveById: function (itemId) {
+        for (let i = 0; i < this.items.length; i++) {
+            let item = this.items[i];
+            if (item.getObjectId() === itemId) {
+                this.items.splice(i, 1);
+                return item;
+            }
         }
 
         return null
@@ -176,5 +231,30 @@ const MatchManager = cc.Class.extend({
         obs.hp = 0;
 
         if (this.isInMatch()) this.scene.obstacleDestroyed(obstacleId);
+    },
+
+    /**
+     * @param {ItemData} item
+     */
+    receivedItemCreated: function (item) {
+        this.items.push(item);
+
+        if (this.isInMatch()) this.scene.createItem(item);
+    },
+
+    receivedPlayerTakeItem: function (username, itemId) {
+        let player = this.players[username];
+        if (!player) {
+            cc.log("Warning: we dont have player " + username + " in match");
+            return;
+        }
+
+        let item = this.getItemAndRemoveById(itemId);
+        if (!item) {
+            cc.log("Warning: we dont have item " + itemId + " in match");
+            return;
+        }
+
+        if (this.isInMatch()) this.scene.playerTakeItem(itemId);
     }
 });

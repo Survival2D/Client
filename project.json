@@ -40,15 +40,19 @@
 
         "src/Game/Match/Controller.js",
         "src/Game/Match/MatchManager.js",
-        "src/Game/Match/PlayerData.js",
-        "src/Game/Match/BulletData.js",
-        "src/Game/Match/MapObjectData.js",
-        "src/Game/Match/ObstacleData.js",
         "src/Game/Match/MatchScene.js",
-        "src/Game/Match/PlayerUI.js",
-        "src/Game/Match/BulletUI.js",
-        "src/Game/Match/ObstacleUI.js",
         "src/Game/Match/MiniMap.js",
+
+        "src/Game/Match/Data/PlayerData.js",
+        "src/Game/Match/Data/MapObjectData.js",
+        "src/Game/Match/Data/BulletData.js",
+        "src/Game/Match/Data/ObstacleData.js",
+        "src/Game/Match/Data/ItemData.js",
+
+        "src/Game/Match/UI/PlayerUI.js",
+        "src/Game/Match/UI/BulletUI.js",
+        "src/Game/Match/UI/ObstacleUI.js",
+        "src/Game/Match/UI/ItemUI.js",
 
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",

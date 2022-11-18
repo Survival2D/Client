@@ -36,3 +36,12 @@ const SendPlayerChangeWeapon = OutPacket.extend({
         }
     }
 });
+
+const SendPlayerTakeItem = OutPacket.extend({
+    ctor: function (itemId) {
+        this._super(Cmd.TAKE_ITEM);
+        this.data = {
+            itemId: itemId
+        }
+    }
+});

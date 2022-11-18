@@ -14,7 +14,7 @@ var GameClient = cc.Class.extend({
     },
 
     connectClientServer: function (username, password) {
-        EzyLogger.debug = true;
+        EzyLogger.debug = false;
 
         var handshakeHandler = new EzyHandshakeHandler();
         handshakeHandler.getLoginRequest = function (context) {
@@ -100,12 +100,11 @@ var GameClient = cc.Class.extend({
         setupPlugin.addDataHandler(Cmd.MATCH_INFO, function (plugin, data) {
             let pk = new ReceivedUpdateMatchInfo(data);
             cc.log("RECEIVED MATCH_INFO", JSON.stringify(pk));
-            GameManager.getInstance().getCurrentMatch().updateMatchInfo(pk.players);
+            GameManager.getInstance().getCurrentMatch().updateMatchInfo(pk.players, pk.obstacles);
         });
 
         setupPlugin.addDataHandler(Cmd.PLAYER_MOVE, function (plugin, data) {
             let pk = new ReceivedPlayerMoveAction(data);
-            cc.log("RECEIVED PLAYER_MOVE", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedPlayerMove(pk.username, pk.position, pk.rotation);
         });
 
@@ -149,6 +148,12 @@ var GameClient = cc.Class.extend({
             let pk = new ReceivedObstacleDestroyed(data);
             cc.log("RECEIVED OBSTACLE_DESTROYED", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedObstacleDestroyed(pk.obstacleId);
+        });
+
+        setupPlugin.addDataHandler(Cmd.CREATE_ITEM, function (plugin, data) {
+            let pk = new ReceivedItemCreated(data);
+            cc.log("RECEIVED CREATE_ITEM", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedItemCreated(pk.item);
         });
     },
 
