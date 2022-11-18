@@ -66,6 +66,10 @@ var GameClient = cc.Class.extend({
             // playGame.prototype.spin();
         });
 
+        setupPlugin.addDataHandler(Cmd.PING_PONG, function (plugin, data) {
+            GameManager.getInstance().receivedPong();
+        });
+
         setupPlugin.addDataHandler(Cmd.GET_USER_INFO, function (plugin, data) {
             let pk = new ReceivedUserInfo(data);
             cc.log("RECEIVED GET_USER_INFO", JSON.stringify(pk));

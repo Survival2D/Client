@@ -4,6 +4,8 @@
 
 const Cmd = Cmd || {};
 
+Cmd.PING_PONG = "ping";
+
 Cmd.GET_USER_INFO = "getUserInfo";
 Cmd.CREATE_TEAM = "createTeam";
 Cmd.JOIN_TEAM = "joinTeam";

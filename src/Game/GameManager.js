@@ -49,6 +49,20 @@ const GameManager = cc.Class.extend({
      */
     getCurrentMatch: function () {
         return this.match;
+    },
+
+    startPing: function () {
+        this._pingTime = Date.now();
+        GameClient.getInstance().sendEmptyPacket(Cmd.PING_PONG);
+    },
+
+    receivedPong: function () {
+        let time = Date.now();
+        let oldTime = this._pingTime || 0;
+        let ping = time - oldTime;
+        cc.log("--- PING: " + ping + "ms");
+
+        setTimeout(this.startPing.bind(this), 1000);
     }
 });
 
