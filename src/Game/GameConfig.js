@@ -18,5 +18,7 @@ Config.PLAYER_MAX_HP = 100;
 
 Config.MINI_MAP_SCALE = 0.3;
 
-Config.COOLDOWN_FIRE = 0.1;   // second
+Config.COOLDOWN_FIRE = 0.1;     // second
 Config.COOLDOWN_ATTACK = 0.2;   // second
+
+Config.SYNC_DELTA_TIME = 2;     // second

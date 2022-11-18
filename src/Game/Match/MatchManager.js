@@ -55,6 +55,11 @@ const MatchManager = cc.Class.extend({
         }
 
         this.scene = null;
+
+        this._saveMyPlayerMoveAction = {
+            position: gm.p(0, 0),
+            rotation: 0
+        };
     },
 
     newMatch: function (matchId) {
@@ -78,6 +83,11 @@ const MatchManager = cc.Class.extend({
     updateMatchInfo: function (players, obstacles) {
         this.players = players;
         this.myPlayer = this.players[GameManager.getInstance().userData.username];
+
+        this._saveMyPlayerMoveAction = {
+            position: this.myPlayer.position,
+            rotation: this.myPlayer.rotation
+        };
 
         this.obstacles = obstacles;
 
@@ -145,12 +155,27 @@ const MatchManager = cc.Class.extend({
             return;
         }
 
-        if (username === GameManager.getInstance().userData.username) return;
+        if (username === GameManager.getInstance().userData.username) {
+            this._saveMyPlayerMoveAction = {
+                position: pos,
+                rotation: rotation
+            }
+            return;
+        }
 
         player.position = pos;
         player.rotation = rotation;
 
         if (this.isInMatch()) this.scene.playerMove(username, pos, rotation);
+    },
+
+    syncMyPlayerMove: function () {
+        cc.log("--Sync my player move");
+        this.myPlayer.position = this._saveMyPlayerMoveAction.position;
+        this.myPlayer.rotation = this._saveMyPlayerMoveAction.rotation;
+
+        if (this.isInMatch())
+            this.scene.playerMove(GameManager.getInstance().userData.username, this.myPlayer.position, this.myPlayer.rotation);
     },
 
     receivedPlayerAttack: function (username, weaponId, direction) {

@@ -12,6 +12,8 @@ const MatchScene = BaseLayer.extend({
 
         this._cooldownAttack = 0;
 
+        this._syncTime = 0;
+
         this._super(MatchScene.className);
         this.loadCss(res.MATCH_SCENE);
         this.controller = new Controller();
@@ -231,6 +233,13 @@ const MatchScene = BaseLayer.extend({
                 bullet.setVisible(false);
             }
             else bullet.updateBullet(dt);
+        }
+
+
+        this._syncTime += dt;
+        if (this._syncTime >= Config.SYNC_DELTA_TIME) {
+            match.syncMyPlayerMove();
+            this._syncTime = 0;
         }
     },
 

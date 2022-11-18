@@ -103,14 +103,14 @@ const PlayerUI = cc.Node.extend({
             if (Math.random() > 0.5) {
                 this._leftArm.stopAllActions();
                 this._leftArm.runAction(cc.sequence(
-                    cc.moveTo(0.1, 40, 10).easing(cc.easeSineIn()),
+                    cc.moveTo(0.1, this._body.width/2 + 40, this._body.height/2 + 10).easing(cc.easeSineIn()),
                     cc.moveTo(0.1, this._leftArm.defaultPosition).easing(cc.easeSineOut())
                 ));
             }
             else {
                 this._rightArm.stopAllActions();
                 this._rightArm.runAction(cc.sequence(
-                    cc.moveTo(0.1, 40, -10).easing(cc.easeSineIn()),
+                    cc.moveTo(0.1, this._body.width/2 + 40, this._body.height/2 - 10).easing(cc.easeSineIn()),
                     cc.moveTo(0.1, this._rightArm.defaultPosition).easing(cc.easeSineOut())
                 ));
             }
