@@ -75,6 +75,8 @@ var GameClient = cc.Class.extend({
             cc.log("RECEIVED GET_USER_INFO", JSON.stringify(pk));
             GameManager.getInstance().userData.setUserData(pk.username);
             SceneManager.getInstance().openHomeScene();
+
+            GameManager.getInstance().startPing();
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
