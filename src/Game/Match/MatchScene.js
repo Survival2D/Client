@@ -167,7 +167,6 @@ const MatchScene = BaseLayer.extend({
         this.obstacleUIs = [];
 
         for (let obs of match.obstacles) {
-            cc.log("DMM ", JSON.stringify(obs.position));
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) {

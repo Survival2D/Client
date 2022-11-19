@@ -152,6 +152,7 @@ var GameClient = cc.Class.extend({
         });
 
         setupPlugin.addDataHandler(Cmd.CREATE_ITEM, function (plugin, data) {
+            cc.log("RECEIVED CREATE_ITEM RAW", JSON.stringify(data));
             let pk = new ReceivedItemCreated(data);
             cc.log("RECEIVED CREATE_ITEM", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedItemCreated(pk.item);

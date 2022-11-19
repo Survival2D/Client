@@ -26,6 +26,8 @@ ItemData.TYPE = {
 ItemData.createItemByType = function (type) {
     let item = new ItemData();
 
+    cc.log("DMM ", type);
+
     switch (type) {
         case ItemData.TYPE.GUN:
             item = new ItemGunData();
