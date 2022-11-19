@@ -107,6 +107,22 @@ const MatchManager = cc.Class.extend({
     },
 
     /**
+     * @param {number} obstacleId
+     * @return {null|ObstacleData}
+     */
+    getObstacleAndRemoveById: function (obstacleId) {
+        for (let i = 0; i < this.obstacles.length; i++) {
+            let obs = this.obstacles[i];
+            if (obs.getObjectId() === obstacleId) {
+                this.obstacles.splice(i, 1);
+                return obs;
+            }
+        }
+
+        return null
+    },
+
+    /**
      * @param {number} itemId
      * @return {null|ItemData}
      */
@@ -247,7 +263,7 @@ const MatchManager = cc.Class.extend({
     },
 
     receivedObstacleDestroyed: function (obstacleId) {
-        let obs = this.getObstacleById(obstacleId);
+        let obs = this.getObstacleAndRemoveById(obstacleId);
         if (!obs) {
             cc.log("Warning: we dont have obstacle " + obstacleId + " in match");
             return;

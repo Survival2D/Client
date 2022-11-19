@@ -166,10 +166,10 @@ const ReceivedObstacleDestroyed = InPacket.extend({
 
 const ReceivedItemCreated = InPacket.extend({
     ctor: function (data) {
-        this.item = ItemData.createItemByType(data.item.itemType);
-        this.item.position = gm.p(data.position.x, data.position.y);
-        this.item.setObjectId(data.id);
-        this.item.setNumBullets(data.item.numBullet);
+        this.item = ItemData.createItemByType(data.item.item.itemType);
+        this.item.position = gm.p(data.item.position.x, data.item.position.y);
+        this.item.setObjectId(data.item.id);
+        this.item.setNumBullets(data.item.item.numBullet);
     }
 });
 
@@ -195,7 +195,7 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
                 let obs = ObstacleData.createObstacleByType(object["type"]);
                 obs.position = gm.p(object["position"]["x"], object["position"]["y"]);
                 obs.setObjectId(object["id"]);
-                obs.hp = 100;
+                obs.hp = object["hp"];
                 this.obstacles.push(obs);
             }
         }
