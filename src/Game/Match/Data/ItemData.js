@@ -7,6 +7,14 @@ const ItemData = MapObjectData.extend({
         this._super();
         this._itemType = 0;
         this.radius = 35;
+    },
+
+    setItemType: function (type) {
+        this._itemType = type;
+    },
+
+    getItemType: function () {
+        return this._itemType;
     }
 });
 
@@ -27,7 +35,7 @@ ItemData.createItemByType = function (type) {
             break;
     }
 
-    item.setObstacleType(type);
+    item.setItemType(type);
 
     return item;
 };

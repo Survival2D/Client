@@ -195,7 +195,7 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
                 let obs = ObstacleData.createObstacleByType(object["type"]);
                 obs.position = gm.p(object["position"]["x"], object["position"]["y"]);
                 obs.setObjectId(object["id"]);
-                obs.hp = 100;
+                obs.hp = object["hp"];
                 this.obstacles.push(obs);
             }
         }

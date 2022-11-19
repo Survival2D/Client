@@ -107,6 +107,7 @@ const TreeUI = ObstacleUI.extend({
 const CrateUI = ObstacleUI.extend({
     ctor: function () {
         this._super("res/Game/Obstacle/crate.png", ccui.Widget.LOCAL_TEXTURE);
+        this.setAnchorPoint(0, 0);
     },
 
     createResidue: function () {

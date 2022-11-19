@@ -252,7 +252,7 @@ const MatchScene = BaseLayer.extend({
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
             if (obs instanceof CrateData)
                 if (gm.checkCollisionCircleRectangle(pos, radius,
-                    gm.p(obs.position.x - obs.width/2, obs.position.y - obs.height/2), obs.width, obs.height)) return true;
+                    gm.p(obs.position.x, obs.position.y), obs.width, obs.height)) return true;
         }
         return false;
     },
@@ -269,7 +269,7 @@ const MatchScene = BaseLayer.extend({
                 }
             if (obs instanceof CrateData)
                 if (gm.checkCollisionCircleRectangle(pos, radius,
-                    gm.p(obs.position.x - obs.width/2, obs.position.y - obs.height/2), obs.width, obs.height)) {
+                    gm.p(obs.position.x, obs.position.y), obs.width, obs.height)) {
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
