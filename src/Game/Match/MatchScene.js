@@ -469,6 +469,22 @@ const MatchScene = BaseLayer.extend({
         return null;
     },
 
+    /**
+     * @param {number} obstacleId
+     * @return {null|ObstacleUI}
+     */
+    getObstacleUIAndRemoveById: function (obstacleId) {
+        for (let i = 0; i < this.obstacleUIs.length; i++) {
+            let obsUI = this.obstacleUIs[i];
+            if (obsUI.getObstacleId() === obstacleId) {
+                this.obstacleUIs.splice(i, 1);
+                return obsUI;
+            }
+        }
+
+        return null;
+    },
+
     obstacleTakeDamage: function (obstacleId) {
         let obs = GameManager.getInstance().getCurrentMatch().getObstacleById(obstacleId);
         let obsUI = this.getObstacleUIById(obstacleId);
@@ -479,7 +495,7 @@ const MatchScene = BaseLayer.extend({
     },
 
     obstacleDestroyed: function (obstacleId) {
-        let obsUI = this.getObstacleUIById(obstacleId);
+        let obsUI = this.getObstacleUIAndRemoveById(obstacleId);
         if (obsUI) {
             obsUI.animDestroyed();
         }

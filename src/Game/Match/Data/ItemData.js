@@ -44,10 +44,15 @@ const ItemGunData = ItemData.extend({
     ctor: function () {
         this._super();
         this._gunType = 0;
+        this._numBullets = 0;
     },
 
     setGunType: function (type) {
         this._gunType = type;
+    },
+
+    setNumBullets: function (numBullets) {
+        this._numBullets = numBullets;
     }
 });
 
