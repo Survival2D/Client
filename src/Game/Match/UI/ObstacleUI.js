@@ -8,6 +8,8 @@ const ObstacleUI = ccui.ImageView.extend({
         this._obstacleId = 0;
         this.ignoreContentAdaptWithSize(false);
 
+        this.setCascadeOpacityEnabled(false);
+
         this._brokenPieces = [];
     },
 
@@ -74,15 +76,20 @@ const ObstacleUI = ccui.ImageView.extend({
     animDestroyed: function () {
         let residue = this.createResidue();
         residue.setVisible(true);
+        residue.setPosition(this.width/2, this.height/2);
         residue.stopAllActions();
         residue.setOpacity(0);
         residue.runAction(cc.sequence(
             cc.fadeIn(0.4),
+            cc.delayTime(1),
             cc.fadeOut(0.2),
             cc.callFunc(() => {
                 this.removeFromParent(true);
             })
         ));
+
+        this.stopAllActions();
+        this.runAction(cc.fadeOut(0.3));
     }
 });
 
@@ -94,7 +101,7 @@ const TreeUI = ObstacleUI.extend({
     createResidue: function () {
         let residue = new ccui.ImageView("res/Game/Obstacle/tree_residue.png");
         residue.ignoreContentAdaptWithSize(false);
-        this.addChild(residue);
+        this.addChild(residue, -1);
 
         return residue;
     },
@@ -107,14 +114,30 @@ const TreeUI = ObstacleUI.extend({
 const CrateUI = ObstacleUI.extend({
     ctor: function () {
         this._super("res/Game/Obstacle/crate.png", ccui.Widget.LOCAL_TEXTURE);
-        this.setAnchorPoint(0, 0);
+    },
+
+    setPosition: function (position, y) {
+        let realX, realY;
+        if (y === undefined) {
+            realX = position.x;
+            realY = position.y
+        }
+        else {
+            realX = position;
+            realY = y;
+        }
+
+        realX += this.width/2;
+        realY += this.height/2;
+
+        this._super(realX, realY);
     },
 
     createResidue: function () {
         let residue = new ccui.ImageView("res/Game/Obstacle/crate_residue.png");
         residue.ignoreContentAdaptWithSize(false);
         residue.setContentSize(this.width, this.height);
-        this.addChild(residue);
+        this.addChild(residue, -1);
 
         return residue;
     },

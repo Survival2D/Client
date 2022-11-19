@@ -167,8 +167,8 @@ const ReceivedObstacleDestroyed = InPacket.extend({
 const ReceivedItemCreated = InPacket.extend({
     ctor: function (data) {
         this.item = ItemData.createItemByType(data.item.itemType);
-        this.item.position = gm.p(data.position.x, data.position.y);
-        this.item.setObjectId(data.id);
+        this.item.position = gm.p(data.item.position.x, data.item.position.y);
+        this.item.setObjectId(data.item.id);
         this.item.setNumBullets(data.item.numBullet);
     }
 });
