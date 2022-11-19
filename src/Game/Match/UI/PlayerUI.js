@@ -64,6 +64,13 @@ const PlayerUI = cc.Node.extend({
         this._name.setString(name);
     },
 
+    setPlayerColorByTeam: function (team) {
+        let color = Constant.PLAYER_COLOR[team % 2];
+        this._body.setColor(color);
+        this._leftArm.setColor(color);
+        this._rightArm.setColor(color);
+    },
+
     setMyPlayer: function (isMyPlayer = true) {
         if (isMyPlayer) {
             this._name.setVisible(false);

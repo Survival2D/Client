@@ -159,6 +159,7 @@ const MatchScene = BaseLayer.extend({
             playerUI.setPosition(player.position);
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
             playerUI.setPlayerUIInfo(player.username);
+            playerUI.setPlayerColorByTeam(player.team);
         }
 
         for (let obsUI of this.obstacleUIs) {
