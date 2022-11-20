@@ -47,10 +47,10 @@ const PlayerUI = cc.Node.extend({
         armBorder.setPosition(arm.width/2, arm.height/2);
 
 
-        let lbl = new ccui.Text("Name");
-        lbl.setFontSize(22);
+        let lbl = new ccui.Text("Name", game_fonts.bold, 24);
+        lbl.enableOutline(cc.color(0, 0, 0, 170), 1);
         this.addChild(lbl);
-        lbl.setPosition(0, 45);
+        lbl.setPosition(0, 50);
         this._name = lbl;
 
         let gun = new PlayerGunUI();

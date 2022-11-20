@@ -11,10 +11,23 @@ const BaseLayer = cc.Layer.extend({
         this._layout = null;
     },
 
+    checkLayerId: function (id) {
+        return this._id === id;
+    },
+
     onEnter: function () {
         this._super();
         this.setContentSize(cc.winSize);
         this.setAnchorPoint(0.5,0.5);
+
+        this.effectIn();
+    },
+
+    /**
+     * @abstract
+     */
+    effectIn: function () {
+
     },
 
     onExit: function () {

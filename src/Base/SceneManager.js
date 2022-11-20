@@ -62,6 +62,20 @@ var SceneManager = cc.Class.extend({
 
         cc.director.runScene(scene);
         return layer;
+    },
+
+    openGUI: function (gui, zOrder) {
+        let scene = this.getRunningScene();
+        scene.addChild(gui, zOrder);
+    },
+
+    getGUIByClassName: function (className) {
+        let scene = this.getRunningScene();
+        for (let child of scene.getChildren()) {
+            if (child.checkLayerId && child.checkLayerId(className)) return child;
+        }
+
+        return null;
     }
 });
 

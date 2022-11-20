@@ -94,6 +94,19 @@ const MatchManager = cc.Class.extend({
         if (this.isInMatch()) this.scene.updateMatchView();
     },
 
+    getPlayerListByTeam: function (team) {
+        let list = [];
+
+        for (let username in this.players) {
+            let player = this.players[username];
+            if (player.team === team) {
+                list.push(player);
+            }
+        }
+
+        return list;
+    },
+
     /**
      * @param {number} obstacleId
      * @return {null|ObstacleData}
@@ -186,6 +199,7 @@ const MatchManager = cc.Class.extend({
     },
 
     syncMyPlayerMove: function () {
+        if (Config.IS_OFFLINE) return;
         cc.log("--Sync my player move");
         this.myPlayer.position = this._saveMyPlayerMoveAction.position;
         this.myPlayer.rotation = this._saveMyPlayerMoveAction.rotation;
@@ -297,5 +311,18 @@ const MatchManager = cc.Class.extend({
         }
 
         if (this.isInMatch()) this.scene.playerTakeItem(itemId);
+    },
+
+    receivedMatchResult: function (winTeam) {
+        let gui = SceneManager.getInstance().getGUIByClassName(ResultGUI.className);
+        if (gui) {
+            gui.setResultInfo(winTeam);
+            gui.effectIn();
+        }
+        else {
+            let gui = new ResultGUI();
+            SceneManager.getInstance().openGUI(gui, ResultGUI.ZORDER);
+            gui.setResultInfo(winTeam);
+        }
     }
 });

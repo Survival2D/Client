@@ -204,9 +204,9 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
     }
 });
 
-const ReceivedGameConfig = InPacket.extend({
+const ReceivedMatchResult = InPacket.extend({
     ctor: function (data) {
-
+        this.winTeam = 0;
         this.autoParseData(data);
     }
 });
