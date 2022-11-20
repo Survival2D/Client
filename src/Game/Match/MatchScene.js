@@ -117,6 +117,8 @@ const MatchScene = BaseLayer.extend({
 
         this.updateMatchView();
 
+        this.controller.setControllerEnabled(true);
+
         this.scheduleUpdate();
     },
 
@@ -523,7 +525,11 @@ const MatchScene = BaseLayer.extend({
                 itemUI.animTaken();
             }
         }
-    }
+    },
+
+    endMatch: function () {
+        this.controller.setControllerEnabled(false);
+    },
 });
 
 MatchScene.className = "MatchScene";

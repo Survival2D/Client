@@ -324,5 +324,7 @@ const MatchManager = cc.Class.extend({
             SceneManager.getInstance().openGUI(gui, ResultGUI.ZORDER);
             gui.setResultInfo(winTeam);
         }
+
+        if (this.isInMatch()) this.scene.endMatch();
     }
 });
