@@ -8,9 +8,12 @@ const PlayerData = cc.Class.extend({
         this.playerId = "";
         this.position = gm.p(0, 0);
         this.rotation = 0;
+        this.movingUnitVector = gm.vector(0, 0);
         this.speed = 0;
         this.team = 0;
         this.hp = 0;
+
+        this.radius = 30;
     },
 
     isDead: function () {

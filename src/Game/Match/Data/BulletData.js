@@ -9,5 +9,6 @@ const BulletData = cc.Class.extend({
         this.rawPosition = gm.p(0, 0);
         this.direction = gm.vector(0, 0);
         this.bulletType = "";
+        this.ownerId = "";
     }
 });

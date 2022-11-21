@@ -166,13 +166,18 @@ const MatchManager = cc.Class.extend({
         return null
     },
 
-    updateMyPlayerMove: function (vector, rotation) {
-        this.myPlayer.position.x += vector.x;
-        this.myPlayer.position.y += vector.y;
+    updateMyPlayerMove: function (unitVector, rotation) {
+        let oldMovingUnitVector = this.myPlayer.movingUnitVector;
+        let oldRotation = this.myPlayer.rotation;
+        this.myPlayer.position.x += unitVector.x * Config.PLAYER_BASE_SPEED;
+        this.myPlayer.position.y += unitVector.y * Config.PLAYER_BASE_SPEED;
         this.myPlayer.rotation = rotation;
+        this.myPlayer.movingUnitVector = unitVector;
 
-        let pk = new SendPlayerMoveAction(vector, rotation);
-        GameClient.getInstance().sendPacket(pk);
+        if (oldMovingUnitVector.x !== unitVector.x || oldMovingUnitVector.y !== unitVector.y || oldRotation !== rotation) {
+            let pk = new SendPlayerMoveAction(unitVector, rotation);
+            GameClient.getInstance().sendPacket(pk);
+        }
     },
 
     updateMyPlayerWeapon: function (slot) {
@@ -242,6 +247,7 @@ const MatchManager = cc.Class.extend({
      * @param {BulletData} bullet
      */
     receivedCreateBullet: function (bullet) {
+        if (bullet.ownerId === GameManager.getInstance().userData.username) return;
         if (this.isInMatch()) this.scene.fire(bullet.rawPosition, bullet.direction);
     },
 
