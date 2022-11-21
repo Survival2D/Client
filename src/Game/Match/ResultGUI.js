@@ -64,9 +64,11 @@ const ResultGUI = BaseLayer.extend({
 
         if (winTeam === match.myPlayer.team) {
             this.lblResult.setString("You are the winner!");
+            this.lblResult.setColor(cc.color("#FFAA00"));
         }
         else {
             this.lblResult.setString("You lose...");
+            this.lblResult.setColor(cc.color("#0623B8"));
         }
 
         for (let playerUI of this._playerUIs) {

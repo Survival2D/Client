@@ -217,7 +217,7 @@
             },
             "Position": {
               "X": 640.0,
-              "Y": 288.0
+              "Y": 331.2
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -229,7 +229,7 @@
             "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.5,
-              "Y": 0.4
+              "Y": 0.46
             },
             "PercentWidthEnable": true,
             "PercentWidthEnabled": true,
@@ -237,8 +237,8 @@
               "X": 1.0,
               "Y": 0.4167
             },
-            "TopMargin": 282.0,
-            "BottomMargin": 138.0,
+            "TopMargin": 238.8,
+            "BottomMargin": 181.2,
             "Tag": 36,
             "Children": [
               {
