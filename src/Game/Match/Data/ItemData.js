@@ -6,7 +6,7 @@ const ItemData = MapObjectData.extend({
     ctor: function () {
         this._super();
         this._itemType = 0;
-        this.radius = 35;
+        this.radius = Config.ITEM_RADIUS;
     },
 
     setItemType: function (type) {
@@ -25,8 +25,6 @@ ItemData.TYPE = {
 
 ItemData.createItemByType = function (type) {
     let item = new ItemData();
-
-    cc.log("DMM ", type);
 
     switch (type) {
         case ItemData.TYPE.GUN:
@@ -66,5 +64,19 @@ const ItemBulletData = ItemData.extend({
 
     setNumBullets: function (numBullets) {
         this._numBullets = numBullets;
+    }
+});
+
+const ItemVestData = ItemData.extend({
+    ctor: function () {
+        this._super();
+        this.vest = new VestData();
+    }
+});
+
+const ItemHelmetData = ItemData.extend({
+    ctor: function () {
+        this._super();
+        this.helmet = new HelmetData();
     }
 });

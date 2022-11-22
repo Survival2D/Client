@@ -45,3 +45,29 @@ const ItemBulletUI = ItemUI.extend({
         this.setContentSize(70, 70);
     }
 });
+
+const ItemVestUI = ItemUI.extend({
+    ctor: function () {
+        this._super("res/Game/Item/loot_outer.png", ccui.Widget.LOCAL_TEXTURE);
+        this.setContentSize(80, 80);
+
+        let gun = new ccui.ImageView("res/Game/Item/loot_chest.png");
+        gun.ignoreContentAdaptWithSize(false);
+        gun.setContentSize(70, 70);
+        this.addChild(gun);
+        gun.setPosition(this.width/2, this.height/2);
+    }
+});
+
+const ItemHelmetUI = ItemUI.extend({
+    ctor: function () {
+        this._super("res/Game/Item/loot_outer.png", ccui.Widget.LOCAL_TEXTURE);
+        this.setContentSize(80, 80);
+
+        let gun = new ccui.ImageView("res/Game/Item/loot_helmet.png");
+        gun.ignoreContentAdaptWithSize(false);
+        gun.setContentSize(70, 70);
+        this.addChild(gun);
+        gun.setPosition(this.width/2, this.height/2);
+    }
+});

@@ -12,8 +12,10 @@ const PlayerData = cc.Class.extend({
         this.speed = 0;
         this.team = 0;
         this.hp = 0;
+        this.vest = new VestData();
+        this.helmet = new HelmetData();
 
-        this.radius = 30;
+        this.radius = Config.PLAYER_RADIUS;
     },
 
     isDead: function () {
