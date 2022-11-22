@@ -99,7 +99,6 @@ var GameClient = cc.Class.extend({
         });
 
         setupPlugin.addDataHandler(Cmd.MATCH_INFO, function (plugin, data) {
-            cc.log("RECEIVED MATCH_INFO RAW", JSON.stringify(data));
             let pk = new ReceivedUpdateMatchInfo(data);
             cc.log("RECEIVED MATCH_INFO", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().updateMatchInfo(pk.players, pk.obstacles);
@@ -113,7 +112,7 @@ var GameClient = cc.Class.extend({
         setupPlugin.addDataHandler(Cmd.PLAYER_ATTACK, function (plugin, data) {
             let pk = new ReceivedPlayerAttackAction(data);
             cc.log("RECEIVED PLAYER_ATTACK", JSON.stringify(pk));
-            GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(pk.username, pk.weaponId, pk.direction);
+            GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(pk.username, pk.weaponId, pk.position);
         });
 
         setupPlugin.addDataHandler(Cmd.CHANGE_WEAPON, function (plugin, data) {
@@ -153,10 +152,15 @@ var GameClient = cc.Class.extend({
         });
 
         setupPlugin.addDataHandler(Cmd.CREATE_ITEM, function (plugin, data) {
-            cc.log("RECEIVED CREATE_ITEM RAW", JSON.stringify(data));
             let pk = new ReceivedItemCreated(data);
             cc.log("RECEIVED CREATE_ITEM", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedItemCreated(pk.item);
+        });
+
+        setupPlugin.addDataHandler(Cmd.END_GAME, function (plugin, data) {
+            let pk = new ReceivedMatchResult(data);
+            cc.log("RECEIVED END_GAME", JSON.stringify(pk));
+            GameManager.getInstance().getCurrentMatch().receivedMatchResult(pk.winTeam);
         });
     },
 

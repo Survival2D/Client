@@ -92,7 +92,7 @@ const ReceivedPlayerAttackAction = InPacket.extend({
     ctor: function (data) {
         this.username = "";
         this.weaponId = 0;
-        this.direction = gm.vector(0, 0);
+        this.position = gm.p(0, 0);
 
         this.autoParseData(data);
     }
@@ -204,9 +204,9 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
     }
 });
 
-const ReceivedGameConfig = InPacket.extend({
+const ReceivedMatchResult = InPacket.extend({
     ctor: function (data) {
-
+        this.winTeam = 0;
         this.autoParseData(data);
     }
 });

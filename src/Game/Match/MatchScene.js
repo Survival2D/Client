@@ -117,6 +117,8 @@ const MatchScene = BaseLayer.extend({
 
         this.updateMatchView();
 
+        this.controller.setControllerEnabled(true);
+
         this.scheduleUpdate();
     },
 
@@ -201,8 +203,9 @@ const MatchScene = BaseLayer.extend({
             let oldPos = match.myPlayer.position;
             let unitVector = this.controller.calculateMovementVector();
             let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-            if (this.checkPlayerCollision(newPos, 30)) {
+            if (this.checkPlayerCollision(newPos, match.myPlayer.radius)) {
                 newPos = oldPos;
+                unitVector = gm.vector(0, 0);
             }
 
             this.setMyPlayerPosition(newPos);
@@ -211,9 +214,7 @@ const MatchScene = BaseLayer.extend({
             let degRotation = Math.round(gm.radToDeg(rotation));
             this.myPlayer.setPlayerRotation(degRotation);
 
-            if (oldPos.x !== newPos.x || oldPos.y !== newPos.y || match.myPlayer.rotation !== rotation) {
-                match.updateMyPlayerMove(gm.vector(newPos.x - oldPos.x, newPos.y - oldPos.y), rotation);
-            }
+            match.updateMyPlayerMove(unitVector, rotation);
 
             let isAttack = this.controller.checkAttacking();
             if (isAttack && this._cooldownAttack <= 0) {
@@ -245,7 +246,7 @@ const MatchScene = BaseLayer.extend({
 
     checkPlayerCollision: function (pos = gm.p(0, 0)) {
         let match = GameManager.getInstance().getCurrentMatch();
-        let radius = 30;
+        let radius = match.myPlayer.radius;
         if (pos.x - radius < 0 || pos.x + radius > match.mapWidth || pos.y - radius < 0 || pos.y + radius > match.mapHeight) return true;
         for (let obs of match.obstacles) {
             if (obs instanceof TreeData)
@@ -259,7 +260,7 @@ const MatchScene = BaseLayer.extend({
 
     checkBulletCollision: function (pos = gm.p(0, 0)) {
         let match = GameManager.getInstance().getCurrentMatch();
-        let radius = 30;
+        let radius = 0;
         if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
         for (let obs of match.obstacles) {
             if (obs instanceof TreeData)
@@ -273,6 +274,12 @@ const MatchScene = BaseLayer.extend({
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
+        }
+        for (let username in match.players) {
+            let player = match.players[username];
+            if (gm.checkCollisionCircleCircle(pos, player.position, radius, player.radius)) {
+                return true;
+            }
         }
         return false;
     },
@@ -303,7 +310,7 @@ const MatchScene = BaseLayer.extend({
     myPlayerPickItem: function () {
         let match = GameManager.getInstance().getCurrentMatch();
         for (let item of match.items) {
-            if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, 30, item.radius)) {
+            if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, match.myPlayer.radius, item.radius)) {
                 let pk = new SendPlayerTakeItem(item.getObjectId());
                 GameClient.getInstance().sendPacket(pk);
 
@@ -337,10 +344,14 @@ const MatchScene = BaseLayer.extend({
     },
 
     myPlayerAttack: function (destPos = gm.p(0, 0)) {
+        let match = GameManager.getInstance().getCurrentMatch();
         destPos = this.scene2GroundPosition(destPos);
         if (this.myPlayer.isEquip()) {
             let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
-            this.fire(this.myPlayer.getPosition(), vector);
+            vector.normalize();
+            let createPos = gm.p(this.myPlayer.x + vector.x * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius),
+                this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
+            this.fire(createPos, vector);
         }
         else {
             this.myPlayer.animAttack();
@@ -523,7 +534,11 @@ const MatchScene = BaseLayer.extend({
                 itemUI.animTaken();
             }
         }
-    }
+    },
+
+    endMatch: function () {
+        this.controller.setControllerEnabled(false);
+    },
 });
 
 MatchScene.className = "MatchScene";

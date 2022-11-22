@@ -14,6 +14,8 @@ Config.IS_OFFLINE = false;
 Config.PLAYER_BASE_SPEED = 10;
 Config.BULLET_BASE_SPEED = 20;
 
+Config.BULLET_CREATE_DISTANCE = 10;
+
 Config.PLAYER_MAX_HP = 100;
 
 Config.MINI_MAP_SCALE = 0.3;

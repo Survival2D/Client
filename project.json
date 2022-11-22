@@ -42,6 +42,7 @@
         "src/Game/Match/MatchManager.js",
         "src/Game/Match/MatchScene.js",
         "src/Game/Match/MiniMap.js",
+        "src/Game/Match/ResultGUI.js",
 
         "src/Game/Match/Data/PlayerData.js",
         "src/Game/Match/Data/MapObjectData.js",

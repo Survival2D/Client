@@ -11,9 +11,16 @@ const Controller = cc.Class.extend({
 
         this.destPos = gm.p(0, 0);
         this.isAttacking = false;
+
+        this._controllerEnabled = false;
+    },
+
+    setControllerEnabled: function (enabled) {
+        this._controllerEnabled = enabled || false;
     },
 
     onKeyPressed: function (keyCode) {
+        if (!this._controllerEnabled) return;
         Controller.log(" Key Press: " + keyCode);
         switch (keyCode) {
             // move keys
@@ -33,6 +40,7 @@ const Controller = cc.Class.extend({
     },
 
     onKeyReleased: function (keyCode) {
+        if (!this._controllerEnabled) return;
         Controller.log(" Key Release: " + keyCode);
         switch (keyCode) {
             // move keys
@@ -63,21 +71,24 @@ const Controller = cc.Class.extend({
     },
 
     onMouseDown: function (x = 0, y = 0) {
+        if (!this._controllerEnabled) return;
         Controller.log("Mouse Down: " + x + ", " + y);
         this.isAttacking = true;
     },
 
     onMouseUp: function (x = 0, y = 0) {
+        if (!this._controllerEnabled) return;
         Controller.log("Mouse Up: " + x + ", " + y);
     },
 
     onMouseMove: function (x = 0, y = 0) {
+        if (!this._controllerEnabled) return;
         Controller.log("Mouse Move: " + x + ", " + y);
         this.destPos = gm.p(x, y);
     },
 
     onMouseScroll: function () {
-
+        if (!this._controllerEnabled) return;
     },
 
     // dispatch controller event functions group

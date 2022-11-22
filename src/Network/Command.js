@@ -24,3 +24,4 @@ Cmd.CREATE_ITEM = "createItem";
 Cmd.TAKE_ITEM = "takeItem";
 Cmd.DROP_ITEM = "dropItem";
 Cmd.PLAYER_RELOAD = "playerReload";
+Cmd.END_GAME = "endGame";

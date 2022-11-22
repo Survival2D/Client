@@ -29,7 +29,14 @@ var res = {
   MATCH_SCENE: "res/ui/MatchScene.json",
 
   MINIMAP_LAYER: "res/ui/MiniMapUI.json",
+
+  RESULT_LAYER: "res/ui/ResultGUI.json"
 };
+
+var game_fonts = {
+  normal: "res/ui/Font/Roboto-Regular.ttf",
+  bold: "res/ui/Font/Roboto-Bold.ttf"
+}
 
 var g_resources = [];
 for (var i in res) {

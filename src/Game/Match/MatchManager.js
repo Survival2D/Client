@@ -6,6 +6,8 @@ const MatchManager = cc.Class.extend({
     ctor: function () {
         this.matchId = "";
 
+        this.gameState = MatchManager.STATE.WAIT;
+
         this.players = [];
         this.myPlayer = new PlayerData();
 
@@ -64,6 +66,7 @@ const MatchManager = cc.Class.extend({
 
     newMatch: function (matchId) {
         this.matchId = "";
+        this.gameState = MatchManager.STATE.PLAY;
         this.myPlayer.position = gm.p(30, 30);
         this.myPlayer.hp = Config.PLAYER_MAX_HP;
         this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
@@ -92,6 +95,19 @@ const MatchManager = cc.Class.extend({
         this.obstacles = obstacles;
 
         if (this.isInMatch()) this.scene.updateMatchView();
+    },
+
+    getPlayerListByTeam: function (team) {
+        let list = [];
+
+        for (let username in this.players) {
+            let player = this.players[username];
+            if (player.team === team) {
+                list.push(player);
+            }
+        }
+
+        return list;
     },
 
     /**
@@ -150,13 +166,18 @@ const MatchManager = cc.Class.extend({
         return null
     },
 
-    updateMyPlayerMove: function (vector, rotation) {
-        this.myPlayer.position.x += vector.x;
-        this.myPlayer.position.y += vector.y;
+    updateMyPlayerMove: function (unitVector, rotation) {
+        let oldMovingUnitVector = this.myPlayer.movingUnitVector;
+        let oldRotation = this.myPlayer.rotation;
+        this.myPlayer.position.x += unitVector.x * Config.PLAYER_BASE_SPEED;
+        this.myPlayer.position.y += unitVector.y * Config.PLAYER_BASE_SPEED;
         this.myPlayer.rotation = rotation;
+        this.myPlayer.movingUnitVector = unitVector;
 
-        let pk = new SendPlayerMoveAction(vector, rotation);
-        GameClient.getInstance().sendPacket(pk);
+        if (oldMovingUnitVector.x !== unitVector.x || oldMovingUnitVector.y !== unitVector.y || oldRotation !== rotation) {
+            let pk = new SendPlayerMoveAction(unitVector, rotation);
+            GameClient.getInstance().sendPacket(pk);
+        }
     },
 
     updateMyPlayerWeapon: function (slot) {
@@ -186,6 +207,8 @@ const MatchManager = cc.Class.extend({
     },
 
     syncMyPlayerMove: function () {
+        if (Config.IS_OFFLINE) return;
+        if (this.gameState !== MatchManager.STATE.PLAY) return;
         cc.log("--Sync my player move");
         this.myPlayer.position = this._saveMyPlayerMoveAction.position;
         this.myPlayer.rotation = this._saveMyPlayerMoveAction.rotation;
@@ -194,7 +217,7 @@ const MatchManager = cc.Class.extend({
             this.scene.playerMove(GameManager.getInstance().userData.username, this.myPlayer.position, this.myPlayer.rotation);
     },
 
-    receivedPlayerAttack: function (username, weaponId, direction) {
+    receivedPlayerAttack: function (username, weaponId, position) {
         let player = this.players[username];
         if (!player) {
             cc.log("Warning: we dont have player " + username + " in match");
@@ -202,6 +225,8 @@ const MatchManager = cc.Class.extend({
         }
 
         if (username === GameManager.getInstance().userData.username) return;
+
+        let direction = gm.vector(position.x - player.position.x, position.y - player.position.y);
 
         if (this.isInMatch()) this.scene.playerAttack(username, weaponId, direction);
     },
@@ -222,6 +247,7 @@ const MatchManager = cc.Class.extend({
      * @param {BulletData} bullet
      */
     receivedCreateBullet: function (bullet) {
+        if (bullet.ownerId === GameManager.getInstance().userData.username) return;
         if (this.isInMatch()) this.scene.fire(bullet.rawPosition, bullet.direction);
     },
 
@@ -297,5 +323,28 @@ const MatchManager = cc.Class.extend({
         }
 
         if (this.isInMatch()) this.scene.playerTakeItem(itemId);
+    },
+
+    receivedMatchResult: function (winTeam) {
+        this.gameState = MatchManager.STATE.END;
+
+        let gui = SceneManager.getInstance().getGUIByClassName(ResultGUI.className);
+        if (gui) {
+            gui.setResultInfo(winTeam);
+            gui.effectIn();
+        }
+        else {
+            let gui = new ResultGUI();
+            SceneManager.getInstance().openGUI(gui, ResultGUI.ZORDER);
+            gui.setResultInfo(winTeam);
+        }
+
+        if (this.isInMatch()) this.scene.endMatch();
     }
 });
+
+MatchManager.STATE = {
+    WAIT: 0,
+    PLAY: 1,
+    END: 2
+}
