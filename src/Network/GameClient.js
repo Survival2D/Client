@@ -77,7 +77,10 @@ var GameClient = cc.Class.extend({
             GameManager.getInstance().userData.setUserData(pk.username);
             SceneManager.getInstance().openHomeScene();
 
-            GameManager.getInstance().startPing();
+            // GameManager.getInstance().startPing();
+            setInterval(() => {
+                GameClient.getInstance().sendFlatBuffers();
+            }, 1000);
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
@@ -162,6 +165,12 @@ var GameClient = cc.Class.extend({
             cc.log("RECEIVED END_GAME", JSON.stringify(pk));
             GameManager.getInstance().getCurrentMatch().receivedMatchResult(pk.winTeam);
         });
+
+        setupPlugin.addDataHandler("flatbuffers", function (plugin, data) {
+            var monster = MyGame.Sample.Monster.getRootAsMonster(data);
+            cc.log("get flatbuffers data");
+            cc.log(JSON.stringify(monster));
+        });
     },
 
     /**
@@ -186,6 +195,63 @@ var GameClient = cc.Class.extend({
         if (plugin != null) {
             plugin.send("spin");
         }
+    },
+
+    sendFlatBuffers: function () {
+        cc.log("send flatbuffers");
+        var builder = new flatbuffers.Builder(0);
+
+        // Create some weapons for our Monster ('Sword' and 'Axe').
+        var weaponOne = builder.createString('Sword');
+        var weaponTwo = builder.createString('Axe');
+
+        MyGame.Sample.Weapon.startWeapon(builder);
+        MyGame.Sample.Weapon.addName(builder, weaponOne);
+        MyGame.Sample.Weapon.addDamage(builder, 3);
+        var sword = MyGame.Sample.Weapon.endWeapon(builder);
+
+        MyGame.Sample.Weapon.startWeapon(builder);
+        MyGame.Sample.Weapon.addName(builder, weaponTwo);
+        MyGame.Sample.Weapon.addDamage(builder, 5);
+        var axe = MyGame.Sample.Weapon.endWeapon(builder);
+
+        // Serialize the FlatBuffer data.
+        var name = builder.createString('Orc');
+
+        var treasure = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        var inv = MyGame.Sample.Monster.createInventoryVector(builder, treasure);
+
+        var weaps = [sword, axe];
+        var weapons = MyGame.Sample.Monster.createWeaponsVector(builder, weaps);
+
+        var pos = MyGame.Sample.Vec3.createVec3(builder, 1.0, 2.0, 3.0);
+
+        MyGame.Sample.Monster.startMonster(builder);
+        MyGame.Sample.Monster.addPos(builder, pos);
+        MyGame.Sample.Monster.addHp(builder, 300);
+        MyGame.Sample.Monster.addColor(builder, MyGame.Sample.Color.Red)
+        MyGame.Sample.Monster.addName(builder, name);
+        MyGame.Sample.Monster.addInventory(builder, inv);
+        MyGame.Sample.Monster.addWeapons(builder, weapons);
+        MyGame.Sample.Monster.addEquippedType(builder, MyGame.Sample.Equipment.Weapon);
+        MyGame.Sample.Monster.addEquipped(builder, weaps[1]);
+        var orc = MyGame.Sample.Monster.endMonster(builder);
+
+        builder.finish(orc); // You may also call 'MyGame.Example.Monster.finishMonsterBuffer(builder, orc);'.
+
+        // We now have a FlatBuffer that can be stored on disk or sent over a network.
+
+        // ...Code to store to disk or send over a network goes here...
+
+        // Instead, we are going to access it right away, as if we just received it.
+
+        var buf = builder.dataBuffer();
+
+
+        cc.log("begin send flatbuffers");
+        this.client.sendBytes(buf);
+        // cc.log(JSON.stringify(buf));
+        // plugin.send("flatbuffers", buf);
     }
 });
 
