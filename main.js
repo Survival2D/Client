@@ -108,6 +108,6 @@ cc.game.onStart = function(){
         SceneManager.getInstance().openLoginScene();
     }, this);
 
-    main();
+    // main();
 };
 cc.game.run();

@@ -54,6 +54,9 @@ const MatchManager = cc.Class.extend({
                 itemData.setObjectId(i);
                 this.items.push(itemData);
             }
+
+            this.myPlayer.vest.level = 1;
+            this.myPlayer.helmet.level = 1;
         }
 
         this.scene = null;

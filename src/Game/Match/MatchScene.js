@@ -35,7 +35,7 @@ const MatchScene = BaseLayer.extend({
         this.hud = this.getControl("hud");
 
         let pPlayerLeft = this.getControl("numPlayerLeft", this.hud);
-        this.numPlayerLeft = this.getControl("num", pPlayerLeft);
+        this.numPlayerLeft = this.customTextLabel("num", pPlayerLeft);
 
         this.miniMap = new MiniMap();
         this.hud.addChild(this.miniMap);
@@ -46,6 +46,15 @@ const MatchScene = BaseLayer.extend({
         this.myHp.bar = this.getControl("bar", this.myHp);
         this.myHp.bar.defaultWidth = this.myHp.bar.getContentSize().width;
         this.myHp.barShadow = this.getControl("barShadow", this.myHp);
+
+        let pMyEquipItem = this.getControl("pMyEquipItem", this.hud);
+        this.myEquipVest = this.getControl("vest", pMyEquipItem);
+        this.myEquipHelmet = this.getControl("helmet", pMyEquipItem);
+
+        for (let item of [this.myEquipVest, this.myEquipHelmet]) {
+            item.img = this.getControl("img", item);
+            item.lblLevel = this.customTextLabel("level", item);
+        }
 
         let pWeaponPack = this.getControl("pWeaponPack", this.hud);
         this.weaponSlotFist = this.getControl("slotFist", pWeaponPack);
@@ -162,6 +171,8 @@ const MatchScene = BaseLayer.extend({
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
             playerUI.setPlayerUIInfo(player.username);
             playerUI.setPlayerColorByTeam(player.team);
+            playerUI.setVestLevel(player.vest.level);
+            playerUI.setHelmetLevel(player.helmet.level);
         }
 
         for (let obsUI of this.obstacleUIs) {
@@ -172,10 +183,8 @@ const MatchScene = BaseLayer.extend({
         for (let obs of match.obstacles) {
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
-            if (obs instanceof CrateData) {
-                obsUI = new CrateUI();
-                obsUI.setContentSize(obs.width, obs.height);
-            }
+            if (obs instanceof CrateData) obsUI = new CrateUI();
+            if (obs instanceof StoneData) obsUI = new StoneUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
             obsUI.setObstacleId(obs.getObjectId());
@@ -192,6 +201,8 @@ const MatchScene = BaseLayer.extend({
         }
 
         this.updateMyHpProgress(match.myPlayer.hp);
+
+        this.updateMyPlayerItem();
 
         this.numPlayerLeft.setString(match.players.filter(e => !e.isDead()).length);
     },
@@ -249,11 +260,10 @@ const MatchScene = BaseLayer.extend({
         let radius = match.myPlayer.radius;
         if (pos.x - radius < 0 || pos.x + radius > match.mapWidth || pos.y - radius < 0 || pos.y + radius > match.mapHeight) return true;
         for (let obs of match.obstacles) {
-            if (obs instanceof TreeData)
+            if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
             if (obs instanceof CrateData)
-                if (gm.checkCollisionCircleRectangle(pos, radius,
-                    gm.p(obs.position.x, obs.position.y), obs.width, obs.height)) return true;
+                if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) return true;
         }
         return false;
     },
@@ -263,14 +273,13 @@ const MatchScene = BaseLayer.extend({
         let radius = 0;
         if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
         for (let obs of match.obstacles) {
-            if (obs instanceof TreeData)
+            if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) {
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
             if (obs instanceof CrateData)
-                if (gm.checkCollisionCircleRectangle(pos, radius,
-                    gm.p(obs.position.x, obs.position.y), obs.width, obs.height)) {
+                if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) {
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
@@ -319,6 +328,27 @@ const MatchScene = BaseLayer.extend({
                 return;
             }
         }
+    },
+
+    updateMyPlayerItem: function () {
+        let myPlayer = GameManager.getInstance().getCurrentMatch().myPlayer;
+
+        if (myPlayer.vest.level === 0) {
+            this.myEquipVest.setOpacity(100);
+        }
+        else {
+            this.myEquipVest.setOpacity(255);
+        }
+
+        if (myPlayer.helmet.level === 0) {
+            this.myEquipHelmet.setOpacity(100);
+        }
+        else {
+            this.myEquipHelmet.setOpacity(255);
+        }
+
+        this.myEquipVest.lblLevel.setString("lv. " + myPlayer.vest.level);
+        this.myEquipHelmet.lblLevel.setString("lv. " + myPlayer.helmet.level);
     },
 
     myPlayerChangeWeapon: function (slot) {
@@ -510,6 +540,8 @@ const MatchScene = BaseLayer.extend({
         if (obsUI) {
             obsUI.animDestroyed();
         }
+
+        this.miniMap.obstacleDestroyed(obstacleId);
     },
 
     /**
@@ -519,6 +551,8 @@ const MatchScene = BaseLayer.extend({
         let itemUI;
         if (item instanceof ItemGunData) itemUI = new ItemGunUI();
         if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
+        if (item instanceof ItemVestData) itemUI = new ItemVestUI();
+        if (item instanceof ItemHelmetData) itemUI = new ItemHelmetUI();
         this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);
         itemUI.setPosition(item.position);
         itemUI.setItemId(item.getObjectId());

@@ -20,7 +20,9 @@ const ItemData = MapObjectData.extend({
 
 ItemData.TYPE = {
     GUN: "WEAPON",
-    BULLET: "BULLET"
+    BULLET: "BULLET",
+    VEST: "VEST",
+    HELMET: "HELMET"
 };
 
 ItemData.createItemByType = function (type) {
@@ -32,6 +34,12 @@ ItemData.createItemByType = function (type) {
             break;
         case ItemData.TYPE.BULLET:
             item = new ItemBulletData();
+            break;
+        case ItemData.TYPE.VEST:
+            item = new ItemVestData();
+            break;
+        case ItemData.TYPE.HELMET:
+            item = new ItemHelmetData();
             break;
     }
 

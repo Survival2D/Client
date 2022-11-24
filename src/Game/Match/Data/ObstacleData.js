@@ -21,7 +21,8 @@ const ObstacleData = MapObjectData.extend({
 
 ObstacleData.TYPE = {
     TREE: "TREE",
-    CRATE: "CONTAINER"
+    CRATE: "CONTAINER",
+    STONE: "STONE"
 };
 
 ObstacleData.createObstacleByType = function (type) {
@@ -34,6 +35,9 @@ ObstacleData.createObstacleByType = function (type) {
         case ObstacleData.TYPE.CRATE:
             obs = new CrateData();
             break;
+        case ObstacleData.TYPE.STONE:
+            obs = new StoneData();
+            break;
     }
 
     obs.setObstacleType(type);
@@ -44,14 +48,21 @@ ObstacleData.createObstacleByType = function (type) {
 const TreeData = ObstacleData.extend({
     ctor: function () {
         this._super();
-        this.radius = 35;
+        this.radius = Config.TREE_RADIUS;
     }
 });
 
 const CrateData = ObstacleData.extend({
     ctor: function () {
         this._super();
-        this.width = 100;
-        this.height = 100;
+        this.width = Config.CRATE_WIDTH;
+        this.height = Config.CRATE_HEIGHT;
+    }
+});
+
+const StoneData = ObstacleData.extend({
+    ctor: function () {
+        this._super();
+        this.radius = Config.STONE_RADIUS;
     }
 });

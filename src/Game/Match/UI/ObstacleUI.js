@@ -114,6 +114,7 @@ const TreeUI = ObstacleUI.extend({
 const CrateUI = ObstacleUI.extend({
     ctor: function () {
         this._super("res/Game/Obstacle/crate.png", ccui.Widget.LOCAL_TEXTURE);
+        this.setContentSize(Config.CRATE_WIDTH, Config.CRATE_HEIGHT);
     },
 
     setPosition: function (position, y) {
@@ -146,3 +147,15 @@ const CrateUI = ObstacleUI.extend({
         return cc.color("#7D4311");
     }
 });
+
+const StoneUI = ObstacleUI.extend({
+    ctor: function () {
+        if (Math.random() > 0.5) this._super("res/Game/Obstacle/stone_1.png", ccui.Widget.LOCAL_TEXTURE);
+        else this._super("res/Game/Obstacle/stone_2.png", ccui.Widget.LOCAL_TEXTURE);
+        this.setContentSize(Config.STONE_RADIUS * 2, Config.STONE_RADIUS * 2);
+    },
+
+    getPieceColor: function () {
+        return cc.color("#8F8F8F");
+    }
+})

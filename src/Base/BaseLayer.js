@@ -94,5 +94,14 @@ const BaseLayer = cc.Layer.extend({
             }
         }, this);
         return btn;
+    },
+
+    customTextLabel: function (name, parent, fontName, fontSize) {
+        let text = this.getControl(name, parent);
+        if (!text) return null;
+        text.ignoreContentAdaptWithSize(true);
+        if (fontName) text.setFontName(fontName);
+        if (fontSize) text.setFontName(fontSize);
+        return text;
     }
 })

@@ -53,12 +53,10 @@ const MiniMap = ccui.Layout.extend({
         for (let obs of match.obstacles) {
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
-            if (obs instanceof CrateData) {
-                obsUI = new CrateUI();
-                obsUI.setContentSize(obs.width, obs.height);
-            }
+            if (obs instanceof CrateData) obsUI = new CrateUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
+            obsUI.setObstacleId(obs.getObjectId());
             this.miniObstacleUIs.push(obsUI);
         }
     },
@@ -77,5 +75,28 @@ const MiniMap = ccui.Layout.extend({
     scene2GroundPosition: function (pos) {
         let worldPos = this.convertToWorldSpace(pos);
         return this.ground.convertToNodeSpace(worldPos);
+    },
+
+    /**
+     * @param {number} obstacleId
+     * @return {null|ObstacleUI}
+     */
+    getObstacleUIAndRemoveById: function (obstacleId) {
+        for (let i = 0; i < this.miniObstacleUIs.length; i++) {
+            let obsUI = this.miniObstacleUIs[i];
+            if (obsUI.getObstacleId() === obstacleId) {
+                this.miniObstacleUIs.splice(i, 1);
+                return obsUI;
+            }
+        }
+
+        return null;
+    },
+
+    obstacleDestroyed: function (obstacleId) {
+        let obsUI = this.getObstacleUIAndRemoveById(obstacleId);
+        if (obsUI) {
+            obsUI.removeFromParent(true);
+        }
     },
 })
