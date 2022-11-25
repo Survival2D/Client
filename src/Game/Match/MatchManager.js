@@ -38,6 +38,22 @@ const MatchManager = cc.Class.extend({
             //     this.obstacles.push(obstacleData);
             // }
 
+            for (let i = 0; i < 20; i++) {
+                let obstacleData = new WallData();
+                let x, y;
+                if (i === 0) {
+                    x = Math.round(Math.random() * this.mapWidth);
+                    y = Math.round(Math.random() * this.mapHeight);
+                }
+                else {
+                    x = this.obstacles[i - 1].position.x + Config.WALL_WIDTH;
+                    y = this.obstacles[i - 1].position.y;
+                }
+                obstacleData.position = gm.p(x, y);
+                obstacleData.setObjectId(10 + i);
+                this.obstacles.push(obstacleData);
+            }
+
             for (let i = 0; i < 1; i++) {
                 let itemData = new ItemGunData();
                 let x = Math.round(Math.random() * this.mapWidth);
@@ -51,7 +67,7 @@ const MatchManager = cc.Class.extend({
                 let x = Math.round(Math.random() * this.mapWidth);
                 let y = Math.round(Math.random() * this.mapHeight);
                 itemData.position = gm.p(x, y);
-                itemData.setObjectId(i);
+                itemData.setObjectId(1 + i);
                 this.items.push(itemData);
             }
 

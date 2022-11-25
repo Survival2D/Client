@@ -22,6 +22,8 @@ Config.TREE_RADIUS = 40;
 Config.STONE_RADIUS = 50;
 Config.CRATE_WIDTH = 100;
 Config.CRATE_HEIGHT = 100;
+Config.WALL_WIDTH = 10;
+Config.WALL_HEIGHT = 10;
 
 Config.PLAYER_MAX_HP = 100;
 

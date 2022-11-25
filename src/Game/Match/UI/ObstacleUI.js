@@ -158,4 +158,40 @@ const StoneUI = ObstacleUI.extend({
     getPieceColor: function () {
         return cc.color("#8F8F8F");
     }
-})
+});
+
+const WallUI = ObstacleUI.extend({
+    ctor: function () {
+        this._super("res/Game/Obstacle/wall.png", ccui.Widget.LOCAL_TEXTURE);
+        this.setContentSize(Config.WALL_WIDTH - 2, Config.WALL_HEIGHT - 2);
+
+        let border = new ccui.Layout();
+        border.setBackGroundColorType(ccui.Layout.BG_COLOR_SOLID);
+        border.setBackGroundColor(cc.color("#000000"));
+        border.setContentSize(this.width + 2, this.height + 2);
+        this.addChild(border, -1);
+        border.setAnchorPoint(0.5, 0.5);
+        border.setPosition(this.width/2, this.height/2);
+    },
+
+    setPosition: function (position, y) {
+        let realX, realY;
+        if (y === undefined) {
+            realX = position.x;
+            realY = position.y
+        }
+        else {
+            realX = position;
+            realY = y;
+        }
+
+        realX += this.width/2;
+        realY += this.height/2;
+
+        this._super(realX, realY);
+    },
+
+    animTakeDamage: function (hpRatio) {
+
+    },
+});

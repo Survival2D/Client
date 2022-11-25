@@ -185,6 +185,7 @@ const MatchScene = BaseLayer.extend({
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) obsUI = new CrateUI();
             if (obs instanceof StoneData) obsUI = new StoneUI();
+            if (obs instanceof WallData) obsUI = new WallUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
             obsUI.setObstacleId(obs.getObjectId());
@@ -262,7 +263,7 @@ const MatchScene = BaseLayer.extend({
         for (let obs of match.obstacles) {
             if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
-            if (obs instanceof CrateData)
+            if (obs instanceof CrateData || obs instanceof WallData)
                 if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) return true;
         }
         return false;
@@ -278,7 +279,7 @@ const MatchScene = BaseLayer.extend({
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
-            if (obs instanceof CrateData)
+            if (obs instanceof CrateData|| obs instanceof WallData)
                 if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) {
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;

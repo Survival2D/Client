@@ -54,6 +54,8 @@ const MiniMap = ccui.Layout.extend({
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) obsUI = new CrateUI();
+            if (obs instanceof StoneData) obsUI = new StoneUI();
+            if (obs instanceof WallData) obsUI = new WallUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
             obsUI.setObstacleId(obs.getObjectId());
