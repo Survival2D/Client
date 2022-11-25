@@ -245,11 +245,14 @@ var GameClient = cc.Class.extend({
 
         // Instead, we are going to access it right away, as if we just received it.
 
-        var buf = builder.dataBuffer();
+        // var buf = builder.dataBuffer();
 
 
+        let data = builder.asUint8Array();
         cc.log("begin send flatbuffers");
-        this.client.sendBytes(buf);
+        cc.log(JSON.stringify(data));
+        this.client.sendBytes(data);
+        cc.log("end send flatbuffers");
         // cc.log(JSON.stringify(buf));
         // plugin.send("flatbuffers", buf);
     }
