@@ -56,6 +56,7 @@ var EzyConnector = function() {
                 var headerByte = uint8ArrayNew[0];
                 var isRawBytes = (headerByte & 1 << 4) != 0;
                 if (isRawBytes) {
+                    // Chỗ này có sửa lại, chuyển toàn bộ bytes cho StreamingHandler luôn
                     // var isBigSize = (headerByte & 1 << 0) != 0;
                     // var offset = isBigSize ? 1 + 4 : 1 + 2;
                     // var contentBytes = bytes.slice(offset);

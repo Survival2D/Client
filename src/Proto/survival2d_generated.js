@@ -4,18 +4,18 @@
  * @const
  * @namespace
  */
-var MyGame = MyGame || {};
+var survival2d = survival2d || {};
 
 /**
  * @const
  * @namespace
  */
-MyGame.Sample = MyGame.Sample || {};
+survival2d.flatbuffers = survival2d.flatbuffers || {};
 
 /**
  * @enum {number}
  */
-MyGame.Sample.Color = {
+survival2d.flatbuffers.Color = {
   Red: 0,
   Green: 1,
   Blue: 2
@@ -24,7 +24,7 @@ MyGame.Sample.Color = {
 /**
  * @enum {string}
  */
-MyGame.Sample.ColorName = {
+survival2d.flatbuffers.ColorName = {
   '0': 'Red',
   '1': 'Green',
   '2': 'Blue'
@@ -33,7 +33,7 @@ MyGame.Sample.ColorName = {
 /**
  * @enum {number}
  */
-MyGame.Sample.Equipment = {
+survival2d.flatbuffers.Equipment = {
   NONE: 0,
   Weapon: 1
 };
@@ -41,7 +41,7 @@ MyGame.Sample.Equipment = {
 /**
  * @enum {string}
  */
-MyGame.Sample.EquipmentName = {
+survival2d.flatbuffers.EquipmentName = {
   '0': 'NONE',
   '1': 'Weapon'
 };
@@ -49,7 +49,7 @@ MyGame.Sample.EquipmentName = {
 /**
  * @constructor
  */
-MyGame.Sample.Vec3 = function() {
+survival2d.flatbuffers.Vec3 = function() {
   /**
    * @type {flatbuffers.ByteBuffer}
    */
@@ -64,9 +64,9 @@ MyGame.Sample.Vec3 = function() {
 /**
  * @param {number} i
  * @param {flatbuffers.ByteBuffer} bb
- * @returns {MyGame.Sample.Vec3}
+ * @returns {survival2d.flatbuffers.Vec3}
  */
-MyGame.Sample.Vec3.prototype.__init = function(i, bb) {
+survival2d.flatbuffers.Vec3.prototype.__init = function(i, bb) {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -75,21 +75,21 @@ MyGame.Sample.Vec3.prototype.__init = function(i, bb) {
 /**
  * @returns {number}
  */
-MyGame.Sample.Vec3.prototype.x = function() {
+survival2d.flatbuffers.Vec3.prototype.x = function() {
   return this.bb.readFloat32(this.bb_pos);
 };
 
 /**
  * @returns {number}
  */
-MyGame.Sample.Vec3.prototype.y = function() {
+survival2d.flatbuffers.Vec3.prototype.y = function() {
   return this.bb.readFloat32(this.bb_pos + 4);
 };
 
 /**
  * @returns {number}
  */
-MyGame.Sample.Vec3.prototype.z = function() {
+survival2d.flatbuffers.Vec3.prototype.z = function() {
   return this.bb.readFloat32(this.bb_pos + 8);
 };
 
@@ -100,7 +100,7 @@ MyGame.Sample.Vec3.prototype.z = function() {
  * @param {number} z
  * @returns {flatbuffers.Offset}
  */
-MyGame.Sample.Vec3.createVec3 = function(builder, x, y, z) {
+survival2d.flatbuffers.Vec3.createVec3 = function(builder, x, y, z) {
   builder.prep(4, 12);
   builder.writeFloat32(z);
   builder.writeFloat32(y);
@@ -111,7 +111,7 @@ MyGame.Sample.Vec3.createVec3 = function(builder, x, y, z) {
 /**
  * @constructor
  */
-MyGame.Sample.Monster = function() {
+survival2d.flatbuffers.Monster = function() {
   /**
    * @type {flatbuffers.ByteBuffer}
    */
@@ -126,9 +126,9 @@ MyGame.Sample.Monster = function() {
 /**
  * @param {number} i
  * @param {flatbuffers.ByteBuffer} bb
- * @returns {MyGame.Sample.Monster}
+ * @returns {survival2d.flatbuffers.Monster}
  */
-MyGame.Sample.Monster.prototype.__init = function(i, bb) {
+survival2d.flatbuffers.Monster.prototype.__init = function(i, bb) {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -136,36 +136,36 @@ MyGame.Sample.Monster.prototype.__init = function(i, bb) {
 
 /**
  * @param {flatbuffers.ByteBuffer} bb
- * @param {MyGame.Sample.Monster=} obj
- * @returns {MyGame.Sample.Monster}
+ * @param {survival2d.flatbuffers.Monster=} obj
+ * @returns {survival2d.flatbuffers.Monster}
  */
-MyGame.Sample.Monster.getRootAsMonster = function(bb, obj) {
-  return (obj || new MyGame.Sample.Monster).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+survival2d.flatbuffers.Monster.getRootAsMonster = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.Monster).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
 /**
  * @param {flatbuffers.ByteBuffer} bb
- * @param {MyGame.Sample.Monster=} obj
- * @returns {MyGame.Sample.Monster}
+ * @param {survival2d.flatbuffers.Monster=} obj
+ * @returns {survival2d.flatbuffers.Monster}
  */
-MyGame.Sample.Monster.getSizePrefixedRootAsMonster = function(bb, obj) {
+survival2d.flatbuffers.Monster.getSizePrefixedRootAsMonster = function(bb, obj) {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new MyGame.Sample.Monster).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new survival2d.flatbuffers.Monster).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
 /**
- * @param {MyGame.Sample.Vec3=} obj
- * @returns {MyGame.Sample.Vec3|null}
+ * @param {survival2d.flatbuffers.Vec3=} obj
+ * @returns {survival2d.flatbuffers.Vec3|null}
  */
-MyGame.Sample.Monster.prototype.pos = function(obj) {
+survival2d.flatbuffers.Monster.prototype.pos = function(obj) {
   var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? (obj || new MyGame.Sample.Vec3).__init(this.bb_pos + offset, this.bb) : null;
+  return offset ? (obj || new survival2d.flatbuffers.Vec3).__init(this.bb_pos + offset, this.bb) : null;
 };
 
 /**
  * @returns {number}
  */
-MyGame.Sample.Monster.prototype.mana = function() {
+survival2d.flatbuffers.Monster.prototype.mana = function() {
   var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? this.bb.readInt16(this.bb_pos + offset) : 150;
 };
@@ -173,7 +173,7 @@ MyGame.Sample.Monster.prototype.mana = function() {
 /**
  * @returns {number}
  */
-MyGame.Sample.Monster.prototype.hp = function() {
+survival2d.flatbuffers.Monster.prototype.hp = function() {
   var offset = this.bb.__offset(this.bb_pos, 8);
   return offset ? this.bb.readInt16(this.bb_pos + offset) : 100;
 };
@@ -182,7 +182,7 @@ MyGame.Sample.Monster.prototype.hp = function() {
  * @param {flatbuffers.Encoding=} optionalEncoding
  * @returns {string|Uint8Array|null}
  */
-MyGame.Sample.Monster.prototype.name = function(optionalEncoding) {
+survival2d.flatbuffers.Monster.prototype.name = function(optionalEncoding) {
   var offset = this.bb.__offset(this.bb_pos, 10);
   return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
 };
@@ -191,7 +191,7 @@ MyGame.Sample.Monster.prototype.name = function(optionalEncoding) {
  * @param {number} index
  * @returns {number}
  */
-MyGame.Sample.Monster.prototype.inventory = function(index) {
+survival2d.flatbuffers.Monster.prototype.inventory = function(index) {
   var offset = this.bb.__offset(this.bb_pos, 14);
   return offset ? this.bb.readUint8(this.bb.__vector(this.bb_pos + offset) + index) : 0;
 };
@@ -199,7 +199,7 @@ MyGame.Sample.Monster.prototype.inventory = function(index) {
 /**
  * @returns {number}
  */
-MyGame.Sample.Monster.prototype.inventoryLength = function() {
+survival2d.flatbuffers.Monster.prototype.inventoryLength = function() {
   var offset = this.bb.__offset(this.bb_pos, 14);
   return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
 };
@@ -207,84 +207,92 @@ MyGame.Sample.Monster.prototype.inventoryLength = function() {
 /**
  * @returns {Uint8Array}
  */
-MyGame.Sample.Monster.prototype.inventoryArray = function() {
+survival2d.flatbuffers.Monster.prototype.inventoryArray = function() {
   var offset = this.bb.__offset(this.bb_pos, 14);
   return offset ? new Uint8Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
 };
 
 /**
- * @returns {MyGame.Sample.Color}
+ * @returns {survival2d.flatbuffers.Color}
  */
-MyGame.Sample.Monster.prototype.color = function() {
+survival2d.flatbuffers.Monster.prototype.color = function() {
   var offset = this.bb.__offset(this.bb_pos, 16);
-  return offset ? /** @type {MyGame.Sample.Color} */ (this.bb.readInt8(this.bb_pos + offset)) : MyGame.Sample.Color.Blue;
+  return offset ? /** @type {survival2d.flatbuffers.Color} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.Color.Blue;
 };
 
 /**
  * @param {number} index
- * @param {MyGame.Sample.Weapon=} obj
- * @returns {MyGame.Sample.Weapon}
+ * @param {survival2d.flatbuffers.Weapon=} obj
+ * @returns {survival2d.flatbuffers.Weapon}
  */
-MyGame.Sample.Monster.prototype.weapons = function(index, obj) {
+survival2d.flatbuffers.Monster.prototype.weapons = function(index, obj) {
   var offset = this.bb.__offset(this.bb_pos, 18);
-  return offset ? (obj || new MyGame.Sample.Weapon).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+  return offset ? (obj || new survival2d.flatbuffers.Weapon).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
 };
 
 /**
  * @returns {number}
  */
-MyGame.Sample.Monster.prototype.weaponsLength = function() {
+survival2d.flatbuffers.Monster.prototype.weaponsLength = function() {
   var offset = this.bb.__offset(this.bb_pos, 18);
   return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
 };
 
 /**
- * @returns {MyGame.Sample.Equipment}
+ * @returns {survival2d.flatbuffers.Equipment}
  */
-MyGame.Sample.Monster.prototype.equippedType = function() {
+survival2d.flatbuffers.Monster.prototype.equippedType = function() {
   var offset = this.bb.__offset(this.bb_pos, 20);
-  return offset ? /** @type {MyGame.Sample.Equipment} */ (this.bb.readUint8(this.bb_pos + offset)) : MyGame.Sample.Equipment.NONE;
+  return offset ? /** @type {survival2d.flatbuffers.Equipment} */ (this.bb.readUint8(this.bb_pos + offset)) : survival2d.flatbuffers.Equipment.NONE;
 };
 
 /**
  * @param {flatbuffers.Table} obj
  * @returns {?flatbuffers.Table}
  */
-MyGame.Sample.Monster.prototype.equipped = function(obj) {
+survival2d.flatbuffers.Monster.prototype.equipped = function(obj) {
   var offset = this.bb.__offset(this.bb_pos, 22);
   return offset ? this.bb.__union(obj, this.bb_pos + offset) : null;
 };
 
 /**
  * @param {number} index
- * @param {MyGame.Sample.Vec3=} obj
- * @returns {MyGame.Sample.Vec3}
+ * @param {survival2d.flatbuffers.Vec3=} obj
+ * @returns {survival2d.flatbuffers.Vec3}
  */
-MyGame.Sample.Monster.prototype.path = function(index, obj) {
+survival2d.flatbuffers.Monster.prototype.path = function(index, obj) {
   var offset = this.bb.__offset(this.bb_pos, 24);
-  return offset ? (obj || new MyGame.Sample.Vec3).__init(this.bb.__vector(this.bb_pos + offset) + index * 12, this.bb) : null;
+  return offset ? (obj || new survival2d.flatbuffers.Vec3).__init(this.bb.__vector(this.bb_pos + offset) + index * 12, this.bb) : null;
 };
 
 /**
  * @returns {number}
  */
-MyGame.Sample.Monster.prototype.pathLength = function() {
+survival2d.flatbuffers.Monster.prototype.pathLength = function() {
   var offset = this.bb.__offset(this.bb_pos, 24);
   return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.Monster.prototype.time = function() {
+  var offset = this.bb.__offset(this.bb_pos, 26);
+  return offset ? this.bb.readFloat64(this.bb_pos + offset) : 0.0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
-MyGame.Sample.Monster.startMonster = function(builder) {
-  builder.startObject(11);
+survival2d.flatbuffers.Monster.startMonster = function(builder) {
+  builder.startObject(12);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} posOffset
  */
-MyGame.Sample.Monster.addPos = function(builder, posOffset) {
+survival2d.flatbuffers.Monster.addPos = function(builder, posOffset) {
   builder.addFieldStruct(0, posOffset, 0);
 };
 
@@ -292,7 +300,7 @@ MyGame.Sample.Monster.addPos = function(builder, posOffset) {
  * @param {flatbuffers.Builder} builder
  * @param {number} mana
  */
-MyGame.Sample.Monster.addMana = function(builder, mana) {
+survival2d.flatbuffers.Monster.addMana = function(builder, mana) {
   builder.addFieldInt16(1, mana, 150);
 };
 
@@ -300,7 +308,7 @@ MyGame.Sample.Monster.addMana = function(builder, mana) {
  * @param {flatbuffers.Builder} builder
  * @param {number} hp
  */
-MyGame.Sample.Monster.addHp = function(builder, hp) {
+survival2d.flatbuffers.Monster.addHp = function(builder, hp) {
   builder.addFieldInt16(2, hp, 100);
 };
 
@@ -308,7 +316,7 @@ MyGame.Sample.Monster.addHp = function(builder, hp) {
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} nameOffset
  */
-MyGame.Sample.Monster.addName = function(builder, nameOffset) {
+survival2d.flatbuffers.Monster.addName = function(builder, nameOffset) {
   builder.addFieldOffset(3, nameOffset, 0);
 };
 
@@ -316,7 +324,7 @@ MyGame.Sample.Monster.addName = function(builder, nameOffset) {
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} inventoryOffset
  */
-MyGame.Sample.Monster.addInventory = function(builder, inventoryOffset) {
+survival2d.flatbuffers.Monster.addInventory = function(builder, inventoryOffset) {
   builder.addFieldOffset(5, inventoryOffset, 0);
 };
 
@@ -325,7 +333,7 @@ MyGame.Sample.Monster.addInventory = function(builder, inventoryOffset) {
  * @param {Array.<number>} data
  * @returns {flatbuffers.Offset}
  */
-MyGame.Sample.Monster.createInventoryVector = function(builder, data) {
+survival2d.flatbuffers.Monster.createInventoryVector = function(builder, data) {
   builder.startVector(1, data.length, 1);
   for (var i = data.length - 1; i >= 0; i--) {
     builder.addInt8(data[i]);
@@ -337,23 +345,23 @@ MyGame.Sample.Monster.createInventoryVector = function(builder, data) {
  * @param {flatbuffers.Builder} builder
  * @param {number} numElems
  */
-MyGame.Sample.Monster.startInventoryVector = function(builder, numElems) {
+survival2d.flatbuffers.Monster.startInventoryVector = function(builder, numElems) {
   builder.startVector(1, numElems, 1);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {MyGame.Sample.Color} color
+ * @param {survival2d.flatbuffers.Color} color
  */
-MyGame.Sample.Monster.addColor = function(builder, color) {
-  builder.addFieldInt8(6, color, MyGame.Sample.Color.Blue);
+survival2d.flatbuffers.Monster.addColor = function(builder, color) {
+  builder.addFieldInt8(6, color, survival2d.flatbuffers.Color.Blue);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} weaponsOffset
  */
-MyGame.Sample.Monster.addWeapons = function(builder, weaponsOffset) {
+survival2d.flatbuffers.Monster.addWeapons = function(builder, weaponsOffset) {
   builder.addFieldOffset(7, weaponsOffset, 0);
 };
 
@@ -362,7 +370,7 @@ MyGame.Sample.Monster.addWeapons = function(builder, weaponsOffset) {
  * @param {Array.<flatbuffers.Offset>} data
  * @returns {flatbuffers.Offset}
  */
-MyGame.Sample.Monster.createWeaponsVector = function(builder, data) {
+survival2d.flatbuffers.Monster.createWeaponsVector = function(builder, data) {
   builder.startVector(4, data.length, 4);
   for (var i = data.length - 1; i >= 0; i--) {
     builder.addOffset(data[i]);
@@ -374,23 +382,23 @@ MyGame.Sample.Monster.createWeaponsVector = function(builder, data) {
  * @param {flatbuffers.Builder} builder
  * @param {number} numElems
  */
-MyGame.Sample.Monster.startWeaponsVector = function(builder, numElems) {
+survival2d.flatbuffers.Monster.startWeaponsVector = function(builder, numElems) {
   builder.startVector(4, numElems, 4);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {MyGame.Sample.Equipment} equippedType
+ * @param {survival2d.flatbuffers.Equipment} equippedType
  */
-MyGame.Sample.Monster.addEquippedType = function(builder, equippedType) {
-  builder.addFieldInt8(8, equippedType, MyGame.Sample.Equipment.NONE);
+survival2d.flatbuffers.Monster.addEquippedType = function(builder, equippedType) {
+  builder.addFieldInt8(8, equippedType, survival2d.flatbuffers.Equipment.NONE);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} equippedOffset
  */
-MyGame.Sample.Monster.addEquipped = function(builder, equippedOffset) {
+survival2d.flatbuffers.Monster.addEquipped = function(builder, equippedOffset) {
   builder.addFieldOffset(9, equippedOffset, 0);
 };
 
@@ -398,7 +406,7 @@ MyGame.Sample.Monster.addEquipped = function(builder, equippedOffset) {
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} pathOffset
  */
-MyGame.Sample.Monster.addPath = function(builder, pathOffset) {
+survival2d.flatbuffers.Monster.addPath = function(builder, pathOffset) {
   builder.addFieldOffset(10, pathOffset, 0);
 };
 
@@ -406,15 +414,23 @@ MyGame.Sample.Monster.addPath = function(builder, pathOffset) {
  * @param {flatbuffers.Builder} builder
  * @param {number} numElems
  */
-MyGame.Sample.Monster.startPathVector = function(builder, numElems) {
+survival2d.flatbuffers.Monster.startPathVector = function(builder, numElems) {
   builder.startVector(12, numElems, 4);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} time
+ */
+survival2d.flatbuffers.Monster.addTime = function(builder, time) {
+  builder.addFieldFloat64(11, time, 0.0);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  * @returns {flatbuffers.Offset}
  */
-MyGame.Sample.Monster.endMonster = function(builder) {
+survival2d.flatbuffers.Monster.endMonster = function(builder) {
   var offset = builder.endObject();
   return offset;
 };
@@ -423,7 +439,7 @@ MyGame.Sample.Monster.endMonster = function(builder) {
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} offset
  */
-MyGame.Sample.Monster.finishMonsterBuffer = function(builder, offset) {
+survival2d.flatbuffers.Monster.finishMonsterBuffer = function(builder, offset) {
   builder.finish(offset);
 };
 
@@ -431,7 +447,7 @@ MyGame.Sample.Monster.finishMonsterBuffer = function(builder, offset) {
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} offset
  */
-MyGame.Sample.Monster.finishSizePrefixedMonsterBuffer = function(builder, offset) {
+survival2d.flatbuffers.Monster.finishSizePrefixedMonsterBuffer = function(builder, offset) {
   builder.finish(offset, undefined, true);
 };
 
@@ -442,32 +458,34 @@ MyGame.Sample.Monster.finishSizePrefixedMonsterBuffer = function(builder, offset
  * @param {number} hp
  * @param {flatbuffers.Offset} nameOffset
  * @param {flatbuffers.Offset} inventoryOffset
- * @param {MyGame.Sample.Color} color
+ * @param {survival2d.flatbuffers.Color} color
  * @param {flatbuffers.Offset} weaponsOffset
- * @param {MyGame.Sample.Equipment} equippedType
+ * @param {survival2d.flatbuffers.Equipment} equippedType
  * @param {flatbuffers.Offset} equippedOffset
  * @param {flatbuffers.Offset} pathOffset
+ * @param {number} time
  * @returns {flatbuffers.Offset}
  */
-MyGame.Sample.Monster.createMonster = function(builder, posOffset, mana, hp, nameOffset, inventoryOffset, color, weaponsOffset, equippedType, equippedOffset, pathOffset) {
-  MyGame.Sample.Monster.startMonster(builder);
-  MyGame.Sample.Monster.addPos(builder, posOffset);
-  MyGame.Sample.Monster.addMana(builder, mana);
-  MyGame.Sample.Monster.addHp(builder, hp);
-  MyGame.Sample.Monster.addName(builder, nameOffset);
-  MyGame.Sample.Monster.addInventory(builder, inventoryOffset);
-  MyGame.Sample.Monster.addColor(builder, color);
-  MyGame.Sample.Monster.addWeapons(builder, weaponsOffset);
-  MyGame.Sample.Monster.addEquippedType(builder, equippedType);
-  MyGame.Sample.Monster.addEquipped(builder, equippedOffset);
-  MyGame.Sample.Monster.addPath(builder, pathOffset);
-  return MyGame.Sample.Monster.endMonster(builder);
+survival2d.flatbuffers.Monster.createMonster = function(builder, posOffset, mana, hp, nameOffset, inventoryOffset, color, weaponsOffset, equippedType, equippedOffset, pathOffset, time) {
+  survival2d.flatbuffers.Monster.startMonster(builder);
+  survival2d.flatbuffers.Monster.addPos(builder, posOffset);
+  survival2d.flatbuffers.Monster.addMana(builder, mana);
+  survival2d.flatbuffers.Monster.addHp(builder, hp);
+  survival2d.flatbuffers.Monster.addName(builder, nameOffset);
+  survival2d.flatbuffers.Monster.addInventory(builder, inventoryOffset);
+  survival2d.flatbuffers.Monster.addColor(builder, color);
+  survival2d.flatbuffers.Monster.addWeapons(builder, weaponsOffset);
+  survival2d.flatbuffers.Monster.addEquippedType(builder, equippedType);
+  survival2d.flatbuffers.Monster.addEquipped(builder, equippedOffset);
+  survival2d.flatbuffers.Monster.addPath(builder, pathOffset);
+  survival2d.flatbuffers.Monster.addTime(builder, time);
+  return survival2d.flatbuffers.Monster.endMonster(builder);
 }
 
 /**
  * @constructor
  */
-MyGame.Sample.Weapon = function() {
+survival2d.flatbuffers.Weapon = function() {
   /**
    * @type {flatbuffers.ByteBuffer}
    */
@@ -482,9 +500,9 @@ MyGame.Sample.Weapon = function() {
 /**
  * @param {number} i
  * @param {flatbuffers.ByteBuffer} bb
- * @returns {MyGame.Sample.Weapon}
+ * @returns {survival2d.flatbuffers.Weapon}
  */
-MyGame.Sample.Weapon.prototype.__init = function(i, bb) {
+survival2d.flatbuffers.Weapon.prototype.__init = function(i, bb) {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -492,28 +510,28 @@ MyGame.Sample.Weapon.prototype.__init = function(i, bb) {
 
 /**
  * @param {flatbuffers.ByteBuffer} bb
- * @param {MyGame.Sample.Weapon=} obj
- * @returns {MyGame.Sample.Weapon}
+ * @param {survival2d.flatbuffers.Weapon=} obj
+ * @returns {survival2d.flatbuffers.Weapon}
  */
-MyGame.Sample.Weapon.getRootAsWeapon = function(bb, obj) {
-  return (obj || new MyGame.Sample.Weapon).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+survival2d.flatbuffers.Weapon.getRootAsWeapon = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.Weapon).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
 /**
  * @param {flatbuffers.ByteBuffer} bb
- * @param {MyGame.Sample.Weapon=} obj
- * @returns {MyGame.Sample.Weapon}
+ * @param {survival2d.flatbuffers.Weapon=} obj
+ * @returns {survival2d.flatbuffers.Weapon}
  */
-MyGame.Sample.Weapon.getSizePrefixedRootAsWeapon = function(bb, obj) {
+survival2d.flatbuffers.Weapon.getSizePrefixedRootAsWeapon = function(bb, obj) {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new MyGame.Sample.Weapon).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new survival2d.flatbuffers.Weapon).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
 /**
  * @param {flatbuffers.Encoding=} optionalEncoding
  * @returns {string|Uint8Array|null}
  */
-MyGame.Sample.Weapon.prototype.name = function(optionalEncoding) {
+survival2d.flatbuffers.Weapon.prototype.name = function(optionalEncoding) {
   var offset = this.bb.__offset(this.bb_pos, 4);
   return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
 };
@@ -521,7 +539,7 @@ MyGame.Sample.Weapon.prototype.name = function(optionalEncoding) {
 /**
  * @returns {number}
  */
-MyGame.Sample.Weapon.prototype.damage = function() {
+survival2d.flatbuffers.Weapon.prototype.damage = function() {
   var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? this.bb.readInt16(this.bb_pos + offset) : 0;
 };
@@ -529,7 +547,7 @@ MyGame.Sample.Weapon.prototype.damage = function() {
 /**
  * @param {flatbuffers.Builder} builder
  */
-MyGame.Sample.Weapon.startWeapon = function(builder) {
+survival2d.flatbuffers.Weapon.startWeapon = function(builder) {
   builder.startObject(2);
 };
 
@@ -537,7 +555,7 @@ MyGame.Sample.Weapon.startWeapon = function(builder) {
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} nameOffset
  */
-MyGame.Sample.Weapon.addName = function(builder, nameOffset) {
+survival2d.flatbuffers.Weapon.addName = function(builder, nameOffset) {
   builder.addFieldOffset(0, nameOffset, 0);
 };
 
@@ -545,7 +563,7 @@ MyGame.Sample.Weapon.addName = function(builder, nameOffset) {
  * @param {flatbuffers.Builder} builder
  * @param {number} damage
  */
-MyGame.Sample.Weapon.addDamage = function(builder, damage) {
+survival2d.flatbuffers.Weapon.addDamage = function(builder, damage) {
   builder.addFieldInt16(1, damage, 0);
 };
 
@@ -553,7 +571,7 @@ MyGame.Sample.Weapon.addDamage = function(builder, damage) {
  * @param {flatbuffers.Builder} builder
  * @returns {flatbuffers.Offset}
  */
-MyGame.Sample.Weapon.endWeapon = function(builder) {
+survival2d.flatbuffers.Weapon.endWeapon = function(builder) {
   var offset = builder.endObject();
   return offset;
 };
@@ -564,12 +582,12 @@ MyGame.Sample.Weapon.endWeapon = function(builder) {
  * @param {number} damage
  * @returns {flatbuffers.Offset}
  */
-MyGame.Sample.Weapon.createWeapon = function(builder, nameOffset, damage) {
-  MyGame.Sample.Weapon.startWeapon(builder);
-  MyGame.Sample.Weapon.addName(builder, nameOffset);
-  MyGame.Sample.Weapon.addDamage(builder, damage);
-  return MyGame.Sample.Weapon.endWeapon(builder);
+survival2d.flatbuffers.Weapon.createWeapon = function(builder, nameOffset, damage) {
+  survival2d.flatbuffers.Weapon.startWeapon(builder);
+  survival2d.flatbuffers.Weapon.addName(builder, nameOffset);
+  survival2d.flatbuffers.Weapon.addDamage(builder, damage);
+  return survival2d.flatbuffers.Weapon.endWeapon(builder);
 }
 
 // Exports for Node.js and RequireJS
-this.MyGame = MyGame;
+this.survival2d = survival2d;

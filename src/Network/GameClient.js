@@ -53,14 +53,14 @@ var GameClient = cc.Class.extend({
             reader.addEventListener("loadend", function(e)
             {
                 var buffer = new Uint8Array(e.target.result);  // arraybuffer object
-                cc.log("buffer", JSON.stringify(buffer))
-                var buf = new flatbuffers.ByteBuffer(buffer);
-                var monster = MyGame.Sample.Monster.getRootAsMonster(buf);
-                cc.log(JSON.stringify(monster));
+                // cc.log("buffer", JSON.stringify(buffer))
+                var buf = new flatbuffers.ByteBuffer(GameClient.removeHeaderAfterPassEzyFoxCheck(buffer));
+                var monster = survival2d.flatbuffers.Monster.getRootAsMonster(buf);
+                // cc.log(JSON.stringify(monster));
                 cc.log(monster.mana(), 150);
                 cc.log(monster.hp(), 300);
                 cc.log(monster.name(), "Orc");
-                cc.log(monster.color(), MyGame.Sample.Color.Red);
+                cc.log(monster.color(), survival2d.flatbuffers.Color.Red);
                 cc.log(monster.pos().x(), 1);
                 cc.log(monster.pos().y(), 2);
                 cc.log(monster.pos().z(), 3);
@@ -79,9 +79,13 @@ var GameClient = cc.Class.extend({
                 }
 
                 // Get and test the `equipped` FlatBuffer `union`.
-                cc.log(monster.equippedType(), MyGame.Sample.Equipment.Weapon);
-                cc.log(monster.equipped(new MyGame.Sample.Weapon()).name(), 'Axe');
-                cc.log(monster.equipped(new MyGame.Sample.Weapon()).damage(), 5);
+                cc.log(monster.equippedType(), survival2d.flatbuffers.Equipment.Weapon);
+                cc.log(monster.equipped(new survival2d.flatbuffers.Weapon()).name(), 'Axe');
+                cc.log(monster.equipped(new survival2d.flatbuffers.Weapon()).damage(), 5);
+
+                let oldTime = monster.time();
+                let newTime = new Date().getTime();
+                cc.log("ping", newTime - oldTime, "oldTime", oldTime, "newTime", newTime);
             });
             reader.readAsArrayBuffer(bytes);
         }
@@ -207,7 +211,7 @@ var GameClient = cc.Class.extend({
         });
 
         setupPlugin.addDataHandler("flatbuffers", function (plugin, data) {
-            var monster = MyGame.Sample.Monster.getRootAsMonster(data);
+            var monster = survival2d.flatbuffers.Monster.getRootAsMonster(data);
             cc.log("get flatbuffers data");
             cc.log(JSON.stringify(monster));
         });
@@ -245,37 +249,39 @@ var GameClient = cc.Class.extend({
         var weaponOne = builder.createString('Sword');
         var weaponTwo = builder.createString('Axe');
 
-        MyGame.Sample.Weapon.startWeapon(builder);
-        MyGame.Sample.Weapon.addName(builder, weaponOne);
-        MyGame.Sample.Weapon.addDamage(builder, 3);
-        var sword = MyGame.Sample.Weapon.endWeapon(builder);
+        survival2d.flatbuffers.Weapon.startWeapon(builder);
+        survival2d.flatbuffers.Weapon.addName(builder, weaponOne);
+        survival2d.flatbuffers.Weapon.addDamage(builder, 3);
+        var sword = survival2d.flatbuffers.Weapon.endWeapon(builder);
 
-        MyGame.Sample.Weapon.startWeapon(builder);
-        MyGame.Sample.Weapon.addName(builder, weaponTwo);
-        MyGame.Sample.Weapon.addDamage(builder, 5);
-        var axe = MyGame.Sample.Weapon.endWeapon(builder);
+        survival2d.flatbuffers.Weapon.startWeapon(builder);
+        survival2d.flatbuffers.Weapon.addName(builder, weaponTwo);
+        survival2d.flatbuffers.Weapon.addDamage(builder, 5);
+        var axe = survival2d.flatbuffers.Weapon.endWeapon(builder);
 
         // Serialize the FlatBuffer data.
         var name = builder.createString('Orc');
 
         var treasure = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        var inv = MyGame.Sample.Monster.createInventoryVector(builder, treasure);
+        var inv = survival2d.flatbuffers.Monster.createInventoryVector(builder, treasure);
 
         var weaps = [sword, axe];
-        var weapons = MyGame.Sample.Monster.createWeaponsVector(builder, weaps);
+        var weapons = survival2d.flatbuffers.Monster.createWeaponsVector(builder, weaps);
 
-        var pos = MyGame.Sample.Vec3.createVec3(builder, 1.0, 2.0, 3.0);
+        var pos = survival2d.flatbuffers.Vec3.createVec3(builder, 1.0, 2.0, 3.0);
 
-        MyGame.Sample.Monster.startMonster(builder);
-        MyGame.Sample.Monster.addPos(builder, pos);
-        MyGame.Sample.Monster.addHp(builder, 300);
-        MyGame.Sample.Monster.addColor(builder, MyGame.Sample.Color.Red)
-        MyGame.Sample.Monster.addName(builder, name);
-        MyGame.Sample.Monster.addInventory(builder, inv);
-        MyGame.Sample.Monster.addWeapons(builder, weapons);
-        MyGame.Sample.Monster.addEquippedType(builder, MyGame.Sample.Equipment.Weapon);
-        MyGame.Sample.Monster.addEquipped(builder, weaps[1]);
-        var orc = MyGame.Sample.Monster.endMonster(builder);
+        survival2d.flatbuffers.Monster.startMonster(builder);
+        survival2d.flatbuffers.Monster.addPos(builder, pos);
+        survival2d.flatbuffers.Monster.addHp(builder, 300);
+        survival2d.flatbuffers.Monster.addColor(builder, survival2d.flatbuffers.Color.Red)
+        survival2d.flatbuffers.Monster.addName(builder, name);
+        survival2d.flatbuffers.Monster.addInventory(builder, inv);
+        survival2d.flatbuffers.Monster.addWeapons(builder, weapons);
+        survival2d.flatbuffers.Monster.addEquippedType(builder, survival2d.flatbuffers.Equipment.Weapon);
+        survival2d.flatbuffers.Monster.addEquipped(builder, weaps[1]);
+        survival2d.flatbuffers.Monster.addEquipped(builder, weaps[1]);
+        survival2d.flatbuffers.Monster.addTime(builder, new Date().getTime());
+        var orc = survival2d.flatbuffers.Monster.endMonster(builder);
 
         builder.finish(orc); // You may also call 'MyGame.Example.Monster.finishMonsterBuffer(builder, orc);'.
 
@@ -289,9 +295,10 @@ var GameClient = cc.Class.extend({
 
 
         let data = builder.asUint8Array();
+        let dataToSend = GameClient.createHeaderToPassEzyFoxCheck(data);
         cc.log("begin send flatbuffers");
-        cc.log("send", JSON.stringify(data));
-        this.client.sendBytes(data);
+        // cc.log("send", JSON.stringify(dataToSend));
+        this.client.sendBytes(dataToSend);
         cc.log("end send flatbuffers");
         // cc.log(JSON.stringify(buf));
         // plugin.send("flatbuffers", buf);
@@ -312,4 +319,19 @@ GameClient.getInstance = function () {
 GameClient.newInstance = function () {
     this._instance = new GameClient();
     return this._instance;
+}
+
+/*
+ * EzyFox check isRawBytes bằng cách lấy byte đầu tiên của packet làm header rồi check (header & (1 << 4)) != 0
+ */
+GameClient.PACKET_PREFIX = Uint8Array.of(0b00010000);
+GameClient.PACKET_PREFIX_LENGTH = GameClient.PACKET_PREFIX.length;
+GameClient.createHeaderToPassEzyFoxCheck = function (data) {
+    let dataToSend = new Uint8Array(data.length + GameClient.PACKET_PREFIX_LENGTH);
+    dataToSend.set(GameClient.PACKET_PREFIX, 0);
+    dataToSend.set(data, GameClient.PACKET_PREFIX_LENGTH);
+    return dataToSend;
+}
+GameClient.removeHeaderAfterPassEzyFoxCheck = function (data) {
+    return data.slice(GameClient.PACKET_PREFIX_LENGTH);
 }

@@ -1,6 +1,6 @@
 // Example IDL file for our monster's schema.
  
-namespace MyGame.Sample;
+namespace survival2d.flatbuffers;
  
 enum Color:byte { Red = 0, Green, Blue = 2 }
  
@@ -23,6 +23,7 @@ table Monster {
   weapons:[Weapon];   // Vector of tables.
   equipped:Equipment; // Union.
   path:[Vec3];        // Vector of structs.
+  time:double;          // Ping
 }
  
 table Weapon {
