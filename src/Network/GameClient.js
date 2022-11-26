@@ -47,6 +47,46 @@ var GameClient = cc.Class.extend({
 
         this.initListener();
 
+        var streamingHandler = new EzyStreamingHandler();
+        streamingHandler.handle = function (bytes) {
+            var reader = new FileReader();
+            reader.addEventListener("loadend", function(e)
+            {
+                var buffer = new Uint8Array(e.target.result);  // arraybuffer object
+                cc.log("buffer", JSON.stringify(buffer))
+                var buf = new flatbuffers.ByteBuffer(buffer);
+                var monster = MyGame.Sample.Monster.getRootAsMonster(buf);
+                cc.log(JSON.stringify(monster));
+                cc.log(monster.mana(), 150);
+                cc.log(monster.hp(), 300);
+                cc.log(monster.name(), "Orc");
+                cc.log(monster.color(), MyGame.Sample.Color.Red);
+                cc.log(monster.pos().x(), 1);
+                cc.log(monster.pos().y(), 2);
+                cc.log(monster.pos().z(), 3);
+
+                // Get and test the `inventory` FlatBuffer `vector`.
+                for (var i = 0; i < monster.inventoryLength(); i++) {
+                    cc.log(monster.inventory(i), i);
+                }
+
+                // Get and test the `weapons` FlatBuffer `vector` of `table`s.
+                var expectedWeaponNames = ['Sword', 'Axe'];
+                var expectedWeaponDamages = [3, 5];
+                for (var i = 0; i < monster.weaponsLength(); i++) {
+                    cc.log(monster.weapons(i).name(), expectedWeaponNames[i]);
+                    cc.log(monster.weapons(i).damage(), expectedWeaponDamages[i]);
+                }
+
+                // Get and test the `equipped` FlatBuffer `union`.
+                cc.log(monster.equippedType(), MyGame.Sample.Equipment.Weapon);
+                cc.log(monster.equipped(new MyGame.Sample.Weapon()).name(), 'Axe');
+                cc.log(monster.equipped(new MyGame.Sample.Weapon()).damage(), 5);
+            });
+            reader.readAsArrayBuffer(bytes);
+        }
+        setup.setStreamingHandler(streamingHandler);
+
         cc.log("Start connect");
         this.client.connect("ws://127.0.0.1:2208/ws");
         // this.client.connect("wss://server.survival2d.app/ws");
@@ -250,7 +290,7 @@ var GameClient = cc.Class.extend({
 
         let data = builder.asUint8Array();
         cc.log("begin send flatbuffers");
-        cc.log(JSON.stringify(data));
+        cc.log("send", JSON.stringify(data));
         this.client.sendBytes(data);
         cc.log("end send flatbuffers");
         // cc.log(JSON.stringify(buf));
