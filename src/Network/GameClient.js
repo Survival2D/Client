@@ -79,8 +79,8 @@ var GameClient = cc.Class.extend({
         setup.setStreamingHandler(streamingHandler);
 
         cc.log("Start connect");
-        this.client.connect("ws://127.0.0.1:2208/ws");
-        // this.client.connect("wss://server.survival2d.app/ws");
+        // this.client.connect("ws://127.0.0.1:2208/ws");
+        this.client.connect("wss://server.survival2d.app/ws");
         cc.log("End connect");
 
         // cc.log("Tien log o day");
