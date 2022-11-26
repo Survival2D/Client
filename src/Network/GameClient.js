@@ -68,7 +68,7 @@ var GameClient = cc.Class.extend({
                         let newTime = Date.now();
                         let pingTime = newTime - oldTime;
                         cc.log("Ping by player move flatbuffers", pingTime);
-                        setTimeout(GameClient.getInstance().sendPlayerMove.bind(GameClient.getInstance(), {x:0, y:0}, 0), 1000);
+                        setTimeout(GameClient.getInstance().sendPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
                         break;
                     default:
                         cc.log("not handle", packet.dataType());
@@ -109,8 +109,8 @@ var GameClient = cc.Class.extend({
             SceneManager.getInstance().openHomeScene();
 
             GameManager.getInstance().startPing();
-            GameClient.getInstance().sendPingByPlayerMove({x:0, y:0}, 0);
-            GameClient.getInstance().sendPlayerMove({x:0, y:0}, 0);
+            GameClient.getInstance().sendPingByPlayerMove({x:111111111.111111111, y:111111111.111111111}, 111111111.111111111);
+            GameClient.getInstance().sendPlayerMove({x:111111111.111111111, y:111111111.111111111}, 111111111.111111111);
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
@@ -202,7 +202,7 @@ var GameClient = cc.Class.extend({
             let newTime = Date.now();
             let pingTime = newTime - oldTime;
             cc.log("Ping by player move json:", pingTime);
-            setTimeout(GameClient.getInstance().sendPingByPlayerMove.bind(GameClient.getInstance(), {x:0, y:0}, 0), 1000);
+            setTimeout(GameClient.getInstance().sendPingByPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
         });
 
         setupPlugin.addDataHandler("flatbuffers", function (plugin, data) {

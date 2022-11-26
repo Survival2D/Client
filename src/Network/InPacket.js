@@ -213,6 +213,7 @@ const ReceivedMatchResult = InPacket.extend({
 
 const ReceivedPingByPlayerMove = InPacket.extend({
     ctor: function (data) {
+        this.username = "";
         this.position = {x: 0, y:0};
         this.rotation = 0;
         this.autoParseData(data);
