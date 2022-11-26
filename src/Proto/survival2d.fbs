@@ -1,9 +1,7 @@
-// Example IDL file for our monster's schema.
- 
 namespace survival2d.flatbuffers;
  
 enum Color:byte { Red = 0, Green, Blue = 2 }
- 
+
 union Equipment { Weapon } // Optionally add more tables.
  
 struct Vec3 {
@@ -23,12 +21,53 @@ table Monster {
   weapons:[Weapon];   // Vector of tables.
   equipped:Equipment; // Union.
   path:[Vec3];        // Vector of structs.
-  time:double;          // Ping
+  time:int64;          // Ping
 }
  
 table Weapon {
   name:string;
   damage:short;
 }
- 
-root_type Monster;
+
+struct Vec2 {
+  x: double;
+  y: double;
+}
+
+enum EntityType : byte {
+}
+
+table MatchInfoResponse {
+
+}
+
+table PlayerMoveRequest {
+  direction: Vec2;
+  rotation: double;
+}
+
+table PlayerMoveResponse {
+  id: string;
+  position: Vec2;
+  rotation: double;
+}
+
+table PlayerAttackRequest {
+}
+
+table PlayerAttackResponse {
+}
+
+union PacketData {
+  MatchInfoResponse,
+  PlayerMoveRequest,
+  PlayerMoveResponse,
+  PlayerAttackRequest,
+  PlayerAttackResponse,
+}
+
+table Packet {
+  data: PacketData;
+}
+
+root_type Packet;

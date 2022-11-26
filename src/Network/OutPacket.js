@@ -45,3 +45,13 @@ const SendPlayerTakeItem = OutPacket.extend({
         }
     }
 });
+
+const SendPingByPlayerMove = OutPacket.extend({
+    ctor: function (direction, rotation) {
+        this._super(Cmd.PING_BY_PLAYER_MOVE);
+        this.data = {
+            direction: direction,
+            rotation: rotation
+        }
+    }
+});

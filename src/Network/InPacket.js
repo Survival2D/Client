@@ -210,3 +210,11 @@ const ReceivedMatchResult = InPacket.extend({
         this.autoParseData(data);
     }
 });
+
+const ReceivedPingByPlayerMove = InPacket.extend({
+    ctor: function (data) {
+        this.position = {x: 0, y:0};
+        this.rotation = 0;
+        this.autoParseData(data);
+    }
+});
