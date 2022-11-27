@@ -21,54 +21,30 @@ const MatchManager = cc.Class.extend({
             this.mapWidth = 2000;
             this.mapHeight = 1500;
 
-            // for (let i = 0; i < 10; i++) {
-            //     let obstacleData = new TreeData();
-            //     let x = Math.round(Math.random() * this.mapWidth);
-            //     let y = Math.round(Math.random() * this.mapHeight);
-            //     obstacleData.position = gm.p(x, y);
-            //     obstacleData.setObjectId(i);
-            //     this.obstacles.push(obstacleData);
-            // }
-            // for (let i = 0; i < 10; i++) {
-            //     let obstacleData = new CrateData();
-            //     let x = Math.round(Math.random() * this.mapWidth);
-            //     let y = Math.round(Math.random() * this.mapHeight);
-            //     obstacleData.position = gm.p(x, y);
-            //     obstacleData.setObjectId(10 + i);
-            //     this.obstacles.push(obstacleData);
-            // }
+            cc.log("DMM length", Config.MAP_OBJECT_POSITION.length);
 
-            for (let i = 0; i < 20; i++) {
-                let obstacleData = new WallData();
-                let x, y;
-                if (i === 0) {
-                    x = Math.round(Math.random() * this.mapWidth);
-                    y = Math.round(Math.random() * this.mapHeight);
+            let objId = 0;
+            for (let objPos of Config.MAP_OBJECT_POSITION) {
+                let type = objPos[0];
+                if (type === 0) continue;
+                let obj;
+                switch (type) {
+                    case Config.MAP_OBJECT_TYPE.TREE:
+                        obj = new TreeData();
+                        break;
+                    case Config.MAP_OBJECT_TYPE.CRATE:
+                        obj = new CrateData();
+                        break;
+                    case Config.MAP_OBJECT_TYPE.STONE:
+                        obj = new StoneData();
+                        break;
+                    case Config.MAP_OBJECT_TYPE.WALL:
+                        obj = new WallData();
+                        break;
                 }
-                else {
-                    x = this.obstacles[i - 1].position.x + Config.WALL_WIDTH;
-                    y = this.obstacles[i - 1].position.y;
-                }
-                obstacleData.position = gm.p(x, y);
-                obstacleData.setObjectId(10 + i);
-                this.obstacles.push(obstacleData);
-            }
-
-            for (let i = 0; i < 1; i++) {
-                let itemData = new ItemGunData();
-                let x = Math.round(Math.random() * this.mapWidth);
-                let y = Math.round(Math.random() * this.mapHeight);
-                itemData.position = gm.p(x, y);
-                itemData.setObjectId(i);
-                this.items.push(itemData);
-            }
-            for (let i = 0; i < 2; i++) {
-                let itemData = new ItemBulletData();
-                let x = Math.round(Math.random() * this.mapWidth);
-                let y = Math.round(Math.random() * this.mapHeight);
-                itemData.position = gm.p(x, y);
-                itemData.setObjectId(1 + i);
-                this.items.push(itemData);
+                obj.position = gm.p(objPos[1][0] * 10, objPos[1][1] * 10);
+                obj.setObjectId(objId++);
+                this.obstacles.push(obj);
             }
 
             this.myPlayer.vest.level = 1;
