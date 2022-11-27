@@ -8,6 +8,8 @@ Config.FPS = 60;
 
 Config.IS_OFFLINE = true;
 
+Config.TEST = true;
+
 /**
  * SPEED: pixel per frame
  */
@@ -18,12 +20,12 @@ Config.BULLET_CREATE_DISTANCE = 10;
 
 Config.PLAYER_RADIUS = 30;
 Config.ITEM_RADIUS = 40;
-Config.TREE_RADIUS = 5;
-Config.STONE_RADIUS = 10;
-Config.CRATE_WIDTH = 20;
-Config.CRATE_HEIGHT = 20;
-Config.WALL_WIDTH = 10;
-Config.WALL_HEIGHT = 10;
+Config.TREE_RADIUS = 50;
+Config.STONE_RADIUS = 100;
+Config.CRATE_WIDTH = 200;
+Config.CRATE_HEIGHT = 200;
+Config.WALL_WIDTH = 100;
+Config.WALL_HEIGHT = 100;
 
 Config.PLAYER_MAX_HP = 100;
 

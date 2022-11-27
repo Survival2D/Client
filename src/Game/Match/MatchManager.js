@@ -18,13 +18,12 @@ const MatchManager = cc.Class.extend({
         this.items = [];
 
         if (Config.IS_OFFLINE) {
-            this.mapWidth = 2000;
-            this.mapHeight = 1500;
-
-            cc.log("DMM length", Config.MAP_OBJECT_POSITION.length);
+            this.mapWidth = 10000;
+            this.mapHeight = 10000;
 
             let objId = 0;
-            for (let objPos of Config.MAP_OBJECT_POSITION) {
+            for (let i = 0; i < 1000; i++) {
+                let objPos = Config.MAP_OBJECT_POSITION[i];
                 let type = objPos[0];
                 if (type === 0) continue;
                 let obj;
@@ -42,9 +41,15 @@ const MatchManager = cc.Class.extend({
                         obj = new WallData();
                         break;
                 }
-                obj.position = gm.p(objPos[1][0] * 10, objPos[1][1] * 10);
-                obj.setObjectId(objId++);
+                obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+                obj.setObjectId(objId);
+                objId++;
                 this.obstacles.push(obj);
+
+                this.myPlayer.position = gm.p(this.mapWidth/2, this.mapHeight/2);
+                this.myPlayer.hp = Config.PLAYER_MAX_HP;
+                this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
+                this.players[GameManager.getInstance().userData.username] = this.myPlayer;
             }
 
             this.myPlayer.vest.level = 1;
@@ -62,10 +67,7 @@ const MatchManager = cc.Class.extend({
     newMatch: function (matchId) {
         this.matchId = "";
         this.gameState = MatchManager.STATE.PLAY;
-        this.myPlayer.position = gm.p(30, 30);
-        this.myPlayer.hp = Config.PLAYER_MAX_HP;
-        this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
-        this.players[GameManager.getInstance().userData.username] = this.myPlayer;
+
         this.scene = SceneManager.getInstance().openMatchScene();
         this.scene.updateMatchView();
     },

@@ -101,6 +101,17 @@ const MatchScene = BaseLayer.extend({
             },
             onMouseScroll: function (event) {
                 that.controller.onMouseScroll();
+                if (Config.TEST) {
+                    let scroll = event.getScrollY();
+                    if (scroll > 0) {
+                        if (that.ground.getScale() > 1) return;
+                        that.ground.setScale(that.ground.getScale() * 2);
+                    }
+                    if (scroll < 0) {
+                        if (that.ground.getScale() <= 1/20) return;
+                        that.ground.setScale(that.ground.getScale() / 2);
+                    }
+                }
             },
         }, this.ground);
 
