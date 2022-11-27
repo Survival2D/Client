@@ -107,6 +107,14 @@ const MatchManager = cc.Class.extend({
         return list;
     },
 
+    getNumberOfAlivePlayers: function () {
+        let alive = 0;
+        for (let key in this.players) {
+            if (!this.players[key].isDead()) alive++;
+        }
+        return alive;
+    },
+
     /**
      * @param {number} obstacleId
      * @return {null|ObstacleData}

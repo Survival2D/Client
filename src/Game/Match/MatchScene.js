@@ -216,7 +216,8 @@ const MatchScene = BaseLayer.extend({
 
         this.updateMyPlayerItem();
 
-        this.numPlayerLeft.setString(match.players.filter(e => !e.isDead()).length);
+
+        this.numPlayerLeft.setString(match.getNumberOfAlivePlayers());
     },
 
     update: function (dt) {
@@ -482,7 +483,7 @@ const MatchScene = BaseLayer.extend({
             this.hud.runAction(cc.fadeOut(0.3));
         }
 
-        this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().players.filter(e => !e.isDead()).length);
+        this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().getNumberOfAlivePlayers());
     },
 
     fire: function (pos, direction) {
