@@ -50,8 +50,7 @@ var GameClient = cc.Class.extend({
         var streamingHandler = new EzyStreamingHandler();
         streamingHandler.handle = function (bytes) {
             var reader = new FileReader();
-            reader.addEventListener("loadend", function(e)
-            {
+            reader.addEventListener("loadend", function (e) {
                 var buffer = new Uint8Array(e.target.result);  // arraybuffer object
                 // cc.log("buffer", JSON.stringify(buffer))
                 var buf = new flatbuffers.ByteBuffer(GameClient.removeHeaderAfterPassEzyFoxCheck(buffer));
@@ -60,15 +59,17 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.PlayerMoveResponse:
                         let playerMoveResponse = new survival2d.flatbuffers.PlayerMoveResponse();
                         packet.data(playerMoveResponse);
-                        // cc.log("playerMoveResponse", playerMoveResponse.id());
-                        // cc.log("playerMoveResponse", playerMoveResponse.position().x());
-                        // cc.log("playerMoveResponse", playerMoveResponse.position().y());
-                        // cc.log("playerMoveResponse", playerMoveResponse.rotation());
+                        let parsed = GameClient.parseFlatBuffersResponseToObject(playerMoveResponse);
+                        cc.log("Miti Test: ", JSON.stringify(parsed));
+                        cc.log("playerMoveResponse", playerMoveResponse.id());
+                        cc.log("playerMoveResponse", playerMoveResponse.position().x());
+                        cc.log("playerMoveResponse", playerMoveResponse.position().y());
+                        cc.log("playerMoveResponse", playerMoveResponse.rotation());
                         let oldTime = GameClient.getInstance()._pingTime || 0;
                         let newTime = Date.now();
                         let pingTime = newTime - oldTime;
                         cc.log("Ping by player move flatbuffers", pingTime);
-                        setTimeout(GameClient.getInstance().sendPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
+                        // setTimeout(GameClient.getInstance().sendPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
                         break;
                     default:
                         cc.log("not handle", packet.dataType());
@@ -109,8 +110,14 @@ var GameClient = cc.Class.extend({
             SceneManager.getInstance().openHomeScene();
 
             GameManager.getInstance().startPing();
-            GameClient.getInstance().sendPingByPlayerMove({x:111111111.111111111, y:111111111.111111111}, 111111111.111111111);
-            GameClient.getInstance().sendPlayerMove({x:111111111.111111111, y:111111111.111111111}, 111111111.111111111);
+            GameClient.getInstance().sendPingByPlayerMove({
+                x: 111111111.111111111,
+                y: 111111111.111111111
+            }, 111111111.111111111);
+            GameClient.getInstance().sendPlayerMove({
+                x: 111111111.111111111,
+                y: 111111111.111111111
+            }, 111111111.111111111);
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
@@ -202,7 +209,7 @@ var GameClient = cc.Class.extend({
             let newTime = Date.now();
             let pingTime = newTime - oldTime;
             cc.log("Ping by player move json:", pingTime);
-            setTimeout(GameClient.getInstance().sendPingByPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
+            // setTimeout(GameClient.getInstance().sendPingByPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
         });
 
         setupPlugin.addDataHandler("flatbuffers", function (plugin, data) {
@@ -243,7 +250,8 @@ var GameClient = cc.Class.extend({
         let requestOffset = survival2d.flatbuffers.PlayerMoveRequest.createPlayerMoveRequest(builder, directionOffset, rotation);
         let packetOffset = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerMoveRequest, requestOffset);
         builder.finish(packetOffset);
-        let data =  GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        cc.log("data want to send", JSON.stringify(builder.asUint8Array()));
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
         this.client.sendBytes(data);
         GameClient.getInstance()._pingTime = Date.now();
     },
@@ -348,4 +356,19 @@ GameClient.createHeaderToPassEzyFoxCheck = function (data) {
 }
 GameClient.removeHeaderAfterPassEzyFoxCheck = function (data) {
     return data.slice(GameClient.PACKET_PREFIX_LENGTH);
+}
+GameClient.parseFlatBuffersResponseToObject = function (data) {
+    let result = {};
+    for (let key in data) {
+        let value = data[key];
+        if (!(value instanceof Function)) continue;
+        if (key.indexOf('_') === 0) continue;
+        let obj = data[key]();
+        cc.log(key, typeof obj);
+        if (obj instanceof Object) {
+            obj = GameClient.parseFlatBuffersResponseToObject(obj);
+        }
+        result[key] = obj;
+    }
+    return result;
 }
