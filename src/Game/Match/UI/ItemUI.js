@@ -4,7 +4,7 @@
 
 const ItemUI = ccui.ImageView.extend({
     ctor: function () {
-        this._super("res/Game/Item/loot_outer.png", ccui.Widget.LOCAL_TEXTURE);
+        this._super("res/ui/Game/Item/loot_outer.png", ccui.Widget.LOCAL_TEXTURE);
         this.ignoreContentAdaptWithSize(false);
         this.setContentSize(80, 80);
 
@@ -40,23 +40,23 @@ const ItemGunUI = ItemUI.extend({
     ctor: function () {
         this._super();
 
-        this.setItemUI("res/Game/Item/loot_gun.png");
+        this.setItemUI("res/ui/Game/Item/loot_gun.png");
     }
 });
 
 const ItemBulletUI = ItemUI.extend({
     ctor: function () {
         this._super();
-        this.loadTexture("res/Game/Item/loot_ammo.png", ccui.Widget.LOCAL_TEXTURE);
+        this.loadTexture("res/ui/Game/Item/loot_ammo.png", ccui.Widget.LOCAL_TEXTURE);
         this.setContentSize(70, 70);
     }
 });
 
 const ItemVestUI = ItemUI.extend({
     ctor: function () {
-        this._super("res/Game/Item/loot_outer.png", ccui.Widget.LOCAL_TEXTURE);
+        this._super("res/ui/Game/Item/loot_outer.png", ccui.Widget.LOCAL_TEXTURE);
 
-        this.setItemUI("res/Game/Item/loot_chest.png");
+        this.setItemUI("res/ui/Game/Item/loot_chest.png");
     }
 });
 
@@ -64,6 +64,6 @@ const ItemHelmetUI = ItemUI.extend({
     ctor: function () {
         this._super();
 
-        this.setItemUI("res/Game/Item/loot_helmet.png");
+        this.setItemUI("res/ui/Game/Item/loot_helmet.png");
     }
 });

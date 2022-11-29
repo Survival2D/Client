@@ -9,14 +9,14 @@ const PlayerUI = cc.Node.extend({
     },
 
     initPlayerUI: function () {
-        let body = new ccui.ImageView("res/Game/Player/circle.png");
+        let body = new ccui.ImageView("res/ui/Game/Player/circle.png");
         body.ignoreContentAdaptWithSize(false);
         body.setColor(cc.color("#f8c574"));
         body.setContentSize(Config.PLAYER_RADIUS * 2, Config.PLAYER_RADIUS * 2);
         this.addChild(body);
         this._body = body;
 
-        let arm = new ccui.ImageView("res/Game/Player/circle.png");
+        let arm = new ccui.ImageView("res/ui/Game/Player/circle.png");
         arm.ignoreContentAdaptWithSize(false);
         arm.setColor(cc.color("#f8c574"));
         arm.setContentSize(body.width * 0.35, body.height * 0.35);
@@ -24,14 +24,14 @@ const PlayerUI = cc.Node.extend({
         arm.setPosition(this._body.width/2 + 30, this._body.height/2 + 20);
         this._leftArm = arm;
         this._leftArm.defaultPosition = this._leftArm.getPosition();
-        let armBorder = new ccui.ImageView("res/Game/Player/circle.png");
+        let armBorder = new ccui.ImageView("res/ui/Game/Player/circle.png");
         armBorder.ignoreContentAdaptWithSize(false);
         armBorder.setColor(cc.color("#000000"));
         armBorder.setContentSize(arm.width + 8, arm.height + 8);
         arm.addChild(armBorder, - 1);
         armBorder.setPosition(arm.width/2, arm.height/2);
 
-        arm = new ccui.ImageView("res/Game/Player/circle.png");
+        arm = new ccui.ImageView("res/ui/Game/Player/circle.png");
         arm.ignoreContentAdaptWithSize(false);
         arm.setColor(cc.color("#f8c574"));
         arm.setContentSize(body.width * 0.35, body.height * 0.35);
@@ -39,14 +39,14 @@ const PlayerUI = cc.Node.extend({
         arm.setPosition(this._body.width/2 + 30, this._body.height/2 - 20);
         this._rightArm = arm;
         this._rightArm.defaultPosition = this._rightArm.getPosition();
-        armBorder = new ccui.ImageView("res/Game/Player/circle.png");
+        armBorder = new ccui.ImageView("res/ui/Game/Player/circle.png");
         armBorder.ignoreContentAdaptWithSize(false);
         armBorder.setColor(cc.color("#000000"));
         armBorder.setContentSize(arm.width + 8, arm.height + 8);
         arm.addChild(armBorder, - 1);
         armBorder.setPosition(arm.width/2, arm.height/2);
 
-        let vest = new ccui.ImageView("res/Game/Player/circle.png");
+        let vest = new ccui.ImageView("res/ui/Game/Player/circle.png");
         vest.ignoreContentAdaptWithSize(false);
         vest.setColor(cc.color("#9E9E9E"));
         vest.setContentSize(body.width + 10, body.height + 10);
@@ -54,14 +54,14 @@ const PlayerUI = cc.Node.extend({
         vest.setPosition(this._body.width/2, this._body.height/2);
         this._vest = vest;
 
-        let helmet = new ccui.ImageView("res/Game/Player/circle.png");
+        let helmet = new ccui.ImageView("res/ui/Game/Player/circle.png");
         helmet.ignoreContentAdaptWithSize(false);
         helmet.setColor(cc.color("#004801"));
         helmet.setContentSize(body.width * 0.5, body.height * 0.5);
         this._body.addChild(helmet, 2);
         helmet.setPosition(this._body.width * 0.45, this._body.height * 0.5);
         this._helmet = helmet;
-        let helmetBorder = new ccui.ImageView("res/Game/Player/circle.png");
+        let helmetBorder = new ccui.ImageView("res/ui/Game/Player/circle.png");
         helmetBorder.ignoreContentAdaptWithSize(false);
         helmetBorder.setColor(cc.color("#1E1E1E"));
         helmetBorder.setContentSize(helmet.width + 8, helmet.height + 8);
@@ -195,7 +195,7 @@ const PlayerUI = cc.Node.extend({
 const PlayerGunUI = ccui.ImageView.extend({
     ctor: function (id) {
         this._id = null;
-        this._super("res/Game/Player/gun_1.png");
+        this._super("res/ui/Game/Player/gun_1.png");
     }
 });
 

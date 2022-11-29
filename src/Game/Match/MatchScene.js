@@ -15,7 +15,7 @@ const MatchScene = BaseLayer.extend({
         this._syncTime = 0;
 
         this._super(MatchScene.className);
-        this.loadCss(res.MATCH_SCENE);
+        this.loadCss(game_UIs.MATCH_SCENE);
         this.controller = new Controller();
         this.initKeyBoardController();
         this.initMouseController();
@@ -212,7 +212,7 @@ const MatchScene = BaseLayer.extend({
             this.createItem(item);
         }
 
-        this.updateMyHpProgress(match.myPlayer.hp);
+        // this.updateMyHpProgress(match.myPlayer.hp);
 
         this.updateMyPlayerItem();
 
@@ -455,7 +455,7 @@ const MatchScene = BaseLayer.extend({
         if (playerUI) {
             playerUI.animDead();
 
-            let spr = new cc.Sprite("res/Game/Player/dead_blood.png");
+            let spr = new cc.Sprite("res/ui/Game/Player/dead_blood.png");
             this.ground.addChild(spr, MatchScene.Z_ORDER.BG);
             spr.setColor(cc.color("#CA2400"));
             spr.setPosition(playerUI.getPosition());

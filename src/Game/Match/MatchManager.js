@@ -22,7 +22,7 @@ const MatchManager = cc.Class.extend({
             this.mapHeight = 10000;
 
             let objId = 0;
-            for (let i = 0; i < 1000; i++) {
+            for (let i = 0; i < Math.min(1000, Config.MAP_OBJECT_POSITION.length); i++) {
                 let objPos = Config.MAP_OBJECT_POSITION[i];
                 let type = objPos[0];
                 if (type === 0) continue;
@@ -49,12 +49,12 @@ const MatchManager = cc.Class.extend({
                 obj.setObjectId(objId);
                 objId++;
                 this.obstacles.push(obj);
-
-                this.myPlayer.position = gm.p(this.mapWidth/2, this.mapHeight/2);
-                this.myPlayer.hp = Config.PLAYER_MAX_HP;
-                this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
-                this.players[GameManager.getInstance().userData.username] = this.myPlayer;
             }
+
+            this.myPlayer.position = gm.p(this.mapWidth/2, this.mapHeight/2);
+            this.myPlayer.hp = Config.PLAYER_MAX_HP;
+            this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
+            this.players[GameManager.getInstance().userData.username] = this.myPlayer;
 
             this.myPlayer.vest.level = 1;
             this.myPlayer.helmet.level = 1;

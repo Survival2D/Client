@@ -37,10 +37,10 @@ Config.COOLDOWN_ATTACK = 0.2;   // second
 Config.SYNC_DELTA_TIME = 2;     // second
 
 Config.MAP_OBJECT_TYPE = {
-    TREE: 1,
-    CRATE: 2,
-    STONE: 3,
-    WALL: 4
+    TREE: 2,
+    CRATE: 3,
+    STONE: 4,
+    WALL: 1
 }
 
 // config map object
