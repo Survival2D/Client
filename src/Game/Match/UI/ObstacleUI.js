@@ -96,6 +96,7 @@ const ObstacleUI = ccui.ImageView.extend({
 const TreeUI = ObstacleUI.extend({
     ctor: function () {
         this._super("res/Game/Obstacle/tree.png", ccui.Widget.LOCAL_TEXTURE);
+        this.setContentSize(Config.TREE_RADIUS, Config.TREE_RADIUS);
     },
 
     createResidue: function () {

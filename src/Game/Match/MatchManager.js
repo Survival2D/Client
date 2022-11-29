@@ -30,18 +30,22 @@ const MatchManager = cc.Class.extend({
                 switch (type) {
                     case Config.MAP_OBJECT_TYPE.TREE:
                         obj = new TreeData();
+                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
                         break;
                     case Config.MAP_OBJECT_TYPE.CRATE:
                         obj = new CrateData();
+                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
                         break;
                     case Config.MAP_OBJECT_TYPE.STONE:
                         obj = new StoneData();
+                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
                         break;
                     case Config.MAP_OBJECT_TYPE.WALL:
                         obj = new WallData();
+                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
                         break;
                 }
-                obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+
                 obj.setObjectId(objId);
                 objId++;
                 this.obstacles.push(obj);
