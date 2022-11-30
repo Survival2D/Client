@@ -168,7 +168,7 @@ const WallUI = ObstacleUI.extend({
         let border = new ccui.Layout();
         border.setBackGroundColorType(ccui.Layout.BG_COLOR_SOLID);
         border.setBackGroundColor(cc.color("#000000"));
-        border.setContentSize(this.width + 2, this.height + 2);
+        border.setContentSize(Config.WALL_WIDTH, Config.WALL_HEIGHT);
         this.addChild(border, -1);
         border.setAnchorPoint(0.5, 0.5);
         border.setPosition(this.width/2, this.height/2);
@@ -185,8 +185,8 @@ const WallUI = ObstacleUI.extend({
             realY = y;
         }
 
-        realX += this.width/2;
-        realY += this.height/2;
+        realX += Config.WALL_WIDTH/2;
+        realY += Config.WALL_HEIGHT/2;
 
         this._super(realX, realY);
     },
