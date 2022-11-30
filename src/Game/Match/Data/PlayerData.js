@@ -5,7 +5,6 @@
 const PlayerData = cc.Class.extend({
     ctor: function () {
         this.username = "";
-        this.playerId = "";
         this.position = gm.p(0, 0);
         this.rotation = 0;
         this.movingUnitVector = gm.vector(0, 0);

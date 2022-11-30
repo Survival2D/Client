@@ -158,13 +158,13 @@ const MatchScene = BaseLayer.extend({
 
         this.miniMap.updateMiniMapView();
 
-        for (let playerId in match.players) {
-            let player = match.players[playerId];
-            let playerUI = this.playerUIs[player.playerId];
+        for (let username in match.players) {
+            let player = match.players[username];
+            let playerUI = this.playerUIs[player.username];
             if (!playerUI) {
                 playerUI = new PlayerUI();
                 this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
-                this.playerUIs[player.playerId] = playerUI;
+                this.playerUIs[player.username] = playerUI;
             }
             playerUI.unEquip();
             playerUI.setPosition(player.position);
@@ -546,17 +546,19 @@ const MatchScene = BaseLayer.extend({
 
     /**
      * @param {ItemData} item
+     * @param {gm.Position} fromPosition
      */
-    createItem: function (item) {
+    createItem: function (item, fromPosition) {
         let itemUI;
         if (item instanceof ItemGunData) itemUI = new ItemGunUI();
         if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
         if (item instanceof ItemVestData) itemUI = new ItemVestUI();
         if (item instanceof ItemHelmetData) itemUI = new ItemHelmetUI();
-        this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);
-        itemUI.setPosition(item.position);
         itemUI.setItemId(item.getObjectId());
         this.itemUIs.push(itemUI);
+        this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);
+        itemUI.setPosition(fromPosition);
+        itemUI.runAction(cc.moveTo(0.3, item.position).easing(cc.easeIn(2.5)));
     },
 
     playerTakeItem: function (itemId) {

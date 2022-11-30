@@ -179,12 +179,12 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
 
         this.players = [];
         if (typeof data["players"] != "undefined") {
-            for (let playerId in data.players) {
+            for (let username in data.players) {
                 let playerData = new PlayerData();
-                this.parseData(playerData, data.players[playerId]);
-                playerData.username = playerData.playerId = playerId;
+                this.parseData(playerData, data.players[username]);
+                playerData.username = username;
                 playerData.hp = Config.PLAYER_MAX_HP;
-                this.players[playerId] = playerData;
+                this.players[username] = playerData;
             }
         }
 
