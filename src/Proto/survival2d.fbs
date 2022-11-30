@@ -246,6 +246,8 @@ union PacketData {
   PlayerDeadResponse,
   PlayerReloadWeaponRequest,
   PlayerReloadWeaponResponse,
+  PlayerChangeWeaponRequest,
+  PlayerChangeWeaponResponse,
 }
 
 table Packet {

@@ -143,7 +143,9 @@ survival2d.flatbuffers.PacketData = {
   PlayerTakeDamageResponse: 12,
   PlayerDeadResponse: 13,
   PlayerReloadWeaponRequest: 14,
-  PlayerReloadWeaponResponse: 15
+  PlayerReloadWeaponResponse: 15,
+  PlayerChangeWeaponRequest: 16,
+  PlayerChangeWeaponResponse: 17
 };
 
 /**
@@ -165,7 +167,9 @@ survival2d.flatbuffers.PacketDataName = {
   '12': 'PlayerTakeDamageResponse',
   '13': 'PlayerDeadResponse',
   '14': 'PlayerReloadWeaponRequest',
-  '15': 'PlayerReloadWeaponResponse'
+  '15': 'PlayerReloadWeaponResponse',
+  '16': 'PlayerChangeWeaponRequest',
+  '17': 'PlayerChangeWeaponResponse'
 };
 
 /**
