@@ -1791,7 +1791,7 @@ survival2d.flatbuffers.PlayerChangeWeaponRequest.getSizePrefixedRootAsPlayerChan
 /**
  * @returns {number}
  */
-survival2d.flatbuffers.PlayerChangeWeaponRequest.prototype.weaponOffset = function() {
+survival2d.flatbuffers.PlayerChangeWeaponRequest.prototype.slot = function() {
   var offset = this.bb.__offset(this.bb_pos, 4);
   return offset ? this.bb.readInt8(this.bb_pos + offset) : 0;
 };
@@ -1805,10 +1805,10 @@ survival2d.flatbuffers.PlayerChangeWeaponRequest.startPlayerChangeWeaponRequest 
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {number} weaponOffset
+ * @param {number} slot
  */
-survival2d.flatbuffers.PlayerChangeWeaponRequest.addWeaponOffset = function(builder, weaponOffset) {
-  builder.addFieldInt8(0, weaponOffset, 0);
+survival2d.flatbuffers.PlayerChangeWeaponRequest.addSlot = function(builder, slot) {
+  builder.addFieldInt8(0, slot, 0);
 };
 
 /**
@@ -1822,12 +1822,12 @@ survival2d.flatbuffers.PlayerChangeWeaponRequest.endPlayerChangeWeaponRequest = 
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {number} weaponOffset
+ * @param {number} slot
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerChangeWeaponRequest.createPlayerChangeWeaponRequest = function(builder, weaponOffset) {
+survival2d.flatbuffers.PlayerChangeWeaponRequest.createPlayerChangeWeaponRequest = function(builder, slot) {
   survival2d.flatbuffers.PlayerChangeWeaponRequest.startPlayerChangeWeaponRequest(builder);
-  survival2d.flatbuffers.PlayerChangeWeaponRequest.addWeaponOffset(builder, weaponOffset);
+  survival2d.flatbuffers.PlayerChangeWeaponRequest.addSlot(builder, slot);
   return survival2d.flatbuffers.PlayerChangeWeaponRequest.endPlayerChangeWeaponRequest(builder);
 }
 
@@ -1877,10 +1877,43 @@ survival2d.flatbuffers.PlayerChangeWeaponResponse.getSizePrefixedRootAsPlayerCha
 };
 
 /**
+ * @param {flatbuffers.Encoding=} optionalEncoding
+ * @returns {string|Uint8Array|null}
+ */
+survival2d.flatbuffers.PlayerChangeWeaponResponse.prototype.username = function(optionalEncoding) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.PlayerChangeWeaponResponse.prototype.slot = function() {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.readInt8(this.bb_pos + offset) : 0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.PlayerChangeWeaponResponse.startPlayerChangeWeaponResponse = function(builder) {
-  builder.startObject(0);
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} usernameOffset
+ */
+survival2d.flatbuffers.PlayerChangeWeaponResponse.addUsername = function(builder, usernameOffset) {
+  builder.addFieldOffset(0, usernameOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} slot
+ */
+survival2d.flatbuffers.PlayerChangeWeaponResponse.addSlot = function(builder, slot) {
+  builder.addFieldInt8(1, slot, 0);
 };
 
 /**
@@ -1894,10 +1927,14 @@ survival2d.flatbuffers.PlayerChangeWeaponResponse.endPlayerChangeWeaponResponse 
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} usernameOffset
+ * @param {number} slot
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerChangeWeaponResponse.createPlayerChangeWeaponResponse = function(builder) {
+survival2d.flatbuffers.PlayerChangeWeaponResponse.createPlayerChangeWeaponResponse = function(builder, usernameOffset, slot) {
   survival2d.flatbuffers.PlayerChangeWeaponResponse.startPlayerChangeWeaponResponse(builder);
+  survival2d.flatbuffers.PlayerChangeWeaponResponse.addUsername(builder, usernameOffset);
+  survival2d.flatbuffers.PlayerChangeWeaponResponse.addSlot(builder, slot);
   return survival2d.flatbuffers.PlayerChangeWeaponResponse.endPlayerChangeWeaponResponse(builder);
 }
 

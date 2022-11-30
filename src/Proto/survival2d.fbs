@@ -137,10 +137,12 @@ table PlayerMoveResponse {
 }
 
 table PlayerChangeWeaponRequest {
-  weaponOffset: byte;
+  slot: byte;
 }
 
 table PlayerChangeWeaponResponse {
+  username: string;
+  slot: byte;
 }
 
 table PlayerAttackRequest {
