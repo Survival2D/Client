@@ -165,6 +165,7 @@ table CreateBulletOnMapResponse {
 table CreateItemOnMapResponse {
   item: Item;
   position: Vec2;
+  rawPosition: Vec2;
 }
 
 table EndGameResponse {
