@@ -639,28 +639,10 @@ survival2d.flatbuffers.BulletItem.getSizePrefixedRootAsBulletItem = function(bb,
 };
 
 /**
- * @param {flatbuffers.Encoding=} optionalEncoding
- * @returns {string|Uint8Array|null}
- */
-survival2d.flatbuffers.BulletItem.prototype.owner = function(optionalEncoding) {
-  var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-};
-
-/**
- * @param {survival2d.flatbuffers.Vec2=} obj
- * @returns {survival2d.flatbuffers.Vec2|null}
- */
-survival2d.flatbuffers.BulletItem.prototype.direction = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 6);
-  return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
-};
-
-/**
  * @returns {survival2d.flatbuffers.BulletType}
  */
 survival2d.flatbuffers.BulletItem.prototype.type = function() {
-  var offset = this.bb.__offset(this.bb_pos, 8);
+  var offset = this.bb.__offset(this.bb_pos, 4);
   return offset ? /** @type {survival2d.flatbuffers.BulletType} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.BulletType.NORMAL;
 };
 
@@ -668,23 +650,7 @@ survival2d.flatbuffers.BulletItem.prototype.type = function() {
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.BulletItem.startBulletItem = function(builder) {
-  builder.startObject(3);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} ownerOffset
- */
-survival2d.flatbuffers.BulletItem.addOwner = function(builder, ownerOffset) {
-  builder.addFieldOffset(0, ownerOffset, 0);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} directionOffset
- */
-survival2d.flatbuffers.BulletItem.addDirection = function(builder, directionOffset) {
-  builder.addFieldStruct(1, directionOffset, 0);
+  builder.startObject(1);
 };
 
 /**
@@ -692,7 +658,7 @@ survival2d.flatbuffers.BulletItem.addDirection = function(builder, directionOffs
  * @param {survival2d.flatbuffers.BulletType} type
  */
 survival2d.flatbuffers.BulletItem.addType = function(builder, type) {
-  builder.addFieldInt8(2, type, survival2d.flatbuffers.BulletType.NORMAL);
+  builder.addFieldInt8(0, type, survival2d.flatbuffers.BulletType.NORMAL);
 };
 
 /**
@@ -706,15 +672,11 @@ survival2d.flatbuffers.BulletItem.endBulletItem = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} ownerOffset
- * @param {flatbuffers.Offset} directionOffset
  * @param {survival2d.flatbuffers.BulletType} type
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.BulletItem.createBulletItem = function(builder, ownerOffset, directionOffset, type) {
+survival2d.flatbuffers.BulletItem.createBulletItem = function(builder, type) {
   survival2d.flatbuffers.BulletItem.startBulletItem(builder);
-  survival2d.flatbuffers.BulletItem.addOwner(builder, ownerOffset);
-  survival2d.flatbuffers.BulletItem.addDirection(builder, directionOffset);
   survival2d.flatbuffers.BulletItem.addType(builder, type);
   return survival2d.flatbuffers.BulletItem.endBulletItem(builder);
 }
@@ -1214,10 +1176,28 @@ survival2d.flatbuffers.Bullet.prototype.type = function() {
 };
 
 /**
+ * @param {flatbuffers.Encoding=} optionalEncoding
+ * @returns {string|Uint8Array|null}
+ */
+survival2d.flatbuffers.Bullet.prototype.owner = function(optionalEncoding) {
+  var offset = this.bb.__offset(this.bb_pos, 10);
+  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+};
+
+/**
+ * @param {survival2d.flatbuffers.Vec2=} obj
+ * @returns {survival2d.flatbuffers.Vec2|null}
+ */
+survival2d.flatbuffers.Bullet.prototype.direction = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 12);
+  return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.Bullet.startBullet = function(builder) {
-  builder.startObject(3);
+  builder.startObject(5);
 };
 
 /**
@@ -1246,6 +1226,22 @@ survival2d.flatbuffers.Bullet.addType = function(builder, type) {
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} ownerOffset
+ */
+survival2d.flatbuffers.Bullet.addOwner = function(builder, ownerOffset) {
+  builder.addFieldOffset(3, ownerOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} directionOffset
+ */
+survival2d.flatbuffers.Bullet.addDirection = function(builder, directionOffset) {
+  builder.addFieldStruct(4, directionOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
  * @returns {flatbuffers.Offset}
  */
 survival2d.flatbuffers.Bullet.endBullet = function(builder) {
@@ -1258,13 +1254,17 @@ survival2d.flatbuffers.Bullet.endBullet = function(builder) {
  * @param {number} id
  * @param {flatbuffers.Offset} positionOffset
  * @param {survival2d.flatbuffers.BulletType} type
+ * @param {flatbuffers.Offset} ownerOffset
+ * @param {flatbuffers.Offset} directionOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.Bullet.createBullet = function(builder, id, positionOffset, type) {
+survival2d.flatbuffers.Bullet.createBullet = function(builder, id, positionOffset, type, ownerOffset, directionOffset) {
   survival2d.flatbuffers.Bullet.startBullet(builder);
   survival2d.flatbuffers.Bullet.addId(builder, id);
   survival2d.flatbuffers.Bullet.addPosition(builder, positionOffset);
   survival2d.flatbuffers.Bullet.addType(builder, type);
+  survival2d.flatbuffers.Bullet.addOwner(builder, ownerOffset);
+  survival2d.flatbuffers.Bullet.addDirection(builder, directionOffset);
   return survival2d.flatbuffers.Bullet.endBullet(builder);
 }
 

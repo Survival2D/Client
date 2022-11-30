@@ -70,8 +70,6 @@ enum BulletType: byte {
 }
 
 table BulletItem {
-  owner: string;
-  direction: Vec2;
   type: BulletType;
 }
 
@@ -115,6 +113,8 @@ table Bullet {
   id: int;
   position: Vec2;
   type: BulletType;
+  owner: string;
+  direction: Vec2;
 }
 
 table MatchInfoRequest {
