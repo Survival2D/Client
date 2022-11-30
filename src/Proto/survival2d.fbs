@@ -40,7 +40,7 @@ struct Vec2 {
 }
 
 table Player {
-  id: string;
+  username: string;
   position: Vec2;
   rotation: double;
   team: int;
@@ -131,7 +131,7 @@ table PlayerMoveRequest {
 }
 
 table PlayerMoveResponse {
-  id: string;
+  username: string;
   position: Vec2;
   rotation: double;
 }

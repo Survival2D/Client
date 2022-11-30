@@ -270,7 +270,7 @@ survival2d.flatbuffers.Player.getSizePrefixedRootAsPlayer = function(bb, obj) {
  * @param {flatbuffers.Encoding=} optionalEncoding
  * @returns {string|Uint8Array|null}
  */
-survival2d.flatbuffers.Player.prototype.id = function(optionalEncoding) {
+survival2d.flatbuffers.Player.prototype.username = function(optionalEncoding) {
   var offset = this.bb.__offset(this.bb_pos, 4);
   return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
 };
@@ -309,10 +309,10 @@ survival2d.flatbuffers.Player.startPlayer = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} idOffset
+ * @param {flatbuffers.Offset} usernameOffset
  */
-survival2d.flatbuffers.Player.addId = function(builder, idOffset) {
-  builder.addFieldOffset(0, idOffset, 0);
+survival2d.flatbuffers.Player.addUsername = function(builder, usernameOffset) {
+  builder.addFieldOffset(0, usernameOffset, 0);
 };
 
 /**
@@ -350,15 +350,15 @@ survival2d.flatbuffers.Player.endPlayer = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} idOffset
+ * @param {flatbuffers.Offset} usernameOffset
  * @param {flatbuffers.Offset} positionOffset
  * @param {number} rotation
  * @param {number} team
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.Player.createPlayer = function(builder, idOffset, positionOffset, rotation, team) {
+survival2d.flatbuffers.Player.createPlayer = function(builder, usernameOffset, positionOffset, rotation, team) {
   survival2d.flatbuffers.Player.startPlayer(builder);
-  survival2d.flatbuffers.Player.addId(builder, idOffset);
+  survival2d.flatbuffers.Player.addUsername(builder, usernameOffset);
   survival2d.flatbuffers.Player.addPosition(builder, positionOffset);
   survival2d.flatbuffers.Player.addRotation(builder, rotation);
   survival2d.flatbuffers.Player.addTeam(builder, team);
@@ -1662,7 +1662,7 @@ survival2d.flatbuffers.PlayerMoveResponse.getSizePrefixedRootAsPlayerMoveRespons
  * @param {flatbuffers.Encoding=} optionalEncoding
  * @returns {string|Uint8Array|null}
  */
-survival2d.flatbuffers.PlayerMoveResponse.prototype.id = function(optionalEncoding) {
+survival2d.flatbuffers.PlayerMoveResponse.prototype.username = function(optionalEncoding) {
   var offset = this.bb.__offset(this.bb_pos, 4);
   return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
 };
@@ -1693,10 +1693,10 @@ survival2d.flatbuffers.PlayerMoveResponse.startPlayerMoveResponse = function(bui
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} idOffset
+ * @param {flatbuffers.Offset} usernameOffset
  */
-survival2d.flatbuffers.PlayerMoveResponse.addId = function(builder, idOffset) {
-  builder.addFieldOffset(0, idOffset, 0);
+survival2d.flatbuffers.PlayerMoveResponse.addUsername = function(builder, usernameOffset) {
+  builder.addFieldOffset(0, usernameOffset, 0);
 };
 
 /**
@@ -1726,14 +1726,14 @@ survival2d.flatbuffers.PlayerMoveResponse.endPlayerMoveResponse = function(build
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} idOffset
+ * @param {flatbuffers.Offset} usernameOffset
  * @param {flatbuffers.Offset} positionOffset
  * @param {number} rotation
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerMoveResponse.createPlayerMoveResponse = function(builder, idOffset, positionOffset, rotation) {
+survival2d.flatbuffers.PlayerMoveResponse.createPlayerMoveResponse = function(builder, usernameOffset, positionOffset, rotation) {
   survival2d.flatbuffers.PlayerMoveResponse.startPlayerMoveResponse(builder);
-  survival2d.flatbuffers.PlayerMoveResponse.addId(builder, idOffset);
+  survival2d.flatbuffers.PlayerMoveResponse.addUsername(builder, usernameOffset);
   survival2d.flatbuffers.PlayerMoveResponse.addPosition(builder, positionOffset);
   survival2d.flatbuffers.PlayerMoveResponse.addRotation(builder, rotation);
   return survival2d.flatbuffers.PlayerMoveResponse.endPlayerMoveResponse(builder);
