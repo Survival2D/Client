@@ -5,7 +5,7 @@
 var LoginScene = BaseLayer.extend({
     ctor: function () {
         this._super(LoginScene.className);
-        this.loadCss(res.LOGIN_SCENE);
+        this.loadCss(game_UIs.LOGIN_SCENE);
     },
 
     initGUI: function () {

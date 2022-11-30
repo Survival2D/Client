@@ -10,7 +10,7 @@ const MiniMap = ccui.Layout.extend({
 
         this.miniObstacleUIs = [];
 
-        let jsonLayout = ccs.load(res.MINIMAP_LAYER);
+        let jsonLayout = ccs.load(game_UIs.MINIMAP_LAYER);
         this._layout = jsonLayout.node;
         this._action = jsonLayout.action;
         this._layout.setContentSize(cc.director.getWinSize());

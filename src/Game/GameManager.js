@@ -81,3 +81,9 @@ GameManager.newInstance = function () {
     this._instance = new GameManager();
     return this._instance;
 };
+
+GameManager.preloadResources = function () {
+    // for (var i in game_images) {
+    //     cc.textureCache.addImage(game_images[i]);
+    // }
+};

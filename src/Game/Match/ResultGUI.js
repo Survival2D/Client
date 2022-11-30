@@ -6,7 +6,7 @@ const ResultGUI = BaseLayer.extend({
     ctor: function () {
         this._playerUIs = [];
         this._super(ResultGUI.className);
-        this.loadCss(res.RESULT_LAYER);
+        this.loadCss(game_UIs.RESULT_LAYER);
     },
 
     initGUI: function () {

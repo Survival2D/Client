@@ -6,7 +6,7 @@ const BulletUI = cc.Node.extend({
     ctor: function () {
         this._super();
 
-        this.trail = new cc.Sprite("res/Game/bullet_trail.png");
+        this.trail = new cc.Sprite(game_images.bullet_trail);
         this.addChild(this.trail);
         this.trail.setAnchorPoint(1, 0.5);
         this.trail.setPosition(0, 0);
