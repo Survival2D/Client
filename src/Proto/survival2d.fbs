@@ -225,6 +225,7 @@ table PlayerReloadWeaponRequest {
 }
 
 table PlayerReloadWeaponResponse {
+  remainBulletsInGun: int;
   remainBullets: int;
 }
 

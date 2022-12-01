@@ -3703,8 +3703,16 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.getSizePrefixedRootAsPlayerRel
 /**
  * @returns {number}
  */
-survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBullets = function() {
+survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBulletsInGun = function() {
   var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBullets = function() {
+  var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
 };
 
@@ -3712,7 +3720,15 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBullets = func
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponResponse = function(builder) {
-  builder.startObject(1);
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} remainBulletsInGun
+ */
+survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBulletsInGun = function(builder, remainBulletsInGun) {
+  builder.addFieldInt32(0, remainBulletsInGun, 0);
 };
 
 /**
@@ -3720,7 +3736,7 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponRespons
  * @param {number} remainBullets
  */
 survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBullets = function(builder, remainBullets) {
-  builder.addFieldInt32(0, remainBullets, 0);
+  builder.addFieldInt32(1, remainBullets, 0);
 };
 
 /**
@@ -3734,11 +3750,13 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.endPlayerReloadWeaponResponse 
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {number} remainBulletsInGun
  * @param {number} remainBullets
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerReloadWeaponResponse.createPlayerReloadWeaponResponse = function(builder, remainBullets) {
+survival2d.flatbuffers.PlayerReloadWeaponResponse.createPlayerReloadWeaponResponse = function(builder, remainBulletsInGun, remainBullets) {
   survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponResponse(builder);
+  survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBulletsInGun(builder, remainBulletsInGun);
   survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBullets(builder, remainBullets);
   return survival2d.flatbuffers.PlayerReloadWeaponResponse.endPlayerReloadWeaponResponse(builder);
 }
