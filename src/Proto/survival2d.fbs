@@ -149,6 +149,8 @@ table PlayerAttackRequest {
 }
 
 table PlayerAttackResponse {
+  username:string;
+  position:Vec2;
 }
 
 table PlayerDropItemRequest {
@@ -251,6 +253,9 @@ union PacketData {
   PlayerReloadWeaponResponse,
   PlayerChangeWeaponRequest,
   PlayerChangeWeaponResponse,
+  PlayerTakeItemRequest,
+  PlayerTakeItemResponse,
+  EndGameResponse,
 }
 
 table Packet {

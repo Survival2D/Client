@@ -145,7 +145,10 @@ survival2d.flatbuffers.PacketData = {
   PlayerReloadWeaponRequest: 14,
   PlayerReloadWeaponResponse: 15,
   PlayerChangeWeaponRequest: 16,
-  PlayerChangeWeaponResponse: 17
+  PlayerChangeWeaponResponse: 17,
+  PlayerTakeItemRequest: 18,
+  PlayerTakeItemResponse: 19,
+  EndGameResponse: 20
 };
 
 /**
@@ -169,7 +172,10 @@ survival2d.flatbuffers.PacketDataName = {
   '14': 'PlayerReloadWeaponRequest',
   '15': 'PlayerReloadWeaponResponse',
   '16': 'PlayerChangeWeaponRequest',
-  '17': 'PlayerChangeWeaponResponse'
+  '17': 'PlayerChangeWeaponResponse',
+  '18': 'PlayerTakeItemRequest',
+  '19': 'PlayerTakeItemResponse',
+  '20': 'EndGameResponse'
 };
 
 /**
@@ -2054,10 +2060,44 @@ survival2d.flatbuffers.PlayerAttackResponse.getSizePrefixedRootAsPlayerAttackRes
 };
 
 /**
+ * @param {flatbuffers.Encoding=} optionalEncoding
+ * @returns {string|Uint8Array|null}
+ */
+survival2d.flatbuffers.PlayerAttackResponse.prototype.username = function(optionalEncoding) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+};
+
+/**
+ * @param {survival2d.flatbuffers.Vec2=} obj
+ * @returns {survival2d.flatbuffers.Vec2|null}
+ */
+survival2d.flatbuffers.PlayerAttackResponse.prototype.position = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.PlayerAttackResponse.startPlayerAttackResponse = function(builder) {
-  builder.startObject(0);
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} usernameOffset
+ */
+survival2d.flatbuffers.PlayerAttackResponse.addUsername = function(builder, usernameOffset) {
+  builder.addFieldOffset(0, usernameOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} positionOffset
+ */
+survival2d.flatbuffers.PlayerAttackResponse.addPosition = function(builder, positionOffset) {
+  builder.addFieldStruct(1, positionOffset, 0);
 };
 
 /**
@@ -2071,10 +2111,14 @@ survival2d.flatbuffers.PlayerAttackResponse.endPlayerAttackResponse = function(b
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} usernameOffset
+ * @param {flatbuffers.Offset} positionOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerAttackResponse.createPlayerAttackResponse = function(builder) {
+survival2d.flatbuffers.PlayerAttackResponse.createPlayerAttackResponse = function(builder, usernameOffset, positionOffset) {
   survival2d.flatbuffers.PlayerAttackResponse.startPlayerAttackResponse(builder);
+  survival2d.flatbuffers.PlayerAttackResponse.addUsername(builder, usernameOffset);
+  survival2d.flatbuffers.PlayerAttackResponse.addPosition(builder, positionOffset);
   return survival2d.flatbuffers.PlayerAttackResponse.endPlayerAttackResponse(builder);
 }
 
