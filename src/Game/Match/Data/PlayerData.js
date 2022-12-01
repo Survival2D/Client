@@ -14,6 +14,9 @@ const PlayerData = cc.Class.extend({
         this.gun = new GunData();
         this.vest = new VestData();
         this.helmet = new HelmetData();
+        this.numBackBullets = 0;
+
+        this.weaponSlot = PlayerData.WEAPON_SLOT.FIST;
 
         this.radius = Config.PLAYER_RADIUS;
     },
@@ -27,6 +30,22 @@ const PlayerData = cc.Class.extend({
     },
 
     /**
+     * @param {PlayerData.WEAPON_SLOT} slot
+     */
+    changeWeaponSlot: function (slot) {
+        this.weaponSlot = slot;
+    },
+
+    canReloadBullets: function () {
+        return this.gun.isActiveGun() && this.weaponSlot === PlayerData.WEAPON_SLOT.GUN && this.numBackBullets > 0;
+    },
+
+    reloadBullets: function (numWeaponBullets, numBulletsRemain) {
+        this.gun.loadBullets(numWeaponBullets);
+        this.numBackBullets = numBulletsRemain;
+    },
+
+    /**
      * @param {ItemData} item
      */
     getItem: function (item) {
@@ -35,7 +54,7 @@ const PlayerData = cc.Class.extend({
             this.gun.loadBullets(item.getNumBullets());
         }
         if (item instanceof ItemBulletData) {
-
+            this.numBackBullets += item.getNumBullets();
         }
         if (item instanceof ItemVestData) {
 

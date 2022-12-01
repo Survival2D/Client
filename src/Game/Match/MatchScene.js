@@ -320,6 +320,8 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         for (let item of match.items) {
             if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, match.myPlayer.radius, item.radius)) {
+                if (item instanceof ItemGunData && match.myPlayer.isHaveGun()) return;
+
                 // GameClient.getInstance().sendEmptyPacket(Cmd.TAKE_ITEM);
                 GameClient.getInstance().sendPlayerTakeItem();
 

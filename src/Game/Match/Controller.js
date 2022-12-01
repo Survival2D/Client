@@ -61,6 +61,9 @@ const Controller = cc.Class.extend({
             case cc.KEY.f:
                 this.pickItem();
                 break;
+            case cc.KEY.r:
+                this.reloadBullets();
+                break;
             case cc.KEY.num1:
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.GUN);
                 break;
@@ -95,6 +98,10 @@ const Controller = cc.Class.extend({
 
     pickItem: function () {
         GameManager.getInstance().getCurrentMatch().scene.myPlayerPickItem();
+    },
+
+    reloadBullets: function () {
+        GameManager.getInstance().getCurrentMatch().reloadMyPlayerWeapon();
     },
 
     changeWeaponSlot: function (slot) {
