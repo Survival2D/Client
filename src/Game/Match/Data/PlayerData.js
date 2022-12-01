@@ -27,11 +27,22 @@ const PlayerData = cc.Class.extend({
     },
 
     /**
-     * @param {ItemGunData} itemGun
+     * @param {ItemData} item
      */
-    getGun: function (itemGun) {
-        this.gun.activeGun();
-        this.gun.loadBullets(itemGun.getNumBullets());
+    getItem: function (item) {
+        if (item instanceof ItemGunData) {
+            this.gun.activeGun();
+            this.gun.loadBullets(item.getNumBullets());
+        }
+        if (item instanceof ItemBulletData) {
+
+        }
+        if (item instanceof ItemVestData) {
+
+        }
+        if (item instanceof ItemHelmetData) {
+
+        }
     }
 });
 

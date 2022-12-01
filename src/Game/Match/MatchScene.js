@@ -363,6 +363,7 @@ const MatchScene = BaseLayer.extend({
             this.weaponSlotGun.setOpacity(100);
         }
         else {
+            if (!match.myPlayer.isHaveGun()) return;
             if (!this.myPlayer.isEquip()) this.myPlayer.equipGun();
             this.weaponSlotGun.setScale(1.2);
             this.weaponSlotGun.setOpacity(255);
@@ -377,11 +378,13 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         destPos = this.scene2GroundPosition(destPos);
         if (this.myPlayer.isEquip()) {
+            if (!match.myPlayer.gun.canFire()) return;
             let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
             vector.normalize();
             let createPos = gm.p(this.myPlayer.x + vector.x * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius),
                 this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
             this.fire(createPos, vector);
+            match.myPlayer.gun.numBullets--;
         }
         else {
             this.myPlayer.animAttack();
@@ -389,6 +392,10 @@ const MatchScene = BaseLayer.extend({
 
         // GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
         GameClient.getInstance().sendPlayerAttack();
+    },
+
+    myPlayerReloadWeapon: function (numBulletsRemain) {
+
     },
 
     playerChangeWeapon: function (username, weaponId) {
@@ -547,9 +554,10 @@ const MatchScene = BaseLayer.extend({
 
     /**
      * @param {ItemData} item
-     * @param {gm.Position} fromPosition
+     * @param {gm.Position=} fromPosition
      */
     createItem: function (item, fromPosition) {
+        fromPosition = fromPosition || item.position;
         let itemUI;
         if (item instanceof ItemGunData) itemUI = new ItemGunUI();
         if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();

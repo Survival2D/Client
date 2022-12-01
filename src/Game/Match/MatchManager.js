@@ -255,6 +255,11 @@ const MatchManager = cc.Class.extend({
         if (this.isInMatch()) this.scene.playerChangeWeapon(username, weaponId);
     },
 
+    receivedPlayerReloadWeapon: function (numWeaponBullets, numBulletsRemain) {
+        this.myPlayer.gun.loadBullets(numWeaponBullets);
+        if (this.isInMatch()) this.scene.myPlayerReloadWeapon(numBulletsRemain);
+    },
+
     /**
      * @param {BulletData} bullet
      */
@@ -333,6 +338,11 @@ const MatchManager = cc.Class.extend({
         if (!item) {
             cc.log("Warning: we dont have item " + itemId + " in match");
             return;
+        }
+
+        if (username === GameManager.getInstance().userData.username) {
+            this.myPlayer.getItem(item);
+            if (this.isInMatch()) this.scene.updateMyPlayerItem();
         }
 
         if (this.isInMatch()) this.scene.playerTakeItem(itemId);

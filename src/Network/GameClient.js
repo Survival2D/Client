@@ -55,6 +55,7 @@ var GameClient = cc.Class.extend({
                 // cc.log("buffer", JSON.stringify(buffer))
                 var buf = new flatbuffers.ByteBuffer(GameClient.removeHeaderAfterPassEzyFoxCheck(buffer));
                 let packet = survival2d.flatbuffers.Packet.getRootAsPacket(buf);
+                cc.log("RECEIVED", packet.dataType());
                 switch (packet.dataType()) {
                     case survival2d.flatbuffers.PacketData.MatchInfoResponse: {
                         let response = new survival2d.flatbuffers.MatchInfoResponse();
@@ -160,6 +161,13 @@ var GameClient = cc.Class.extend({
                         packet.data(response);
                         cc.log("RECEIVED PlayerChangeWeapon", GameClient.JSONStringifyFlatBuffersTable(response));
                         GameManager.getInstance().getCurrentMatch().receivedPlayerChangeWeapon(response.username(), response.slot());
+                        break;
+                    }
+                    case survival2d.flatbuffers.PacketData.PlayerReloadWeaponResponse: {
+                        let response = new survival2d.flatbuffers.PlayerReloadWeaponResponse();
+                        packet.data(response);
+                        cc.log("RECEIVED PlayerReloadWeapon", GameClient.JSONStringifyFlatBuffersTable(response));
+                        GameManager.getInstance().getCurrentMatch().receivedPlayerReloadWeapon(response.remainBulletsInGun(), response.remainBullets());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.PlayerAttackResponse: {
@@ -295,14 +303,6 @@ var GameClient = cc.Class.extend({
             SceneManager.getInstance().openHomeScene();
 
             GameManager.getInstance().startPing();
-            GameClient.getInstance().sendPingByPlayerMove({
-                x: 111111111.111111111,
-                y: 111111111.111111111
-            }, 111111111.111111111);
-            GameClient.getInstance().sendPlayerMove({
-                x: 111111111.111111111,
-                y: 111111111.111111111
-            }, 111111111.111111111);
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {

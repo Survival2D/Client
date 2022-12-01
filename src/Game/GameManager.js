@@ -60,7 +60,7 @@ const GameManager = cc.Class.extend({
         let time = Date.now();
         let oldTime = this._pingTime || 0;
         let ping = time - oldTime;
-        cc.log("--- PING: " + ping + "ms");
+        // cc.log("--- PING: " + ping + "ms");
 
         setTimeout(this.startPing.bind(this), 1000);
     }
