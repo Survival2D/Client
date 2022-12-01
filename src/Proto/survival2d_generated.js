@@ -3869,27 +3869,18 @@ survival2d.flatbuffers.PlayerTakeItemResponse.prototype.username = function(opti
 };
 
 /**
- * @returns {survival2d.flatbuffers.Item}
+ * @returns {number}
  */
-survival2d.flatbuffers.PlayerTakeItemResponse.prototype.itemType = function() {
+survival2d.flatbuffers.PlayerTakeItemResponse.prototype.id = function() {
   var offset = this.bb.__offset(this.bb_pos, 6);
-  return offset ? /** @type {survival2d.flatbuffers.Item} */ (this.bb.readUint8(this.bb_pos + offset)) : survival2d.flatbuffers.Item.NONE;
-};
-
-/**
- * @param {flatbuffers.Table} obj
- * @returns {?flatbuffers.Table}
- */
-survival2d.flatbuffers.PlayerTakeItemResponse.prototype.item = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 8);
-  return offset ? this.bb.__union(obj, this.bb_pos + offset) : null;
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.PlayerTakeItemResponse.startPlayerTakeItemResponse = function(builder) {
-  builder.startObject(3);
+  builder.startObject(2);
 };
 
 /**
@@ -3902,18 +3893,10 @@ survival2d.flatbuffers.PlayerTakeItemResponse.addUsername = function(builder, us
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.Item} itemType
+ * @param {number} id
  */
-survival2d.flatbuffers.PlayerTakeItemResponse.addItemType = function(builder, itemType) {
-  builder.addFieldInt8(1, itemType, survival2d.flatbuffers.Item.NONE);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} itemOffset
- */
-survival2d.flatbuffers.PlayerTakeItemResponse.addItem = function(builder, itemOffset) {
-  builder.addFieldOffset(2, itemOffset, 0);
+survival2d.flatbuffers.PlayerTakeItemResponse.addId = function(builder, id) {
+  builder.addFieldInt32(1, id, 0);
 };
 
 /**
@@ -3928,15 +3911,13 @@ survival2d.flatbuffers.PlayerTakeItemResponse.endPlayerTakeItemResponse = functi
 /**
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} usernameOffset
- * @param {survival2d.flatbuffers.Item} itemType
- * @param {flatbuffers.Offset} itemOffset
+ * @param {number} id
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerTakeItemResponse.createPlayerTakeItemResponse = function(builder, usernameOffset, itemType, itemOffset) {
+survival2d.flatbuffers.PlayerTakeItemResponse.createPlayerTakeItemResponse = function(builder, usernameOffset, id) {
   survival2d.flatbuffers.PlayerTakeItemResponse.startPlayerTakeItemResponse(builder);
   survival2d.flatbuffers.PlayerTakeItemResponse.addUsername(builder, usernameOffset);
-  survival2d.flatbuffers.PlayerTakeItemResponse.addItemType(builder, itemType);
-  survival2d.flatbuffers.PlayerTakeItemResponse.addItem(builder, itemOffset);
+  survival2d.flatbuffers.PlayerTakeItemResponse.addId(builder, id);
   return survival2d.flatbuffers.PlayerTakeItemResponse.endPlayerTakeItemResponse(builder);
 }
 

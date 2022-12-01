@@ -233,7 +233,7 @@ table PlayerTakeItemRequest {
 
 table PlayerTakeItemResponse {
   username: string;
-  item: Item;
+  id: int; // id của map object
 }
 
 union PacketData {
