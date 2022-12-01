@@ -72,7 +72,7 @@ const MatchManager = cc.Class.extend({
         this.gameState = MatchManager.STATE.PLAY;
         this.myPlayer.position = gm.p(30, 30);
         this.myPlayer.hp = Config.PLAYER_MAX_HP;
-        this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
+        this.myPlayer.username = GameManager.getInstance().userData.username;
         this.players[GameManager.getInstance().userData.username] = this.myPlayer;
         this.scene = SceneManager.getInstance().openMatchScene();
         this.scene.updateMatchView();
@@ -85,8 +85,9 @@ const MatchManager = cc.Class.extend({
     /**
      * @param {PlayerData[]} players
      * @param {ObstacleData[]} obstacles
+     * @param {ItemData[]} items
      */
-    updateMatchInfo: function (players, obstacles) {
+    updateMatchInfo: function (players, obstacles, items) {
         this.players = players;
         this.myPlayer = this.players[GameManager.getInstance().userData.username];
 
@@ -97,7 +98,13 @@ const MatchManager = cc.Class.extend({
 
         this.obstacles = obstacles;
 
+        this.items = items;
+
         if (this.isInMatch()) this.scene.updateMatchView();
+    },
+
+    updateMyPlayerInfo: function (hp, haveGun) {
+        this.myPlayer.hp = hp
     },
 
     getPlayerListByTeam: function (team) {
@@ -305,11 +312,12 @@ const MatchManager = cc.Class.extend({
 
     /**
      * @param {ItemData} item
+     * @param {gm.Position} fromPosition
      */
-    receivedItemCreated: function (item) {
+    receivedItemCreated: function (item, fromPosition) {
         this.items.push(item);
 
-        if (this.isInMatch()) this.scene.createItem(item);
+        if (this.isInMatch()) this.scene.createItem(item, fromPosition);
     },
 
     receivedPlayerTakeItem: function (username, itemId) {
