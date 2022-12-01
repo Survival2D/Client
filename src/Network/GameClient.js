@@ -167,10 +167,10 @@ var GameClient = cc.Class.extend({
                         packet.data(response);
                         cc.log("RECEIVED PlayerAttack", GameClient.JSONStringifyFlatBuffersTable(response));
 
-                        let id = response.id();
+                        let username = response.username();
+                        let slot = response.slot();
                         let position = gm.p(response.position().x(), response.position().y());
-                        let rotation = response.rotation();
-                        GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(id, position, rotation);
+                        GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(username, slot, position);
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.PlayerTakeDamageResponse: {
@@ -240,6 +240,20 @@ var GameClient = cc.Class.extend({
                         packet.data(response);
                         cc.log("RECEIVED ObstacleDestroyed", GameClient.JSONStringifyFlatBuffersTable(response));
                         GameManager.getInstance().getCurrentMatch().receivedObstacleDestroyed(response.id());
+                        break;
+                    }
+                    case survival2d.flatbuffers.PacketData.PlayerTakeItemResponse: {
+                        let response = new survival2d.flatbuffers.PlayerTakeItemResponse();
+                        packet.data(response);
+                        cc.log("RECEIVED PlayerTakeItem", GameClient.JSONStringifyFlatBuffersTable(response));
+                        GameManager.getInstance().getCurrentMatch().receivedPlayerTakeItem(response.username(), response.id());
+                        break;
+                    }
+                    case survival2d.flatbuffers.PacketData.EndGameResponse: {
+                        let response = new survival2d.flatbuffers.EndGameResponse();
+                        packet.data(response);
+                        cc.log("RECEIVED EndGame", GameClient.JSONStringifyFlatBuffersTable(response));
+                        GameManager.getInstance().getCurrentMatch().receivedMatchResult(response.winTeam());
                         break;
                     }
                     default:
@@ -407,11 +421,13 @@ var GameClient = cc.Class.extend({
         }
     },
 
-    sendSpinRequest: function () {
-        var plugin = this.client.getPlugin();
-        if (plugin != null) {
-            plugin.send("spin");
-        }
+    sendGetMatchInfo: function () {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.MatchInfoRequest.createMatchInfoRequest(builder);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.MatchInfoRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
     },
 
     sendPlayerMove: function (direction, rotation) {
@@ -424,7 +440,46 @@ var GameClient = cc.Class.extend({
         cc.log("data want to send", JSON.stringify(builder.asUint8Array()));
         let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
         this.client.sendBytes(data);
-        GameClient.getInstance()._pingTime = Date.now();
+        this._pingTime = Date.now();
+    },
+
+    sendPlayerAttack: function () {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.PlayerAttackRequest.createPlayerAttackRequest(builder);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerAttackRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
+
+    /**
+     * @param {number} slot
+     */
+    sendPlayerChangeWeapon: function (slot) {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.PlayerChangeWeaponRequest.createPlayerChangeWeaponRequest(builder, slot);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerChangeWeaponRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
+
+    sendPlayerReloadWeapon: function () {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.PlayerReloadWeaponRequest.createPlayerReloadWeaponRequest(builder);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerReloadWeaponRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
+
+    sendPlayerTakeItem: function () {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.PlayerTakeItemRequest.createPlayerTakeItemRequest(builder);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerTakeItemRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
     },
 
     sendPingByPlayerMove: function (direction, rotation) {
