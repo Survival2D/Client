@@ -92,7 +92,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
+              "X": 641.8774,
               "Y": 360.0
             },
             "Scale": {
@@ -104,7 +104,7 @@
             "PositionPercentXEnabled": true,
             "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.5,
+              "X": 0.5015,
               "Y": 0.5
             },
             "PercentWidthEnable": true,
@@ -115,6 +115,8 @@
               "X": 1.0,
               "Y": 1.0
             },
+            "LeftMargin": 1.8774,
+            "RightMargin": -1.8774,
             "Tag": 22,
             "Children": [
               {
@@ -533,7 +535,7 @@
                       {
                         "FileData": {
                           "Type": "Normal",
-                          "Path": "Game/loot-weapon-bar.png",
+                          "Path": "Game/Item/loot_gun.png",
                           "Plist": ""
                         },
                         "Scale9OriginX": 225,
@@ -707,6 +709,218 @@
                   "Y": 200.0
                 },
                 "Name": "pWeaponPack",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "ClipAble": false,
+                "BackColorAlpha": 102,
+                "SingleColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 1270.0,
+                  "Y": 330.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.9922,
+                  "Y": 0.4583
+                },
+                "PreSize": {
+                  "X": 0.1094,
+                  "Y": 0.0833
+                },
+                "HorizontalEdge": "RightEdge",
+                "VerticalEdge": "BottomEdge",
+                "LeftMargin": 1130.0,
+                "RightMargin": 10.0,
+                "TopMargin": 360.0,
+                "BottomMargin": 300.0,
+                "Tag": 52,
+                "Children": [
+                  {
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Common/square_rounded.png",
+                      "Plist": ""
+                    },
+                    "Scale9Enable": true,
+                    "Scale9OriginX": 21,
+                    "Scale9OriginY": 21,
+                    "Scale9Width": 22,
+                    "Scale9Height": 22,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 70.0,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 1.0,
+                      "Y": 1.0
+                    },
+                    "Tag": 53,
+                    "ActionTag": 1436011611,
+                    "Size": {
+                      "X": 140.0,
+                      "Y": 60.0
+                    },
+                    "Alpha": 103,
+                    "Name": "bg",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Game/Item/loot_ammo.png",
+                      "Plist": ""
+                    },
+                    "Scale9OriginX": 225,
+                    "Scale9OriginY": 225,
+                    "Scale9Width": 233,
+                    "Scale9Height": 233,
+                    "AnchorPoint": {
+                      "ScaleX": 0.6013,
+                      "ScaleY": 0.482
+                    },
+                    "Position": {
+                      "X": 35.065,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.2505,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.3571,
+                      "Y": 0.8333
+                    },
+                    "HorizontalEdge": "LeftEdge",
+                    "LeftMargin": 5.0,
+                    "RightMargin": 85.0,
+                    "TopMargin": 4.1,
+                    "BottomMargin": 5.9,
+                    "Tag": 54,
+                    "ActionTag": 772511034,
+                    "Size": {
+                      "X": 50.0,
+                      "Y": 50.0
+                    },
+                    "Name": "img",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FontSize": 30,
+                    "LabelText": "1000",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "Font/Roboto-Bold.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Right",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 130.0,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.9286,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.5,
+                      "Y": 0.5833
+                    },
+                    "HorizontalEdge": "RightEdge",
+                    "LeftMargin": 60.0,
+                    "RightMargin": 10.0,
+                    "TopMargin": 12.5,
+                    "BottomMargin": 12.5,
+                    "Tag": 56,
+                    "ActionTag": 1992592278,
+                    "Size": {
+                      "X": 70.0,
+                      "Y": 35.0
+                    },
+                    "Name": "num",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 1821409571,
+                "Size": {
+                  "X": 140.0,
+                  "Y": 60.0
+                },
+                "Name": "ammoHave",
                 "ctype": "PanelObjectData"
               },
               {
@@ -1112,6 +1326,8 @@
                 "ColorVector": {
                   "ScaleY": 1.0
                 },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
                 "TouchEnable": true,
                 "AnchorPoint": {
                   "ScaleX": 0.5
@@ -1244,7 +1460,7 @@
                       {
                         "FileData": {
                           "Type": "Normal",
-                          "Path": "Game/loot-chest-03.png",
+                          "Path": "Game/Item/loot_chest.png",
                           "Plist": ""
                         },
                         "Scale9OriginX": 225,
@@ -1458,7 +1674,7 @@
                       {
                         "FileData": {
                           "Type": "Normal",
-                          "Path": "Game/loot-helmet-03.png",
+                          "Path": "Game/Item/loot_helmet.png",
                           "Plist": ""
                         },
                         "Scale9OriginX": 225,
@@ -1764,9 +1980,10 @@
         "Common/trapezoid.png",
         "Font/Roboto-Bold.ttf",
         "Font/Roboto-Regular.ttf",
-        "Game/loot-chest-03.png",
-        "Game/loot-helmet-03.png",
-        "Game/loot-weapon-bar.png",
+        "Game/Item/loot_ammo.png",
+        "Game/Item/loot_chest.png",
+        "Game/Item/loot_gun.png",
+        "Game/Item/loot_helmet.png",
         "Game/loot-weapon-fists.png"
       ],
       "ctype": "GameFileData"

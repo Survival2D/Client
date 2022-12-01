@@ -197,6 +197,7 @@ const MatchManager = cc.Class.extend({
     },
 
     updateMyPlayerWeapon: function (slot) {
+        this.myPlayer.changeWeaponSlot(slot);
         // let pk = new SendPlayerChangeWeapon(slot);
         // GameClient.getInstance().sendPacket(pk);
         GameClient.getInstance().sendPlayerChangeWeapon(slot);
@@ -268,10 +269,7 @@ const MatchManager = cc.Class.extend({
 
     receivedPlayerReloadWeapon: function (numWeaponBullets, numBulletsRemain) {
         this.myPlayer.reloadBullets(numWeaponBullets, numBulletsRemain);
-        if (this.isInMatch()) {
-            this.scene.myPlayerReloadWeapon(numBulletsRemain);
-            this.scene.updateMyPlayerItem();
-        }
+        if (this.isInMatch()) this.scene.updateMyPlayerItem();
     },
 
     /**G

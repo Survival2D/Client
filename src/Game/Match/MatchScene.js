@@ -60,6 +60,8 @@ const MatchScene = BaseLayer.extend({
         this.weaponSlotFist = this.getControl("slotFist", pWeaponPack);
         this.weaponSlotGun = this.getControl("slotGun", pWeaponPack);
 
+        this.lblMyAmmoHave = this.getControl("num", this.getControl("ammoHave", this.hud));
+
         this.weaponSlotFist.addTouchEventListener((sender, type) => {
             if (type === ccui.Widget.TOUCH_ENDED) {
                 this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.FIST);
@@ -212,7 +214,7 @@ const MatchScene = BaseLayer.extend({
             this.createItem(item);
         }
 
-        // this.updateMyHpProgress(match.myPlayer.hp);
+        this.updateMyHpProgress(match.myPlayer.hp);
 
         this.updateMyPlayerItem();
 
@@ -364,6 +366,8 @@ const MatchScene = BaseLayer.extend({
 
         this.myEquipVest.lblLevel.setString("lv. " + myPlayer.vest.level);
         this.myEquipHelmet.lblLevel.setString("lv. " + myPlayer.helmet.level);
+
+        this.lblMyAmmoHave.setString(myPlayer.numBackBullets);
     },
 
     myPlayerChangeWeapon: function (slot) {
@@ -407,10 +411,6 @@ const MatchScene = BaseLayer.extend({
 
         // GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
         GameClient.getInstance().sendPlayerAttack();
-    },
-
-    myPlayerReloadWeapon: function (numBulletsRemain) {
-
     },
 
     playerChangeWeapon: function (username, weaponId) {
