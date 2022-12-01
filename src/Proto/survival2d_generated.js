@@ -3701,12 +3701,11 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.getSizePrefixedRootAsPlayerRel
 };
 
 /**
- * @param {survival2d.flatbuffers.Weapon=} obj
- * @returns {survival2d.flatbuffers.Weapon|null}
+ * @returns {number}
  */
-survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.weapon = function(obj) {
+survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBullets = function() {
   var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? (obj || new survival2d.flatbuffers.Weapon).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
 };
 
 /**
@@ -3718,10 +3717,10 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponRespons
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} weaponOffset
+ * @param {number} remainBullets
  */
-survival2d.flatbuffers.PlayerReloadWeaponResponse.addWeapon = function(builder, weaponOffset) {
-  builder.addFieldOffset(0, weaponOffset, 0);
+survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBullets = function(builder, remainBullets) {
+  builder.addFieldInt32(0, remainBullets, 0);
 };
 
 /**
@@ -3735,12 +3734,12 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.endPlayerReloadWeaponResponse 
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} weaponOffset
+ * @param {number} remainBullets
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerReloadWeaponResponse.createPlayerReloadWeaponResponse = function(builder, weaponOffset) {
+survival2d.flatbuffers.PlayerReloadWeaponResponse.createPlayerReloadWeaponResponse = function(builder, remainBullets) {
   survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponResponse(builder);
-  survival2d.flatbuffers.PlayerReloadWeaponResponse.addWeapon(builder, weaponOffset);
+  survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBullets(builder, remainBullets);
   return survival2d.flatbuffers.PlayerReloadWeaponResponse.endPlayerReloadWeaponResponse(builder);
 }
 
