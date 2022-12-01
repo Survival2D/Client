@@ -11,6 +11,7 @@ const PlayerData = cc.Class.extend({
         this.speed = 0;
         this.team = 0;
         this.hp = 0;
+        this.gun = new GunData();
         this.vest = new VestData();
         this.helmet = new HelmetData();
 
@@ -19,6 +20,18 @@ const PlayerData = cc.Class.extend({
 
     isDead: function () {
         return this.hp <= 0;
+    },
+
+    isHaveGun: function () {
+        return this.gun.isActiveGun();
+    },
+
+    /**
+     * @param {ItemGunData} itemGun
+     */
+    getGun: function (itemGun) {
+        this.gun.activeGun();
+        this.gun.loadBullets(itemGun.getNumBullets());
     }
 });
 

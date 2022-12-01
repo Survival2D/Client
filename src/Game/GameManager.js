@@ -54,7 +54,6 @@ const GameManager = cc.Class.extend({
     startPing: function () {
         this._pingTime = Date.now();
         GameClient.getInstance().sendEmptyPacket(Cmd.PING_PONG);
-        // GameClient.getInstance().sendPacket(Cmd.PING_PONG);
     },
 
     receivedPong: function () {

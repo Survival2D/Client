@@ -54,6 +54,7 @@
         "src/Game/Match/Data/ItemData.js",
         "src/Game/Match/Data/VestData.js",
         "src/Game/Match/Data/HelmetData.js",
+        "src/Game/Match/Data/GunData.js",
 
         "src/Game/Match/UI/PlayerUI.js",
         "src/Game/Match/UI/BulletUI.js",

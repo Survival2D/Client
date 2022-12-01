@@ -61,6 +61,10 @@ const ItemGunData = ItemData.extend({
 
     setNumBullets: function (numBullets) {
         this._numBullets = numBullets;
+    },
+
+    getNumBullets: function () {
+        return this._numBullets;
     }
 });
 
