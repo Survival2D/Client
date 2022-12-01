@@ -5,7 +5,7 @@
 var HomeScene = BaseLayer.extend({
     ctor: function () {
         this._super(HomeScene.className);
-        this.loadCss(res.HOME_SCENE);
+        this.loadCss(game_UIs.HOME_SCENE);
     },
 
     initGUI: function () {

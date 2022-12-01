@@ -15,7 +15,7 @@ const MatchScene = BaseLayer.extend({
         this._syncTime = 0;
 
         this._super(MatchScene.className);
-        this.loadCss(res.MATCH_SCENE);
+        this.loadCss(game_UIs.MATCH_SCENE);
         this.controller = new Controller();
         this.initKeyBoardController();
         this.initMouseController();
@@ -101,6 +101,17 @@ const MatchScene = BaseLayer.extend({
             },
             onMouseScroll: function (event) {
                 that.controller.onMouseScroll();
+                if (Config.TEST) {
+                    let scroll = event.getScrollY();
+                    if (scroll > 0) {
+                        if (that.ground.getScale() > 1) return;
+                        that.ground.setScale(that.ground.getScale() * 2);
+                    }
+                    if (scroll < 0) {
+                        if (that.ground.getScale() <= 1/20) return;
+                        that.ground.setScale(that.ground.getScale() / 2);
+                    }
+                }
             },
         }, this.ground);
 
@@ -185,6 +196,7 @@ const MatchScene = BaseLayer.extend({
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) obsUI = new CrateUI();
             if (obs instanceof StoneData) obsUI = new StoneUI();
+            if (obs instanceof WallData) obsUI = new WallUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
             obsUI.setObstacleId(obs.getObjectId());
@@ -200,11 +212,12 @@ const MatchScene = BaseLayer.extend({
             this.createItem(item);
         }
 
-        this.updateMyHpProgress(match.myPlayer.hp);
+        // this.updateMyHpProgress(match.myPlayer.hp);
 
         this.updateMyPlayerItem();
 
-        this.numPlayerLeft.setString(match.players.filter(e => !e.isDead()).length);
+
+        this.numPlayerLeft.setString(match.getNumberOfAlivePlayers());
     },
 
     update: function (dt) {
@@ -262,7 +275,7 @@ const MatchScene = BaseLayer.extend({
         for (let obs of match.obstacles) {
             if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
-            if (obs instanceof CrateData)
+            if (obs instanceof CrateData || obs instanceof WallData)
                 if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) return true;
         }
         return false;
@@ -278,7 +291,7 @@ const MatchScene = BaseLayer.extend({
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
-            if (obs instanceof CrateData)
+            if (obs instanceof CrateData|| obs instanceof WallData)
                 if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) {
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
@@ -452,7 +465,7 @@ const MatchScene = BaseLayer.extend({
         if (playerUI) {
             playerUI.animDead();
 
-            let spr = new cc.Sprite("res/Game/Player/dead_blood.png");
+            let spr = new cc.Sprite("res/ui/Game/Player/dead_blood.png");
             this.ground.addChild(spr, MatchScene.Z_ORDER.BG);
             spr.setColor(cc.color("#CA2400"));
             spr.setPosition(playerUI.getPosition());
@@ -480,7 +493,7 @@ const MatchScene = BaseLayer.extend({
             this.hud.runAction(cc.fadeOut(0.3));
         }
 
-        this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().players.filter(e => !e.isDead()).length);
+        this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().getNumberOfAlivePlayers());
     },
 
     fire: function (pos, direction) {

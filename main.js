@@ -98,13 +98,18 @@ cc.game.onStart = function(){
     // cc.view.setOrientation(cc.ORIENTATION_PORTRAIT);
 
     // Setup the resolution policy and design resolution size
-    cc.view.setDesignResolutionSize(Constant.WIDTH, Constant.HEIGHT, cc.ResolutionPolicy.SHOW_ALL);
+    var ratio = cc.view.getFrameSize().width / cc.view.getFrameSize().height;
+    if (ratio > Constant.WIDTH / Constant.HEIGHT)
+        cc.view.setDesignResolutionSize(Constant.WIDTH, Constant.HEIGHT, cc.ResolutionPolicy.FIXED_HEIGHT);
+    else
+        cc.view.setDesignResolutionSize(Constant.WIDTH, Constant.HEIGHT, cc.ResolutionPolicy.FIXED_WIDTH);
 
     // The game will be resized when browser size change
     cc.view.resizeWithBrowserSize(true);
 
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
+        GameManager.preloadResources();
         SceneManager.getInstance().openLoginScene();
     }, this);
 

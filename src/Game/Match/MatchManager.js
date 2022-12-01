@@ -18,42 +18,43 @@ const MatchManager = cc.Class.extend({
         this.items = [];
 
         if (Config.IS_OFFLINE) {
-            this.mapWidth = 2000;
-            this.mapHeight = 1500;
+            this.mapWidth = 10000;
+            this.mapHeight = 10000;
 
-            // for (let i = 0; i < 10; i++) {
-            //     let obstacleData = new TreeData();
-            //     let x = Math.round(Math.random() * this.mapWidth);
-            //     let y = Math.round(Math.random() * this.mapHeight);
-            //     obstacleData.position = gm.p(x, y);
-            //     obstacleData.setObjectId(i);
-            //     this.obstacles.push(obstacleData);
-            // }
-            // for (let i = 0; i < 10; i++) {
-            //     let obstacleData = new CrateData();
-            //     let x = Math.round(Math.random() * this.mapWidth);
-            //     let y = Math.round(Math.random() * this.mapHeight);
-            //     obstacleData.position = gm.p(x, y);
-            //     obstacleData.setObjectId(10 + i);
-            //     this.obstacles.push(obstacleData);
-            // }
+            let objId = 0;
+            for (let i = 0; i < Math.min(1000, Config.MAP_OBJECT_POSITION.length); i++) {
+                let objPos = Config.MAP_OBJECT_POSITION[i];
+                let type = objPos[0];
+                if (type === 0) continue;
+                let obj;
+                switch (type) {
+                    case Config.MAP_OBJECT_TYPE.TREE:
+                        obj = new TreeData();
+                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
+                        break;
+                    case Config.MAP_OBJECT_TYPE.CRATE:
+                        obj = new CrateData();
+                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+                        break;
+                    case Config.MAP_OBJECT_TYPE.STONE:
+                        obj = new StoneData();
+                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
+                        break;
+                    case Config.MAP_OBJECT_TYPE.WALL:
+                        obj = new WallData();
+                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+                        break;
+                }
 
-            for (let i = 0; i < 1; i++) {
-                let itemData = new ItemGunData();
-                let x = Math.round(Math.random() * this.mapWidth);
-                let y = Math.round(Math.random() * this.mapHeight);
-                itemData.position = gm.p(x, y);
-                itemData.setObjectId(i);
-                this.items.push(itemData);
+                obj.setObjectId(objId);
+                objId++;
+                this.obstacles.push(obj);
             }
-            for (let i = 0; i < 2; i++) {
-                let itemData = new ItemBulletData();
-                let x = Math.round(Math.random() * this.mapWidth);
-                let y = Math.round(Math.random() * this.mapHeight);
-                itemData.position = gm.p(x, y);
-                itemData.setObjectId(i);
-                this.items.push(itemData);
-            }
+
+            this.myPlayer.position = gm.p(this.mapWidth/2, this.mapHeight/2);
+            this.myPlayer.hp = Config.PLAYER_MAX_HP;
+            this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
+            this.players[GameManager.getInstance().userData.username] = this.myPlayer;
 
             this.myPlayer.vest.level = 1;
             this.myPlayer.helmet.level = 1;
@@ -70,10 +71,6 @@ const MatchManager = cc.Class.extend({
     newMatch: function (matchId) {
         this.matchId = "";
         this.gameState = MatchManager.STATE.PLAY;
-        this.myPlayer.position = gm.p(30, 30);
-        this.myPlayer.hp = Config.PLAYER_MAX_HP;
-        this.myPlayer.username = GameManager.getInstance().userData.username;
-        this.players[GameManager.getInstance().userData.username] = this.myPlayer;
         this.scene = SceneManager.getInstance().openMatchScene();
         this.scene.updateMatchView();
     },
@@ -118,6 +115,14 @@ const MatchManager = cc.Class.extend({
         }
 
         return list;
+    },
+
+    getNumberOfAlivePlayers: function () {
+        let alive = 0;
+        for (let key in this.players) {
+            if (!this.players[key].isDead()) alive++;
+        }
+        return alive;
     },
 
     /**
@@ -269,7 +274,7 @@ const MatchManager = cc.Class.extend({
         }
     },
 
-    /**
+    /**G
      * @param {BulletData} bullet
      */
     receivedCreateBullet: function (bullet) {

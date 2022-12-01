@@ -10,7 +10,7 @@ const MiniMap = ccui.Layout.extend({
 
         this.miniObstacleUIs = [];
 
-        let jsonLayout = ccs.load(res.MINIMAP_LAYER);
+        let jsonLayout = ccs.load(game_UIs.MINIMAP_LAYER);
         this._layout = jsonLayout.node;
         this._action = jsonLayout.action;
         this._layout.setContentSize(cc.director.getWinSize());
@@ -54,6 +54,8 @@ const MiniMap = ccui.Layout.extend({
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) obsUI = new CrateUI();
+            if (obs instanceof StoneData) obsUI = new StoneUI();
+            if (obs instanceof WallData) obsUI = new WallUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
             obsUI.setObstacleId(obs.getObjectId());

@@ -5,7 +5,7 @@
 var LobbyScene = BaseLayer.extend({
     ctor: function () {
         this._super(LobbyScene.className);
-        this.loadCss(res.LOBBY_SCENE);
+        this.loadCss(game_UIs.LOBBY_SCENE);
     },
 
     initGUI: function () {
