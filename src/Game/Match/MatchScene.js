@@ -320,8 +320,8 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         for (let item of match.items) {
             if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, match.myPlayer.radius, item.radius)) {
-                let pk = new SendPlayerTakeItem(item.getObjectId());
-                GameClient.getInstance().sendPacket(pk);
+                // GameClient.getInstance().sendEmptyPacket(Cmd.TAKE_ITEM);
+                GameClient.getInstance().sendPlayerTakeItem();
 
                 if (Config.IS_OFFLINE)
                     match.receivedPlayerTakeItem(GameManager.getInstance().userData.username, item.getObjectId());
@@ -387,7 +387,8 @@ const MatchScene = BaseLayer.extend({
             this.myPlayer.animAttack();
         }
 
-        GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
+        // GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
+        GameClient.getInstance().sendPlayerAttack();
     },
 
     playerChangeWeapon: function (username, weaponId) {
@@ -398,10 +399,10 @@ const MatchScene = BaseLayer.extend({
         }
     },
 
-    playerAttack: function (username, weaponId, direction) {
+    playerAttack: function (username, slot, direction) {
         let playerUI = this.playerUIs[username];
         if (playerUI) {
-            if (weaponId) playerUI.equipGun();
+            if (slot) playerUI.equipGun();
             else playerUI.unEquip();
             let rotation = gm.calculateVectorAngleInclination(direction);
             rotation = Math.round(gm.radToDeg(rotation));

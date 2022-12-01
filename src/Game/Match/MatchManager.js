@@ -185,14 +185,16 @@ const MatchManager = cc.Class.extend({
         this.myPlayer.movingUnitVector = unitVector;
 
         if (oldMovingUnitVector.x !== unitVector.x || oldMovingUnitVector.y !== unitVector.y || oldRotation !== rotation) {
-            let pk = new SendPlayerMoveAction(unitVector, rotation);
-            GameClient.getInstance().sendPacket(pk);
+            // let pk = new SendPlayerMoveAction(unitVector, rotation);
+            // GameClient.getInstance().sendPacket(pk);
+            GameClient.getInstance().sendPlayerMove(unitVector, rotation);
         }
     },
 
     updateMyPlayerWeapon: function (slot) {
-        let pk = new SendPlayerChangeWeapon(slot);
-        GameClient.getInstance().sendPacket(pk);
+        // let pk = new SendPlayerChangeWeapon(slot);
+        // GameClient.getInstance().sendPacket(pk);
+        GameClient.getInstance().sendPlayerChangeWeapon(slot);
     },
 
     receivedPlayerMove: function (username, pos, rotation) {
@@ -227,7 +229,7 @@ const MatchManager = cc.Class.extend({
             this.scene.playerMove(GameManager.getInstance().userData.username, this.myPlayer.position, this.myPlayer.rotation);
     },
 
-    receivedPlayerAttack: function (username, weaponId, position) {
+    receivedPlayerAttack: function (username, slot, position) {
         let player = this.players[username];
         if (!player) {
             cc.log("Warning: we dont have player " + username + " in match");
@@ -238,7 +240,7 @@ const MatchManager = cc.Class.extend({
 
         let direction = gm.vector(position.x - player.position.x, position.y - player.position.y);
 
-        if (this.isInMatch()) this.scene.playerAttack(username, weaponId, direction);
+        if (this.isInMatch()) this.scene.playerAttack(username, slot, direction);
     },
 
     receivedPlayerChangeWeapon: function (username, weaponId) {
