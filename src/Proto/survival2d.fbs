@@ -52,10 +52,18 @@ table Tree {
 table Container {
 }
 
-union Obstacle {
-  Tree,
-  Container
+table Stone {
 }
+
+table Wall {
+}
+
+//union Obstacle {
+//  Tree,
+//  Container,
+//  Stone,
+//  Wall
+//}
 
 enum GunType: byte {
   NORMAL
@@ -100,7 +108,9 @@ union MapObjectData {
   MedKitItem,
   //Obstacle
   Tree,
-  Container
+  Container,
+  Stone,
+  Wall
 }
 
 table MapObject {
@@ -123,6 +133,7 @@ table MatchInfoRequest {
 table MatchInfoResponse {
   players: [Player];
   mapObjects: [MapObject];
+  playZone: Vec2;
 }
 
 table PlayerMoveRequest {
@@ -169,6 +180,9 @@ table CreateItemOnMapResponse {
   item: Item;
   position: Vec2;
   rawPosition: Vec2;
+}
+
+table StartGameResponse {
 }
 
 table EndGameResponse {
@@ -237,6 +251,13 @@ table PlayerTakeItemResponse {
   id: int; // id của map object
 }
 
+table NewSafeZoneResponse {
+  safeZone: Vec2;
+}
+
+table SafeZoneMove {
+}
+
 union PacketData {
   MatchInfoRequest,
   MatchInfoResponse,
@@ -257,7 +278,10 @@ union PacketData {
   PlayerChangeWeaponResponse,
   PlayerTakeItemRequest,
   PlayerTakeItemResponse,
+  StartGameResponse,
   EndGameResponse,
+  NewSafeZoneResponse,
+  SafeZoneMove,
 }
 
 table Packet {
