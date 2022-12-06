@@ -27,8 +27,16 @@ const MiniMap = ccui.Layout.extend({
         this.ground.setScale(Config.MINI_MAP_SCALE);
 
         this.myPlayer = new MiniPlayerUI();
-        this.ground.addChild(this.myPlayer, 1);
+        this.ground.addChild(this.myPlayer, 10);
         this.myPlayer.setPosition(30, 30);
+
+        this.safeZoneUI = new SafeZoneMiniUI();
+        this.ground.addChild(this.safeZoneUI, MatchScene.Z_ORDER.SAFE_ZONE);
+        this.safeZoneUI.setVisible(false);
+
+        this.nextSafeZoneUI = new NextSafeZoneMiniUI();
+        this.ground.addChild(this.nextSafeZoneUI, MatchScene.Z_ORDER.SAFE_ZONE);
+        this.nextSafeZoneUI.setVisible(false);
 
         this.setClippingEnabled(true);
 
@@ -44,6 +52,8 @@ const MiniMap = ccui.Layout.extend({
         if (!match) return;
 
         this.ground.setContentSize(match.mapWidth, match.mapHeight);
+
+        this.myPlayer.setPlayerColorByTeam(match.myPlayer.team);
 
         for (let obsUI of this.miniObstacleUIs) {
             obsUI.removeFromParent(true);
@@ -61,6 +71,9 @@ const MiniMap = ccui.Layout.extend({
             obsUI.setObstacleId(obs.getObjectId());
             this.miniObstacleUIs.push(obsUI);
         }
+
+        this.safeZoneUI.setPosition(0, 0);
+        this.safeZoneUI.setSafeZoneUI(match.safeZone);
     },
 
     setMyPlayerPosition: function (pos) {
@@ -100,5 +113,15 @@ const MiniMap = ccui.Layout.extend({
         if (obsUI) {
             obsUI.removeFromParent(true);
         }
+    },
+
+    changeSafeZone: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        this.safeZoneUI.animChangeSafeZone(match.safeZone);
+    },
+
+    changeNextSafeZone: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        this.nextSafeZoneUI.setSafeZoneUI(match.nextSafeZone);
     },
 })

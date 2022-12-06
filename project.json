@@ -55,11 +55,13 @@
         "src/Game/Match/Data/VestData.js",
         "src/Game/Match/Data/HelmetData.js",
         "src/Game/Match/Data/GunData.js",
+        "src/Game/Match/Data/SafeZoneData.js",
 
         "src/Game/Match/UI/PlayerUI.js",
         "src/Game/Match/UI/BulletUI.js",
         "src/Game/Match/UI/ObstacleUI.js",
         "src/Game/Match/UI/ItemUI.js",
+        "src/Game/Match/UI/SafeZoneUI.js",
 
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",

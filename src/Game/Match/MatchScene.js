@@ -32,6 +32,10 @@ const MatchScene = BaseLayer.extend({
 
         this.playerUIs[GameManager.getInstance().userData.username] = this.myPlayer;
 
+        this.safeZoneUI = new SafeZoneUI();
+        this.ground.addChild(this.safeZoneUI, MatchScene.Z_ORDER.SAFE_ZONE);
+        this.safeZoneUI.setVisible(false);
+
         this.hud = this.getControl("hud");
 
         let pPlayerLeft = this.getControl("numPlayerLeft", this.hud);
@@ -213,6 +217,9 @@ const MatchScene = BaseLayer.extend({
         for (let item of match.items) {
             this.createItem(item);
         }
+
+        this.safeZoneUI.setPosition(0, 0);
+        this.safeZoneUI.setSafeZoneUI(match.safeZone);
 
         this.updateMyHpProgress(match.myPlayer.hp);
 
@@ -596,6 +603,16 @@ const MatchScene = BaseLayer.extend({
         }
     },
 
+    changeSafeZone: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        this.safeZoneUI.animChangeSafeZone(match.safeZone);
+        this.miniMap.changeSafeZone();
+    },
+
+    changeNextSafeZone: function () {
+        this.miniMap.changeNextSafeZone();
+    },
+
     endMatch: function () {
         this.controller.setControllerEnabled(false);
     },
@@ -608,5 +625,6 @@ MatchScene.Z_ORDER = {
     ITEM: 1,
     PLAYER: 2,
     BULLET: 3,
-    OBSTACLE: 4
+    OBSTACLE: 4,
+    SAFE_ZONE: 5
 }

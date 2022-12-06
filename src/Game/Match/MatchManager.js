@@ -11,45 +11,46 @@ const MatchManager = cc.Class.extend({
         this.players = [];
         this.myPlayer = new PlayerData();
 
-        this.mapWidth = 10000;
-        this.mapHeight = 10000;
+        this.mapWidth = Config.MAP_WIDTH;
+        this.mapHeight = Config.MAP_HEIGHT;
 
         this.obstacles = [];
         this.items = [];
 
+        this.safeZone = new SafeZoneData();
+        this.nextSafeZone = new SafeZoneData();
+
         if (Config.IS_OFFLINE) {
-            this.mapWidth = 10000;
-            this.mapHeight = 10000;
 
-            let objId = 0;
-            for (let i = 0; i < Math.min(1000, Config.MAP_OBJECT_POSITION.length); i++) {
-                let objPos = Config.MAP_OBJECT_POSITION[i];
-                let type = objPos[0];
-                if (type === 0) continue;
-                let obj;
-                switch (type) {
-                    case Config.MAP_OBJECT_TYPE.TREE:
-                        obj = new TreeData();
-                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
-                        break;
-                    case Config.MAP_OBJECT_TYPE.CRATE:
-                        obj = new CrateData();
-                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
-                        break;
-                    case Config.MAP_OBJECT_TYPE.STONE:
-                        obj = new StoneData();
-                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
-                        break;
-                    case Config.MAP_OBJECT_TYPE.WALL:
-                        obj = new WallData();
-                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
-                        break;
-                }
-
-                obj.setObjectId(objId);
-                objId++;
-                this.obstacles.push(obj);
-            }
+            // let objId = 0;
+            // for (let i = 0; i < Math.min(1000, Config.MAP_OBJECT_POSITION.length); i++) {
+            //     let objPos = Config.MAP_OBJECT_POSITION[i];
+            //     let type = objPos[0];
+            //     if (type === 0) continue;
+            //     let obj;
+            //     switch (type) {
+            //         case Config.MAP_OBJECT_TYPE.TREE:
+            //             obj = new TreeData();
+            //             obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
+            //             break;
+            //         case Config.MAP_OBJECT_TYPE.CRATE:
+            //             obj = new CrateData();
+            //             obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+            //             break;
+            //         case Config.MAP_OBJECT_TYPE.STONE:
+            //             obj = new StoneData();
+            //             obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
+            //             break;
+            //         case Config.MAP_OBJECT_TYPE.WALL:
+            //             obj = new WallData();
+            //             obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+            //             break;
+            //     }
+            //
+            //     obj.setObjectId(objId);
+            //     objId++;
+            //     this.obstacles.push(obj);
+            // }
 
             this.myPlayer.position = gm.p(this.mapWidth/2, this.mapHeight/2);
             this.myPlayer.hp = Config.PLAYER_MAX_HP;
@@ -58,6 +59,14 @@ const MatchManager = cc.Class.extend({
 
             this.myPlayer.vest.level = 1;
             this.myPlayer.helmet.level = 1;
+
+            this.safeZone.position.x = this.mapWidth/2;
+            this.safeZone.position.y = this.mapHeight/2;
+            this.safeZone.level = 0;
+
+            this.nextSafeZone.position.x = this.mapWidth/2 + 100;
+            this.nextSafeZone.position.y = this.mapHeight/2 + 100;
+            this.nextSafeZone.level = 1;
         }
 
         this.scene = null;

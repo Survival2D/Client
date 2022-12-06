@@ -10,6 +10,9 @@ Config.IS_OFFLINE = false;
 
 Config.TEST = false;
 
+Config.MAP_WIDTH = 10000;
+Config.MAP_HEIGHT = 10000;
+
 /**
  * SPEED: pixel per frame
  */
@@ -35,6 +38,14 @@ Config.COOLDOWN_FIRE = 0.1;     // second
 Config.COOLDOWN_ATTACK = 0.2;   // second
 
 Config.SYNC_DELTA_TIME = 2;     // second
+
+Config.SAFE_ZONE_RADIUS = [
+    5000,
+    3000,
+    1200,
+    700,
+    250
+]
 
 Config.MAP_OBJECT_TYPE = {
     TREE: 2,

@@ -207,8 +207,13 @@ const MiniPlayerUI = cc.Node.extend({
 
     initPlayerUI: function () {
         let drawNode = new cc.DrawNode();
-        drawNode.drawDot(cc.p(0, 0), 10, cc.color("#f8c574"));
+        drawNode.drawDot(cc.p(0, 0), 20, cc.color("#f8c574"));
         this.addChild(drawNode);
         this._body = drawNode;
-    }
+    },
+
+    setPlayerColorByTeam: function (team) {
+        let color = Constant.PLAYER_COLOR[team % 2];
+        this._body.setColor(color);
+    },
 });
