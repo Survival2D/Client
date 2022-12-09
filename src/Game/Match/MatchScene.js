@@ -109,11 +109,11 @@ const MatchScene = BaseLayer.extend({
                 that.controller.onMouseScroll();
                 if (Constant.TEST) {
                     let scroll = event.getScrollY();
-                    if (scroll > 0) {
+                    if (scroll < 0) {
                         if (that.ground.getScale() > 1) return;
                         that.ground.setScale(that.ground.getScale() * 2);
                     }
-                    if (scroll < 0) {
+                    if (scroll > 0) {
                         if (that.ground.getScale() <= 1/20) return;
                         that.ground.setScale(that.ground.getScale() / 2);
                     }
@@ -144,6 +144,10 @@ const MatchScene = BaseLayer.extend({
         this.updateMatchView();
 
         this.controller.setControllerEnabled(true);
+
+        if (Constant.TEST) {
+            this.hud.setVisible(false);
+        }
 
         this.scheduleUpdate();
     },
