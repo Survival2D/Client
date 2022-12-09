@@ -4,8 +4,10 @@
 
 const Constant = function () {};
 
-Constant.WIDTH = 1280;
-Constant.HEIGHT = 720;
+Constant.WIDTH = 1920;
+Constant.HEIGHT = 1080;
+
+Constant.TEST = true;
 
 Constant.PLAYER_COLOR = [
     cc.color("#f8c574"),
