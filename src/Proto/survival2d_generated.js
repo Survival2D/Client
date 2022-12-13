@@ -137,7 +137,13 @@ survival2d.flatbuffers.PacketData = {
   StartGameResponse: 20,
   EndGameResponse: 21,
   NewSafeZoneResponse: 22,
-  SafeZoneMove: 23
+  SafeZoneMoveResponse: 23,
+  PingRequest: 24,
+  PingResponse: 25,
+  PingByPlayerMoveRequest: 26,
+  PingByPlayerMoveResponse: 27,
+  PingByMatchInfoRequest: 28,
+  PingByMatchInfoResponse: 29
 };
 
 /**
@@ -167,7 +173,13 @@ survival2d.flatbuffers.PacketDataName = {
   '20': 'StartGameResponse',
   '21': 'EndGameResponse',
   '22': 'NewSafeZoneResponse',
-  '23': 'SafeZoneMove'
+  '23': 'SafeZoneMoveResponse',
+  '24': 'PingRequest',
+  '25': 'PingResponse',
+  '26': 'PingByPlayerMoveRequest',
+  '27': 'PingByPlayerMoveResponse',
+  '28': 'PingByMatchInfoRequest',
+  '29': 'PingByMatchInfoResponse'
 };
 
 /**
@@ -1565,7 +1577,7 @@ survival2d.flatbuffers.MatchInfoResponse.prototype.mapObjectsLength = function()
  * @param {survival2d.flatbuffers.Vec2=} obj
  * @returns {survival2d.flatbuffers.Vec2|null}
  */
-survival2d.flatbuffers.MatchInfoResponse.prototype.playZone = function(obj) {
+survival2d.flatbuffers.MatchInfoResponse.prototype.safeZone = function(obj) {
   var offset = this.bb.__offset(this.bb_pos, 8);
   return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
 };
@@ -1637,10 +1649,10 @@ survival2d.flatbuffers.MatchInfoResponse.startMapObjectsVector = function(builde
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} playZoneOffset
+ * @param {flatbuffers.Offset} safeZoneOffset
  */
-survival2d.flatbuffers.MatchInfoResponse.addPlayZone = function(builder, playZoneOffset) {
-  builder.addFieldStruct(2, playZoneOffset, 0);
+survival2d.flatbuffers.MatchInfoResponse.addSafeZone = function(builder, safeZoneOffset) {
+  builder.addFieldStruct(2, safeZoneOffset, 0);
 };
 
 /**
@@ -1656,14 +1668,14 @@ survival2d.flatbuffers.MatchInfoResponse.endMatchInfoResponse = function(builder
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} playersOffset
  * @param {flatbuffers.Offset} mapObjectsOffset
- * @param {flatbuffers.Offset} playZoneOffset
+ * @param {flatbuffers.Offset} safeZoneOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.MatchInfoResponse.createMatchInfoResponse = function(builder, playersOffset, mapObjectsOffset, playZoneOffset) {
+survival2d.flatbuffers.MatchInfoResponse.createMatchInfoResponse = function(builder, playersOffset, mapObjectsOffset, safeZoneOffset) {
   survival2d.flatbuffers.MatchInfoResponse.startMatchInfoResponse(builder);
   survival2d.flatbuffers.MatchInfoResponse.addPlayers(builder, playersOffset);
   survival2d.flatbuffers.MatchInfoResponse.addMapObjects(builder, mapObjectsOffset);
-  survival2d.flatbuffers.MatchInfoResponse.addPlayZone(builder, playZoneOffset);
+  survival2d.flatbuffers.MatchInfoResponse.addSafeZone(builder, safeZoneOffset);
   return survival2d.flatbuffers.MatchInfoResponse.endMatchInfoResponse(builder);
 }
 
@@ -4251,7 +4263,7 @@ survival2d.flatbuffers.NewSafeZoneResponse.createNewSafeZoneResponse = function(
 /**
  * @constructor
  */
-survival2d.flatbuffers.SafeZoneMove = function() {
+survival2d.flatbuffers.SafeZoneMoveResponse = function() {
   /**
    * @type {flatbuffers.ByteBuffer}
    */
@@ -4266,9 +4278,9 @@ survival2d.flatbuffers.SafeZoneMove = function() {
 /**
  * @param {number} i
  * @param {flatbuffers.ByteBuffer} bb
- * @returns {survival2d.flatbuffers.SafeZoneMove}
+ * @returns {survival2d.flatbuffers.SafeZoneMoveResponse}
  */
-survival2d.flatbuffers.SafeZoneMove.prototype.__init = function(i, bb) {
+survival2d.flatbuffers.SafeZoneMoveResponse.prototype.__init = function(i, bb) {
   this.bb_pos = i;
   this.bb = bb;
   return this;
@@ -4276,27 +4288,27 @@ survival2d.flatbuffers.SafeZoneMove.prototype.__init = function(i, bb) {
 
 /**
  * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.SafeZoneMove=} obj
- * @returns {survival2d.flatbuffers.SafeZoneMove}
+ * @param {survival2d.flatbuffers.SafeZoneMoveResponse=} obj
+ * @returns {survival2d.flatbuffers.SafeZoneMoveResponse}
  */
-survival2d.flatbuffers.SafeZoneMove.getRootAsSafeZoneMove = function(bb, obj) {
-  return (obj || new survival2d.flatbuffers.SafeZoneMove).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+survival2d.flatbuffers.SafeZoneMoveResponse.getRootAsSafeZoneMoveResponse = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.SafeZoneMoveResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
 /**
  * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.SafeZoneMove=} obj
- * @returns {survival2d.flatbuffers.SafeZoneMove}
+ * @param {survival2d.flatbuffers.SafeZoneMoveResponse=} obj
+ * @returns {survival2d.flatbuffers.SafeZoneMoveResponse}
  */
-survival2d.flatbuffers.SafeZoneMove.getSizePrefixedRootAsSafeZoneMove = function(bb, obj) {
+survival2d.flatbuffers.SafeZoneMoveResponse.getSizePrefixedRootAsSafeZoneMoveResponse = function(bb, obj) {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new survival2d.flatbuffers.SafeZoneMove).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new survival2d.flatbuffers.SafeZoneMoveResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  */
-survival2d.flatbuffers.SafeZoneMove.startSafeZoneMove = function(builder) {
+survival2d.flatbuffers.SafeZoneMoveResponse.startSafeZoneMoveResponse = function(builder) {
   builder.startObject(0);
 };
 
@@ -4304,7 +4316,7 @@ survival2d.flatbuffers.SafeZoneMove.startSafeZoneMove = function(builder) {
  * @param {flatbuffers.Builder} builder
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.SafeZoneMove.endSafeZoneMove = function(builder) {
+survival2d.flatbuffers.SafeZoneMoveResponse.endSafeZoneMoveResponse = function(builder) {
   var offset = builder.endObject();
   return offset;
 };
@@ -4313,9 +4325,639 @@ survival2d.flatbuffers.SafeZoneMove.endSafeZoneMove = function(builder) {
  * @param {flatbuffers.Builder} builder
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.SafeZoneMove.createSafeZoneMove = function(builder) {
-  survival2d.flatbuffers.SafeZoneMove.startSafeZoneMove(builder);
-  return survival2d.flatbuffers.SafeZoneMove.endSafeZoneMove(builder);
+survival2d.flatbuffers.SafeZoneMoveResponse.createSafeZoneMoveResponse = function(builder) {
+  survival2d.flatbuffers.SafeZoneMoveResponse.startSafeZoneMoveResponse(builder);
+  return survival2d.flatbuffers.SafeZoneMoveResponse.endSafeZoneMoveResponse(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.PingRequest = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.PingRequest}
+ */
+survival2d.flatbuffers.PingRequest.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingRequest=} obj
+ * @returns {survival2d.flatbuffers.PingRequest}
+ */
+survival2d.flatbuffers.PingRequest.getRootAsPingRequest = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.PingRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingRequest=} obj
+ * @returns {survival2d.flatbuffers.PingRequest}
+ */
+survival2d.flatbuffers.PingRequest.getSizePrefixedRootAsPingRequest = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.PingRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.PingRequest.startPingRequest = function(builder) {
+  builder.startObject(0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingRequest.endPingRequest = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingRequest.createPingRequest = function(builder) {
+  survival2d.flatbuffers.PingRequest.startPingRequest(builder);
+  return survival2d.flatbuffers.PingRequest.endPingRequest(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.PingResponse = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.PingResponse}
+ */
+survival2d.flatbuffers.PingResponse.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingResponse=} obj
+ * @returns {survival2d.flatbuffers.PingResponse}
+ */
+survival2d.flatbuffers.PingResponse.getRootAsPingResponse = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.PingResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingResponse=} obj
+ * @returns {survival2d.flatbuffers.PingResponse}
+ */
+survival2d.flatbuffers.PingResponse.getSizePrefixedRootAsPingResponse = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.PingResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.PingResponse.startPingResponse = function(builder) {
+  builder.startObject(0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingResponse.endPingResponse = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingResponse.createPingResponse = function(builder) {
+  survival2d.flatbuffers.PingResponse.startPingResponse(builder);
+  return survival2d.flatbuffers.PingResponse.endPingResponse(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.PingByPlayerMoveRequest}
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByPlayerMoveRequest=} obj
+ * @returns {survival2d.flatbuffers.PingByPlayerMoveRequest}
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.getRootAsPingByPlayerMoveRequest = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.PingByPlayerMoveRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByPlayerMoveRequest=} obj
+ * @returns {survival2d.flatbuffers.PingByPlayerMoveRequest}
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.getSizePrefixedRootAsPingByPlayerMoveRequest = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.PingByPlayerMoveRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {survival2d.flatbuffers.Vec2=} obj
+ * @returns {survival2d.flatbuffers.Vec2|null}
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.prototype.direction = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.prototype.rotation = function() {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.readFloat64(this.bb_pos + offset) : 0.0;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.startPingByPlayerMoveRequest = function(builder) {
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} directionOffset
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.addDirection = function(builder, directionOffset) {
+  builder.addFieldStruct(0, directionOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} rotation
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.addRotation = function(builder, rotation) {
+  builder.addFieldFloat64(1, rotation, 0.0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.endPingByPlayerMoveRequest = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} directionOffset
+ * @param {number} rotation
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByPlayerMoveRequest.createPingByPlayerMoveRequest = function(builder, directionOffset, rotation) {
+  survival2d.flatbuffers.PingByPlayerMoveRequest.startPingByPlayerMoveRequest(builder);
+  survival2d.flatbuffers.PingByPlayerMoveRequest.addDirection(builder, directionOffset);
+  survival2d.flatbuffers.PingByPlayerMoveRequest.addRotation(builder, rotation);
+  return survival2d.flatbuffers.PingByPlayerMoveRequest.endPingByPlayerMoveRequest(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.PingByPlayerMoveResponse}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByPlayerMoveResponse=} obj
+ * @returns {survival2d.flatbuffers.PingByPlayerMoveResponse}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.getRootAsPingByPlayerMoveResponse = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.PingByPlayerMoveResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByPlayerMoveResponse=} obj
+ * @returns {survival2d.flatbuffers.PingByPlayerMoveResponse}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.getSizePrefixedRootAsPingByPlayerMoveResponse = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.PingByPlayerMoveResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.Encoding=} optionalEncoding
+ * @returns {string|Uint8Array|null}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.prototype.username = function(optionalEncoding) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+};
+
+/**
+ * @param {survival2d.flatbuffers.Vec2=} obj
+ * @returns {survival2d.flatbuffers.Vec2|null}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.prototype.position = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.prototype.rotation = function() {
+  var offset = this.bb.__offset(this.bb_pos, 8);
+  return offset ? this.bb.readFloat64(this.bb_pos + offset) : 0.0;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.startPingByPlayerMoveResponse = function(builder) {
+  builder.startObject(3);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} usernameOffset
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.addUsername = function(builder, usernameOffset) {
+  builder.addFieldOffset(0, usernameOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} positionOffset
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.addPosition = function(builder, positionOffset) {
+  builder.addFieldStruct(1, positionOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} rotation
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.addRotation = function(builder, rotation) {
+  builder.addFieldFloat64(2, rotation, 0.0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.endPingByPlayerMoveResponse = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} usernameOffset
+ * @param {flatbuffers.Offset} positionOffset
+ * @param {number} rotation
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByPlayerMoveResponse.createPingByPlayerMoveResponse = function(builder, usernameOffset, positionOffset, rotation) {
+  survival2d.flatbuffers.PingByPlayerMoveResponse.startPingByPlayerMoveResponse(builder);
+  survival2d.flatbuffers.PingByPlayerMoveResponse.addUsername(builder, usernameOffset);
+  survival2d.flatbuffers.PingByPlayerMoveResponse.addPosition(builder, positionOffset);
+  survival2d.flatbuffers.PingByPlayerMoveResponse.addRotation(builder, rotation);
+  return survival2d.flatbuffers.PingByPlayerMoveResponse.endPingByPlayerMoveResponse(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.PingByMatchInfoRequest = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.PingByMatchInfoRequest}
+ */
+survival2d.flatbuffers.PingByMatchInfoRequest.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByMatchInfoRequest=} obj
+ * @returns {survival2d.flatbuffers.PingByMatchInfoRequest}
+ */
+survival2d.flatbuffers.PingByMatchInfoRequest.getRootAsPingByMatchInfoRequest = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.PingByMatchInfoRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByMatchInfoRequest=} obj
+ * @returns {survival2d.flatbuffers.PingByMatchInfoRequest}
+ */
+survival2d.flatbuffers.PingByMatchInfoRequest.getSizePrefixedRootAsPingByMatchInfoRequest = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.PingByMatchInfoRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.PingByMatchInfoRequest.startPingByMatchInfoRequest = function(builder) {
+  builder.startObject(0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByMatchInfoRequest.endPingByMatchInfoRequest = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByMatchInfoRequest.createPingByMatchInfoRequest = function(builder) {
+  survival2d.flatbuffers.PingByMatchInfoRequest.startPingByMatchInfoRequest(builder);
+  return survival2d.flatbuffers.PingByMatchInfoRequest.endPingByMatchInfoRequest(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.PingByMatchInfoResponse}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByMatchInfoResponse=} obj
+ * @returns {survival2d.flatbuffers.PingByMatchInfoResponse}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.getRootAsPingByMatchInfoResponse = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.PingByMatchInfoResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingByMatchInfoResponse=} obj
+ * @returns {survival2d.flatbuffers.PingByMatchInfoResponse}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.getSizePrefixedRootAsPingByMatchInfoResponse = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.PingByMatchInfoResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {number} index
+ * @param {survival2d.flatbuffers.Player=} obj
+ * @returns {survival2d.flatbuffers.Player}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.prototype.players = function(index, obj) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? (obj || new survival2d.flatbuffers.Player).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.prototype.playersLength = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+};
+
+/**
+ * @param {number} index
+ * @param {survival2d.flatbuffers.MapObject=} obj
+ * @returns {survival2d.flatbuffers.MapObject}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.prototype.mapObjects = function(index, obj) {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? (obj || new survival2d.flatbuffers.MapObject).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.prototype.mapObjectsLength = function() {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+};
+
+/**
+ * @param {survival2d.flatbuffers.Vec2=} obj
+ * @returns {survival2d.flatbuffers.Vec2|null}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.prototype.safeZone = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 8);
+  return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.startPingByMatchInfoResponse = function(builder) {
+  builder.startObject(3);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} playersOffset
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.addPlayers = function(builder, playersOffset) {
+  builder.addFieldOffset(0, playersOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {Array.<flatbuffers.Offset>} data
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.createPlayersVector = function(builder, data) {
+  builder.startVector(4, data.length, 4);
+  for (var i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]);
+  }
+  return builder.endVector();
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} numElems
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.startPlayersVector = function(builder, numElems) {
+  builder.startVector(4, numElems, 4);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} mapObjectsOffset
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.addMapObjects = function(builder, mapObjectsOffset) {
+  builder.addFieldOffset(1, mapObjectsOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {Array.<flatbuffers.Offset>} data
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.createMapObjectsVector = function(builder, data) {
+  builder.startVector(4, data.length, 4);
+  for (var i = data.length - 1; i >= 0; i--) {
+    builder.addOffset(data[i]);
+  }
+  return builder.endVector();
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} numElems
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.startMapObjectsVector = function(builder, numElems) {
+  builder.startVector(4, numElems, 4);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} safeZoneOffset
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.addSafeZone = function(builder, safeZoneOffset) {
+  builder.addFieldStruct(2, safeZoneOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.endPingByMatchInfoResponse = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} playersOffset
+ * @param {flatbuffers.Offset} mapObjectsOffset
+ * @param {flatbuffers.Offset} safeZoneOffset
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingByMatchInfoResponse.createPingByMatchInfoResponse = function(builder, playersOffset, mapObjectsOffset, safeZoneOffset) {
+  survival2d.flatbuffers.PingByMatchInfoResponse.startPingByMatchInfoResponse(builder);
+  survival2d.flatbuffers.PingByMatchInfoResponse.addPlayers(builder, playersOffset);
+  survival2d.flatbuffers.PingByMatchInfoResponse.addMapObjects(builder, mapObjectsOffset);
+  survival2d.flatbuffers.PingByMatchInfoResponse.addSafeZone(builder, safeZoneOffset);
+  return survival2d.flatbuffers.PingByMatchInfoResponse.endPingByMatchInfoResponse(builder);
 }
 
 /**

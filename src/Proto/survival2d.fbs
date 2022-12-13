@@ -133,7 +133,7 @@ table MatchInfoRequest {
 table MatchInfoResponse {
   players: [Player];
   mapObjects: [MapObject];
-  playZone: Vec2;
+  safeZone: Vec2;
 }
 
 table PlayerMoveRequest {
@@ -255,7 +255,30 @@ table NewSafeZoneResponse {
   safeZone: Vec2;
 }
 
-table SafeZoneMove {
+table SafeZoneMoveResponse {
+}
+
+table PingRequest {}
+
+table PingResponse {}
+
+table PingByPlayerMoveRequest {
+  direction: Vec2;
+  rotation: double;
+}
+
+table PingByPlayerMoveResponse {
+  username: string;
+  position: Vec2;
+  rotation: double;
+}
+
+table PingByMatchInfoRequest {}
+
+table PingByMatchInfoResponse {
+  players: [Player];
+  mapObjects: [MapObject];
+  safeZone: Vec2;
 }
 
 union PacketData {
@@ -281,7 +304,13 @@ union PacketData {
   StartGameResponse,
   EndGameResponse,
   NewSafeZoneResponse,
-  SafeZoneMove,
+  SafeZoneMoveResponse,
+  PingRequest,
+  PingResponse,
+  PingByPlayerMoveRequest,
+  PingByPlayerMoveResponse,
+  PingByMatchInfoRequest,
+  PingByMatchInfoResponse,
 }
 
 table Packet {
