@@ -110,7 +110,7 @@ const MatchScene = BaseLayer.extend({
             },
             onMouseScroll: function (event) {
                 that.controller.onMouseScroll();
-                if (Config.TEST) {
+                if (Constant.TEST) {
                     let scroll = event.getScrollY();
                     if (scroll > 0) {
                         if (that.ground.getScale() > 1) return;
@@ -385,7 +385,7 @@ const MatchScene = BaseLayer.extend({
                 // GameClient.getInstance().sendEmptyPacket(Cmd.TAKE_ITEM);
                 GameClient.getInstance().sendPlayerTakeItem();
 
-                if (Config.IS_OFFLINE)
+                if (Constant.IS_OFFLINE)
                     match.receivedPlayerTakeItem(GameManager.getInstance().userData.username, item.getObjectId());
                 return;
             }

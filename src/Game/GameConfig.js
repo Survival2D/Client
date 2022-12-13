@@ -6,10 +6,6 @@ const Config = function () {};
 
 Config.FPS = 60;
 
-Config.IS_OFFLINE = true;
-
-Config.TEST = true;
-
 Config.MAP_WIDTH = 10000;
 Config.MAP_HEIGHT = 10000;
 

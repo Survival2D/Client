@@ -20,7 +20,7 @@ const MatchManager = cc.Class.extend({
         this.safeZone = new SafeZoneData();
         this.nextSafeZone = new SafeZoneData();
 
-        if (Config.IS_OFFLINE) {
+        if (Constant.IS_OFFLINE) {
 
             // let objId = 0;
             // for (let i = 0; i < Math.min(1000, Config.MAP_OBJECT_POSITION.length); i++) {
@@ -240,7 +240,7 @@ const MatchManager = cc.Class.extend({
     },
 
     syncMyPlayerMove: function () {
-        if (Config.IS_OFFLINE) return;
+        if (Constant.IS_OFFLINE) return;
         if (this.gameState !== MatchManager.STATE.PLAY) return;
         cc.log("--Sync my player move");
         this.myPlayer.position = this._saveMyPlayerMoveAction.position;
