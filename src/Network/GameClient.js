@@ -55,12 +55,12 @@ var GameClient = cc.Class.extend({
                 // cc.log("buffer", JSON.stringify(buffer))
                 var buf = new flatbuffers.ByteBuffer(GameClient.removeHeaderAfterPassEzyFoxCheck(buffer));
                 let packet = survival2d.flatbuffers.Packet.getRootAsPacket(buf);
-                cc.log("RECEIVED", packet.dataType());
+
                 switch (packet.dataType()) {
                     case survival2d.flatbuffers.PacketData.MatchInfoResponse: {
                         let response = new survival2d.flatbuffers.MatchInfoResponse();
                         packet.data(response);
-                        cc.log("RECEIVED MatchInfo", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED MatchInfo");
 
                         let players = [];
                         for (let i = 0; i < response.playersLength(); i++) {
@@ -129,7 +129,7 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.PlayerInfoResponse: {
                         let response = new survival2d.flatbuffers.PlayerInfoResponse();
                         packet.data(response);
-                        cc.log("RECEIVED MyPlayerInfo", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED MyPlayerInfo");
                         let hp = response.hp();
                         let haveGun = false;
                         for (let i = 0; i < response.weaponLength(); i++) {
@@ -149,7 +149,7 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.PlayerMoveResponse: {
                         let response = new survival2d.flatbuffers.PlayerMoveResponse();
                         packet.data(response);
-                        cc.log("RECEIVED PlayerMove", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED PlayerMove");
                         let username = response.username();
                         let position = gm.p(response.position().x(), response.position().y());
                         let rotation = response.rotation();
@@ -160,21 +160,21 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.PlayerChangeWeaponResponse: {
                         let response = new survival2d.flatbuffers.PlayerChangeWeaponResponse();
                         packet.data(response);
-                        cc.log("RECEIVED PlayerChangeWeapon", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED PlayerChangeWeapon");
                         GameManager.getInstance().getCurrentMatch().receivedPlayerChangeWeapon(response.username(), response.slot());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.PlayerReloadWeaponResponse: {
                         let response = new survival2d.flatbuffers.PlayerReloadWeaponResponse();
                         packet.data(response);
-                        cc.log("RECEIVED PlayerReloadWeapon", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED PlayerReloadWeapon");
                         GameManager.getInstance().getCurrentMatch().receivedPlayerReloadWeapon(response.remainBulletsInGun(), response.remainBullets());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.PlayerAttackResponse: {
                         let response = new survival2d.flatbuffers.PlayerAttackResponse();
                         packet.data(response);
-                        cc.log("RECEIVED PlayerAttack", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED PlayerAttack");
 
                         let username = response.username();
                         let slot = response.slot();
@@ -185,21 +185,21 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.PlayerTakeDamageResponse: {
                         let response = new survival2d.flatbuffers.PlayerTakeDamageResponse();
                         packet.data(response);
-                        cc.log("RECEIVED PlayerTakeDamage", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED PlayerTakeDamage");
                         GameManager.getInstance().getCurrentMatch().receivedPlayerTakeDamage(response.username(), response.remainHp());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.PlayerDeadResponse: {
                         let response = new survival2d.flatbuffers.PlayerDeadResponse();
                         packet.data(response);
-                        cc.log("RECEIVED PlayerDead", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED PlayerDead");
                         GameManager.getInstance().getCurrentMatch().receivedPlayerDead(response.username());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.CreateBulletOnMapResponse: {
                         let response = new survival2d.flatbuffers.CreateBulletOnMapResponse();
                         packet.data(response);
-                        cc.log("RECEIVED CreateBullet", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED CreateBullet");
 
                         let bfBullet = response.bullet();
                         let bullet = new BulletData();
@@ -216,7 +216,7 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.CreateItemOnMapResponse: {
                         let response = new survival2d.flatbuffers.CreateItemOnMapResponse();
                         packet.data(response);
-                        cc.log("RECEIVED CreateItem", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED CreateItem");
 
                         let item = new ItemData();
                         switch (response.itemType()) {
@@ -229,6 +229,7 @@ var GameClient = cc.Class.extend({
                                 break;
                             }
                         }
+                        item.setObjectId(response.id());
                         item.position.x = response.position().x();
                         item.position.y = response.position().y();
 
@@ -240,33 +241,34 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.ObstacleTakeDamageResponse: {
                         let response = new survival2d.flatbuffers.ObstacleTakeDamageResponse();
                         packet.data(response);
-                        cc.log("RECEIVED ObstacleTakeDamage", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED ObstacleTakeDamage");
                         GameManager.getInstance().getCurrentMatch().receivedObstacleTakeDamage(response.id(), response.remainHp());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.ObstacleDestroyResponse: {
                         let response = new survival2d.flatbuffers.ObstacleDestroyResponse();
                         packet.data(response);
-                        cc.log("RECEIVED ObstacleDestroyed", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED ObstacleDestroyed");
                         GameManager.getInstance().getCurrentMatch().receivedObstacleDestroyed(response.id());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.PlayerTakeItemResponse: {
                         let response = new survival2d.flatbuffers.PlayerTakeItemResponse();
                         packet.data(response);
-                        cc.log("RECEIVED PlayerTakeItem", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED PlayerTakeItem");
                         GameManager.getInstance().getCurrentMatch().receivedPlayerTakeItem(response.username(), response.id());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.EndGameResponse: {
                         let response = new survival2d.flatbuffers.EndGameResponse();
                         packet.data(response);
-                        cc.log("RECEIVED EndGame", GameClient.JSONStringifyFlatBuffersTable(response));
+                        cc.log("RECEIVED EndGame");
                         GameManager.getInstance().getCurrentMatch().receivedMatchResult(response.winTeam());
                         break;
                     }
                     default:
                         cc.log("not handle", packet.dataType());
+                        break;
                 }
             });
             reader.readAsArrayBuffer(bytes);
@@ -584,24 +586,4 @@ GameClient.createHeaderToPassEzyFoxCheck = function (data) {
 }
 GameClient.removeHeaderAfterPassEzyFoxCheck = function (data) {
     return data.slice(GameClient.PACKET_PREFIX_LENGTH);
-}
-GameClient.parseFlatBuffersResponseToObject = function (data) {
-    let result = {};
-    for (let key in data) {
-        let value = data[key];
-        if (!(value instanceof Function)) continue;
-        if (key.indexOf('_') === 0) continue;
-        let obj = data[key]();
-        cc.log(key, typeof obj);
-        if (obj instanceof Object) {
-            obj = GameClient.parseFlatBuffersResponseToObject(obj);
-        }
-        result[key] = obj;
-    }
-    return result;
-}
-
-GameClient.JSONStringifyFlatBuffersTable = function (flatBuffersTable) {
-    let parsed = GameClient.parseFlatBuffersResponseToObject(flatBuffersTable);
-    return JSON.stringify(parsed);
 }
