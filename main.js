@@ -100,9 +100,9 @@ cc.game.onStart = function(){
     // Setup the resolution policy and design resolution size
     var ratio = cc.view.getFrameSize().width / cc.view.getFrameSize().height;
     if (ratio > Constant.WIDTH / Constant.HEIGHT)
-        cc.view.setDesignResolutionSize(Constant.WIDTH, Constant.HEIGHT, cc.ResolutionPolicy.FIXED_HEIGHT);
+        cc.view.setDesignResolutionSize(Constant.WIDTH, Constant.HEIGHT, cc.ResolutionPolicy.SHOW_ALL);
     else
-        cc.view.setDesignResolutionSize(Constant.WIDTH, Constant.HEIGHT, cc.ResolutionPolicy.FIXED_WIDTH);
+        cc.view.setDesignResolutionSize(Constant.WIDTH, Constant.HEIGHT, cc.ResolutionPolicy.SHOW_ALL);
 
     // The game will be resized when browser size change
     cc.view.resizeWithBrowserSize(true);

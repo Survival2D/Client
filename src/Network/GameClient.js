@@ -70,6 +70,7 @@ var GameClient = cc.Class.extend({
                             player.position.x = bfPlayer.position().x();
                             player.position.y = bfPlayer.position().y();
                             player.rotation = bfPlayer.rotation();
+                            player.hp = Config.PLAYER_MAX_HP;
                             player.team = bfPlayer.team();
                             players.push(player);
                         }
