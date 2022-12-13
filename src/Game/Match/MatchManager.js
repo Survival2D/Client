@@ -8,7 +8,7 @@ const MatchManager = cc.Class.extend({
 
         this.gameState = MatchManager.STATE.WAIT;
 
-        this.players = [];
+        this.players = {};  // map
         this.myPlayer = new PlayerData();
 
         this.mapWidth = Config.MAP_WIDTH;
@@ -94,7 +94,11 @@ const MatchManager = cc.Class.extend({
      * @param {ItemData[]} items
      */
     updateMatchInfo: function (players, obstacles, items) {
-        this.players = players;
+        this.players = {};
+        for (let player of players) {
+            this.players[player.username] = player;
+        }
+
         this.myPlayer = this.players[GameManager.getInstance().userData.username];
 
         this._saveMyPlayerMoveAction = {
