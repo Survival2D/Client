@@ -2596,10 +2596,18 @@ survival2d.flatbuffers.CreateItemOnMapResponse.getSizePrefixedRootAsCreateItemOn
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.CreateItemOnMapResponse.prototype.id = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
  * @returns {survival2d.flatbuffers.Item}
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.prototype.itemType = function() {
-  var offset = this.bb.__offset(this.bb_pos, 4);
+  var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? /** @type {survival2d.flatbuffers.Item} */ (this.bb.readUint8(this.bb_pos + offset)) : survival2d.flatbuffers.Item.NONE;
 };
 
@@ -2608,7 +2616,7 @@ survival2d.flatbuffers.CreateItemOnMapResponse.prototype.itemType = function() {
  * @returns {?flatbuffers.Table}
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.prototype.item = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 6);
+  var offset = this.bb.__offset(this.bb_pos, 8);
   return offset ? this.bb.__union(obj, this.bb_pos + offset) : null;
 };
 
@@ -2617,7 +2625,7 @@ survival2d.flatbuffers.CreateItemOnMapResponse.prototype.item = function(obj) {
  * @returns {survival2d.flatbuffers.Vec2|null}
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.prototype.position = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 8);
+  var offset = this.bb.__offset(this.bb_pos, 10);
   return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
 };
 
@@ -2626,7 +2634,7 @@ survival2d.flatbuffers.CreateItemOnMapResponse.prototype.position = function(obj
  * @returns {survival2d.flatbuffers.Vec2|null}
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.prototype.rawPosition = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 10);
+  var offset = this.bb.__offset(this.bb_pos, 12);
   return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
 };
 
@@ -2634,7 +2642,15 @@ survival2d.flatbuffers.CreateItemOnMapResponse.prototype.rawPosition = function(
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.startCreateItemOnMapResponse = function(builder) {
-  builder.startObject(4);
+  builder.startObject(5);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} id
+ */
+survival2d.flatbuffers.CreateItemOnMapResponse.addId = function(builder, id) {
+  builder.addFieldInt32(0, id, 0);
 };
 
 /**
@@ -2642,7 +2658,7 @@ survival2d.flatbuffers.CreateItemOnMapResponse.startCreateItemOnMapResponse = fu
  * @param {survival2d.flatbuffers.Item} itemType
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.addItemType = function(builder, itemType) {
-  builder.addFieldInt8(0, itemType, survival2d.flatbuffers.Item.NONE);
+  builder.addFieldInt8(1, itemType, survival2d.flatbuffers.Item.NONE);
 };
 
 /**
@@ -2650,7 +2666,7 @@ survival2d.flatbuffers.CreateItemOnMapResponse.addItemType = function(builder, i
  * @param {flatbuffers.Offset} itemOffset
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.addItem = function(builder, itemOffset) {
-  builder.addFieldOffset(1, itemOffset, 0);
+  builder.addFieldOffset(2, itemOffset, 0);
 };
 
 /**
@@ -2658,7 +2674,7 @@ survival2d.flatbuffers.CreateItemOnMapResponse.addItem = function(builder, itemO
  * @param {flatbuffers.Offset} positionOffset
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.addPosition = function(builder, positionOffset) {
-  builder.addFieldStruct(2, positionOffset, 0);
+  builder.addFieldStruct(3, positionOffset, 0);
 };
 
 /**
@@ -2666,7 +2682,7 @@ survival2d.flatbuffers.CreateItemOnMapResponse.addPosition = function(builder, p
  * @param {flatbuffers.Offset} rawPositionOffset
  */
 survival2d.flatbuffers.CreateItemOnMapResponse.addRawPosition = function(builder, rawPositionOffset) {
-  builder.addFieldStruct(3, rawPositionOffset, 0);
+  builder.addFieldStruct(4, rawPositionOffset, 0);
 };
 
 /**
@@ -2680,14 +2696,16 @@ survival2d.flatbuffers.CreateItemOnMapResponse.endCreateItemOnMapResponse = func
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {number} id
  * @param {survival2d.flatbuffers.Item} itemType
  * @param {flatbuffers.Offset} itemOffset
  * @param {flatbuffers.Offset} positionOffset
  * @param {flatbuffers.Offset} rawPositionOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.CreateItemOnMapResponse.createCreateItemOnMapResponse = function(builder, itemType, itemOffset, positionOffset, rawPositionOffset) {
+survival2d.flatbuffers.CreateItemOnMapResponse.createCreateItemOnMapResponse = function(builder, id, itemType, itemOffset, positionOffset, rawPositionOffset) {
   survival2d.flatbuffers.CreateItemOnMapResponse.startCreateItemOnMapResponse(builder);
+  survival2d.flatbuffers.CreateItemOnMapResponse.addId(builder, id);
   survival2d.flatbuffers.CreateItemOnMapResponse.addItemType(builder, itemType);
   survival2d.flatbuffers.CreateItemOnMapResponse.addItem(builder, itemOffset);
   survival2d.flatbuffers.CreateItemOnMapResponse.addPosition(builder, positionOffset);

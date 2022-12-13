@@ -177,6 +177,7 @@ table CreateBulletOnMapResponse {
 }
 
 table CreateItemOnMapResponse {
+  id: int;
   item: Item;
   position: Vec2;
   rawPosition: Vec2;
