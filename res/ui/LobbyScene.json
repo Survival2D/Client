@@ -17,6 +17,11 @@
           {
             "FontSize": 40,
             "LabelText": "Waiting for other players...",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "Font/Roboto-Regular.ttf",
+              "Plist": ""
+            },
             "HorizontalAlignmentType": "HT_Center",
             "OutlineColor": {
               "G": 0,
@@ -34,34 +39,35 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
-              "Y": 647.5
+              "X": 960.0,
+              "Y": 324.0
             },
             "Scale": {
               "ScaleX": 1.0,
               "ScaleY": 1.0
             },
+            "RotationSkewX": 10.0,
             "CColor": {},
             "IconVisible": false,
             "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.5,
-              "Y": 0.8993
+              "Y": 0.3
             },
             "PreSize": {
-              "X": 0.3578,
-              "Y": 0.0625
+              "X": 0.2448,
+              "Y": 0.0435
             },
-            "VerticalEdge": "TopEdge",
-            "LeftMargin": 411.0,
-            "RightMargin": 411.0,
-            "TopMargin": 50.0,
-            "BottomMargin": 625.0,
+            "LeftMargin": 725.0,
+            "RightMargin": 725.0,
+            "TopMargin": 732.5,
+            "BottomMargin": 300.5,
             "Tag": 11,
             "ActionTag": 265971117,
             "Size": {
-              "X": 458.0,
-              "Y": 45.0
+              "X": 470.0,
+              "Y": 47.0
             },
             "Name": "lblLobbyTitle",
             "ctype": "TextObjectData"
@@ -81,14 +87,16 @@
             "ColorVector": {
               "ScaleY": 1.0
             },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
             "TouchEnable": true,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
-              "Y": 360.0
+              "X": 960.0,
+              "Y": 594.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -100,20 +108,20 @@
             "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.5,
-              "Y": 0.5
+              "Y": 0.55
             },
             "PercentWidthEnable": true,
             "PercentWidthEnabled": true,
             "PreSize": {
               "X": 1.0,
-              "Y": 0.4167
+              "Y": 0.2778
             },
-            "TopMargin": 210.0,
-            "BottomMargin": 210.0,
+            "TopMargin": 336.0,
+            "BottomMargin": 444.0,
             "Tag": 12,
             "ActionTag": -1959159792,
             "Size": {
-              "X": 1280.0,
+              "X": 1920.0,
               "Y": 300.0
             },
             "Name": "pPlayers",
@@ -164,7 +172,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
+              "X": 960.0,
               "Y": 90.0
             },
             "Scale": {
@@ -176,16 +184,16 @@
             "PositionPercentXEnabled": true,
             "PrePosition": {
               "X": 0.5,
-              "Y": 0.125
+              "Y": 0.0833
             },
             "PreSize": {
-              "X": 0.1563,
-              "Y": 0.1111
+              "X": 0.1042,
+              "Y": 0.0741
             },
             "VerticalEdge": "BottomEdge",
-            "LeftMargin": 540.0,
-            "RightMargin": 540.0,
-            "TopMargin": 590.0,
+            "LeftMargin": 860.0,
+            "RightMargin": 860.0,
+            "TopMargin": 950.0,
             "BottomMargin": 50.0,
             "Tag": 13,
             "ActionTag": -1895336339,
@@ -193,13 +201,14 @@
               "X": 200.0,
               "Y": 80.0
             },
+            "VisibleForFrame": false,
             "Name": "btnStart",
             "ctype": "ButtonObjectData"
           }
         ],
         "Size": {
-          "X": 1280.0,
-          "Y": 720.0
+          "X": 1920.0,
+          "Y": 1080.0
         },
         "Name": "Scene",
         "ctype": "SingleNodeObjectData"
@@ -207,7 +216,8 @@
       "UsedResources": [
         "Default/Button_Disable.png",
         "Default/Button_Normal.png",
-        "Default/Button_Press.png"
+        "Default/Button_Press.png",
+        "Font/Roboto-Regular.ttf"
       ],
       "ctype": "GameFileData"
     }

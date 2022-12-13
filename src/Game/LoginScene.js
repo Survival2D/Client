@@ -31,6 +31,10 @@ var LoginScene = BaseLayer.extend({
         GameClient.newInstance().connectClientServer(username, password);
 
         if (Config.IS_OFFLINE) GameManager.getInstance().onReceivedFindMatch(0, 1);
+        // if (Config.IS_OFFLINE) {
+        //     GameManager.getInstance().userData.setUserData("QuanTM7");
+        //     SceneManager.getInstance().openHomeScene();
+        // }
     }
 });
 

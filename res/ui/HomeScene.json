@@ -15,25 +15,25 @@
         "Tag": 4,
         "Children": [
           {
-            "FontSize": 30,
-            "LabelText": "player name: abc",
-            "OutlineColor": {
-              "G": 0,
-              "B": 0
+            "ClipAble": false,
+            "BackColorAlpha": 102,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
             },
-            "ShadowColor": {
-              "R": 110,
-              "G": 110,
-              "B": 110
+            "FirstColor": {
+              "R": 150,
+              "G": 200
             },
-            "ShadowOffsetX": 2.0,
-            "ShadowOffsetY": -2.0,
-            "AnchorPoint": {
-              "ScaleY": 0.5
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
             },
+            "TouchEnable": true,
+            "AnchorPoint": {},
             "Position": {
-              "X": 55.6323,
-              "Y": 67.5
+              "X": 0.0,
+              "Y": 0.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -42,56 +42,195 @@
             "CColor": {},
             "IconVisible": false,
             "PrePosition": {
-              "X": 0.0435,
-              "Y": 0.0938
+              "X": 0.0,
+              "Y": 0.0
             },
             "PreSize": {
-              "X": 0.1773,
-              "Y": 0.0486
+              "X": 0.1042,
+              "Y": 0.1852
             },
-            "HorizontalEdge": "LeftEdge",
-            "VerticalEdge": "BottomEdge",
-            "LeftMargin": 55.6323,
-            "RightMargin": 997.3677,
-            "TopMargin": 635.0,
-            "BottomMargin": 50.0,
-            "Tag": 5,
-            "ActionTag": 1289037878,
+            "RightMargin": 1720.0,
+            "TopMargin": 880.0,
+            "Tag": 57,
+            "Children": [
+              {
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 130.0,
+                  "Y": 110.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": true,
+                "PrePosition": {
+                  "X": 0.65,
+                  "Y": 0.55
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "HorizontalEdge": "LeftEdge",
+                "VerticalEdge": "BottomEdge",
+                "LeftMargin": 130.0,
+                "RightMargin": 70.0,
+                "TopMargin": 90.0,
+                "BottomMargin": 110.0,
+                "Tag": 60,
+                "ActionTag": -1466376967,
+                "Size": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Name": "avaPos",
+                "ctype": "SingleNodeObjectData"
+              },
+              {
+                "FontSize": 50,
+                "LabelText": "player name: abc",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Bold.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 250.0,
+                  "Y": 149.5
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 1.25,
+                  "Y": 0.7475
+                },
+                "PreSize": {
+                  "X": 1.92,
+                  "Y": 0.295
+                },
+                "HorizontalEdge": "LeftEdge",
+                "VerticalEdge": "BottomEdge",
+                "LeftMargin": 250.0,
+                "RightMargin": -434.0,
+                "TopMargin": 21.0,
+                "BottomMargin": 120.0,
+                "Tag": 5,
+                "ActionTag": 1289037878,
+                "Size": {
+                  "X": 384.0,
+                  "Y": 59.0
+                },
+                "Name": "lblName",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 40,
+                "LabelText": "Beginer",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Regular.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 250.0,
+                  "Y": 73.5
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "RotationSkewX": 10.0,
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 1.25,
+                  "Y": 0.3675
+                },
+                "PreSize": {
+                  "X": 0.69,
+                  "Y": 0.235
+                },
+                "HorizontalEdge": "LeftEdge",
+                "VerticalEdge": "BottomEdge",
+                "LeftMargin": 250.0,
+                "RightMargin": -188.0,
+                "TopMargin": 103.0,
+                "BottomMargin": 50.0,
+                "Tag": 59,
+                "ActionTag": -2106340446,
+                "Size": {
+                  "X": 138.0,
+                  "Y": 47.0
+                },
+                "Name": "lblLevel",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1739606231,
             "Size": {
-              "X": 227.0,
-              "Y": 35.0
+              "X": 200.0,
+              "Y": 200.0
             },
-            "Name": "lblName",
-            "ctype": "TextObjectData"
+            "Name": "pInfo",
+            "ctype": "PanelObjectData"
           },
           {
             "FontSize": 28,
-            "ButtonText": "Find Match",
+            "ButtonText": "",
             "TextColor": {
               "R": 65,
               "G": 65,
               "B": 70
             },
-            "DisabledFileData": {
-              "Type": "Default",
-              "Path": "Default/Button_Disable.png",
-              "Plist": ""
-            },
             "PressedFileData": {
-              "Type": "Default",
-              "Path": "Default/Button_Press.png",
+              "Type": "Normal",
+              "Path": "Common/rectangle_frame.png",
               "Plist": ""
             },
             "NormalFileData": {
-              "Type": "Default",
-              "Path": "Default/Button_Normal.png",
+              "Type": "Normal",
+              "Path": "Common/rectangle_frame.png",
               "Plist": ""
             },
             "Scale9Enable": true,
-            "Scale9OriginX": 15,
-            "Scale9OriginY": 11,
-            "Scale9Width": 16,
-            "Scale9Height": 14,
+            "Scale9OriginX": 100,
+            "Scale9OriginY": 80,
+            "Scale9Width": 200,
+            "Scale9Height": 149,
             "OutlineColor": {
               "G": 0,
               "B": 0
@@ -109,8 +248,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
-              "Y": 469.656
+              "X": 960.0,
+              "Y": 540.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -122,21 +261,79 @@
             "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.5,
-              "Y": 0.6523
+              "Y": 0.5
             },
             "PreSize": {
-              "X": 0.1563,
-              "Y": 0.1111
+              "X": 0.2083,
+              "Y": 0.1667
             },
-            "LeftMargin": 540.0,
-            "RightMargin": 540.0,
-            "TopMargin": 210.344,
-            "BottomMargin": 429.656,
+            "LeftMargin": 760.0,
+            "RightMargin": 760.0,
+            "TopMargin": 450.0,
+            "BottomMargin": 450.0,
             "Tag": 6,
+            "Children": [
+              {
+                "FontSize": 50,
+                "LabelText": "Find Match",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Bold.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 200.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.6275,
+                  "Y": 0.3278
+                },
+                "LeftMargin": 74.5,
+                "RightMargin": 74.5,
+                "TopMargin": 60.5,
+                "BottomMargin": 60.5,
+                "Tag": 14,
+                "ActionTag": 2035791545,
+                "Size": {
+                  "X": 251.0,
+                  "Y": 59.0
+                },
+                "Name": "text",
+                "ctype": "TextObjectData"
+              }
+            ],
             "ActionTag": -91718953,
             "Size": {
-              "X": 200.0,
-              "Y": 80.0
+              "X": 400.0,
+              "Y": 180.0
             },
             "Name": "btnFindMatch",
             "ctype": "ButtonObjectData"
@@ -186,8 +383,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
-              "Y": 360.0
+              "X": 960.0,
+              "Y": 540.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -202,19 +399,20 @@
               "Y": 0.5
             },
             "PreSize": {
-              "X": 0.1563,
-              "Y": 0.1111
+              "X": 0.1042,
+              "Y": 0.0741
             },
-            "LeftMargin": 540.0,
-            "RightMargin": 540.0,
-            "TopMargin": 320.0,
-            "BottomMargin": 320.0,
+            "LeftMargin": 860.0,
+            "RightMargin": 860.0,
+            "TopMargin": 500.0,
+            "BottomMargin": 500.0,
             "Tag": 14,
             "ActionTag": -296679113,
             "Size": {
               "X": 200.0,
               "Y": 80.0
             },
+            "VisibleForFrame": false,
             "Name": "btnJoinTeam",
             "ctype": "ButtonObjectData"
           },
@@ -263,8 +461,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
-              "Y": 252.0
+              "X": 960.0,
+              "Y": 378.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -279,25 +477,31 @@
               "Y": 0.35
             },
             "PreSize": {
-              "X": 0.1563,
-              "Y": 0.1111
+              "X": 0.1042,
+              "Y": 0.0741
             },
-            "LeftMargin": 540.0,
-            "RightMargin": 540.0,
-            "TopMargin": 428.0,
-            "BottomMargin": 212.0,
+            "LeftMargin": 860.0,
+            "RightMargin": 860.0,
+            "TopMargin": 662.0,
+            "BottomMargin": 338.0,
             "Tag": 15,
             "ActionTag": 790547507,
             "Size": {
               "X": 200.0,
               "Y": 80.0
             },
+            "VisibleForFrame": false,
             "Name": "btnCreateTeam",
             "ctype": "ButtonObjectData"
           },
           {
-            "FontSize": 40,
+            "FontSize": 70,
             "LabelText": "Survival 2D",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "Font/Roboto-Bold.ttf",
+              "Plist": ""
+            },
             "HorizontalAlignmentType": "HT_Center",
             "OutlineColor": {
               "G": 0,
@@ -315,8 +519,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 640.0,
-              "Y": 648.0
+              "X": 960.0,
+              "Y": 972.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -325,40 +529,42 @@
             "CColor": {},
             "IconVisible": false,
             "PositionPercentXEnabled": true,
-            "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.5,
               "Y": 0.9
             },
             "PreSize": {
-              "X": 0.1555,
-              "Y": 0.0625
+              "X": 0.1859,
+              "Y": 0.0759
             },
-            "LeftMargin": 540.5,
-            "RightMargin": 540.5,
-            "TopMargin": 49.5,
-            "BottomMargin": 625.5,
+            "LeftMargin": 781.5,
+            "RightMargin": 781.5,
+            "TopMargin": 67.0,
+            "BottomMargin": 931.0,
             "Tag": 7,
             "ActionTag": 1299231447,
             "Size": {
-              "X": 199.0,
-              "Y": 45.0
+              "X": 357.0,
+              "Y": 82.0
             },
             "Name": "lblGameTitle",
             "ctype": "TextObjectData"
           }
         ],
         "Size": {
-          "X": 1280.0,
-          "Y": 720.0
+          "X": 1920.0,
+          "Y": 1080.0
         },
         "Name": "Scene",
         "ctype": "SingleNodeObjectData"
       },
       "UsedResources": [
+        "Common/rectangle_frame.png",
         "Default/Button_Disable.png",
         "Default/Button_Normal.png",
-        "Default/Button_Press.png"
+        "Default/Button_Press.png",
+        "Font/Roboto-Bold.ttf",
+        "Font/Roboto-Regular.ttf"
       ],
       "ctype": "GameFileData"
     }

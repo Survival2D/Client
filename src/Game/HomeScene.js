@@ -10,18 +10,36 @@ var HomeScene = BaseLayer.extend({
 
     initGUI: function () {
         this.lblGameTitle = this.getControl("lblGameTitle");
-        this.lblName = this.getControl("lblName");
-        this.lblName.ignoreContentAdaptWithSize(true);
+
         this.customButton("btnFindMatch", this.onFindMatch, this);
         this.customButton("btnJoinTeam", this.onJoinTeam, this);
         this.customButton("btnCreateTeam", this.onCreateTeam, this);
+
+        let pInfo = this.getControl("pInfo");
+        this.lblName = this.customTextLabel("lblName", pInfo);
+
+        let playerUI = new PlayerUI();
+        playerUI.unEquip();
+        playerUI.setPlayerRotation(-90);
+        playerUI.setPlayerUIInfo(GameManager.getInstance().userData.username);
+        playerUI.setPlayerColorByTeam(0);
+        playerUI.setVestLevel(0);
+        playerUI.setHelmetLevel(0);
+        playerUI.setMyPlayer(true);
+
+        playerUI.setScale(1.4);
+
+        pInfo.addChild(playerUI);
+        playerUI.setPosition(this.getControl("avaPos", pInfo).getPosition());
+
+        playerUI.defaultPosition = playerUI.getPosition();
     },
 
     onEnter: function () {
         this._super();
 
         let userData = GameManager.getInstance().userData;
-        this.lblName.setString("Player: " + userData.username);
+        this.lblName.setString(userData.username);
     },
 
     onFindMatch: function () {

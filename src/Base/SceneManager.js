@@ -60,7 +60,8 @@ var SceneManager = cc.Class.extend({
         scene.addChild(layer);
         layer.setTag(SceneManager.MAIN_LAYER_TAG);
 
-        cc.director.runScene(scene);
+        // cc.director.runScene(scene);
+        cc.director.replaceScene(cc.TransitionFade.create(0.3, scene, cc.color(0, 0, 0)));
         return layer;
     },
 

@@ -19,15 +19,6 @@ const BaseLayer = cc.Layer.extend({
         this._super();
         this.setContentSize(cc.winSize);
         this.setAnchorPoint(0.5,0.5);
-
-        this.effectIn();
-    },
-
-    /**
-     * @abstract
-     */
-    effectIn: function () {
-
     },
 
     onExit: function () {

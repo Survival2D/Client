@@ -77,6 +77,9 @@ const MatchScene = BaseLayer.extend({
                 this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.GUN);
             }
         }, this);
+
+        this.loadingLayer = this.getControl("loadingLayer");
+        this.loadingLogo = this.getControl("logo", this.loadingLayer);
     },
 
     initKeyBoardController: function () {
@@ -146,6 +149,39 @@ const MatchScene = BaseLayer.extend({
         this.controller.setControllerEnabled(true);
 
         this.scheduleUpdate();
+
+        this._firstUpdateMatchView = true;
+
+        this.loadingLayer.setVisible(true);
+        this.effectIntroStartMatch();
+    },
+
+    effectIntroStartMatch: function () {
+        this.loadingLogo.setVisible(true);
+        this.loadingLogo.setRotation(0);
+        this.loadingLogo.setOpacity(255);
+        this.loadingLogo.stopAllActions();
+        this.loadingLogo.runAction(cc.sequence(
+            cc.delayTime(0.2),
+            cc.rotateBy(1.5, 180).easing(cc.easeExponentialInOut()),
+            cc.fadeOut(0.35),
+            cc.hide()
+        ));
+
+        this.loadingLayer.setOpacity(255);
+        this.loadingLayer.setScale(1);
+        this.loadingLayer.stopAllActions();
+        this.loadingLayer.runAction(cc.sequence(
+            cc.delayTime(1),
+            cc.spawn(
+                cc.fadeOut(1),
+                cc.sequence(
+                    cc.delayTime(0.7),
+                    cc.scaleTo(0.5, 2).easing(cc.easeSineOut())
+                )
+            ),
+            cc.hide()
+        ));
     },
 
     onExit: function () {
@@ -225,8 +261,10 @@ const MatchScene = BaseLayer.extend({
 
         this.updateMyPlayerItem();
 
-
         this.numPlayerLeft.setString(match.getNumberOfAlivePlayers());
+
+        if (this._firstUpdateMatchView) this.effectIntroStartMatch();
+        this._firstUpdateMatchView = false;
     },
 
     update: function (dt) {

@@ -24,6 +24,7 @@ const ResultGUI = BaseLayer.extend({
 
     onEnter: function () {
         this._super();
+        this.effectIn();
     },
 
     effectIn: function () {
