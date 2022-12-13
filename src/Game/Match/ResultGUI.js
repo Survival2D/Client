@@ -21,7 +21,7 @@ const ResultGUI = BaseLayer.extend({
 
         this.lblTop1 = this.getControl("lblTop1", this.pCenter);
 
-        this.btnBack = this.customButton("btnBack");
+        this.btnBack = this.customButton("btnBack", this.onHome, this);
     },
 
     onEnter: function () {
@@ -125,8 +125,16 @@ const ResultGUI = BaseLayer.extend({
             cc.delayTime(1 + delayTime),
             cc.moveTo(0.3, this.lblTop1.defaultPosition).easing(cc.easeExponentialInOut())
         ));
+    },
+
+    onHome: function () {
+        SceneManager.getInstance().openHomeScene();
     }
 });
 
 ResultGUI.className = "ResultGUI";
 ResultGUI.ZORDER = 100;
+
+ResultGUI.BTN = {
+    BACK: 0
+};
