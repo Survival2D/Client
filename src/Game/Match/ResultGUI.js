@@ -20,6 +20,8 @@ const ResultGUI = BaseLayer.extend({
         this.pCenter = this.getControl("pCenter");
 
         this.lblTop1 = this.getControl("lblTop1", this.pCenter);
+
+        this.btnBack = this.customButton("btnBack");
     },
 
     onEnter: function () {
@@ -55,6 +57,13 @@ const ResultGUI = BaseLayer.extend({
         this.pCenter.runAction(cc.sequence(
             cc.delayTime(0.7),
             cc.fadeIn(0.3)
+        ));
+
+        this.btnBack.setPosition(this.btnBack.defaultPosition.x + 200, this.btnBack.defaultPosition.y);
+        this.btnBack.stopAllActions();
+        this.btnBack.runAction(cc.sequence(
+            cc.delayTime(1.2),
+            cc.moveTo(0.35, this.btnBack.defaultPosition).easing(cc.easeBackOut())
         ));
     },
 
