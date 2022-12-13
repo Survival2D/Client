@@ -50,26 +50,39 @@ var GameClient = cc.Class.extend({
         var streamingHandler = new EzyStreamingHandler();
         streamingHandler.handle = function (bytes) {
             var reader = new FileReader();
-            reader.addEventListener("loadend", function(e)
-            {
+            reader.addEventListener("loadend", function (e) {
                 var buffer = new Uint8Array(e.target.result);  // arraybuffer object
                 // cc.log("buffer", JSON.stringify(buffer))
                 var buf = new flatbuffers.ByteBuffer(GameClient.removeHeaderAfterPassEzyFoxCheck(buffer));
                 let packet = survival2d.flatbuffers.Packet.getRootAsPacket(buf);
                 switch (packet.dataType()) {
-                    case survival2d.flatbuffers.PacketData.PlayerMoveResponse:
-                        let playerMoveResponse = new survival2d.flatbuffers.PlayerMoveResponse();
-                        packet.data(playerMoveResponse);
-                        // cc.log("playerMoveResponse", playerMoveResponse.id());
-                        // cc.log("playerMoveResponse", playerMoveResponse.position().x());
-                        // cc.log("playerMoveResponse", playerMoveResponse.position().y());
-                        // cc.log("playerMoveResponse", playerMoveResponse.rotation());
-                        let oldTime = GameClient.getInstance()._pingTime || 0;
+                    case survival2d.flatbuffers.PacketData.PingResponse: {
+                        let oldTime = GameClient.getInstance()._pingByteTime || 0;
                         let newTime = Date.now();
                         let pingTime = newTime - oldTime;
-                        cc.log("Ping by player move flatbuffers", pingTime);
-                        setTimeout(GameClient.getInstance().sendPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
+                        cc.log("pingByte", pingTime);
+                        setTimeout(GameClient.getInstance().sendPingByte.bind(GameClient.getInstance()), 1000);
                         break;
+                    }
+                    case survival2d.flatbuffers.PacketData.PingByPlayerMoveResponse: {
+                        let oldTime = GameClient.getInstance()._pingByPlayerMoveByteTime || 0;
+                        let newTime = Date.now();
+                        let pingTime = newTime - oldTime;
+                        cc.log("pingByPlayerMoveByte", pingTime);
+                        setTimeout(GameClient.getInstance().sendPingByPlayerMoveByte.bind(GameClient.getInstance(), {
+                            x: Math.sqrt(2),
+                            y: Math.sqrt(2)
+                        }, 1 / Math.sqrt(2)), 1000);
+                        break;
+                    }
+                    case survival2d.flatbuffers.PacketData.PingByMatchInfoResponse: {
+                        let oldTime = GameClient.getInstance()._pingByMatchInfoByteTime || 0;
+                        let newTime = Date.now();
+                        let pingTime = newTime - oldTime;
+                        cc.log("pingByMatchInfoByte", pingTime);
+                        setTimeout(GameClient.getInstance().sendPingByMatchInfoByte.bind(GameClient.getInstance()), 1000);
+                        break;
+                    }
                     default:
                         cc.log("not handle", packet.dataType());
                 }
@@ -108,9 +121,20 @@ var GameClient = cc.Class.extend({
             GameManager.getInstance().userData.setUserData(pk.username);
             SceneManager.getInstance().openHomeScene();
 
-            GameManager.getInstance().startPing();
-            GameClient.getInstance().sendPingByPlayerMove({x:111111111.111111111, y:111111111.111111111}, 111111111.111111111);
-            GameClient.getInstance().sendPlayerMove({x:111111111.111111111, y:111111111.111111111}, 111111111.111111111);
+            // GameManager.getInstance().startPing();
+            GameClient.getInstance().sendPingJson();
+            GameClient.getInstance().sendPingByPlayerMoveJson({
+                x: Math.sqrt(2),
+                y: Math.sqrt(2)
+            }, 1 / Math.sqrt(2));
+            GameClient.getInstance().sendPingByMatchInfoJson();
+
+            GameClient.getInstance().sendPingByte();
+            GameClient.getInstance().sendPingByPlayerMoveByte({
+                x: Math.sqrt(2),
+                y: Math.sqrt(2)
+            }, 1 / Math.sqrt(2));
+            GameClient.getInstance().sendPingByMatchInfoByte();
         });
 
         setupPlugin.addDataHandler(Cmd.FIND_MATCH, function (plugin, data) {
@@ -196,19 +220,31 @@ var GameClient = cc.Class.extend({
             GameManager.getInstance().getCurrentMatch().receivedMatchResult(pk.winTeam);
         });
 
-        setupPlugin.addDataHandler(Cmd.PING_BY_PLAYER_MOVE, function (plugin, data) {
-            let pk = new ReceivedPingByPlayerMove(data);
-            let oldTime = GameClient.getInstance()._pingByPlayerMoveTime || 0;
+        setupPlugin.addDataHandler(Cmd.PING, function (plugin, data) {
+            let oldTime = GameClient.getInstance()._pingJsonTime || 0;
             let newTime = Date.now();
             let pingTime = newTime - oldTime;
-            cc.log("Ping by player move json:", pingTime);
-            setTimeout(GameClient.getInstance().sendPingByPlayerMove.bind(GameClient.getInstance(), {x:111111111.111111111, y:111111111.111111111}, 111111111.111111111), 1000);
+            cc.log("pingJson", pingTime);
+            setTimeout(GameClient.getInstance().sendPingJson.bind(GameClient.getInstance()), 1000);
         });
 
-        setupPlugin.addDataHandler("flatbuffers", function (plugin, data) {
-            var monster = survival2d.flatbuffers.Monster.getRootAsMonster(data);
-            cc.log("get flatbuffers data");
-            cc.log(JSON.stringify(monster));
+        setupPlugin.addDataHandler(Cmd.PING_BY_PLAYER_MOVE, function (plugin, data) {
+            let oldTime = GameClient.getInstance()._pingByPlayerMoveJsonTime || 0;
+            let newTime = Date.now();
+            let pingTime = newTime - oldTime;
+            cc.log("pingByPlayerMoveJson", pingTime);
+            setTimeout(GameClient.getInstance().sendPingByPlayerMoveJson.bind(GameClient.getInstance(), {
+                x: Math.sqrt(2),
+                y: Math.sqrt(2)
+            }, 1 / Math.sqrt(2)), 1000);
+        });
+
+        setupPlugin.addDataHandler(Cmd.PING_BY_MATCH_INFO, function (plugin, data) {
+            let oldTime = GameClient.getInstance()._pingByMatchInfoJsonTime || 0;
+            let newTime = Date.now();
+            let pingTime = newTime - oldTime;
+            cc.log("pingByMatchInfoJson", pingTime);
+            setTimeout(GameClient.getInstance().sendPingByMatchInfoJson.bind(GameClient.getInstance()), 1000);
         });
     },
 
@@ -243,79 +279,58 @@ var GameClient = cc.Class.extend({
         let requestOffset = survival2d.flatbuffers.PlayerMoveRequest.createPlayerMoveRequest(builder, directionOffset, rotation);
         let packetOffset = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerMoveRequest, requestOffset);
         builder.finish(packetOffset);
-        let data =  GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
         this.client.sendBytes(data);
         GameClient.getInstance()._pingTime = Date.now();
     },
 
-    sendPingByPlayerMove: function (direction, rotation) {
-        // cc.log("sendPingByPlayerMove");
-        let pk = new SendPingByPlayerMove(direction, rotation);
+    sendPingJson: function () {
+        this._pingJsonTime = Date.now();
+        let pk = new SendPing();
         this.sendPacket(pk);
-        this._pingByPlayerMoveTime = Date.now();
     },
 
-    sendFlatBuffers: function () {
-        cc.log("send flatbuffers");
-        var builder = new flatbuffers.Builder(0);
+    sendPingByPlayerMoveJson: function (direction, rotation) {
+        this._pingByPlayerMoveJsonTime = Date.now();
+        let pk = new SendPingByPlayerMove(direction, rotation);
+        this.sendPacket(pk);
+    },
 
-        // Create some weapons for our Monster ('Sword' and 'Axe').
-        var weaponOne = builder.createString('Sword');
-        var weaponTwo = builder.createString('Axe');
+    sendPingByMatchInfoJson: function () {
+        this._pingByMatchInfoJsonTime = Date.now();
+        let pk = new SendPingByMatchInfo();
+        this.sendPacket(pk);
+    },
 
-        survival2d.flatbuffers.Weapon.startWeapon(builder);
-        survival2d.flatbuffers.Weapon.addName(builder, weaponOne);
-        survival2d.flatbuffers.Weapon.addDamage(builder, 3);
-        var sword = survival2d.flatbuffers.Weapon.endWeapon(builder);
+    sendPingByte: function () {
+        this._pingByteTime = Date.now();
+        let builder = new flatbuffers.Builder(0);
+        let requestOffset = survival2d.flatbuffers.PingRequest.createPingRequest(builder);
+        let packetOffset = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PingRequest, requestOffset);
+        builder.finish(packetOffset);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
 
-        survival2d.flatbuffers.Weapon.startWeapon(builder);
-        survival2d.flatbuffers.Weapon.addName(builder, weaponTwo);
-        survival2d.flatbuffers.Weapon.addDamage(builder, 5);
-        var axe = survival2d.flatbuffers.Weapon.endWeapon(builder);
+    sendPingByPlayerMoveByte: function (direction, rotation) {
+        this._pingByPlayerMoveByteTime = Date.now();
+        let builder = new flatbuffers.Builder(0);
+        let directionOffset = survival2d.flatbuffers.Vec2.createVec2(builder, direction.x, direction.y);
+        let requestOffset = survival2d.flatbuffers.PingByPlayerMoveRequest.createPingByPlayerMoveRequest(builder, directionOffset, rotation);
+        let packetOffset = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PingByPlayerMoveRequest, requestOffset);
+        builder.finish(packetOffset);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
 
-        // Serialize the FlatBuffer data.
-        var name = builder.createString('Orc');
-
-        var treasure = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        var inv = survival2d.flatbuffers.Monster.createInventoryVector(builder, treasure);
-
-        var weaps = [sword, axe];
-        var weapons = survival2d.flatbuffers.Monster.createWeaponsVector(builder, weaps);
-
-        var pos = survival2d.flatbuffers.Vec3.createVec3(builder, 1.0, 2.0, 3.0);
-
-        survival2d.flatbuffers.Monster.startMonster(builder);
-        survival2d.flatbuffers.Monster.addPos(builder, pos);
-        survival2d.flatbuffers.Monster.addHp(builder, 300);
-        survival2d.flatbuffers.Monster.addColor(builder, survival2d.flatbuffers.Color.Red)
-        survival2d.flatbuffers.Monster.addName(builder, name);
-        survival2d.flatbuffers.Monster.addInventory(builder, inv);
-        survival2d.flatbuffers.Monster.addWeapons(builder, weapons);
-        survival2d.flatbuffers.Monster.addEquippedType(builder, survival2d.flatbuffers.Equipment.Weapon);
-        survival2d.flatbuffers.Monster.addEquipped(builder, weaps[1]);
-        survival2d.flatbuffers.Monster.addEquipped(builder, weaps[1]);
-        survival2d.flatbuffers.Monster.addTime(builder, new Date().getTime());
-        var orc = survival2d.flatbuffers.Monster.endMonster(builder);
-
-        builder.finish(orc); // You may also call 'MyGame.Example.Monster.finishMonsterBuffer(builder, orc);'.
-
-        // We now have a FlatBuffer that can be stored on disk or sent over a network.
-
-        // ...Code to store to disk or send over a network goes here...
-
-        // Instead, we are going to access it right away, as if we just received it.
-
-        // var buf = builder.dataBuffer();
-
-
-        let data = builder.asUint8Array();
-        let dataToSend = GameClient.createHeaderToPassEzyFoxCheck(data);
-        cc.log("begin send flatbuffers");
-        // cc.log("send", JSON.stringify(dataToSend));
-        this.client.sendBytes(dataToSend);
-        cc.log("end send flatbuffers");
-        // cc.log(JSON.stringify(buf));
-        // plugin.send("flatbuffers", buf);
+    sendPingByMatchInfoByte: function () {
+        this._pingByMatchInfoByteTime = Date.now();
+        let builder = new flatbuffers.Builder(0);
+        let requestOffset = survival2d.flatbuffers.PingByMatchInfoRequest.createPingByMatchInfoRequest(builder);
+        let packetOffset = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PingByMatchInfoRequest, requestOffset);
+        builder.finish(packetOffset);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
     }
 });
 

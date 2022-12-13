@@ -46,6 +46,12 @@ const SendPlayerTakeItem = OutPacket.extend({
     }
 });
 
+const SendPing = OutPacket.extend({
+    ctor: function () {
+        this._super(Cmd.PING);
+    }
+});
+
 const SendPingByPlayerMove = OutPacket.extend({
     ctor: function (direction, rotation) {
         this._super(Cmd.PING_BY_PLAYER_MOVE);
@@ -53,5 +59,11 @@ const SendPingByPlayerMove = OutPacket.extend({
             direction: direction,
             rotation: rotation
         }
+    }
+});
+
+const SendPingByMatchInfo = OutPacket.extend({
+    ctor: function () {
+        this._super(Cmd.PING_BY_MATCH_INFO);
     }
 });

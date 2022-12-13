@@ -25,4 +25,6 @@ Cmd.TAKE_ITEM = "takeItem";
 Cmd.DROP_ITEM = "dropItem";
 Cmd.PLAYER_RELOAD = "playerReload";
 Cmd.END_GAME = "endGame";
+Cmd.PING = "ping";
 Cmd.PING_BY_PLAYER_MOVE = "pingByPlayerMove";
+Cmd.PING_BY_MATCH_INFO = "pingByMatchInfo";
