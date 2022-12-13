@@ -221,11 +221,17 @@ var GameClient = cc.Class.extend({
                         let item = new ItemData();
                         switch (response.itemType()) {
                             case survival2d.flatbuffers.Item.BulletItem: {
+                                let bfBullet = new survival2d.flatbuffers.BulletItem();
+                                response.data(bfBullet);
                                 item = new ItemBulletData();
+                                item.setNumBullets(bfBullet.numBullet());
                                 break;
                             }
                             case survival2d.flatbuffers.Item.GunItem: {
+                                let bfGun = new survival2d.flatbuffers.BulletItem();
+                                response.data(bfGun);
                                 item = new ItemGunData();
+                                item.setNumBullets(bfGun.numBullet());
                                 break;
                             }
                         }

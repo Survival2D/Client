@@ -195,14 +195,13 @@ const MatchManager = cc.Class.extend({
     },
 
     updateMyPlayerMove: function (unitVector, rotation) {
-        let oldMovingUnitVector = this.myPlayer.movingUnitVector;
         let oldRotation = this.myPlayer.rotation;
         this.myPlayer.position.x += unitVector.x * Config.PLAYER_BASE_SPEED;
         this.myPlayer.position.y += unitVector.y * Config.PLAYER_BASE_SPEED;
         this.myPlayer.rotation = rotation;
         this.myPlayer.movingUnitVector = unitVector;
 
-        if (oldMovingUnitVector.x !== unitVector.x || oldMovingUnitVector.y !== unitVector.y || oldRotation !== rotation) {
+        if (unitVector.x !== 0 || unitVector.y !== 0 || oldRotation !== rotation) {
             // let pk = new SendPlayerMoveAction(unitVector, rotation);
             // GameClient.getInstance().sendPacket(pk);
             GameClient.getInstance().sendPlayerMove(unitVector, rotation);
