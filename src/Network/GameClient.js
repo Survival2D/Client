@@ -438,7 +438,6 @@ var GameClient = cc.Class.extend({
         let requestOffset = survival2d.flatbuffers.PlayerMoveRequest.createPlayerMoveRequest(builder, directionOffset, rotation);
         let packetOffset = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerMoveRequest, requestOffset);
         builder.finish(packetOffset);
-        cc.log("data want to send", JSON.stringify(builder.asUint8Array()));
         let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
         this.client.sendBytes(data);
         this._pingTime = Date.now();

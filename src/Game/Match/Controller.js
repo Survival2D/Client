@@ -64,10 +64,12 @@ const Controller = cc.Class.extend({
             case cc.KEY.r:
                 this.reloadBullets();
                 break;
-            case cc.KEY.num1:
+            case cc.KEY["1"]:
+                cc.log("DMM 1");
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.GUN);
                 break;
-            case cc.KEY.num2:
+            case cc.KEY["2"]:
+                cc.log("DMM 2");
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.FIST);
                 break;
         }

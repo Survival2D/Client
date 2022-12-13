@@ -257,6 +257,9 @@ const MatchScene = BaseLayer.extend({
         this.safeZoneUI.setPosition(0, 0);
         this.safeZoneUI.setSafeZoneUI(match.safeZone);
 
+        this.setMyPlayerPosition(match.myPlayer.position);
+        this.myPlayer.setPlayerRotation(Math.round(gm.radToDeg(match.myPlayer.rotation)));
+
         this.updateMyHpProgress(match.myPlayer.hp);
 
         this.updateMyPlayerItem();
@@ -279,11 +282,13 @@ const MatchScene = BaseLayer.extend({
                 unitVector = gm.vector(0, 0);
             }
 
-            this.setMyPlayerPosition(newPos);
-
             let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
             let degRotation = Math.round(gm.radToDeg(rotation));
-            this.myPlayer.setPlayerRotation(degRotation);
+
+            if (Constant.ENABLE_SMOOTHING) {
+                this.setMyPlayerPosition(newPos);
+                this.myPlayer.setPlayerRotation(degRotation);
+            }
 
             match.updateMyPlayerMove(unitVector, rotation);
 
@@ -369,6 +374,11 @@ const MatchScene = BaseLayer.extend({
     },
 
     playerMove: function (username, position, rotation) {
+        if (username === GameManager.getInstance().userData.username) {
+            this.setMyPlayerPosition(position);
+            this.myPlayer.setPlayerRotation(Math.round(gm.radToDeg(rotation)));
+            return;
+        }
         let playerUI = this.playerUIs[username];
         if (playerUI) {
             playerUI.setPosition(position);

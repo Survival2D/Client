@@ -230,11 +230,13 @@ const MatchManager = cc.Class.extend({
         }
 
         if (username === GameManager.getInstance().userData.username) {
-            this._saveMyPlayerMoveAction = {
-                position: pos,
-                rotation: rotation
+            if (Constant.ENABLE_SMOOTHING) {
+                this._saveMyPlayerMoveAction = {
+                    position: pos,
+                    rotation: rotation
+                }
+                return;
             }
-            return;
         }
 
         player.position = pos;
@@ -246,6 +248,7 @@ const MatchManager = cc.Class.extend({
     syncMyPlayerMove: function () {
         if (Constant.IS_OFFLINE) return;
         if (this.gameState !== MatchManager.STATE.PLAY) return;
+        if (!Constant.ENABLE_SMOOTHING) return;
         cc.log("--Sync my player move");
         this.myPlayer.position = this._saveMyPlayerMoveAction.position;
         this.myPlayer.rotation = this._saveMyPlayerMoveAction.rotation;
