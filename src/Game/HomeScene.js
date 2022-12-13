@@ -14,6 +14,7 @@ var HomeScene = BaseLayer.extend({
         this.customButton("btnFindMatch", this.onFindMatch, this);
         this.customButton("btnJoinTeam", this.onJoinTeam, this);
         this.customButton("btnCreateTeam", this.onCreateTeam, this);
+        this.customButton("btnSetting", this.onSetting, this);
 
         let pInfo = this.getControl("pInfo");
         this.lblName = this.customTextLabel("lblName", pInfo);
@@ -52,6 +53,17 @@ var HomeScene = BaseLayer.extend({
 
     onCreateTeam: function () {
         GameManager.getInstance().createTeam();
+    },
+
+    onSetting: function () {
+        let gui = SceneManager.getInstance().getGUIByClassName(SettingGUI.className);
+        if (gui) {
+            gui.onClose();
+        }
+        else {
+            let gui = new SettingGUI();
+            SceneManager.getInstance().openGUI(gui, ResultGUI.ZORDER);
+        }
     }
 });
 

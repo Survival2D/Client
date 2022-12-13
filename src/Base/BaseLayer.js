@@ -94,5 +94,9 @@ const BaseLayer = cc.Layer.extend({
         if (fontName) text.setFontName(fontName);
         if (fontSize) text.setFontName(fontSize);
         return text;
+    },
+
+    onClose: function () {
+        this.removeFromParent(true);
     }
 })

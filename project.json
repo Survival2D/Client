@@ -65,6 +65,8 @@
 
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",
-        "src/Game/LobbyScene.js"
+        "src/Game/LobbyScene.js",
+
+        "src/Game/SettingGUI.js"
     ]
 }

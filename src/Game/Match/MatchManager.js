@@ -229,7 +229,7 @@ const MatchManager = cc.Class.extend({
         }
 
         if (username === GameManager.getInstance().userData.username) {
-            if (Constant.ENABLE_SMOOTHING) {
+            if (GameManager.ENABLE_SMOOTH) {
                 this._saveMyPlayerMoveAction = {
                     position: pos,
                     rotation: rotation
@@ -247,7 +247,7 @@ const MatchManager = cc.Class.extend({
     syncMyPlayerMove: function () {
         if (Constant.IS_OFFLINE) return;
         if (this.gameState !== MatchManager.STATE.PLAY) return;
-        if (!Constant.ENABLE_SMOOTHING) return;
+        if (!GameManager.ENABLE_SMOOTH) return;
         cc.log("--Sync my player move");
         this.myPlayer.position = this._saveMyPlayerMoveAction.position;
         this.myPlayer.rotation = this._saveMyPlayerMoveAction.rotation;

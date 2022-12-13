@@ -30,7 +30,8 @@ var game_UIs = {
 
   MINIMAP_LAYER: "res/ui/MiniMapUI.json",
 
-  RESULT_LAYER: "res/ui/ResultGUI.json"
+  RESULT_LAYER: "res/ui/ResultGUI.json",
+  SETTING_LAYER: "res/ui/SettingGUI.json"
 };
 
 var game_images = {

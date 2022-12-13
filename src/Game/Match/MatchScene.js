@@ -80,6 +80,8 @@ const MatchScene = BaseLayer.extend({
 
         this.loadingLayer = this.getControl("loadingLayer");
         this.loadingLogo = this.getControl("logo", this.loadingLayer);
+
+        this.customButton("btnSetting", this.onSetting, this, this.hud);
     },
 
     initKeyBoardController: function () {
@@ -189,6 +191,17 @@ const MatchScene = BaseLayer.extend({
         this._super();
     },
 
+    onSetting: function () {
+        let gui = SceneManager.getInstance().getGUIByClassName(SettingGUI.className);
+        if (gui) {
+            gui.onClose();
+        }
+        else {
+            let gui = new SettingGUI();
+            SceneManager.getInstance().openGUI(gui, ResultGUI.ZORDER);
+        }
+    },
+
     updateMatchView: function () {
         let match = GameManager.getInstance().getCurrentMatch();
         if (!match) return;
@@ -285,7 +298,7 @@ const MatchScene = BaseLayer.extend({
             let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
             let degRotation = Math.round(gm.radToDeg(rotation));
 
-            if (Constant.ENABLE_SMOOTHING) {
+            if (GameManager.ENABLE_SMOOTH) {
                 this.setMyPlayerPosition(newPos);
                 this.myPlayer.setPlayerRotation(degRotation);
             }
