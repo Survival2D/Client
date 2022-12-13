@@ -209,6 +209,8 @@ var GameClient = cc.Class.extend({
                         bullet.position.x = bfBullet.position().x();
                         bullet.position.y = bfBullet.position().y();
                         bullet.rawPosition = bullet.position;
+                        bullet.direction.x = bfBullet.direction().x();
+                        bullet.direction.y = bfBullet.direction().y();
 
                         GameManager.getInstance().getCurrentMatch().receivedCreateBullet(bullet);
                         break;
