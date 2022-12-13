@@ -71,6 +71,7 @@ enum GunType: byte {
 
 table GunItem {
   type: GunType;
+  numBullet: int;
 }
 
 enum BulletType: byte {
@@ -79,6 +80,7 @@ enum BulletType: byte {
 
 table BulletItem {
   type: BulletType;
+  numBullet: int;
 }
 
 table VestItem {
