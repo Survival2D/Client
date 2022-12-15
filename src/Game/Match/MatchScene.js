@@ -646,6 +646,8 @@ const MatchScene = BaseLayer.extend({
         if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
         if (item instanceof ItemVestData) itemUI = new ItemVestUI();
         if (item instanceof ItemHelmetData) itemUI = new ItemHelmetUI();
+        if (item instanceof ItemBandageData) itemUI = new ItemBandageUI();
+        if (item instanceof ItemMedKitData) itemUI = new ItemMedKitUI();
         itemUI.setItemId(item.getObjectId());
         this.itemUIs.push(itemUI);
         this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);

@@ -67,3 +67,19 @@ const ItemHelmetUI = ItemUI.extend({
         this.setItemUI("res/ui/Game/Item/loot_helmet.png");
     }
 });
+
+const ItemBandageUI = ItemUI.extend({
+    ctor: function () {
+        this._super();
+
+        this.setItemUI("res/ui/Game/Item/loot_medical_bandage.png");
+    }
+});
+
+const ItemMedKitUI = ItemUI.extend({
+    ctor: function () {
+        this._super();
+
+        this.setItemUI("res/ui/Game/Item/loot_health_care.png");
+    }
+});

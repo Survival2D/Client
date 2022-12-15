@@ -11,10 +11,13 @@ const PlayerData = cc.Class.extend({
         this.speed = 0;
         this.team = 0;
         this.hp = 0;
+
         this.gun = new GunData();
         this.vest = new VestData();
         this.helmet = new HelmetData();
         this.numBackBullets = 0;
+        this.numBandages = 0;
+        this.numMedKits = 0;
 
         this.weaponSlot = PlayerData.WEAPON_SLOT.FIST;
 
@@ -57,10 +60,16 @@ const PlayerData = cc.Class.extend({
             this.numBackBullets += item.getNumBullets();
         }
         if (item instanceof ItemVestData) {
-
+            this.vest = item.vest;
         }
         if (item instanceof ItemHelmetData) {
-
+            this.helmet = item.helmet;
+        }
+        if (item instanceof ItemBandageData) {
+            this.numBandages++;
+        }
+        if (item instanceof ItemMedKitData) {
+            this.numMedKits++;
         }
     }
 });

@@ -111,9 +111,13 @@ var GameClient = cc.Class.extend({
                                     break;
                                 }
                                 case survival2d.flatbuffers.MapObjectData.BandageItem: {
+                                    obj = new ItemBandageData();
+                                    items.push(obj);
                                     break;
                                 }
                                 case survival2d.flatbuffers.MapObjectData.MedKitItem: {
+                                    obj = new ItemMedKitData();
+                                    items.push(obj);
                                     break;
                                 }
                             }
@@ -234,6 +238,30 @@ var GameClient = cc.Class.extend({
                                 response.item(bfGun);
                                 item = new ItemGunData();
                                 item.setNumBullets(bfGun.numBullet());
+                                break;
+                            }
+                            case survival2d.flatbuffers.Item.VestItem: {
+                                let bfVest = new survival2d.flatbuffers.VestItem();
+                                response.item(bfVest);
+                                item = new ItemVestData();
+                                break;
+                            }
+                            case survival2d.flatbuffers.Item.HelmetItem: {
+                                let bfHelmet = new survival2d.flatbuffers.HelmetItem();
+                                response.item(bfHelmet);
+                                item = new ItemHelmetData();
+                                break;
+                            }
+                            case survival2d.flatbuffers.Item.BandageItem: {
+                                let bfBandage = new survival2d.flatbuffers.BandageItem();
+                                response.item(bfBandage);
+                                item = new ItemBandageData();
+                                break;
+                            }
+                            case survival2d.flatbuffers.Item.MedKitItem: {
+                                let bfMedKit = new survival2d.flatbuffers.MedKitItem();
+                                response.item(bfMedKit);
+                                item = new ItemMedKitData();
                                 break;
                             }
                         }
