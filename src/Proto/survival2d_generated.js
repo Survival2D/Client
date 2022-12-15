@@ -46,7 +46,11 @@ survival2d.flatbuffers.BulletTypeName = {
 survival2d.flatbuffers.Item = {
   NONE: 0,
   BulletItem: 1,
-  GunItem: 2
+  GunItem: 2,
+  VestItem: 3,
+  HelmetItem: 4,
+  BandageItem: 5,
+  MedKitItem: 6
 };
 
 /**
@@ -55,7 +59,11 @@ survival2d.flatbuffers.Item = {
 survival2d.flatbuffers.ItemName = {
   '0': 'NONE',
   '1': 'BulletItem',
-  '2': 'GunItem'
+  '2': 'GunItem',
+  '3': 'VestItem',
+  '4': 'HelmetItem',
+  '5': 'BandageItem',
+  '6': 'MedKitItem'
 };
 
 /**

@@ -98,6 +98,10 @@ table MedKitItem {
 union Item {
   BulletItem,
   GunItem,
+  VestItem,
+  HelmetItem,
+  BandageItem,
+  MedKitItem,
 }
 
 union MapObjectData {
