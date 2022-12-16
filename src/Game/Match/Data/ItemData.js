@@ -96,3 +96,15 @@ const ItemHelmetData = ItemData.extend({
         this.helmet = new HelmetData();
     }
 });
+
+const ItemBandageData = ItemData.extend({
+    ctor: function () {
+        this._super();
+    }
+});
+
+const ItemMedKitData = ItemData.extend({
+    ctor: function () {
+        this._super();
+    }
+});
