@@ -5199,6 +5199,201 @@ survival2d.flatbuffers.PingByMatchInfoResponse.createPingByMatchInfoResponse = f
 /**
  * @constructor
  */
+survival2d.flatbuffers.UseHealItemRequest = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.UseHealItemRequest}
+ */
+survival2d.flatbuffers.UseHealItemRequest.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.UseHealItemRequest=} obj
+ * @returns {survival2d.flatbuffers.UseHealItemRequest}
+ */
+survival2d.flatbuffers.UseHealItemRequest.getRootAsUseHealItemRequest = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.UseHealItemRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.UseHealItemRequest=} obj
+ * @returns {survival2d.flatbuffers.UseHealItemRequest}
+ */
+survival2d.flatbuffers.UseHealItemRequest.getSizePrefixedRootAsUseHealItemRequest = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.UseHealItemRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @returns {survival2d.flatbuffers.Item}
+ */
+survival2d.flatbuffers.UseHealItemRequest.prototype.typeType = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? /** @type {survival2d.flatbuffers.Item} */ (this.bb.readUint8(this.bb_pos + offset)) : survival2d.flatbuffers.Item.NONE;
+};
+
+/**
+ * @param {flatbuffers.Table} obj
+ * @returns {?flatbuffers.Table}
+ */
+survival2d.flatbuffers.UseHealItemRequest.prototype.type = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.__union(obj, this.bb_pos + offset) : null;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.UseHealItemRequest.startUseHealItemRequest = function(builder) {
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.Item} typeType
+ */
+survival2d.flatbuffers.UseHealItemRequest.addTypeType = function(builder, typeType) {
+  builder.addFieldInt8(0, typeType, survival2d.flatbuffers.Item.NONE);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} typeOffset
+ */
+survival2d.flatbuffers.UseHealItemRequest.addType = function(builder, typeOffset) {
+  builder.addFieldOffset(1, typeOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.UseHealItemRequest.endUseHealItemRequest = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.Item} typeType
+ * @param {flatbuffers.Offset} typeOffset
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.UseHealItemRequest.createUseHealItemRequest = function(builder, typeType, typeOffset) {
+  survival2d.flatbuffers.UseHealItemRequest.startUseHealItemRequest(builder);
+  survival2d.flatbuffers.UseHealItemRequest.addTypeType(builder, typeType);
+  survival2d.flatbuffers.UseHealItemRequest.addType(builder, typeOffset);
+  return survival2d.flatbuffers.UseHealItemRequest.endUseHealItemRequest(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.UseHealItemResponse = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.UseHealItemResponse}
+ */
+survival2d.flatbuffers.UseHealItemResponse.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.UseHealItemResponse=} obj
+ * @returns {survival2d.flatbuffers.UseHealItemResponse}
+ */
+survival2d.flatbuffers.UseHealItemResponse.getRootAsUseHealItemResponse = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.UseHealItemResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.UseHealItemResponse=} obj
+ * @returns {survival2d.flatbuffers.UseHealItemResponse}
+ */
+survival2d.flatbuffers.UseHealItemResponse.getSizePrefixedRootAsUseHealItemResponse = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.UseHealItemResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.UseHealItemResponse.prototype.remainHp = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readFloat64(this.bb_pos + offset) : 0.0;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.UseHealItemResponse.startUseHealItemResponse = function(builder) {
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} remainHp
+ */
+survival2d.flatbuffers.UseHealItemResponse.addRemainHp = function(builder, remainHp) {
+  builder.addFieldFloat64(0, remainHp, 0.0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.UseHealItemResponse.endUseHealItemResponse = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} remainHp
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.UseHealItemResponse.createUseHealItemResponse = function(builder, remainHp) {
+  survival2d.flatbuffers.UseHealItemResponse.startUseHealItemResponse(builder);
+  survival2d.flatbuffers.UseHealItemResponse.addRemainHp(builder, remainHp);
+  return survival2d.flatbuffers.UseHealItemResponse.endUseHealItemResponse(builder);
+}
+
+/**
+ * @constructor
+ */
 survival2d.flatbuffers.Packet = function() {
   /**
    * @type {flatbuffers.ByteBuffer}

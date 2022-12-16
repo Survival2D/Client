@@ -310,6 +310,14 @@ table PingByMatchInfoResponse {
   safeZone: Vec2;
 }
 
+table UseHealItemRequest {
+  type: Item;
+}
+
+table UseHealItemResponse {
+  remainHp: double;
+}
+
 union PacketData {
   MatchInfoRequest,
   MatchInfoResponse,
