@@ -43,6 +43,56 @@ survival2d.flatbuffers.BulletTypeName = {
 /**
  * @enum {number}
  */
+survival2d.flatbuffers.VestType = {
+  LEVEL_0: 0,
+  LEVEL_1: 1
+};
+
+/**
+ * @enum {string}
+ */
+survival2d.flatbuffers.VestTypeName = {
+  '0': 'LEVEL_0',
+  '1': 'LEVEL_1'
+};
+
+/**
+ * @enum {number}
+ */
+survival2d.flatbuffers.HelmetType = {
+  LEVEL_0: 0,
+  LEVEL_1: 1
+};
+
+/**
+ * @enum {string}
+ */
+survival2d.flatbuffers.HelmetTypeName = {
+  '0': 'LEVEL_0',
+  '1': 'LEVEL_1'
+};
+
+/**
+ * @enum {number}
+ */
+survival2d.flatbuffers.BackPackType = {
+  LEVEL_0: 0,
+  LEVEL_1: 1,
+  LEVEL_2: 2
+};
+
+/**
+ * @enum {string}
+ */
+survival2d.flatbuffers.BackPackTypeName = {
+  '0': 'LEVEL_0',
+  '1': 'LEVEL_1',
+  '2': 'LEVEL_2'
+};
+
+/**
+ * @enum {number}
+ */
 survival2d.flatbuffers.Item = {
   NONE: 0,
   BulletItem: 1,
@@ -925,10 +975,26 @@ survival2d.flatbuffers.VestItem.getSizePrefixedRootAsVestItem = function(bb, obj
 };
 
 /**
+ * @returns {survival2d.flatbuffers.VestType}
+ */
+survival2d.flatbuffers.VestItem.prototype.type = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? /** @type {survival2d.flatbuffers.VestType} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.VestType.LEVEL_0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.VestItem.startVestItem = function(builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.VestType} type
+ */
+survival2d.flatbuffers.VestItem.addType = function(builder, type) {
+  builder.addFieldInt8(0, type, survival2d.flatbuffers.VestType.LEVEL_0);
 };
 
 /**
@@ -942,10 +1008,12 @@ survival2d.flatbuffers.VestItem.endVestItem = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.VestType} type
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.VestItem.createVestItem = function(builder) {
+survival2d.flatbuffers.VestItem.createVestItem = function(builder, type) {
   survival2d.flatbuffers.VestItem.startVestItem(builder);
+  survival2d.flatbuffers.VestItem.addType(builder, type);
   return survival2d.flatbuffers.VestItem.endVestItem(builder);
 }
 
@@ -995,10 +1063,26 @@ survival2d.flatbuffers.HelmetItem.getSizePrefixedRootAsHelmetItem = function(bb,
 };
 
 /**
+ * @returns {survival2d.flatbuffers.HelmetType}
+ */
+survival2d.flatbuffers.HelmetItem.prototype.type = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? /** @type {survival2d.flatbuffers.HelmetType} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.HelmetType.LEVEL_0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.HelmetItem.startHelmetItem = function(builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.HelmetType} type
+ */
+survival2d.flatbuffers.HelmetItem.addType = function(builder, type) {
+  builder.addFieldInt8(0, type, survival2d.flatbuffers.HelmetType.LEVEL_0);
 };
 
 /**
@@ -1012,10 +1096,12 @@ survival2d.flatbuffers.HelmetItem.endHelmetItem = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.HelmetType} type
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.HelmetItem.createHelmetItem = function(builder) {
+survival2d.flatbuffers.HelmetItem.createHelmetItem = function(builder, type) {
   survival2d.flatbuffers.HelmetItem.startHelmetItem(builder);
+  survival2d.flatbuffers.HelmetItem.addType(builder, type);
   return survival2d.flatbuffers.HelmetItem.endHelmetItem(builder);
 }
 
@@ -1157,6 +1243,94 @@ survival2d.flatbuffers.MedKitItem.endMedKitItem = function(builder) {
 survival2d.flatbuffers.MedKitItem.createMedKitItem = function(builder) {
   survival2d.flatbuffers.MedKitItem.startMedKitItem(builder);
   return survival2d.flatbuffers.MedKitItem.endMedKitItem(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.BackPackItem = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.BackPackItem}
+ */
+survival2d.flatbuffers.BackPackItem.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.BackPackItem=} obj
+ * @returns {survival2d.flatbuffers.BackPackItem}
+ */
+survival2d.flatbuffers.BackPackItem.getRootAsBackPackItem = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.BackPackItem).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.BackPackItem=} obj
+ * @returns {survival2d.flatbuffers.BackPackItem}
+ */
+survival2d.flatbuffers.BackPackItem.getSizePrefixedRootAsBackPackItem = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.BackPackItem).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @returns {survival2d.flatbuffers.BackPackType}
+ */
+survival2d.flatbuffers.BackPackItem.prototype.type = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? /** @type {survival2d.flatbuffers.BackPackType} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.BackPackType.LEVEL_0;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.BackPackItem.startBackPackItem = function(builder) {
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.BackPackType} type
+ */
+survival2d.flatbuffers.BackPackItem.addType = function(builder, type) {
+  builder.addFieldInt8(0, type, survival2d.flatbuffers.BackPackType.LEVEL_0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.BackPackItem.endBackPackItem = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.BackPackType} type
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.BackPackItem.createBackPackItem = function(builder, type) {
+  survival2d.flatbuffers.BackPackItem.startBackPackItem(builder);
+  survival2d.flatbuffers.BackPackItem.addType(builder, type);
+  return survival2d.flatbuffers.BackPackItem.endBackPackItem(builder);
 }
 
 /**

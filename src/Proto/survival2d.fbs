@@ -83,16 +83,38 @@ table BulletItem {
   numBullet: int;
 }
 
+enum VestType: byte {
+  LEVEL_0,
+  LEVEL_1,
+}
+
 table VestItem {
+  type: VestType;
+}
+
+enum HelmetType: byte {
+  LEVEL_0,
+  LEVEL_1,
 }
 
 table HelmetItem {
+  type: HelmetType;
 }
 
 table BandageItem {
 }
 
 table MedKitItem {
+}
+
+enum BackPackType: byte {
+  LEVEL_0,
+  LEVEL_1,
+  LEVEL_2,
+}
+
+table BackPackItem {
+  type: BackPackType;
 }
 
 union Item {
