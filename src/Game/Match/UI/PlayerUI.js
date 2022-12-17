@@ -182,6 +182,10 @@ const PlayerUI = cc.Node.extend({
         ));
     },
 
+    animHeal: function () {
+
+    },
+
     animDead: function () {
         this.stopAllActions();
         this.runAction(cc.spawn(

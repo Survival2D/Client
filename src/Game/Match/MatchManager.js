@@ -221,6 +221,36 @@ const MatchManager = cc.Class.extend({
         }
     },
 
+    myPlayerUseBandage: function () {
+        if (this.myPlayer.numBandages > 0) {
+            GameClient.getInstance().sendPlayerUseBandage();
+            this.myPlayer.numBandages--;
+        }
+    },
+
+    myPlayerUseMedKit: function () {
+        if (this.myPlayer.numMedKits > 0) {
+            GameClient.getInstance().sendPlayerUseMedKit();
+            this.myPlayer.numMedKits--;
+        }
+    },
+
+    receivedMyPlayerHealed: function (remainHp, itemType, remainItem) {
+        let oldHp = this.myPlayer.hp;
+        this.myPlayer.hp = remainHp;
+
+        switch (itemType) {
+            case survival2d.flatbuffers.Item.BandageItem:
+                this.myPlayer.numBandages = remainItem;
+                break;
+            case survival2d.flatbuffers.Item.MedKitItem:
+                this.myPlayer.numMedKits = remainItem;
+                break;
+        }
+
+        if (this.isInMatch()) this.scene.myPlayerHeal(oldHp);
+    },
+
     receivedPlayerMove: function (username, pos, rotation) {
         let player = this.players[username];
         if (!player) {

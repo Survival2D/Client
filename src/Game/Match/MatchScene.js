@@ -60,11 +60,30 @@ const MatchScene = BaseLayer.extend({
             item.lblLevel = this.customTextLabel("level", item);
         }
 
+        this.lblMyAmmoHave = this.getControl("num", this.getControl("ammoHave", this.hud));
+
+        this.bandage = this.getControl("bandageHave", this.hud);
+        this.lblNumBandage = this.getControl("num", this.bandage);
+        this.medKit = this.getControl("medKitHave", this.hud);
+        this.lblNumMedKit = this.getControl("num", this.medKit);
+
+        this.bandage.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseBandage();
+            }
+        }, this);
+
+        this.medKit.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseMedKit();
+            }
+        }, this);
+
         let pWeaponPack = this.getControl("pWeaponPack", this.hud);
         this.weaponSlotFist = this.getControl("slotFist", pWeaponPack);
         this.weaponSlotGun = this.getControl("slotGun", pWeaponPack);
-
-        this.lblMyAmmoHave = this.getControl("num", this.getControl("ammoHave", this.hud));
 
         this.weaponSlotFist.addTouchEventListener((sender, type) => {
             if (type === ccui.Widget.TOUCH_ENDED) {
@@ -436,6 +455,9 @@ const MatchScene = BaseLayer.extend({
         this.myEquipHelmet.lblLevel.setString("lv. " + myPlayer.helmet.level);
 
         this.lblMyAmmoHave.setString(myPlayer.numBackBullets);
+
+        this.lblNumBandage.setString(myPlayer.numBandages);
+        this.lblNumMedKit.setString(myPlayer.numMedKits);
     },
 
     myPlayerChangeWeapon: function (slot) {
@@ -510,6 +532,13 @@ const MatchScene = BaseLayer.extend({
         if (username === GameManager.getInstance().userData.username) {
             this.updateMyHpProgress(GameManager.getInstance().getCurrentMatch().myPlayer.hp, oldHp);
         }
+    },
+
+    myPlayerHeal: function (oldHp) {
+        this.myPlayer.animHeal();
+        this.updateMyHpProgress(GameManager.getInstance().getCurrentMatch().myPlayer.hp, oldHp);
+
+        this.updateMyPlayerItem();
     },
 
     updateMyHpProgress: function (curHp, oldHp) {

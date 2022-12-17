@@ -93,21 +93,57 @@ var GameClient = cc.Class.extend({
                                 case survival2d.flatbuffers.MapObjectData.BulletItem: {
                                     obj = new ItemBulletData();
                                     items.push(obj);
+
+                                    let bfBullet = new survival2d.flatbuffers.BulletItem();
+                                    bfObj.data(bfBullet);
+                                    obj.setNumBullets(bfBullet.numBullet());
                                     break;
                                 }
                                 case survival2d.flatbuffers.MapObjectData.GunItem: {
                                     obj = new ItemGunData();
                                     items.push(obj);
+
+                                    let bfGun = new survival2d.flatbuffers.GunItem();
+                                    bfObj.data(bfGun);
+                                    obj.setNumBullets(bfGun.numBullet());
                                     break;
                                 }
                                 case survival2d.flatbuffers.MapObjectData.VestItem: {
                                     obj = new ItemVestData();
                                     items.push(obj);
+
+                                    let bfVest = new survival2d.flatbuffers.VestItem();
+                                    bfObj.data(bfVest);
+                                    switch (bfVest.type()) {
+                                        case survival2d.flatbuffers.VestType.LEVEL_0:
+                                            obj.vest.level = 0;
+                                            break;
+                                        case survival2d.flatbuffers.VestType.LEVEL_1:
+                                            obj.vest.level = 1;
+                                            break;
+                                        default:
+                                            obj.vest.level = 0;
+                                            break;
+                                    }
                                     break;
                                 }
                                 case survival2d.flatbuffers.MapObjectData.HelmetItem: {
                                     obj = new ItemHelmetData();
                                     items.push(obj);
+
+                                    let bfHelmet = new survival2d.flatbuffers.HelmetItem();
+                                    bfObj.data(bfHelmet);
+                                    switch (bfHelmet.type()) {
+                                        case survival2d.flatbuffers.HelmetType.LEVEL_0:
+                                            obj.helmet.level = 0;
+                                            break;
+                                        case survival2d.flatbuffers.HelmetType.LEVEL_1:
+                                            obj.helmet.level = 1;
+                                            break;
+                                        default:
+                                            obj.helmet.level = 0;
+                                            break;
+                                    }
                                     break;
                                 }
                                 case survival2d.flatbuffers.MapObjectData.BandageItem: {
@@ -244,12 +280,34 @@ var GameClient = cc.Class.extend({
                                 let bfVest = new survival2d.flatbuffers.VestItem();
                                 response.item(bfVest);
                                 item = new ItemVestData();
+                                switch (bfVest.type()) {
+                                    case survival2d.flatbuffers.VestType.LEVEL_0:
+                                        item.vest.level = 0;
+                                        break;
+                                    case survival2d.flatbuffers.VestType.LEVEL_1:
+                                        item.vest.level = 1;
+                                        break;
+                                    default:
+                                        item.vest.level = 0;
+                                        break;
+                                }
                                 break;
                             }
                             case survival2d.flatbuffers.Item.HelmetItem: {
                                 let bfHelmet = new survival2d.flatbuffers.HelmetItem();
                                 response.item(bfHelmet);
                                 item = new ItemHelmetData();
+                                switch (bfHelmet.type()) {
+                                    case survival2d.flatbuffers.HelmetType.LEVEL_0:
+                                        item.helmet.level = 0;
+                                        break;
+                                    case survival2d.flatbuffers.HelmetType.LEVEL_1:
+                                        item.helmet.level = 1;
+                                        break;
+                                    default:
+                                        item.helmet.level = 0;
+                                        break;
+                                }
                                 break;
                             }
                             case survival2d.flatbuffers.Item.BandageItem: {
@@ -293,6 +351,13 @@ var GameClient = cc.Class.extend({
                         packet.data(response);
                         cc.log("RECEIVED PlayerTakeItem");
                         GameManager.getInstance().getCurrentMatch().receivedPlayerTakeItem(response.username(), response.id());
+                        break;
+                    }
+                    case survival2d.flatbuffers.PacketData.UseHealItemResponse: {
+                        let response = new survival2d.flatbuffers.UseHealItemResponse();
+                        packet.data(response);
+                        cc.log("RECEIVED UseHealItemResponse");
+                        GameManager.getInstance().getCurrentMatch().receivedMyPlayerHealed(response.remainHp(), response.itemType(), response.remainItem());
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.EndGameResponse: {
@@ -514,6 +579,24 @@ var GameClient = cc.Class.extend({
     sendPlayerTakeItem: function () {
         let builder = new flatbuffers.Builder(0);
         let offset = survival2d.flatbuffers.PlayerTakeItemRequest.createPlayerTakeItemRequest(builder);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerTakeItemRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
+
+    sendPlayerUseBandage: function () {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.UseHealItemRequest.createUseHealItemRequest(builder, survival2d.flatbuffers.Item.BandageItem);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerTakeItemRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
+
+    sendPlayerUseMedKit: function () {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.UseHealItemRequest.createUseHealItemRequest(builder, survival2d.flatbuffers.Item.MedKitItem);
         let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerTakeItemRequest, offset);
         builder.finish(packet);
         let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
