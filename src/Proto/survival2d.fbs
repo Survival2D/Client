@@ -311,11 +311,13 @@ table PingByMatchInfoResponse {
 }
 
 table UseHealItemRequest {
-  type: Item;
+  type: byte;
 }
 
 table UseHealItemResponse {
   remainHp: double;
+  itemType: byte;
+  remainItem: int;
 }
 
 union PacketData {
@@ -348,6 +350,8 @@ union PacketData {
   PingByPlayerMoveResponse,
   PingByMatchInfoRequest,
   PingByMatchInfoResponse,
+  UseHealItemRequest,
+  UseHealItemResponse,
 }
 
 table Packet {

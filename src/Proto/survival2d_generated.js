@@ -201,7 +201,9 @@ survival2d.flatbuffers.PacketData = {
   PingByPlayerMoveRequest: 26,
   PingByPlayerMoveResponse: 27,
   PingByMatchInfoRequest: 28,
-  PingByMatchInfoResponse: 29
+  PingByMatchInfoResponse: 29,
+  UseHealItemRequest: 30,
+  UseHealItemResponse: 31
 };
 
 /**
@@ -237,7 +239,9 @@ survival2d.flatbuffers.PacketDataName = {
   '26': 'PingByPlayerMoveRequest',
   '27': 'PingByPlayerMoveResponse',
   '28': 'PingByMatchInfoRequest',
-  '29': 'PingByMatchInfoResponse'
+  '29': 'PingByMatchInfoResponse',
+  '30': 'UseHealItemRequest',
+  '31': 'UseHealItemResponse'
 };
 
 /**
@@ -5242,43 +5246,26 @@ survival2d.flatbuffers.UseHealItemRequest.getSizePrefixedRootAsUseHealItemReques
 };
 
 /**
- * @returns {survival2d.flatbuffers.Item}
+ * @returns {number}
  */
-survival2d.flatbuffers.UseHealItemRequest.prototype.typeType = function() {
+survival2d.flatbuffers.UseHealItemRequest.prototype.type = function() {
   var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? /** @type {survival2d.flatbuffers.Item} */ (this.bb.readUint8(this.bb_pos + offset)) : survival2d.flatbuffers.Item.NONE;
-};
-
-/**
- * @param {flatbuffers.Table} obj
- * @returns {?flatbuffers.Table}
- */
-survival2d.flatbuffers.UseHealItemRequest.prototype.type = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 6);
-  return offset ? this.bb.__union(obj, this.bb_pos + offset) : null;
+  return offset ? this.bb.readInt8(this.bb_pos + offset) : 0;
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.UseHealItemRequest.startUseHealItemRequest = function(builder) {
-  builder.startObject(2);
+  builder.startObject(1);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.Item} typeType
+ * @param {number} type
  */
-survival2d.flatbuffers.UseHealItemRequest.addTypeType = function(builder, typeType) {
-  builder.addFieldInt8(0, typeType, survival2d.flatbuffers.Item.NONE);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} typeOffset
- */
-survival2d.flatbuffers.UseHealItemRequest.addType = function(builder, typeOffset) {
-  builder.addFieldOffset(1, typeOffset, 0);
+survival2d.flatbuffers.UseHealItemRequest.addType = function(builder, type) {
+  builder.addFieldInt8(0, type, 0);
 };
 
 /**
@@ -5292,14 +5279,12 @@ survival2d.flatbuffers.UseHealItemRequest.endUseHealItemRequest = function(build
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.Item} typeType
- * @param {flatbuffers.Offset} typeOffset
+ * @param {number} type
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.UseHealItemRequest.createUseHealItemRequest = function(builder, typeType, typeOffset) {
+survival2d.flatbuffers.UseHealItemRequest.createUseHealItemRequest = function(builder, type) {
   survival2d.flatbuffers.UseHealItemRequest.startUseHealItemRequest(builder);
-  survival2d.flatbuffers.UseHealItemRequest.addTypeType(builder, typeType);
-  survival2d.flatbuffers.UseHealItemRequest.addType(builder, typeOffset);
+  survival2d.flatbuffers.UseHealItemRequest.addType(builder, type);
   return survival2d.flatbuffers.UseHealItemRequest.endUseHealItemRequest(builder);
 }
 
@@ -5357,10 +5342,26 @@ survival2d.flatbuffers.UseHealItemResponse.prototype.remainHp = function() {
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.UseHealItemResponse.prototype.itemType = function() {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.readInt8(this.bb_pos + offset) : 0;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.UseHealItemResponse.prototype.remainItem = function() {
+  var offset = this.bb.__offset(this.bb_pos, 8);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.UseHealItemResponse.startUseHealItemResponse = function(builder) {
-  builder.startObject(1);
+  builder.startObject(3);
 };
 
 /**
@@ -5369,6 +5370,22 @@ survival2d.flatbuffers.UseHealItemResponse.startUseHealItemResponse = function(b
  */
 survival2d.flatbuffers.UseHealItemResponse.addRemainHp = function(builder, remainHp) {
   builder.addFieldFloat64(0, remainHp, 0.0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} itemType
+ */
+survival2d.flatbuffers.UseHealItemResponse.addItemType = function(builder, itemType) {
+  builder.addFieldInt8(1, itemType, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} remainItem
+ */
+survival2d.flatbuffers.UseHealItemResponse.addRemainItem = function(builder, remainItem) {
+  builder.addFieldInt32(2, remainItem, 0);
 };
 
 /**
@@ -5383,11 +5400,15 @@ survival2d.flatbuffers.UseHealItemResponse.endUseHealItemResponse = function(bui
 /**
  * @param {flatbuffers.Builder} builder
  * @param {number} remainHp
+ * @param {number} itemType
+ * @param {number} remainItem
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.UseHealItemResponse.createUseHealItemResponse = function(builder, remainHp) {
+survival2d.flatbuffers.UseHealItemResponse.createUseHealItemResponse = function(builder, remainHp, itemType, remainItem) {
   survival2d.flatbuffers.UseHealItemResponse.startUseHealItemResponse(builder);
   survival2d.flatbuffers.UseHealItemResponse.addRemainHp(builder, remainHp);
+  survival2d.flatbuffers.UseHealItemResponse.addItemType(builder, itemType);
+  survival2d.flatbuffers.UseHealItemResponse.addRemainItem(builder, remainItem);
   return survival2d.flatbuffers.UseHealItemResponse.endUseHealItemResponse(builder);
 }
 
