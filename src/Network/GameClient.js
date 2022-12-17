@@ -183,7 +183,7 @@ var GameClient = cc.Class.extend({
                             }
                         }
 
-                        GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp);
+                        GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp, haveGun);
                         break;
                     }
                     case survival2d.flatbuffers.PacketData.PlayerMoveResponse: {

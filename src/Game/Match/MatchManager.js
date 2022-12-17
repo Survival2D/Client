@@ -114,7 +114,8 @@ const MatchManager = cc.Class.extend({
     },
 
     updateMyPlayerInfo: function (hp, haveGun) {
-        this.myPlayer.hp = hp
+        this.myPlayer.hp = hp;
+        this.myPlayer.gun.isActive = !!haveGun;
     },
 
     getPlayerListByTeam: function (team) {

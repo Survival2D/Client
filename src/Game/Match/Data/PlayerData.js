@@ -53,7 +53,7 @@ const PlayerData = cc.Class.extend({
      */
     getItem: function (item) {
         if (item instanceof ItemGunData) {
-            this.gun.activeGun();
+            this.gun.isActive = true;
             this.gun.loadBullets(item.getNumBullets());
         }
         if (item instanceof ItemBulletData) {

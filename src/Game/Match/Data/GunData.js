@@ -8,10 +8,6 @@ const GunData = cc.Class.extend({
         this.numBullets = 0;
     },
 
-    activeGun: function () {
-        this.isActive = true;
-    },
-
     loadBullets: function (numBullets) {
         this.numBullets = numBullets;
     },
