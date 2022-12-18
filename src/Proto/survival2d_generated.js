@@ -100,7 +100,8 @@ survival2d.flatbuffers.Item = {
   VestItem: 3,
   HelmetItem: 4,
   BandageItem: 5,
-  MedKitItem: 6
+  MedKitItem: 6,
+  BackPackItem: 7
 };
 
 /**
@@ -113,7 +114,8 @@ survival2d.flatbuffers.ItemName = {
   '3': 'VestItem',
   '4': 'HelmetItem',
   '5': 'BandageItem',
-  '6': 'MedKitItem'
+  '6': 'MedKitItem',
+  '7': 'BackPackItem'
 };
 
 /**

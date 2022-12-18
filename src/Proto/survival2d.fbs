@@ -124,6 +124,7 @@ union Item {
   HelmetItem,
   BandageItem,
   MedKitItem,
+  BackPackItem,
 }
 
 union MapObjectData {
