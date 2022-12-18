@@ -309,7 +309,8 @@ const MatchScene = BaseLayer.extend({
             let oldPos = match.myPlayer.position;
             let unitVector = this.controller.calculateMovementVector();
             let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-            if (this.checkPlayerCollision(newPos, match.myPlayer.radius)) {
+
+            if (Config.CHECK_MOVE_COLLISION && this.checkPlayerCollision(newPos, match.myPlayer.radius)) {
                 newPos = oldPos;
                 unitVector = gm.vector(0, 0);
             }

@@ -9,6 +9,8 @@ Config.FPS = 60;
 Config.MAP_WIDTH = 10000;
 Config.MAP_HEIGHT = 10000;
 
+Config.CHECK_MOVE_COLLISION = false;
+
 /**
  * SPEED: pixel per frame
  */

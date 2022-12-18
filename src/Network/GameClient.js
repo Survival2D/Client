@@ -90,6 +90,16 @@ var GameClient = cc.Class.extend({
                                     obstacles.push(obj);
                                     break;
                                 }
+                                case survival2d.flatbuffers.MapObjectData.Stone: {
+                                    obj = new StoneData();
+                                    obstacles.push(obj);
+                                    break;
+                                }
+                                case survival2d.flatbuffers.MapObjectData.Wall: {
+                                    obj = new WallData();
+                                    obstacles.push(obj);
+                                    break;
+                                }
                                 case survival2d.flatbuffers.MapObjectData.BulletItem: {
                                     obj = new ItemBulletData();
                                     items.push(obj);
