@@ -310,9 +310,11 @@ const MatchScene = BaseLayer.extend({
             let unitVector = this.controller.calculateMovementVector();
             let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
 
-            if (Config.CHECK_MOVE_COLLISION && this.checkPlayerCollision(newPos, match.myPlayer.radius)) {
-                newPos = oldPos;
-                unitVector = gm.vector(0, 0);
+            if (Config.CHECK_MOVE_COLLISION) {
+                if (this.checkPlayerCollision(newPos, match.myPlayer.radius)) {
+                    newPos = oldPos;
+                    unitVector = gm.vector(0, 0);
+                }
             }
 
             let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
@@ -673,11 +675,12 @@ const MatchScene = BaseLayer.extend({
         fromPosition = fromPosition || item.position;
         let itemUI;
         if (item instanceof ItemGunData) itemUI = new ItemGunUI();
-        if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
-        if (item instanceof ItemVestData) itemUI = new ItemVestUI();
-        if (item instanceof ItemHelmetData) itemUI = new ItemHelmetUI();
-        if (item instanceof ItemBandageData) itemUI = new ItemBandageUI();
-        if (item instanceof ItemMedKitData) itemUI = new ItemMedKitUI();
+        else if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
+        else if (item instanceof ItemVestData) itemUI = new ItemVestUI();
+        else if (item instanceof ItemHelmetData) itemUI = new ItemHelmetUI();
+        else if (item instanceof ItemBandageData) itemUI = new ItemBandageUI();
+        else if (item instanceof ItemMedKitData) itemUI = new ItemMedKitUI();
+        else return;
         itemUI.setItemId(item.getObjectId());
         this.itemUIs.push(itemUI);
         this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);

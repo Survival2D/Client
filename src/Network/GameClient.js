@@ -268,7 +268,7 @@ var GameClient = cc.Class.extend({
                     case survival2d.flatbuffers.PacketData.CreateItemOnMapResponse: {
                         let response = new survival2d.flatbuffers.CreateItemOnMapResponse();
                         packet.data(response);
-                        cc.log("RECEIVED CreateItem");
+                        cc.log("RECEIVED CreateItem", response.itemType());
 
                         let item = new ItemData();
                         switch (response.itemType()) {
@@ -331,6 +331,9 @@ var GameClient = cc.Class.extend({
                                 response.item(bfMedKit);
                                 item = new ItemMedKitData();
                                 break;
+                            }
+                            case survival2d.flatbuffers.Item.BackPackItem: {
+                                return;
                             }
                         }
                         item.setObjectId(response.id());
