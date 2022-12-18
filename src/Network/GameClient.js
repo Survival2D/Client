@@ -601,7 +601,7 @@ var GameClient = cc.Class.extend({
     sendPlayerUseBandage: function () {
         let builder = new flatbuffers.Builder(0);
         let offset = survival2d.flatbuffers.UseHealItemRequest.createUseHealItemRequest(builder, survival2d.flatbuffers.Item.BandageItem);
-        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerTakeItemRequest, offset);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.UseHealItemRequest, offset);
         builder.finish(packet);
         let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
         this.client.sendBytes(data);
@@ -610,7 +610,7 @@ var GameClient = cc.Class.extend({
     sendPlayerUseMedKit: function () {
         let builder = new flatbuffers.Builder(0);
         let offset = survival2d.flatbuffers.UseHealItemRequest.createUseHealItemRequest(builder, survival2d.flatbuffers.Item.MedKitItem);
-        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.PlayerTakeItemRequest, offset);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.UseHealItemRequest, offset);
         builder.finish(packet);
         let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
         this.client.sendBytes(data);

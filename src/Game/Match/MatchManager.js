@@ -227,7 +227,6 @@ const MatchManager = cc.Class.extend({
         if (this.myPlayer.numBandages > 0) {
             GameClient.getInstance().sendPlayerUseBandage();
             cc.log("Sent use bandage");
-            this.myPlayer.numBandages--;
         }
     },
 
@@ -236,7 +235,6 @@ const MatchManager = cc.Class.extend({
         if (this.myPlayer.numMedKits > 0) {
             cc.log("Sent use med kit");
             GameClient.getInstance().sendPlayerUseMedKit();
-            this.myPlayer.numMedKits--;
         }
     },
 
