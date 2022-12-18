@@ -65,13 +65,21 @@ const Controller = cc.Class.extend({
                 this.reloadBullets();
                 break;
             case cc.KEY["1"]:
-                cc.log("DMM 1");
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.GUN);
                 break;
             case cc.KEY["2"]:
-                cc.log("DMM 2");
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.FIST);
                 break;
+            case cc.KEY["3"]: {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseBandage();
+                break;
+            }
+            case cc.KEY["4"]: {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseMedKit();
+                break;
+            }
         }
     },
 
