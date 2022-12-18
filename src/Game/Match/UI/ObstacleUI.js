@@ -166,13 +166,13 @@ const WallUI = ObstacleUI.extend({
         this._super("Obstacle/wall.png", ccui.Widget.PLIST_TEXTURE);
         this.setContentSize(Config.WALL_WIDTH - 2, Config.WALL_HEIGHT - 2);
 
-        let border = new ccui.Layout();
-        border.setBackGroundColorType(ccui.Layout.BG_COLOR_SOLID);
-        border.setBackGroundColor(cc.color("#000000"));
-        border.setContentSize(Config.WALL_WIDTH, Config.WALL_HEIGHT);
-        this.addChild(border, -1);
-        border.setAnchorPoint(0.5, 0.5);
-        border.setPosition(this.width/2, this.height/2);
+        // let border = new ccui.Layout();
+        // border.setBackGroundColorType(ccui.Layout.BG_COLOR_SOLID);
+        // border.setBackGroundColor(cc.color("#000000"));
+        // border.setContentSize(Config.WALL_WIDTH, Config.WALL_HEIGHT);
+        // this.addChild(border, -1);
+        // border.setAnchorPoint(0.5, 0.5);
+        // border.setPosition(this.width/2, this.height/2);
     },
 
     setPosition: function (position, y) {
