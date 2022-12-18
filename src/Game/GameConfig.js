@@ -9,6 +9,7 @@ Config.FPS = 60;
 Config.MAP_WIDTH = 10000;
 Config.MAP_HEIGHT = 10000;
 
+Config.ENABLE_SMOOTH = false;
 Config.CHECK_MOVE_COLLISION = false;
 
 /**

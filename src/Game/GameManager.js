@@ -66,8 +66,6 @@ const GameManager = cc.Class.extend({
     }
 });
 
-GameManager.ENABLE_SMOOTH = false;
-
 /**
  * @returns {GameManager}
  */

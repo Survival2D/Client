@@ -22,37 +22,37 @@ const MatchManager = cc.Class.extend({
 
         if (Constant.IS_OFFLINE) {
 
-            // let objId = 0;
-            // for (let i = 0; i < Math.min(1000, Config.MAP_OBJECT_POSITION.length); i++) {
-            //     let objPos = Config.MAP_OBJECT_POSITION[i];
-            //     let type = objPos[0];
-            //     if (type === 0) continue;
-            //     let obj;
-            //     switch (type) {
-            //         case Config.MAP_OBJECT_TYPE.TREE:
-            //             obj = new TreeData();
-            //             obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
-            //             break;
-            //         case Config.MAP_OBJECT_TYPE.CRATE:
-            //             obj = new CrateData();
-            //             obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
-            //             break;
-            //         case Config.MAP_OBJECT_TYPE.STONE:
-            //             obj = new StoneData();
-            //             obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
-            //             break;
-            //         case Config.MAP_OBJECT_TYPE.WALL:
-            //             obj = new WallData();
-            //             obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
-            //             break;
-            //     }
-            //
-            //     obj.setObjectId(objId);
-            //     objId++;
-            //     this.obstacles.push(obj);
-            // }
+            let objId = 0;
+            for (let i = 0; i < Math.min(5000, Config.MAP_OBJECT_POSITION.length); i++) {
+                let objPos = Config.MAP_OBJECT_POSITION[i];
+                let type = objPos[0];
+                if (type === 0) continue;
+                let obj;
+                switch (type) {
+                    case Config.MAP_OBJECT_TYPE.TREE:
+                        obj = new TreeData();
+                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
+                        break;
+                    case Config.MAP_OBJECT_TYPE.CRATE:
+                        obj = new CrateData();
+                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+                        break;
+                    case Config.MAP_OBJECT_TYPE.STONE:
+                        obj = new StoneData();
+                        obj.position = gm.p(objPos[1][0] * 100 + obj.radius, objPos[1][1] * 100 + obj.radius);
+                        break;
+                    case Config.MAP_OBJECT_TYPE.WALL:
+                        obj = new WallData();
+                        obj.position = gm.p(objPos[1][0] * 100, objPos[1][1] * 100);
+                        break;
+                }
 
-            this.myPlayer.position = gm.p(this.mapWidth/2, this.mapHeight/2);
+                obj.setObjectId(objId);
+                objId++;
+                this.obstacles.push(obj);
+            }
+
+            this.myPlayer.position = gm.p(this.mapWidth/2 + 50, this.mapHeight/2);
             this.myPlayer.hp = Config.PLAYER_MAX_HP;
             this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
             this.players[GameManager.getInstance().userData.username] = this.myPlayer;
@@ -260,7 +260,7 @@ const MatchManager = cc.Class.extend({
         }
 
         if (username === GameManager.getInstance().userData.username) {
-            if (GameManager.ENABLE_SMOOTH) {
+            if (Config.ENABLE_SMOOTH) {
                 this._saveMyPlayerMoveAction = {
                     position: pos,
                     rotation: rotation
@@ -278,7 +278,7 @@ const MatchManager = cc.Class.extend({
     syncMyPlayerMove: function () {
         if (Constant.IS_OFFLINE) return;
         if (this.gameState !== MatchManager.STATE.PLAY) return;
-        if (!GameManager.ENABLE_SMOOTH) return;
+        if (!Config.ENABLE_SMOOTH) return;
         cc.log("--Sync my player move");
         this.myPlayer.position = this._saveMyPlayerMoveAction.position;
         this.myPlayer.rotation = this._saveMyPlayerMoveAction.rotation;

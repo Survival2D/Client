@@ -22,19 +22,19 @@ var LoginScene = BaseLayer.extend({
     },
 
     onLogin: function () {
-        var username = this.tfUsername.getString();
-        var password = this.tfPassword.getString();
-        cc.log("username: ", username);
-        cc.log("password: ", password);
-        if (!username) username = "";
-        if (!password) password = "";
-        GameClient.newInstance().connectClientServer(username, password);
-
-        if (Constant.IS_OFFLINE) GameManager.getInstance().onReceivedFindMatch(0, 1);
-        // if (Constant.IS_OFFLINE) {
-        //     GameManager.getInstance().userData.setUserData("QuanTM7");
-        //     SceneManager.getInstance().openHomeScene();
-        // }
+        if (Constant.IS_OFFLINE) {
+            GameManager.getInstance().userData.setUserData("QuanTM7");
+            GameManager.getInstance().onReceivedFindMatch(0, 1);
+        }
+        else {
+            var username = this.tfUsername.getString();
+            var password = this.tfPassword.getString();
+            cc.log("username: ", username);
+            cc.log("password: ", password);
+            if (!username) username = "";
+            if (!password) password = "";
+            GameClient.newInstance().connectClientServer(username, password);
+        }
     }
 });
 

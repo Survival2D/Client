@@ -37,6 +37,7 @@ const MatchScene = BaseLayer.extend({
         this.safeZoneUI.setVisible(false);
 
         this.hud = this.getControl("hud");
+        this.hud.setScale(0.8);
 
         let pPlayerLeft = this.getControl("numPlayerLeft", this.hud);
         this.numPlayerLeft = this.customTextLabel("num", pPlayerLeft);
@@ -320,7 +321,7 @@ const MatchScene = BaseLayer.extend({
             let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
             let degRotation = Math.round(gm.radToDeg(rotation));
 
-            if (GameManager.ENABLE_SMOOTH) {
+            if (Config.ENABLE_SMOOTH) {
                 this.setMyPlayerPosition(newPos);
                 this.myPlayer.setPlayerRotation(degRotation);
             }
@@ -570,13 +571,13 @@ const MatchScene = BaseLayer.extend({
             spr.setColor(cc.color("#CA2400"));
             spr.setPosition(playerUI.getPosition());
             spr.setOpacity(0);
-            spr.setScale(0.1);
+            spr.setScale(0.3);
             spr.runAction(cc.sequence(
                 cc.spawn(
                     cc.fadeIn(0.3),
                     cc.sequence(
-                        cc.scaleTo(0.1, 0.3).easing(cc.easeIn(2)),
-                        cc.scaleTo(1, 0.5)
+                        cc.scaleTo(0.1, 1).easing(cc.easeIn(2)),
+                        cc.scaleTo(1, 1.3)
                     ),
                     cc.sequence(
                         cc.delayTime(1),

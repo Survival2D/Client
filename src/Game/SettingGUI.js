@@ -18,12 +18,12 @@ const SettingGUI = BaseLayer.extend({
     onEnter: function () {
         this._super();
 
-        this.lblEnableSmooth.setString(GameManager.ENABLE_SMOOTH ? "Enabled" : "Disabled");
+        this.lblEnableSmooth.setString(Config.ENABLE_SMOOTH ? "Enabled" : "Disabled");
     },
 
     changeEnableSmooth: function () {
-        GameManager.ENABLE_SMOOTH = !GameManager.ENABLE_SMOOTH;
-        this.lblEnableSmooth.setString(GameManager.ENABLE_SMOOTH ? "Enabled" : "Disabled");
+        Config.ENABLE_SMOOTH = !Config.ENABLE_SMOOTH;
+        this.lblEnableSmooth.setString(Config.ENABLE_SMOOTH ? "Enabled" : "Disabled");
     }
 });
 
