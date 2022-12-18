@@ -95,12 +95,12 @@ const ObstacleUI = ccui.ImageView.extend({
 
 const TreeUI = ObstacleUI.extend({
     ctor: function () {
-        this._super(game_images.obstacle_tree, ccui.Widget.LOCAL_TEXTURE);
+        this._super("Obstacle/tree.png", ccui.Widget.PLIST_TEXTURE);
         this.setContentSize(Config.TREE_RADIUS * 4, Config.TREE_RADIUS * 4);
     },
 
     createResidue: function () {
-        let residue = new ccui.ImageView("res/ui/Game/Obstacle/tree_residue.png");
+        let residue = new ccui.ImageView("Obstacle/tree_residue.png", ccui.Widget.PLIST_TEXTURE);
         residue.ignoreContentAdaptWithSize(false);
         this.addChild(residue, -1);
 
@@ -114,7 +114,7 @@ const TreeUI = ObstacleUI.extend({
 
 const CrateUI = ObstacleUI.extend({
     ctor: function () {
-        this._super(game_images.obstacle_crate, ccui.Widget.LOCAL_TEXTURE);
+        this._super("Obstacle/crate.png", ccui.Widget.PLIST_TEXTURE);
         this.setContentSize(Config.CRATE_WIDTH, Config.CRATE_HEIGHT);
     },
 
@@ -136,7 +136,7 @@ const CrateUI = ObstacleUI.extend({
     },
 
     createResidue: function () {
-        let residue = new ccui.ImageView("res/ui/Game/Obstacle/crate_residue.png");
+        let residue = new ccui.ImageView("Obstacle/crate_residue.png", ccui.Widget.PLIST_TEXTURE);
         residue.ignoreContentAdaptWithSize(false);
         residue.setContentSize(this.width, this.height);
         this.addChild(residue, -1);
@@ -151,8 +151,8 @@ const CrateUI = ObstacleUI.extend({
 
 const StoneUI = ObstacleUI.extend({
     ctor: function () {
-        if (Math.random() > 0.5) this._super(game_images.obstacle_stone_1, ccui.Widget.LOCAL_TEXTURE);
-        else this._super(game_images.obstacle_stone_2, ccui.Widget.LOCAL_TEXTURE);
+        if (Math.random() > 0.5) this._super("Obstacle/stone_1.png", ccui.Widget.PLIST_TEXTURE);
+        else this._super("Obstacle/stone_2.png", ccui.Widget.PLIST_TEXTURE);
         this.setContentSize(Config.STONE_RADIUS * 2, Config.STONE_RADIUS * 2);
     },
 
@@ -163,7 +163,7 @@ const StoneUI = ObstacleUI.extend({
 
 const WallUI = ObstacleUI.extend({
     ctor: function () {
-        this._super(game_images.obstacle_wall, ccui.Widget.LOCAL_TEXTURE);
+        this._super("Obstacle/wall.png", ccui.Widget.PLIST_TEXTURE);
         this.setContentSize(Config.WALL_WIDTH - 2, Config.WALL_HEIGHT - 2);
 
         let border = new ccui.Layout();

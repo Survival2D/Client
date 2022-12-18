@@ -1,1 +1,1 @@
-cocos run -p win32
+cocos run -p web

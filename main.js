@@ -109,7 +109,6 @@ cc.game.onStart = function(){
 
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
-        GameManager.preloadResources();
         SceneManager.getInstance().openLoginScene();
     }, this);
 

@@ -223,17 +223,13 @@ const MatchManager = cc.Class.extend({
     },
 
     myPlayerUseBandage: function () {
-        cc.log("Click use bandage, num bandages = " + this.myPlayer.numBandages);
         if (this.myPlayer.numBandages > 0) {
             GameClient.getInstance().sendPlayerUseBandage();
-            cc.log("Sent use bandage");
         }
     },
 
     myPlayerUseMedKit: function () {
-        cc.log("Click use med kit, num med kits = " + this.myPlayer.numMedKits);
         if (this.myPlayer.numMedKits > 0) {
-            cc.log("Sent use med kit");
             GameClient.getInstance().sendPlayerUseMedKit();
         }
     },

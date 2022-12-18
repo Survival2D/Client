@@ -41,7 +41,13 @@ var game_images = {
   obstacle_stone_2: "res/ui/Game/Obstacle/stone_2.png",
   obstacle_wall: "res/ui/Game/Obstacle/wall.png",
 
-  bullet_trail: "res/ui/Game/bullet_trail.png"
+  bullet_trail: "res/ui/Game/bullet_trail.png",
+
+  game_art: "res/ui/Game/game_art.png"
+};
+
+var game_plist = {
+  game_art: "res/ui/Game/game_art.plist"
 }
 
 var game_fonts = {
@@ -56,4 +62,8 @@ for (var i in game_UIs) {
 
 for (var i in game_images) {
   g_resources.push(game_images[i]);
+}
+
+for (var i in game_plist) {
+  g_resources.push(game_plist[i]);
 }

@@ -242,24 +242,24 @@ const MatchScene = BaseLayer.extend({
         this.ground.addChild(drawNode, MatchScene.Z_ORDER.BG);
         this.crossline = drawNode;
 
-        this.miniMap.updateMiniMapView();
+        // this.miniMap.updateMiniMapView();
 
-        for (let username in match.players) {
-            let player = match.players[username];
-            let playerUI = this.playerUIs[player.username];
-            if (!playerUI) {
-                playerUI = new PlayerUI();
-                this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
-                this.playerUIs[player.username] = playerUI;
-            }
-            playerUI.unEquip();
-            playerUI.setPosition(player.position);
-            playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
-            playerUI.setPlayerUIInfo(player.username);
-            playerUI.setPlayerColorByTeam(player.team);
-            playerUI.setVestLevel(player.vest.level);
-            playerUI.setHelmetLevel(player.helmet.level);
-        }
+        // for (let username in match.players) {
+        //     let player = match.players[username];
+        //     let playerUI = this.playerUIs[player.username];
+        //     if (!playerUI) {
+        //         playerUI = new PlayerUI();
+        //         this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
+        //         this.playerUIs[player.username] = playerUI;
+        //     }
+        //     playerUI.unEquip();
+        //     playerUI.setPosition(player.position);
+        //     playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
+        //     playerUI.setPlayerUIInfo(player.username);
+        //     playerUI.setPlayerColorByTeam(player.team);
+        //     playerUI.setVestLevel(player.vest.level);
+        //     playerUI.setHelmetLevel(player.helmet.level);
+        // }
 
         for (let obsUI of this.obstacleUIs) {
             obsUI.removeFromParent(true);

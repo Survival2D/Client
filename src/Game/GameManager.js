@@ -6,6 +6,8 @@ const GameManager = cc.Class.extend({
     ctor: function () {
         this.userData = new UserData();
         this.match = null;
+
+        GameManager.preloadResources();
     },
 
     findMatch: function () {
@@ -86,4 +88,6 @@ GameManager.preloadResources = function () {
     // for (var i in game_images) {
     //     cc.textureCache.addImage(game_images[i]);
     // }
+
+    cc.spriteFrameCache.addSpriteFrames("res/ui/Game/game_art.plist", "res/ui/Game/game_art.png");
 };
