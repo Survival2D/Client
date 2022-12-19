@@ -266,6 +266,15 @@ const MatchScene = BaseLayer.extend({
             playerUI.setPlayerColorByTeam(player.team);
             playerUI.setVestLevel(player.vest.level);
             playerUI.setHelmetLevel(player.helmet.level);
+            playerUI.setVisible(true);
+        }
+
+        for (let key in match.outSightPlayers) {
+            let player = match.outSightPlayers[key];
+            let playerUI = this.playerUIs[player.username];
+            if (playerUI) {
+                playerUI.setVisible(false);
+            }
         }
 
         for (let key in match.obstacles) {

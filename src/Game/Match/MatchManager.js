@@ -9,6 +9,7 @@ const MatchManager = cc.Class.extend({
         this.gameState = MatchManager.STATE.WAIT;
 
         this.players = {};  // map
+        this.outSightPlayers = {};  // map
         this.myPlayer = new PlayerData();
 
         this.mapWidth = Config.MAP_WIDTH;
@@ -96,6 +97,15 @@ const MatchManager = cc.Class.extend({
      * @param {ItemData[]} items
      */
     updateMatchInfo: function (players, obstacles, items) {
+        cc.log("obstacles", JSON.stringify(obstacles.map(e => {
+            let type = "NONE";
+            if (e instanceof TreeData) type = "TREE";
+            if (e instanceof CrateData) type = "CRATE";
+            if (e instanceof StoneData) type = "STONE";
+            if (e instanceof WallData) type = "WALL";
+            return {type: type, id: e.getObjectId()}
+        })));
+
         for (let player of players) {
             this.players[player.username] = player;
         }
@@ -120,6 +130,17 @@ const MatchManager = cc.Class.extend({
             y: this.myPlayer.position.y - Constant.LOGIC_VIEW_HEIGHT/2,
             w: Constant.LOGIC_VIEW_WIDTH,
             h: Constant.LOGIC_VIEW_HEIGHT
+        }
+
+        for (let key in this.players) {
+            let player = this.players[key];
+            if (!gm.checkCollisionCircleRectangle(player.position, player.radius, gm.p(rect.x, rect.y), rect.w, rect.h)) {
+                this.outSightPlayers[player.username] = player;
+                delete this.players[player.username];
+            }
+            else {
+                delete this.outSightPlayers[player.username];
+            }
         }
 
         for (let key in this.obstacles) {
