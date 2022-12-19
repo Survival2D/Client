@@ -4,9 +4,9 @@
 
 const MatchScene = BaseLayer.extend({
     ctor: function () {
-        this.playerUIs = [];
-        this.obstacleUIs = [];
-        this.itemUIs = [];
+        this.playerUIs = {};    // map by username
+        this.obstacleUIs = {};  // map by id
+        this.itemUIs = {};      // map by id
         this.bullets = [];
         this.workingBullets = [];
 
@@ -242,49 +242,66 @@ const MatchScene = BaseLayer.extend({
         this.ground.addChild(drawNode, MatchScene.Z_ORDER.BG);
         this.crossline = drawNode;
 
-        // this.miniMap.updateMiniMapView();
+        this.miniMap.updateMiniMapView();
 
-        // for (let username in match.players) {
-        //     let player = match.players[username];
-        //     let playerUI = this.playerUIs[player.username];
-        //     if (!playerUI) {
-        //         playerUI = new PlayerUI();
-        //         this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
-        //         this.playerUIs[player.username] = playerUI;
-        //     }
-        //     playerUI.unEquip();
-        //     playerUI.setPosition(player.position);
-        //     playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
-        //     playerUI.setPlayerUIInfo(player.username);
-        //     playerUI.setPlayerColorByTeam(player.team);
-        //     playerUI.setVestLevel(player.vest.level);
-        //     playerUI.setHelmetLevel(player.helmet.level);
-        // }
-
-        for (let obsUI of this.obstacleUIs) {
-            obsUI.removeFromParent(true);
+        for (let username in match.players) {
+            let player = match.players[username];
+            let playerUI = this.playerUIs[player.username];
+            if (!playerUI) {
+                playerUI = new PlayerUI();
+                this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
+                this.playerUIs[player.username] = playerUI;
+            }
+            playerUI.unEquip();
+            playerUI.setPosition(player.position);
+            playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
+            playerUI.setPlayerUIInfo(player.username);
+            playerUI.setPlayerColorByTeam(player.team);
+            playerUI.setVestLevel(player.vest.level);
+            playerUI.setHelmetLevel(player.helmet.level);
         }
-        this.obstacleUIs = [];
 
-        for (let obs of match.obstacles) {
-            let obsUI;
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
+            let id = obs.getObjectId();
+            let obsUI = this.obstacleUIs[id];
+            if (obsUI) {
+                obsUI.setPosition(obs.position);
+                let hpRatio = obs.maxHp === 0 ? 0 : obs.hp / obs.maxHp;
+                obsUI.setScale(0.5 + 0.5 * hpRatio);
+                obsUI.setVisible(true);
+                continue;
+            }
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) obsUI = new CrateUI();
             if (obs instanceof StoneData) obsUI = new StoneUI();
             if (obs instanceof WallData) obsUI = new WallUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
-            obsUI.setObstacleId(obs.getObjectId());
-            this.obstacleUIs.push(obsUI);
+            obsUI.setObstacleId(id);
+            this.obstacleUIs[id] = obsUI;
         }
 
-        for (let itemUI of this.itemUIs) {
-            itemUI.removeFromParent(true);
+        for (let key in match.outSightObstacles) {
+            let obs = match.outSightObstacles[key];
+            let id = obs.getObjectId();
+            let obsUI = this.obstacleUIs[id];
+            if (obsUI) {
+                obsUI.setVisible(false);
+            }
         }
-        this.itemUIs = [];
 
-        for (let item of match.items) {
-            this.createItem(item);
+        for (let key in match.items) {
+            this.createItem(match.items[key]);
+        }
+
+        for (let key in match.outSightItems) {
+            let item = match.outSightItems[key];
+            let id = item.getObjectId();
+            let itemUI = this.obstacleUIs[id];
+            if (itemUI) {
+                itemUI.setVisible(false);
+            }
         }
 
         this.safeZoneUI.setPosition(0, 0);
@@ -622,37 +639,9 @@ const MatchScene = BaseLayer.extend({
         return bullet;
     },
 
-    /**
-     * @param {number} obstacleId
-     * @return {null|ObstacleUI}
-     */
-    getObstacleUIById: function (obstacleId) {
-        for (let obsUI of this.obstacleUIs) {
-            if (obsUI.getObstacleId() === obstacleId) return obsUI;
-        }
-
-        return null;
-    },
-
-    /**
-     * @param {number} obstacleId
-     * @return {null|ObstacleUI}
-     */
-    getObstacleUIAndRemoveById: function (obstacleId) {
-        for (let i = 0; i < this.obstacleUIs.length; i++) {
-            let obsUI = this.obstacleUIs[i];
-            if (obsUI.getObstacleId() === obstacleId) {
-                this.obstacleUIs.splice(i, 1);
-                return obsUI;
-            }
-        }
-
-        return null;
-    },
-
     obstacleTakeDamage: function (obstacleId) {
         let obs = GameManager.getInstance().getCurrentMatch().getObstacleById(obstacleId);
-        let obsUI = this.getObstacleUIById(obstacleId);
+        let obsUI = this.obstacleUIs[obstacleId];
         if (obsUI) {
             let hpRatio = obs.maxHp === 0 ? 0 : obs.hp / obs.maxHp;
             obsUI.animTakeDamage(hpRatio);
@@ -660,9 +649,10 @@ const MatchScene = BaseLayer.extend({
     },
 
     obstacleDestroyed: function (obstacleId) {
-        let obsUI = this.getObstacleUIAndRemoveById(obstacleId);
+        let obsUI = this.obstacleUIs[obstacleId];
         if (obsUI) {
             obsUI.animDestroyed();
+            delete this.obstacleUIs[obstacleId];
         }
 
         this.miniMap.obstacleDestroyed(obstacleId);
@@ -673,8 +663,15 @@ const MatchScene = BaseLayer.extend({
      * @param {gm.Position=} fromPosition
      */
     createItem: function (item, fromPosition) {
+        let id = item.getObjectId();
+        let itemUI = this.itemUIs[id];
+        if (itemUI) {
+            itemUI.setPosition(item.position);
+            itemUI.setVisible(true);
+            return;
+        }
+
         fromPosition = fromPosition || item.position;
-        let itemUI;
         if (item instanceof ItemGunData) itemUI = new ItemGunUI();
         else if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
         else if (item instanceof ItemVestData) itemUI = new ItemVestUI();
@@ -682,21 +679,18 @@ const MatchScene = BaseLayer.extend({
         else if (item instanceof ItemBandageData) itemUI = new ItemBandageUI();
         else if (item instanceof ItemMedKitData) itemUI = new ItemMedKitUI();
         else return;
-        itemUI.setItemId(item.getObjectId());
-        this.itemUIs.push(itemUI);
+        itemUI.setItemId(id);
+        this.itemUIs[id] = itemUI;
         this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);
         itemUI.setPosition(fromPosition);
         itemUI.runAction(cc.moveTo(0.3, item.position).easing(cc.easeIn(2.5)));
     },
 
     playerTakeItem: function (itemId) {
-        for (let i = 0; i < this.itemUIs.length; i++) {
-            let itemUI = this.itemUIs[i];
-            if (itemUI.getItemId() === itemId) {
-                this.itemUIs.splice(i, 1);
-
-                itemUI.animTaken();
-            }
+        let itemUI = this.itemUIs[itemId];
+        if (itemUI) {
+            itemUI.animTaken();
+            delete this.itemUIs[itemId];
         }
     },
 

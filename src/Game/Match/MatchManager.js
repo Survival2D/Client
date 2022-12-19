@@ -14,8 +14,10 @@ const MatchManager = cc.Class.extend({
         this.mapWidth = Config.MAP_WIDTH;
         this.mapHeight = Config.MAP_HEIGHT;
 
-        this.obstacles = [];
-        this.items = [];
+        this.obstacles = {};    // map by id
+        this.outSightObstacles = {};    // map by id
+        this.items = {};    // map by id
+        this.outSightItems = {};    // map by id
 
         this.safeZone = new SafeZoneData();
         this.nextSafeZone = new SafeZoneData();
@@ -48,8 +50,8 @@ const MatchManager = cc.Class.extend({
                 }
 
                 obj.setObjectId(objId);
+                this.obstacles[objId] = obj;
                 objId++;
-                this.obstacles.push(obj);
             }
 
             this.myPlayer.position = gm.p(this.mapWidth/2 + 50, this.mapHeight/2);
@@ -106,9 +108,55 @@ const MatchManager = cc.Class.extend({
             rotation: this.myPlayer.rotation
         };
 
-        this.obstacles = obstacles;
+        for (let obs of obstacles) {
+            this.obstacles[obs.getObjectId()] = obs;
+        }
 
-        this.items = items;
+        for (let item of items) {
+            this.items[item.getObjectId()] = item;
+        }
+
+        let rect = {
+            x: this.myPlayer.position.x - Constant.LOGIC_VIEW_WIDTH/2,
+            y: this.myPlayer.position.y - Constant.LOGIC_VIEW_HEIGHT/2,
+            w: Constant.LOGIC_VIEW_WIDTH,
+            h: Constant.LOGIC_VIEW_HEIGHT
+        }
+
+        for (let key in this.obstacles) {
+            let obs = this.obstacles[key];
+            let id = obs.getObjectId();
+            if (obs instanceof TreeData || obs instanceof StoneData) {
+                if (!gm.checkCollisionCircleRectangle(obs.position, obs.radius, gm.p(rect.x, rect.y), rect.w, rect.h)) {
+                    this.outSightObstacles[id] = obs;
+                    delete this.obstacles[id];
+                }
+                else {
+                    delete this.outSightObstacles[id];
+                }
+            }
+            if (obs instanceof WallData || obs instanceof CrateData) {
+                if (!gm.checkCollisionRectangleRectangle(obs.position, obs.width, obs.height, gm.p(rect.x, rect.y), rect.w, rect.h)) {
+                    this.outSightObstacles[id] = obs;
+                    delete this.obstacles[id];
+                }
+                else {
+                    delete this.outSightObstacles[id];
+                }
+            }
+        }
+
+        for (let key in this.items) {
+            let item = this.items[key];
+            let id = item.getObjectId();
+            if (!gm.checkCollisionCircleRectangle(item.position, item.radius, gm.p(rect.x, rect.y), rect.w, rect.h)) {
+                this.outSightItems[id] = item;
+                delete this.items[id];
+            }
+            else {
+                delete this.outSightItems[id];
+            }
+        }
 
         if (this.isInMatch()) this.scene.updateMatchView();
     },
@@ -144,11 +192,8 @@ const MatchManager = cc.Class.extend({
      * @return {null|ObstacleData}
      */
     getObstacleById: function (obstacleId) {
-        for (let obs of this.obstacles) {
-            if (obs.getObjectId() === obstacleId) return obs;
-        }
-
-        return null
+        if (this.obstacles[obstacleId]) return this.obstacles[obstacleId];
+        return null;
     },
 
     /**
@@ -156,15 +201,13 @@ const MatchManager = cc.Class.extend({
      * @return {null|ObstacleData}
      */
     getObstacleAndRemoveById: function (obstacleId) {
-        for (let i = 0; i < this.obstacles.length; i++) {
-            let obs = this.obstacles[i];
-            if (obs.getObjectId() === obstacleId) {
-                this.obstacles.splice(i, 1);
-                return obs;
-            }
+        if (this.obstacles[obstacleId]) {
+            let obs = this.obstacles[obstacleId];
+            delete this.obstacles[obstacleId];
+            return obs;
         }
 
-        return null
+        return null;
     },
 
     /**
@@ -172,11 +215,9 @@ const MatchManager = cc.Class.extend({
      * @return {null|ItemData}
      */
     getItemById: function (itemId) {
-        for (let item of this.items) {
-            if (item.getObjectId() === itemId) return item;
-        }
+        if (this.items[itemId]) return this.items[itemId];
 
-        return null
+        return null;
     },
 
     /**
@@ -184,15 +225,13 @@ const MatchManager = cc.Class.extend({
      * @return {null|ItemData}
      */
     getItemAndRemoveById: function (itemId) {
-        for (let i = 0; i < this.items.length; i++) {
-            let item = this.items[i];
-            if (item.getObjectId() === itemId) {
-                this.items.splice(i, 1);
-                return item;
-            }
+        if (this.items[itemId]) {
+            let item = this.items[itemId];
+            delete this.items[itemId];
+            return item;
         }
 
-        return null
+        return null;
     },
 
     updateMyPlayerMove: function (unitVector, rotation) {
@@ -378,7 +417,7 @@ const MatchManager = cc.Class.extend({
      * @param {gm.Position} fromPosition
      */
     receivedItemCreated: function (item, fromPosition) {
-        this.items.push(item);
+        this.items[item.getObjectId()] = item;
 
         if (this.isInMatch()) this.scene.createItem(item, fromPosition);
     },

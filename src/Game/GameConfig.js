@@ -30,6 +30,7 @@ Config.WALL_WIDTH = 100;
 Config.WALL_HEIGHT = 100;
 
 Config.PLAYER_MAX_HP = 100;
+Config.MAX_HP = 100;
 
 Config.MINI_MAP_SCALE = 0.3;
 
