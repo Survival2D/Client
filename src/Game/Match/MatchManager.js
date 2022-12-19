@@ -96,7 +96,6 @@ const MatchManager = cc.Class.extend({
      * @param {ItemData[]} items
      */
     updateMatchInfo: function (players, obstacles, items) {
-        this.players = {};
         for (let player of players) {
             this.players[player.username] = player;
         }
