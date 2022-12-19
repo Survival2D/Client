@@ -60,7 +60,8 @@ const MiniMap = ccui.Layout.extend({
         }
         this.miniObstacleUIs = [];
 
-        for (let obs of match.obstacles) {
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
             if (obs instanceof CrateData) obsUI = new CrateUI();
