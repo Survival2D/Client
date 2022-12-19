@@ -6,8 +6,7 @@ const ObstacleData = MapObjectData.extend({
     ctor: function () {
         this._super();
         this._obstacleType = 0;
-        this.hp = 0;
-        this.maxHp = Config.MAX_HP;
+        this.hp = Config.MAX_HP;
     },
 
     setObstacleType: function (type) {

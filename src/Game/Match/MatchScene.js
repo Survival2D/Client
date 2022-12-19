@@ -267,7 +267,7 @@ const MatchScene = BaseLayer.extend({
             let obsUI = this.obstacleUIs[id];
             if (obsUI) {
                 obsUI.setPosition(obs.position);
-                let hpRatio = obs.maxHp === 0 ? 0 : obs.hp / obs.maxHp;
+                let hpRatio = obs.hp / Config.MAX_HP;
                 obsUI.setScale(0.5 + 0.5 * hpRatio);
                 obsUI.setVisible(true);
                 continue;
@@ -643,7 +643,7 @@ const MatchScene = BaseLayer.extend({
         let obs = GameManager.getInstance().getCurrentMatch().getObstacleById(obstacleId);
         let obsUI = this.obstacleUIs[obstacleId];
         if (obsUI) {
-            let hpRatio = obs.maxHp === 0 ? 0 : obs.hp / obs.maxHp;
+            let hpRatio = obs.hp / Config.MAX_HP;
             obsUI.animTakeDamage(hpRatio);
         }
     },
