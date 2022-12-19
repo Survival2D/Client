@@ -4,8 +4,8 @@
 
 const Constant = function () {};
 
-Constant.WIDTH = 1280;
-Constant.HEIGHT = 720;
+Constant.WIDTH = 1920;
+Constant.HEIGHT = 1080;
 
 Constant.LOGIC_VIEW_WIDTH = 2400;
 Constant.LOGIC_VIEW_HEIGHT = 1200;
