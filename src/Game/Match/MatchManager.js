@@ -193,6 +193,7 @@ const MatchManager = cc.Class.extend({
      */
     getObstacleById: function (obstacleId) {
         if (this.obstacles[obstacleId]) return this.obstacles[obstacleId];
+        if (this.outSightObstacles[obstacleId]) return this.outSightObstacles[obstacleId];
         return null;
     },
 
@@ -204,6 +205,11 @@ const MatchManager = cc.Class.extend({
         if (this.obstacles[obstacleId]) {
             let obs = this.obstacles[obstacleId];
             delete this.obstacles[obstacleId];
+            return obs;
+        }
+        if (this.outSightObstacles[obstacleId]) {
+            let obs = this.outSightObstacles[obstacleId];
+            delete this.outSightObstacles[obstacleId];
             return obs;
         }
 
@@ -228,6 +234,11 @@ const MatchManager = cc.Class.extend({
         if (this.items[itemId]) {
             let item = this.items[itemId];
             delete this.items[itemId];
+            return item;
+        }
+        if (this.outSightItems[itemId]) {
+            let item = this.outSightItems[itemId];
+            delete this.outSightItems[itemId];
             return item;
         }
 
