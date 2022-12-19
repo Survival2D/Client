@@ -457,7 +457,8 @@ const MatchScene = BaseLayer.extend({
 
     myPlayerPickItem: function () {
         let match = GameManager.getInstance().getCurrentMatch();
-        for (let item of match.items) {
+        for (let key in match.items) {
+            let item = match.items[key];
             if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, match.myPlayer.radius, item.radius)) {
                 if (item instanceof ItemGunData && match.myPlayer.isHaveGun()) return;
 
