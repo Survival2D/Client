@@ -31,14 +31,9 @@ const MatchScene = BaseLayer.extend({
         this.myPlayer.unEquip();
 
         let drawNode = new cc.DrawNode();
-        drawNode.drawLine(cc.p(-Constant.LOGIC_VIEW_WIDTH/2, -Constant.LOGIC_VIEW_HEIGHT/2),
-            cc.p(-Constant.LOGIC_VIEW_WIDTH/2, Constant.LOGIC_VIEW_HEIGHT/2), cc.color(255, 0, 0, 255));
-        drawNode.drawLine(cc.p(-Constant.LOGIC_VIEW_WIDTH/2, Constant.LOGIC_VIEW_HEIGHT/2),
-            cc.p(Constant.LOGIC_VIEW_WIDTH/2, Constant.LOGIC_VIEW_HEIGHT/2), cc.color(255, 0, 0, 255));
-        drawNode.drawLine(cc.p(Constant.LOGIC_VIEW_WIDTH/2, Constant.LOGIC_VIEW_HEIGHT/2),
-            cc.p(Constant.LOGIC_VIEW_WIDTH/2, -Constant.LOGIC_VIEW_HEIGHT/2), cc.color(255, 0, 0, 255));
-        drawNode.drawLine(cc.p(Constant.LOGIC_VIEW_WIDTH/2, -Constant.LOGIC_VIEW_HEIGHT/2),
-            cc.p(-Constant.LOGIC_VIEW_WIDTH/2, -Constant.LOGIC_VIEW_HEIGHT/2), cc.color(255, 0, 0, 255));
+        drawNode.drawRect(cc.p(-Constant.LOGIC_VIEW_WIDTH/2, -Constant.LOGIC_VIEW_HEIGHT/2),
+            cc.p(Constant.LOGIC_VIEW_WIDTH/2, Constant.LOGIC_VIEW_HEIGHT/2),
+            cc.color(0, 0, 0, 0), 4, cc.color(255, 0, 0, 255));
 
         this.myPlayer.addChild(drawNode);
 
