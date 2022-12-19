@@ -706,7 +706,7 @@ GameClient.newInstance = function () {
 /*
  * EzyFox check isRawBytes bằng cách lấy byte đầu tiên của packet làm header rồi check (header & (1 << 4)) != 0
  */
-if (!Constant.TEST) {
+if (!Constant.TEST || !Constant.IS_OFFLINE) {
     GameClient.PACKET_PREFIX = Uint8Array.of(0b00010000);
     GameClient.PACKET_PREFIX_LENGTH = GameClient.PACKET_PREFIX.length;
 }

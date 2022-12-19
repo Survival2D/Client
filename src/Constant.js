@@ -10,8 +10,8 @@ Constant.HEIGHT = 720;
 Constant.LOGIC_VIEW_WIDTH = 2400;
 Constant.LOGIC_VIEW_HEIGHT = 1200;
 
-Constant.IS_OFFLINE = true;
-Constant.TEST = true;
+Constant.IS_OFFLINE = false;
+Constant.TEST = false;
 
 Constant.PLAYER_COLOR = [
     cc.color("#f8c574"),
