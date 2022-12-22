@@ -358,6 +358,22 @@ const MatchManager = cc.Class.extend({
         player.position = pos;
         player.rotation = rotation;
 
+        let rect = {
+            x: this.myPlayer.position.x - Constant.LOGIC_VIEW_WIDTH/2,
+            y: this.myPlayer.position.y - Constant.LOGIC_VIEW_HEIGHT/2,
+            w: Constant.LOGIC_VIEW_WIDTH,
+            h: Constant.LOGIC_VIEW_HEIGHT
+        }
+
+        if (!gm.checkCollisionCircleRectangle(player.position, player.radius, gm.p(rect.x, rect.y), rect.w, rect.h)) {
+            this.outSightPlayers[player.username] = player;
+            delete this.players[player.username];
+        }
+        else {
+            this.players[player.username] = player;
+            delete this.outSightPlayers[player.username];
+        }
+
         if (this.isInMatch()) this.scene.playerMove(username, pos, rotation);
     },
 
