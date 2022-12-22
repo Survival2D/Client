@@ -498,6 +498,7 @@ const MatchManager = cc.Class.extend({
     receivedNewSafeZone: function (x, y, radius) {
         this.nextSafeZone.position = gm.p(x, y);
         this.nextSafeZone.radius = radius;
+        this.nextSafeZone.level++;
 
         if (this.isInMatch()) this.scene.changeNextSafeZone();
     },
@@ -505,6 +506,7 @@ const MatchManager = cc.Class.extend({
     receivedSafeZoneMove: function (x, y, radius) {
         this.safeZone.position = gm.p(x, y);
         this.safeZone.radius = radius;
+        this.safeZone.level++;
 
         if (this.isInMatch()) this.scene.changeSafeZone();
     }
