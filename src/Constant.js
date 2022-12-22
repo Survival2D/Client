@@ -10,7 +10,7 @@ Constant.HEIGHT = 1080;
 Constant.LOGIC_VIEW_WIDTH = 2400;
 Constant.LOGIC_VIEW_HEIGHT = 1200;
 
-Constant.BLOCK_SIGHT = false;
+Constant.BLOCK_SIGHT = true;
 
 Constant.IS_OFFLINE = false;
 Constant.TEST = true;
