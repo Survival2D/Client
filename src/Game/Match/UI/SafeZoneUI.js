@@ -6,26 +6,11 @@ const SafeZoneUI = cc.Node.extend({
     ctor: function () {
         this._super();
 
-        let clippingNode = new cc.ClippingNode();
-        let mask = new cc.DrawNode();
-        mask.drawDot(cc.p(0, 0), 5000, cc.color(255, 255, 255));
-        clippingNode.setStencil(mask);
-        clippingNode.setAlphaThreshold(0.3);
-        clippingNode.setInverted(true);
-        this.addChild(clippingNode);
-        this.imgSafeZone = clippingNode;
-        this.imgSafeZone.orinWidth = 10000;
-
-        this.imgSafeZone.setPosition(Config.MAP_WIDTH/2, Config.MAP_HEIGHT/2);
-
-        let layout = new ccui.Layout();
-        layout.setBackGroundColorType(ccui.Layout.BG_COLOR_SOLID);
-        layout.setBackGroundColor(cc.color("#FF0000"));
-        layout.setBackGroundColorOpacity(130);
-        layout.setAnchorPoint(0.5, 0.5);
-        layout.setContentSize(Config.MAP_WIDTH, Config.MAP_HEIGHT);
-        this.imgSafeZone.addChild(layout);
-        this.totalLayout = layout;
+        let drawNode = new cc.DrawNode();
+        drawNode.drawCircle(cc.p(0, 0), 500, 0, 1000, false, 10, cc.color("#FF0000"));
+        this.addChild(drawNode);
+        this.safeZoneCircle = drawNode;
+        this.safeZoneCircle.originRadius = 500;
     },
 
     /**
@@ -40,9 +25,9 @@ const SafeZoneUI = cc.Node.extend({
         }
 
         this.setVisible(true);
-        let stencil = this.imgSafeZone.getStencil();
-        stencil.setPosition(data.position.x - Config.MAP_WIDTH/2, data.position.y - Config.MAP_HEIGHT/2);
-        stencil.setScale(data.radius * 2 / this.imgSafeZone.orinWidth);
+
+        this.safeZoneCircle.setPosition(data.position.x - Config.MAP_WIDTH/2, data.position.y - Config.MAP_HEIGHT/2);
+        this.safeZoneCircle.setScale(data.radius / this.safeZoneCircle.originRadius);
     },
 
     /**
@@ -63,8 +48,7 @@ const SafeZoneUI = cc.Node.extend({
 
         this.setVisible(true);
 
-        let stencil = this.imgSafeZone.getStencil();
-        stencil.stopAllActions();
+        this.safeZoneCircle.stopAllActions();
 
         let deltaRadius = Math.abs(data.radius - this.oldRadius);
         let timeScale = deltaRadius / 1000;
@@ -74,16 +58,16 @@ const SafeZoneUI = cc.Node.extend({
         let timeMove = Math.sqrt(distance_2) / 1000;
 
         let destPos = cc.p(data.position.x - Config.MAP_WIDTH/2, data.position.y - Config.MAP_HEIGHT/2);
-        let destScale = data.radius * 2 / this.imgSafeZone.orinWidth;
+        let destScale = data.radius / this.safeZoneCircle.orinWidth;
 
         if (data.level === 1) {
-            stencil.setPosition(destPos);
-            stencil.setScale(destScale);
+            this.safeZoneCircle.setPosition(destPos);
+            this.safeZoneCircle.setScale(destScale);
             this.setOpacity(0);
             this.runAction(cc.fadeIn(0.2));
         }
         else {
-            stencil.runAction(cc.spawn(
+            this.safeZoneCircle.runAction(cc.spawn(
                 cc.moveTo(timeMove, destPos),
                 cc.scaleTo(timeScale, destScale)
             ));

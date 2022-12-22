@@ -258,8 +258,8 @@ const MatchScene = BaseLayer.extend({
                 playerUI = new PlayerUI();
                 this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
                 this.playerUIs[player.username] = playerUI;
+                playerUI.unEquip();
             }
-            playerUI.unEquip();
             playerUI.setPosition(player.position);
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
             playerUI.setPlayerUIInfo(player.username);

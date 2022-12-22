@@ -199,6 +199,12 @@ const MatchManager = cc.Class.extend({
                 list.push(player);
             }
         }
+        for (let username in this.outSightPlayers) {
+            let player = this.outSightPlayers[username];
+            if (player.team === team) {
+                list.push(player);
+            }
+        }
 
         return list;
     },
@@ -207,6 +213,9 @@ const MatchManager = cc.Class.extend({
         let alive = 0;
         for (let key in this.players) {
             if (!this.players[key].isDead()) alive++;
+        }
+        for (let key in this.outSightPlayers) {
+            if (!this.outSightPlayers[key].isDead()) alive++;
         }
         return alive;
     },
@@ -327,8 +336,11 @@ const MatchManager = cc.Class.extend({
     receivedPlayerMove: function (username, pos, rotation) {
         let player = this.players[username];
         if (!player) {
-            cc.log("Warning: we dont have player " + username + " in match");
-            return;
+            player = this.outSightPlayers[username];
+            if (!player) {
+                cc.log("Warning: we dont have player " + username + " in match");
+                return;
+            }
         }
 
         if (username === GameManager.getInstance().userData.username) {
