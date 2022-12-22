@@ -493,6 +493,20 @@ const MatchManager = cc.Class.extend({
         }
 
         if (this.isInMatch()) this.scene.endMatch();
+    },
+
+    receivedNewSafeZone: function (x, y, radius) {
+        this.nextSafeZone.position = gm.p(x, y);
+        this.nextSafeZone.radius = radius;
+
+        if (this.isInMatch()) this.scene.changeNextSafeZone();
+    },
+
+    receivedSafeZoneMove: function (x, y, radius) {
+        this.safeZone.position = gm.p(x, y);
+        this.safeZone.radius = radius;
+
+        if (this.isInMatch()) this.scene.changeSafeZone();
     }
 });
 

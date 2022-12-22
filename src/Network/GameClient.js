@@ -380,6 +380,20 @@ var GameClient = cc.Class.extend({
                         GameManager.getInstance().getCurrentMatch().receivedMatchResult(response.winTeam());
                         break;
                     }
+                    case survival2d.flatbuffers.PacketData.NewSafeZoneResponse: {
+                        let response = new survival2d.flatbuffers.NewSafeZoneResponse();
+                        packet.data(response);
+                        cc.log("RECEIVED NewSafeZoneResponse");
+                        GameManager.getInstance().getCurrentMatch().receivedNewSafeZone(response.safeZone().x(), response.safeZone().y(), response.radius());
+                        break;
+                    }
+                    case survival2d.flatbuffers.PacketData.SafeZoneMoveResponse: {
+                        let response = new survival2d.flatbuffers.SafeZoneMoveResponse();
+                        packet.data(response);
+                        cc.log("RECEIVED SafeZoneMoveResponse");
+                        GameManager.getInstance().getCurrentMatch().receivedSafeZoneMove(response.safeZone().x(), response.safeZone().y(), response.radius());
+                        break;
+                    }
                     default:
                         cc.log("not handle", packet.dataType());
                         break;
