@@ -205,7 +205,8 @@ survival2d.flatbuffers.PacketData = {
   PingByMatchInfoRequest: 28,
   PingByMatchInfoResponse: 29,
   UseHealItemRequest: 30,
-  UseHealItemResponse: 31
+  UseHealItemResponse: 31,
+  SetAutoPlayRequest: 32
 };
 
 /**
@@ -243,7 +244,8 @@ survival2d.flatbuffers.PacketDataName = {
   '28': 'PingByMatchInfoRequest',
   '29': 'PingByMatchInfoResponse',
   '30': 'UseHealItemRequest',
-  '31': 'UseHealItemResponse'
+  '31': 'UseHealItemResponse',
+  '32': 'SetAutoPlayRequest'
 };
 
 /**
@@ -5412,6 +5414,94 @@ survival2d.flatbuffers.UseHealItemResponse.createUseHealItemResponse = function(
   survival2d.flatbuffers.UseHealItemResponse.addItemType(builder, itemType);
   survival2d.flatbuffers.UseHealItemResponse.addRemainItem(builder, remainItem);
   return survival2d.flatbuffers.UseHealItemResponse.endUseHealItemResponse(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.SetAutoPlayRequest = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.SetAutoPlayRequest}
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.SetAutoPlayRequest=} obj
+ * @returns {survival2d.flatbuffers.SetAutoPlayRequest}
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.getRootAsSetAutoPlayRequest = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.SetAutoPlayRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.SetAutoPlayRequest=} obj
+ * @returns {survival2d.flatbuffers.SetAutoPlayRequest}
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.getSizePrefixedRootAsSetAutoPlayRequest = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.SetAutoPlayRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @returns {boolean}
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.prototype.enable = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.startSetAutoPlayRequest = function(builder) {
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {boolean} enable
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.addEnable = function(builder, enable) {
+  builder.addFieldInt8(0, +enable, +false);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.endSetAutoPlayRequest = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {boolean} enable
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.SetAutoPlayRequest.createSetAutoPlayRequest = function(builder, enable) {
+  survival2d.flatbuffers.SetAutoPlayRequest.startSetAutoPlayRequest(builder);
+  survival2d.flatbuffers.SetAutoPlayRequest.addEnable(builder, enable);
+  return survival2d.flatbuffers.SetAutoPlayRequest.endSetAutoPlayRequest(builder);
 }
 
 /**

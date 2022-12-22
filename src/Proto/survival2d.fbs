@@ -321,6 +321,10 @@ table UseHealItemResponse {
   remainItem: int;
 }
 
+table SetAutoPlayRequest {
+  enable: bool;
+}
+
 union PacketData {
   MatchInfoRequest,
   MatchInfoResponse,
@@ -353,6 +357,7 @@ union PacketData {
   PingByMatchInfoResponse,
   UseHealItemRequest,
   UseHealItemResponse,
+  SetAutoPlayRequest,
 }
 
 table Packet {
