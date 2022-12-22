@@ -341,6 +341,8 @@ const MatchManager = cc.Class.extend({
                 cc.log("Warning: we dont have player " + username + " in match");
                 return;
             }
+            this.players[username] = player;
+            delete this.outSightPlayers[username];
         }
 
         if (username === GameManager.getInstance().userData.username) {
