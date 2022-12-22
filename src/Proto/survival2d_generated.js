@@ -4470,10 +4470,18 @@ survival2d.flatbuffers.NewSafeZoneResponse.prototype.safeZone = function(obj) {
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.NewSafeZoneResponse.prototype.radius = function() {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.readFloat64(this.bb_pos + offset) : 0.0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.NewSafeZoneResponse.startNewSafeZoneResponse = function(builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 };
 
 /**
@@ -4482,6 +4490,14 @@ survival2d.flatbuffers.NewSafeZoneResponse.startNewSafeZoneResponse = function(b
  */
 survival2d.flatbuffers.NewSafeZoneResponse.addSafeZone = function(builder, safeZoneOffset) {
   builder.addFieldStruct(0, safeZoneOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} radius
+ */
+survival2d.flatbuffers.NewSafeZoneResponse.addRadius = function(builder, radius) {
+  builder.addFieldFloat64(1, radius, 0.0);
 };
 
 /**
@@ -4496,11 +4512,13 @@ survival2d.flatbuffers.NewSafeZoneResponse.endNewSafeZoneResponse = function(bui
 /**
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} safeZoneOffset
+ * @param {number} radius
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.NewSafeZoneResponse.createNewSafeZoneResponse = function(builder, safeZoneOffset) {
+survival2d.flatbuffers.NewSafeZoneResponse.createNewSafeZoneResponse = function(builder, safeZoneOffset, radius) {
   survival2d.flatbuffers.NewSafeZoneResponse.startNewSafeZoneResponse(builder);
   survival2d.flatbuffers.NewSafeZoneResponse.addSafeZone(builder, safeZoneOffset);
+  survival2d.flatbuffers.NewSafeZoneResponse.addRadius(builder, radius);
   return survival2d.flatbuffers.NewSafeZoneResponse.endNewSafeZoneResponse(builder);
 }
 
@@ -4550,10 +4568,43 @@ survival2d.flatbuffers.SafeZoneMoveResponse.getSizePrefixedRootAsSafeZoneMoveRes
 };
 
 /**
+ * @param {survival2d.flatbuffers.Vec2=} obj
+ * @returns {survival2d.flatbuffers.Vec2|null}
+ */
+survival2d.flatbuffers.SafeZoneMoveResponse.prototype.safeZone = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? (obj || new survival2d.flatbuffers.Vec2).__init(this.bb_pos + offset, this.bb) : null;
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.SafeZoneMoveResponse.prototype.radius = function() {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.readFloat64(this.bb_pos + offset) : 0.0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.SafeZoneMoveResponse.startSafeZoneMoveResponse = function(builder) {
-  builder.startObject(0);
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} safeZoneOffset
+ */
+survival2d.flatbuffers.SafeZoneMoveResponse.addSafeZone = function(builder, safeZoneOffset) {
+  builder.addFieldStruct(0, safeZoneOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} radius
+ */
+survival2d.flatbuffers.SafeZoneMoveResponse.addRadius = function(builder, radius) {
+  builder.addFieldFloat64(1, radius, 0.0);
 };
 
 /**
@@ -4567,10 +4618,14 @@ survival2d.flatbuffers.SafeZoneMoveResponse.endSafeZoneMoveResponse = function(b
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} safeZoneOffset
+ * @param {number} radius
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.SafeZoneMoveResponse.createSafeZoneMoveResponse = function(builder) {
+survival2d.flatbuffers.SafeZoneMoveResponse.createSafeZoneMoveResponse = function(builder, safeZoneOffset, radius) {
   survival2d.flatbuffers.SafeZoneMoveResponse.startSafeZoneMoveResponse(builder);
+  survival2d.flatbuffers.SafeZoneMoveResponse.addSafeZone(builder, safeZoneOffset);
+  survival2d.flatbuffers.SafeZoneMoveResponse.addRadius(builder, radius);
   return survival2d.flatbuffers.SafeZoneMoveResponse.endSafeZoneMoveResponse(builder);
 }
 

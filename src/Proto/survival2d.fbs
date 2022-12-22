@@ -283,9 +283,12 @@ table PlayerTakeItemResponse {
 
 table NewSafeZoneResponse {
   safeZone: Vec2;
+  radius: double;
 }
 
 table SafeZoneMoveResponse {
+  safeZone: Vec2;
+  radius: double;
 }
 
 table PingRequest {}
