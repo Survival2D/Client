@@ -129,10 +129,11 @@ survival2d.flatbuffers.MapObjectData = {
   HelmetItem: 4,
   BandageItem: 5,
   MedKitItem: 6,
-  Tree: 7,
-  Container: 8,
-  Stone: 9,
-  Wall: 10
+  BackPackItem: 7,
+  Tree: 8,
+  Container: 9,
+  Stone: 10,
+  Wall: 11
 };
 
 /**
@@ -146,10 +147,11 @@ survival2d.flatbuffers.MapObjectDataName = {
   '4': 'HelmetItem',
   '5': 'BandageItem',
   '6': 'MedKitItem',
-  '7': 'Tree',
-  '8': 'Container',
-  '9': 'Stone',
-  '10': 'Wall'
+  '7': 'BackPackItem',
+  '8': 'Tree',
+  '9': 'Container',
+  '10': 'Stone',
+  '11': 'Wall'
 };
 
 /**

@@ -135,6 +135,7 @@ union MapObjectData {
   HelmetItem,
   BandageItem,
   MedKitItem,
+  BackPackItem,
   //Obstacle
   Tree,
   Container,
