@@ -616,6 +616,15 @@ var GameClient = cc.Class.extend({
         this.client.sendBytes(data);
     },
 
+    sendAutoPlay: function (enable = true) {
+        let builder = new flatbuffers.Builder(0);
+        let offset = survival2d.flatbuffers.SetAutoPlayRequest.createSetAutoPlayRequest(builder, enable);
+        let packet = survival2d.flatbuffers.Packet.createPacket(builder, survival2d.flatbuffers.PacketData.SetAutoPlayRequest, offset);
+        builder.finish(packet);
+        let data = GameClient.createHeaderToPassEzyFoxCheck(builder.asUint8Array());
+        this.client.sendBytes(data);
+    },
+
     sendPingByPlayerMove: function (direction, rotation) {
         // cc.log("sendPingByPlayerMove");
         let pk = new SendPingByPlayerMove(direction, rotation);

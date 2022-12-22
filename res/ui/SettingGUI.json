@@ -31,6 +31,8 @@
             "ColorVector": {
               "ScaleY": 1.0
             },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
             "TouchEnable": true,
             "AnchorPoint": {
               "ScaleX": 0.5,
@@ -183,6 +185,8 @@
                 "ColorVector": {
                   "ScaleY": 1.0
                 },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
                 "TouchEnable": true,
                 "AnchorPoint": {
                   "ScaleX": 0.5,
@@ -1408,7 +1412,7 @@
             },
             "Position": {
               "X": 1499.8079,
-              "Y": 736.0
+              "Y": 636.0
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -1418,17 +1422,17 @@
             "IconVisible": false,
             "PrePosition": {
               "X": 0.7811,
-              "Y": 0.6815
+              "Y": 0.5889
             },
             "PreSize": {
               "X": 0.3646,
-              "Y": 0.2778
+              "Y": 0.463
             },
             "VerticalEdge": "TopEdge",
             "LeftMargin": 1149.8079,
             "RightMargin": 70.1921,
             "TopMargin": 194.0,
-            "BottomMargin": 586.0,
+            "BottomMargin": 386.0,
             "Tag": 96,
             "Children": [
               {
@@ -1457,7 +1461,7 @@
                 },
                 "Position": {
                   "X": 350.0,
-                  "Y": 150.0
+                  "Y": 250.0
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1481,13 +1485,13 @@
                 },
                 "LeftMargin": 21.0,
                 "RightMargin": 21.0,
-                "TopMargin": 22.5,
-                "BottomMargin": 22.5,
+                "TopMargin": 37.5,
+                "BottomMargin": 37.5,
                 "Tag": 106,
                 "ActionTag": 2140668017,
                 "Size": {
                   "X": 658.0,
-                  "Y": 255.0
+                  "Y": 425.0
                 },
                 "Name": "bg",
                 "ctype": "PanelObjectData"
@@ -1516,8 +1520,8 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": 148.923,
-                  "Y": 150.0
+                  "X": 148.92,
+                  "Y": 350.0
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1528,16 +1532,16 @@
                 "PositionPercentYEnabled": true,
                 "PrePosition": {
                   "X": 0.2127,
-                  "Y": 0.5
+                  "Y": 0.7
                 },
                 "PreSize": {
                   "X": 0.2929,
-                  "Y": 0.1567
+                  "Y": 0.094
                 },
-                "LeftMargin": 46.423,
-                "RightMargin": 448.577,
+                "LeftMargin": 46.42,
+                "RightMargin": 448.58,
                 "TopMargin": 126.5,
-                "BottomMargin": 126.5,
+                "BottomMargin": 326.5,
                 "Tag": 98,
                 "ActionTag": 1757468366,
                 "Size": {
@@ -1571,7 +1575,7 @@
                 },
                 "Position": {
                   "X": 274.4423,
-                  "Y": 150.0
+                  "Y": 350.0
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1582,16 +1586,16 @@
                 "PositionPercentYEnabled": true,
                 "PrePosition": {
                   "X": 0.3921,
-                  "Y": 0.5
+                  "Y": 0.7
                 },
                 "PreSize": {
                   "X": 0.2271,
-                  "Y": 0.1567
+                  "Y": 0.094
                 },
                 "LeftMargin": 274.4423,
                 "RightMargin": 266.5577,
                 "TopMargin": 126.5,
-                "BottomMargin": 126.5,
+                "BottomMargin": 326.5,
                 "Tag": 99,
                 "ActionTag": -984800204,
                 "Size": {
@@ -1651,7 +1655,197 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": 568.0131,
+                  "X": 568.01,
+                  "Y": 350.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.8114,
+                  "Y": 0.7
+                },
+                "PreSize": {
+                  "X": 0.1857,
+                  "Y": 0.16
+                },
+                "LeftMargin": 503.01,
+                "RightMargin": 66.99,
+                "TopMargin": 110.0,
+                "BottomMargin": 310.0,
+                "Tag": 100,
+                "ActionTag": 613829325,
+                "Size": {
+                  "X": 130.0,
+                  "Y": 80.0
+                },
+                "Name": "btnChangeSmooth",
+                "ctype": "ButtonObjectData"
+              },
+              {
+                "FontSize": 40,
+                "LabelText": "AutoPlay",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Regular.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 148.92,
+                  "Y": 150.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.2127,
+                  "Y": 0.3
+                },
+                "PreSize": {
+                  "X": 0.2329,
+                  "Y": 0.094
+                },
+                "LeftMargin": 67.42,
+                "RightMargin": 469.58,
+                "TopMargin": 326.5,
+                "BottomMargin": 126.5,
+                "Tag": 91,
+                "ActionTag": 832178333,
+                "Size": {
+                  "X": 163.0,
+                  "Y": 47.0
+                },
+                "Name": "lblAutoPlay",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 40,
+                "LabelText": "Disabled",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Bold.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 274.44,
+                  "Y": 150.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.3921,
+                  "Y": 0.3
+                },
+                "PreSize": {
+                  "X": 0.2271,
+                  "Y": 0.094
+                },
+                "LeftMargin": 274.44,
+                "RightMargin": 266.56,
+                "TopMargin": 326.5,
+                "BottomMargin": 126.5,
+                "Tag": 92,
+                "ActionTag": -1490004470,
+                "Size": {
+                  "X": 159.0,
+                  "Y": 47.0
+                },
+                "Name": "lblEnableAutoPlay",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 30,
+                "ButtonText": "Change",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Bold.ttf",
+                  "Plist": ""
+                },
+                "TextColor": {
+                  "R": 65,
+                  "G": 65,
+                  "B": 70
+                },
+                "DisabledFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Disable.png",
+                  "Plist": ""
+                },
+                "PressedFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Press.png",
+                  "Plist": ""
+                },
+                "NormalFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Normal.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 15,
+                "Scale9OriginY": 11,
+                "Scale9Width": 16,
+                "Scale9Height": 14,
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 568.01,
                   "Y": 150.0
                 },
                 "Scale": {
@@ -1663,30 +1857,30 @@
                 "PositionPercentYEnabled": true,
                 "PrePosition": {
                   "X": 0.8114,
-                  "Y": 0.5
+                  "Y": 0.3
                 },
                 "PreSize": {
                   "X": 0.1857,
-                  "Y": 0.2667
+                  "Y": 0.16
                 },
-                "LeftMargin": 503.0131,
-                "RightMargin": 66.9869,
-                "TopMargin": 110.0,
+                "LeftMargin": 503.01,
+                "RightMargin": 66.99,
+                "TopMargin": 310.0,
                 "BottomMargin": 110.0,
-                "Tag": 100,
-                "ActionTag": 613829325,
+                "Tag": 93,
+                "ActionTag": -1831057754,
                 "Size": {
                   "X": 130.0,
                   "Y": 80.0
                 },
-                "Name": "btnChangeSmooth",
+                "Name": "btnChangeAutoPlay",
                 "ctype": "ButtonObjectData"
               }
             ],
             "ActionTag": -158731493,
             "Size": {
               "X": 700.0,
-              "Y": 300.0
+              "Y": 500.0
             },
             "Name": "option",
             "ctype": "ImageViewObjectData"

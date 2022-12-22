@@ -164,11 +164,7 @@
                   "ScaleX": 1.0,
                   "ScaleY": 1.0
                 },
-                "CColor": {
-                  "R": 34,
-                  "G": 34,
-                  "B": 34
-                },
+                "CColor": {},
                 "IconVisible": false,
                 "PrePosition": {
                   "X": 0.0417,
@@ -613,10 +609,10 @@
                           "Path": "Game/Item/loot_gun.png",
                           "Plist": ""
                         },
-                        "Scale9OriginX": 225,
-                        "Scale9OriginY": 225,
-                        "Scale9Width": 233,
-                        "Scale9Height": 233,
+                        "Scale9OriginX": -145,
+                        "Scale9OriginY": -145,
+                        "Scale9Width": 370,
+                        "Scale9Height": 370,
                         "AnchorPoint": {
                           "ScaleX": 0.6013,
                           "ScaleY": 0.482
@@ -890,10 +886,10 @@
                       "Path": "Game/Item/loot_medical_bandage.png",
                       "Plist": ""
                     },
-                    "Scale9OriginX": 225,
-                    "Scale9OriginY": 225,
-                    "Scale9Width": 233,
-                    "Scale9Height": 233,
+                    "Scale9OriginX": -145,
+                    "Scale9OriginY": -145,
+                    "Scale9Width": 370,
+                    "Scale9Height": 370,
                     "AnchorPoint": {
                       "ScaleX": 0.6013,
                       "ScaleY": 0.482
@@ -1102,10 +1098,10 @@
                       "Path": "Game/Item/loot_health_care.png",
                       "Plist": ""
                     },
-                    "Scale9OriginX": 225,
-                    "Scale9OriginY": 225,
-                    "Scale9Width": 233,
-                    "Scale9Height": 233,
+                    "Scale9OriginX": -145,
+                    "Scale9OriginY": -145,
+                    "Scale9Width": 370,
+                    "Scale9Height": 370,
                     "AnchorPoint": {
                       "ScaleX": 0.6013,
                       "ScaleY": 0.482
@@ -1314,10 +1310,10 @@
                       "Path": "Game/Item/loot_ammo.png",
                       "Plist": ""
                     },
-                    "Scale9OriginX": 225,
-                    "Scale9OriginY": 225,
-                    "Scale9Width": 233,
-                    "Scale9Height": 233,
+                    "Scale9OriginX": -145,
+                    "Scale9OriginY": -145,
+                    "Scale9Width": 370,
+                    "Scale9Height": 370,
                     "AnchorPoint": {
                       "ScaleX": 0.6013,
                       "ScaleY": 0.482
@@ -1962,10 +1958,10 @@
                           "Path": "Game/Item/loot_chest.png",
                           "Plist": ""
                         },
-                        "Scale9OriginX": 225,
-                        "Scale9OriginY": 225,
-                        "Scale9Width": 233,
-                        "Scale9Height": 233,
+                        "Scale9OriginX": -145,
+                        "Scale9OriginY": -145,
+                        "Scale9Width": 370,
+                        "Scale9Height": 370,
                         "AnchorPoint": {
                           "ScaleX": 0.5,
                           "ScaleY": 0.5
@@ -2176,10 +2172,10 @@
                           "Path": "Game/Item/loot_helmet.png",
                           "Plist": ""
                         },
-                        "Scale9OriginX": 225,
-                        "Scale9OriginY": 225,
-                        "Scale9Width": 233,
-                        "Scale9Height": 233,
+                        "Scale9OriginX": -145,
+                        "Scale9OriginY": -145,
+                        "Scale9Width": 370,
+                        "Scale9Height": 370,
                         "AnchorPoint": {
                           "ScaleX": 0.5,
                           "ScaleY": 0.5
