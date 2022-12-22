@@ -87,7 +87,7 @@ const PlayerUI = cc.Node.extend({
     },
 
     setPlayerColorByTeam: function (team) {
-        let color = Constant.PLAYER_COLOR[team % 2];
+        let color = Constant.PLAYER_COLOR[Math.abs(team) % 2];
         this._body.setColor(color);
         this._leftArm.setColor(color);
         this._rightArm.setColor(color);
@@ -217,7 +217,7 @@ const MiniPlayerUI = cc.Node.extend({
     },
 
     setPlayerColorByTeam: function (team) {
-        let color = Constant.PLAYER_COLOR[team % 2];
+        let color = Constant.PLAYER_COLOR[Math.abs(team) % 2];
         this._body.setColor(color);
     },
 });

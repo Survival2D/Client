@@ -393,7 +393,8 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         let radius = match.myPlayer.radius;
         if (pos.x - radius < 0 || pos.x + radius > match.mapWidth || pos.y - radius < 0 || pos.y + radius > match.mapHeight) return true;
-        for (let obs of match.obstacles) {
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
             if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
             if (obs instanceof CrateData || obs instanceof WallData)
@@ -406,7 +407,8 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         let radius = 0;
         if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
-        for (let obs of match.obstacles) {
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
             if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) {
                     this.obstacleTakeDamage(obs.getObjectId());

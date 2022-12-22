@@ -125,6 +125,12 @@ const MatchManager = cc.Class.extend({
             this.items[item.getObjectId()] = item;
         }
 
+        if (Constant.BLOCK_SIGHT) this.blockSight();
+
+        if (this.isInMatch()) this.scene.updateMatchView();
+    },
+
+    blockSight: function () {
         let rect = {
             x: this.myPlayer.position.x - Constant.LOGIC_VIEW_WIDTH/2,
             y: this.myPlayer.position.y - Constant.LOGIC_VIEW_HEIGHT/2,
@@ -177,8 +183,6 @@ const MatchManager = cc.Class.extend({
                 delete this.outSightItems[id];
             }
         }
-
-        if (this.isInMatch()) this.scene.updateMatchView();
     },
 
     updateMyPlayerInfo: function (hp, haveGun) {
