@@ -144,7 +144,7 @@ const MatchManager = cc.Class.extend({
 
         for (let key in this.players) {
             let player = this.players[key];
-            if (!gm.checkCollisionCircleRectangle(player.position, player.radius, gm.p(rect.x, rect.y), rect.w, rect.h)) {
+            if (!gm.checkCollisionCircleRectangle(player.position, player.radius + 100, gm.p(rect.x, rect.y), rect.w, rect.h)) {
                 this.outSightPlayers[player.username] = player;
                 delete this.players[player.username];
             }
