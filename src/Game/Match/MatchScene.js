@@ -460,7 +460,6 @@ const MatchScene = BaseLayer.extend({
         if (playerUI) {
             let match = GameManager.getInstance().getCurrentMatch();
             playerUI.setVisible(true);
-            if (match.outSightPlayers[username]) playerUI.setVisible(false);
             playerUI.setPosition(position);
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(rotation)));
         }
