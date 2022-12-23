@@ -414,7 +414,7 @@ const MatchManager = cc.Class.extend({
             return;
         }
 
-        if (username === GameManager.getInstance().userData.username) return;
+        // if (username === GameManager.getInstance().userData.username) return;
 
         if (this.isInMatch()) this.scene.playerChangeWeapon(username, weaponId);
     },
