@@ -44,7 +44,6 @@ const MatchScene = BaseLayer.extend({
         this.safeZoneUI.setVisible(false);
 
         this.hud = this.getControl("hud");
-        this.hud.setScale(0.8);
 
         let pPlayerLeft = this.getControl("numPlayerLeft", this.hud);
         this.numPlayerLeft = this.customTextLabel("num", pPlayerLeft);
