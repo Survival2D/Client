@@ -21,12 +21,16 @@ const ResultGUI = BaseLayer.extend({
 
         this.lblTop1 = this.getControl("lblTop1", this.pCenter);
 
-        this.btnBack = this.customButton("btnBack");
+        this.btnBack = this.customButton("btnBack", this.onBack, this);
     },
 
     onEnter: function () {
         this._super();
         this.effectIn();
+    },
+
+    onBack: function () {
+        SceneManager.getInstance().openHomeScene();
     },
 
     effectIn: function () {

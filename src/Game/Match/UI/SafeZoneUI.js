@@ -6,11 +6,10 @@ const SafeZoneUI = cc.Node.extend({
     ctor: function () {
         this._super();
 
-        let drawNode = new cc.DrawNode();
-        drawNode.drawCircle(cc.p(0, 0), 500, 0, 1000, false, 10, cc.color("#FF0000"));
-        this.addChild(drawNode);
-        this.safeZoneCircle = drawNode;
-        this.safeZoneCircle.originRadius = 500;
+        this.safeZoneCircle = new ccui.ImageView("res/ui/Common/empty_circle.png");
+        this.addChild(this.safeZoneCircle);
+        this.safeZoneCircle.setColor(cc.color("#FF0000"));
+        this.safeZoneCircle.originRadius = this.safeZoneCircle.width/2;
     },
 
     /**
