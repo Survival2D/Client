@@ -19,15 +19,6 @@ const BaseLayer = cc.Layer.extend({
         this._super();
         this.setContentSize(cc.winSize);
         this.setAnchorPoint(0.5,0.5);
-
-        this.effectIn();
-    },
-
-    /**
-     * @abstract
-     */
-    effectIn: function () {
-
     },
 
     onExit: function () {
@@ -94,5 +85,18 @@ const BaseLayer = cc.Layer.extend({
             }
         }, this);
         return btn;
+    },
+
+    customTextLabel: function (name, parent, fontName, fontSize) {
+        let text = this.getControl(name, parent);
+        if (!text) return null;
+        text.ignoreContentAdaptWithSize(true);
+        if (fontName) text.setFontName(fontName);
+        if (fontSize) text.setFontName(fontSize);
+        return text;
+    },
+
+    onClose: function () {
+        this.removeFromParent(true);
     }
 })

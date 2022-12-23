@@ -17,7 +17,10 @@
     ],
 
     "jsList" : [
-        "src/ezyclient.js",
+        "src/Lib/ezyclient.js",
+        "src/Lib/flatbuffers.js",
+        "src/Proto/survival2d_generated.js",
+        "src/Test/flatbuffers.js",
 
         "src/resource.js",
 
@@ -49,14 +52,21 @@
         "src/Game/Match/Data/BulletData.js",
         "src/Game/Match/Data/ObstacleData.js",
         "src/Game/Match/Data/ItemData.js",
+        "src/Game/Match/Data/VestData.js",
+        "src/Game/Match/Data/HelmetData.js",
+        "src/Game/Match/Data/GunData.js",
+        "src/Game/Match/Data/SafeZoneData.js",
 
         "src/Game/Match/UI/PlayerUI.js",
         "src/Game/Match/UI/BulletUI.js",
         "src/Game/Match/UI/ObstacleUI.js",
         "src/Game/Match/UI/ItemUI.js",
+        "src/Game/Match/UI/SafeZoneUI.js",
 
         "src/Game/LoginScene.js",
         "src/Game/HomeScene.js",
-        "src/Game/LobbyScene.js"
+        "src/Game/LobbyScene.js",
+
+        "src/Game/SettingGUI.js"
     ]
 }

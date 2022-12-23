@@ -22,7 +22,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-var res = {
+var game_UIs = {
   LOGIN_SCENE: "res/ui/LoginScene.json",
   LOBBY_SCENE: "res/ui/LobbyScene.json",
   HOME_SCENE: "res/ui/HomeScene.json",
@@ -30,8 +30,25 @@ var res = {
 
   MINIMAP_LAYER: "res/ui/MiniMapUI.json",
 
-  RESULT_LAYER: "res/ui/ResultGUI.json"
+  RESULT_LAYER: "res/ui/ResultGUI.json",
+  SETTING_LAYER: "res/ui/SettingGUI.json"
 };
+
+var game_images = {
+  obstacle_tree: "res/ui/Game/Obstacle/tree.png",
+  obstacle_crate: "res/ui/Game/Obstacle/crate.png",
+  obstacle_stone_1: "res/ui/Game/Obstacle/stone_1.png",
+  obstacle_stone_2: "res/ui/Game/Obstacle/stone_2.png",
+  obstacle_wall: "res/ui/Game/Obstacle/wall.png",
+
+  bullet_trail: "res/ui/Game/bullet_trail.png",
+
+  game_art: "res/ui/Game/game_art.png"
+};
+
+var game_plist = {
+  game_art: "res/ui/Game/game_art.plist"
+}
 
 var game_fonts = {
   normal: "res/ui/Font/Roboto-Regular.ttf",
@@ -39,6 +56,14 @@ var game_fonts = {
 }
 
 var g_resources = [];
-for (var i in res) {
-    g_resources.push(res[i]);
+for (var i in game_UIs) {
+    g_resources.push(game_UIs[i]);
+}
+
+for (var i in game_images) {
+  g_resources.push(game_images[i]);
+}
+
+for (var i in game_plist) {
+  g_resources.push(game_plist[i]);
 }

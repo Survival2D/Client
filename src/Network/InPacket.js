@@ -179,12 +179,12 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
 
         this.players = [];
         if (typeof data["players"] != "undefined") {
-            for (let playerId in data.players) {
+            for (let username in data.players) {
                 let playerData = new PlayerData();
-                this.parseData(playerData, data.players[playerId]);
-                playerData.username = playerData.playerId = playerId;
+                this.parseData(playerData, data.players[username]);
+                playerData.username = username;
                 playerData.hp = Config.PLAYER_MAX_HP;
-                this.players[playerId] = playerData;
+                this.players[username] = playerData;
             }
         }
 
@@ -207,6 +207,15 @@ const ReceivedUpdateMatchInfo = InPacket.extend({
 const ReceivedMatchResult = InPacket.extend({
     ctor: function (data) {
         this.winTeam = 0;
+        this.autoParseData(data);
+    }
+});
+
+const ReceivedPingByPlayerMove = InPacket.extend({
+    ctor: function (data) {
+        this.username = "";
+        this.position = {x: 0, y:0};
+        this.rotation = 0;
         this.autoParseData(data);
     }
 });

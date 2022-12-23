@@ -192,6 +192,137 @@
             "ctype": "TextObjectData"
           },
           {
+            "FontSize": 14,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "PressedFileData": {
+              "Type": "Normal",
+              "Path": "Common/rectangle_frame.png",
+              "Plist": ""
+            },
+            "NormalFileData": {
+              "Type": "Normal",
+              "Path": "Common/rectangle_frame.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 370,
+            "Scale9Height": 287,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 1080.0,
+              "Y": 100.0
+            },
+            "Scale": {
+              "ScaleX": 0.9184,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.8438,
+              "Y": 0.1389
+            },
+            "PreSize": {
+              "X": 0.2344,
+              "Y": 0.1667
+            },
+            "HorizontalEdge": "RightEdge",
+            "VerticalEdge": "BottomEdge",
+            "LeftMargin": 930.0,
+            "RightMargin": 50.0,
+            "TopMargin": 560.0,
+            "BottomMargin": 40.0,
+            "Tag": 51,
+            "Children": [
+              {
+                "FontSize": 40,
+                "LabelText": "Home",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Bold.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 150.0,
+                  "Y": 60.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "RotationSkewX": 10.0,
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.3667,
+                  "Y": 0.3917
+                },
+                "LeftMargin": 95.0,
+                "RightMargin": 95.0,
+                "TopMargin": 36.5,
+                "BottomMargin": 36.5,
+                "Tag": 52,
+                "ActionTag": -739049138,
+                "Size": {
+                  "X": 110.0,
+                  "Y": 47.0
+                },
+                "Name": "txt",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -77026860,
+            "Size": {
+              "X": 300.0,
+              "Y": 120.0
+            },
+            "Name": "btnBack",
+            "ctype": "ButtonObjectData"
+          },
+          {
             "ClipAble": false,
             "BackColorAlpha": 177,
             "ComboBoxIndex": 1,
@@ -319,6 +450,7 @@
         "ctype": "LayerObjectData"
       },
       "UsedResources": [
+        "Common/rectangle_frame.png",
         "Font/Roboto-Bold.ttf"
       ],
       "ctype": "GameFileData"

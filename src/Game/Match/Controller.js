@@ -61,12 +61,25 @@ const Controller = cc.Class.extend({
             case cc.KEY.f:
                 this.pickItem();
                 break;
-            case cc.KEY.num1:
+            case cc.KEY.r:
+                this.reloadBullets();
+                break;
+            case cc.KEY["1"]:
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.GUN);
                 break;
-            case cc.KEY.num2:
+            case cc.KEY["2"]:
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.FIST);
                 break;
+            case cc.KEY["3"]: {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseBandage();
+                break;
+            }
+            case cc.KEY["4"]: {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseMedKit();
+                break;
+            }
         }
     },
 
@@ -95,6 +108,10 @@ const Controller = cc.Class.extend({
 
     pickItem: function () {
         GameManager.getInstance().getCurrentMatch().scene.myPlayerPickItem();
+    },
+
+    reloadBullets: function () {
+        GameManager.getInstance().getCurrentMatch().reloadMyPlayerWeapon();
     },
 
     changeWeaponSlot: function (slot) {

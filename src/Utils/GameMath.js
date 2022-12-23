@@ -173,3 +173,21 @@ gm.checkCollisionCircleRectangle = function (c1, r1, p2, w2, h2) {
     let dCorner_2 = (dx - w2/2)*(dx - w2/2) + (dy - h2/2)*(dy - h2/2);
     return dCorner_2 <= r1*r1;
 };
+
+/**
+ * calculate distance^2
+ * @param {gm.Position} p1
+ * @param {gm.Position} p2
+ */
+gm.calculateDistance_2 = function (p1, p2) {
+    return (p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y);
+};
+
+/**
+ * calculate distance
+ * @param {gm.Position} p1
+ * @param {gm.Position} p2
+ */
+gm.calculateDistance = function (p1, p2) {
+    return Math.sqrt(gm.calculateDistance_2(p1, p2));
+};

@@ -37,11 +37,12 @@ const SendPlayerChangeWeapon = OutPacket.extend({
     }
 });
 
-const SendPlayerTakeItem = OutPacket.extend({
-    ctor: function (itemId) {
-        this._super(Cmd.TAKE_ITEM);
+const SendPingByPlayerMove = OutPacket.extend({
+    ctor: function (direction, rotation) {
+        this._super(Cmd.PING_BY_PLAYER_MOVE);
         this.data = {
-            itemId: itemId
+            direction: direction,
+            rotation: rotation
         }
     }
 });

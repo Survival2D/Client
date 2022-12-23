@@ -6,7 +6,7 @@ const ItemData = MapObjectData.extend({
     ctor: function () {
         this._super();
         this._itemType = 0;
-        this.radius = 35;
+        this.radius = Config.ITEM_RADIUS;
     },
 
     setItemType: function (type) {
@@ -20,13 +20,13 @@ const ItemData = MapObjectData.extend({
 
 ItemData.TYPE = {
     GUN: "WEAPON",
-    BULLET: "BULLET"
+    BULLET: "BULLET",
+    VEST: "VEST",
+    HELMET: "HELMET"
 };
 
 ItemData.createItemByType = function (type) {
     let item = new ItemData();
-
-    cc.log("DMM ", type);
 
     switch (type) {
         case ItemData.TYPE.GUN:
@@ -34,6 +34,12 @@ ItemData.createItemByType = function (type) {
             break;
         case ItemData.TYPE.BULLET:
             item = new ItemBulletData();
+            break;
+        case ItemData.TYPE.VEST:
+            item = new ItemVestData();
+            break;
+        case ItemData.TYPE.HELMET:
+            item = new ItemHelmetData();
             break;
     }
 
@@ -55,6 +61,10 @@ const ItemGunData = ItemData.extend({
 
     setNumBullets: function (numBullets) {
         this._numBullets = numBullets;
+    },
+
+    getNumBullets: function () {
+        return this._numBullets;
     }
 });
 
@@ -66,5 +76,35 @@ const ItemBulletData = ItemData.extend({
 
     setNumBullets: function (numBullets) {
         this._numBullets = numBullets;
+    },
+
+    getNumBullets: function () {
+        return this._numBullets;
+    }
+});
+
+const ItemVestData = ItemData.extend({
+    ctor: function () {
+        this._super();
+        this.vest = new VestData();
+    }
+});
+
+const ItemHelmetData = ItemData.extend({
+    ctor: function () {
+        this._super();
+        this.helmet = new HelmetData();
+    }
+});
+
+const ItemBandageData = ItemData.extend({
+    ctor: function () {
+        this._super();
+    }
+});
+
+const ItemMedKitData = ItemData.extend({
+    ctor: function () {
+        this._super();
     }
 });

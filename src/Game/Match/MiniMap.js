@@ -10,7 +10,7 @@ const MiniMap = ccui.Layout.extend({
 
         this.miniObstacleUIs = [];
 
-        let jsonLayout = ccs.load(res.MINIMAP_LAYER);
+        let jsonLayout = ccs.load(game_UIs.MINIMAP_LAYER);
         this._layout = jsonLayout.node;
         this._action = jsonLayout.action;
         this._layout.setContentSize(cc.director.getWinSize());
@@ -27,8 +27,16 @@ const MiniMap = ccui.Layout.extend({
         this.ground.setScale(Config.MINI_MAP_SCALE);
 
         this.myPlayer = new MiniPlayerUI();
-        this.ground.addChild(this.myPlayer, 1);
+        this.ground.addChild(this.myPlayer, 10);
         this.myPlayer.setPosition(30, 30);
+
+        this.safeZoneUI = new SafeZoneMiniUI();
+        this.ground.addChild(this.safeZoneUI, MatchScene.Z_ORDER.SAFE_ZONE);
+        this.safeZoneUI.setVisible(false);
+
+        this.nextSafeZoneUI = new NextSafeZoneMiniUI();
+        this.ground.addChild(this.nextSafeZoneUI, MatchScene.Z_ORDER.SAFE_ZONE);
+        this.nextSafeZoneUI.setVisible(false);
 
         this.setClippingEnabled(true);
 
@@ -45,28 +53,49 @@ const MiniMap = ccui.Layout.extend({
 
         this.ground.setContentSize(match.mapWidth, match.mapHeight);
 
+        this.myPlayer.setPlayerColorByTeam(match.myPlayer.team);
+
         for (let obsUI of this.miniObstacleUIs) {
             obsUI.removeFromParent(true);
         }
         this.miniObstacleUIs = [];
 
-        for (let obs of match.obstacles) {
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
             let obsUI;
             if (obs instanceof TreeData) obsUI = new TreeUI();
-            if (obs instanceof CrateData) {
-                obsUI = new CrateUI();
-                obsUI.setContentSize(obs.width, obs.height);
-            }
+            if (obs instanceof CrateData) obsUI = new CrateUI();
+            if (obs instanceof StoneData) obsUI = new StoneUI();
+            if (obs instanceof WallData) obsUI = new WallUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
+            obsUI.setObstacleId(obs.getObjectId());
             this.miniObstacleUIs.push(obsUI);
         }
+
+        this.safeZoneUI.setPosition(0, 0);
+        this.safeZoneUI.setSafeZoneUI(match.safeZone);
     },
 
     setMyPlayerPosition: function (pos) {
         this.myPlayer.setPosition(pos);
         let scenePos = this.ground2ScenePosition(pos);
         this.ground.setPosition(this.ground.x + this.width/2 - scenePos.x, this.ground.y + this.height/2 - scenePos.y);
+
+        if (this.lineToSafeZone) {
+            this.lineToSafeZone.removeFromParent();
+        }
+        
+        let safeZoneData = GameManager.getInstance().getCurrentMatch().safeZone;
+        if (safeZoneData.level > 0) {
+            let inZone = gm.calculateDistance_2(this.myPlayer.getPosition(), this.safeZoneUI.getPosition()) <= safeZoneData.radius * safeZoneData.radius;
+
+            let color = inZone ? cc.color("#FFFFFF") : cc.color("#FF0000");
+
+            let drawNode = new cc.DrawNode();
+            drawNode.drawSegment(this.myPlayer.getPosition(), this.safeZoneUI.getPosition(), 5, color);
+            this.lineToSafeZone = drawNode;
+        }
     },
 
     ground2ScenePosition: function (pos) {
@@ -77,5 +106,38 @@ const MiniMap = ccui.Layout.extend({
     scene2GroundPosition: function (pos) {
         let worldPos = this.convertToWorldSpace(pos);
         return this.ground.convertToNodeSpace(worldPos);
+    },
+
+    /**
+     * @param {number} obstacleId
+     * @return {null|ObstacleUI}
+     */
+    getObstacleUIAndRemoveById: function (obstacleId) {
+        for (let i = 0; i < this.miniObstacleUIs.length; i++) {
+            let obsUI = this.miniObstacleUIs[i];
+            if (obsUI.getObstacleId() === obstacleId) {
+                this.miniObstacleUIs.splice(i, 1);
+                return obsUI;
+            }
+        }
+
+        return null;
+    },
+
+    obstacleDestroyed: function (obstacleId) {
+        let obsUI = this.getObstacleUIAndRemoveById(obstacleId);
+        if (obsUI) {
+            obsUI.removeFromParent(true);
+        }
+    },
+
+    changeSafeZone: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        this.safeZoneUI.animChangeSafeZone(match.safeZone);
+    },
+
+    changeNextSafeZone: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        this.nextSafeZoneUI.setSafeZoneUI(match.nextSafeZone);
     },
 })

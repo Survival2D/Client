@@ -4,9 +4,9 @@
 
 const MatchScene = BaseLayer.extend({
     ctor: function () {
-        this.playerUIs = [];
-        this.obstacleUIs = [];
-        this.itemUIs = [];
+        this.playerUIs = {};    // map by username
+        this.obstacleUIs = {};  // map by id
+        this.itemUIs = {};      // map by id
         this.bullets = [];
         this.workingBullets = [];
 
@@ -15,7 +15,7 @@ const MatchScene = BaseLayer.extend({
         this._syncTime = 0;
 
         this._super(MatchScene.className);
-        this.loadCss(res.MATCH_SCENE);
+        this.loadCss(game_UIs.MATCH_SCENE);
         this.controller = new Controller();
         this.initKeyBoardController();
         this.initMouseController();
@@ -30,12 +30,30 @@ const MatchScene = BaseLayer.extend({
         this.myPlayer.setMyPlayer(true);
         this.myPlayer.unEquip();
 
+        let drawNode = new cc.DrawNode();
+        drawNode.drawRect(cc.p(-Constant.LOGIC_VIEW_WIDTH/2, -Constant.LOGIC_VIEW_HEIGHT/2),
+            cc.p(Constant.LOGIC_VIEW_WIDTH/2, Constant.LOGIC_VIEW_HEIGHT/2),
+            cc.color(0, 0, 0, 0), 4, cc.color(255, 0, 0, 255));
+
+        this.myPlayer.addChild(drawNode);
+
+        drawNode = new cc.DrawNode();
+        drawNode.drawRect(cc.p(-Constant.WIDTH/2, -Constant.HEIGHT/2),
+            cc.p(Constant.WIDTH/2, Constant.HEIGHT/2),
+            cc.color(0, 0, 0, 0), 4, cc.color(255, 255, 0, 255));
+
+        this.myPlayer.addChild(drawNode);
+
         this.playerUIs[GameManager.getInstance().userData.username] = this.myPlayer;
+
+        this.safeZoneUI = new SafeZoneUI();
+        this.ground.addChild(this.safeZoneUI, MatchScene.Z_ORDER.SAFE_ZONE);
+        this.safeZoneUI.setVisible(false);
 
         this.hud = this.getControl("hud");
 
         let pPlayerLeft = this.getControl("numPlayerLeft", this.hud);
-        this.numPlayerLeft = this.getControl("num", pPlayerLeft);
+        this.numPlayerLeft = this.customTextLabel("num", pPlayerLeft);
 
         this.miniMap = new MiniMap();
         this.hud.addChild(this.miniMap);
@@ -46,6 +64,36 @@ const MatchScene = BaseLayer.extend({
         this.myHp.bar = this.getControl("bar", this.myHp);
         this.myHp.bar.defaultWidth = this.myHp.bar.getContentSize().width;
         this.myHp.barShadow = this.getControl("barShadow", this.myHp);
+
+        let pMyEquipItem = this.getControl("pMyEquipItem", this.hud);
+        this.myEquipVest = this.getControl("vest", pMyEquipItem);
+        this.myEquipHelmet = this.getControl("helmet", pMyEquipItem);
+
+        for (let item of [this.myEquipVest, this.myEquipHelmet]) {
+            item.img = this.getControl("img", item);
+            item.lblLevel = this.customTextLabel("level", item);
+        }
+
+        this.lblMyAmmoHave = this.getControl("num", this.getControl("ammoHave", this.hud));
+
+        this.bandage = this.getControl("bandageHave", this.hud);
+        this.lblNumBandage = this.getControl("num", this.bandage);
+        this.medKit = this.getControl("medKitHave", this.hud);
+        this.lblNumMedKit = this.getControl("num", this.medKit);
+
+        this.bandage.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseBandage();
+            }
+        }, this);
+
+        this.medKit.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                let match = GameManager.getInstance().getCurrentMatch();
+                if (match) match.myPlayerUseMedKit();
+            }
+        }, this);
 
         let pWeaponPack = this.getControl("pWeaponPack", this.hud);
         this.weaponSlotFist = this.getControl("slotFist", pWeaponPack);
@@ -62,6 +110,11 @@ const MatchScene = BaseLayer.extend({
                 this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.GUN);
             }
         }, this);
+
+        this.loadingLayer = this.getControl("loadingLayer");
+        this.loadingLogo = this.getControl("logo", this.loadingLayer);
+
+        this.customButton("btnSetting", this.onSetting, this, this.hud);
     },
 
     initKeyBoardController: function () {
@@ -92,6 +145,17 @@ const MatchScene = BaseLayer.extend({
             },
             onMouseScroll: function (event) {
                 that.controller.onMouseScroll();
+                if (Constant.TEST) {
+                    let scroll = event.getScrollY();
+                    if (scroll > 0) {
+                        if (that.ground.getScale() > 1) return;
+                        that.ground.setScale(that.ground.getScale() * 2);
+                    }
+                    if (scroll < 0) {
+                        if (that.ground.getScale() <= 1/20) return;
+                        that.ground.setScale(that.ground.getScale() / 2);
+                    }
+                }
             },
         }, this.ground);
 
@@ -120,11 +184,55 @@ const MatchScene = BaseLayer.extend({
         this.controller.setControllerEnabled(true);
 
         this.scheduleUpdate();
+
+        this._firstUpdateMatchView = true;
+
+        this.loadingLayer.setVisible(true);
+        this.effectIntroStartMatch();
+    },
+
+    effectIntroStartMatch: function () {
+        this.loadingLogo.setVisible(true);
+        this.loadingLogo.setRotation(0);
+        this.loadingLogo.setOpacity(255);
+        this.loadingLogo.stopAllActions();
+        this.loadingLogo.runAction(cc.sequence(
+            cc.delayTime(0.2),
+            cc.rotateBy(1.5, 180).easing(cc.easeExponentialInOut()),
+            cc.fadeOut(0.35),
+            cc.hide()
+        ));
+
+        this.loadingLayer.setOpacity(255);
+        this.loadingLayer.setScale(1);
+        this.loadingLayer.stopAllActions();
+        this.loadingLayer.runAction(cc.sequence(
+            cc.delayTime(1),
+            cc.spawn(
+                cc.fadeOut(1),
+                cc.sequence(
+                    cc.delayTime(0.7),
+                    cc.scaleTo(0.5, 2).easing(cc.easeSineOut())
+                )
+            ),
+            cc.hide()
+        ));
     },
 
     onExit: function () {
         this.unscheduleUpdate();
         this._super();
+    },
+
+    onSetting: function () {
+        let gui = SceneManager.getInstance().getGUIByClassName(SettingGUI.className);
+        if (gui) {
+            gui.onClose();
+        }
+        else {
+            let gui = new SettingGUI();
+            SceneManager.getInstance().openGUI(gui, ResultGUI.ZORDER);
+        }
     },
 
     updateMatchView: function () {
@@ -149,51 +257,89 @@ const MatchScene = BaseLayer.extend({
 
         this.miniMap.updateMiniMapView();
 
-        for (let playerId in match.players) {
-            let player = match.players[playerId];
-            let playerUI = this.playerUIs[player.playerId];
+        for (let username in match.players) {
+            let player = match.players[username];
+            let playerUI = this.playerUIs[player.username];
             if (!playerUI) {
                 playerUI = new PlayerUI();
                 this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
-                this.playerUIs[player.playerId] = playerUI;
+                this.playerUIs[player.username] = playerUI;
+                playerUI.unEquip();
             }
-            playerUI.unEquip();
             playerUI.setPosition(player.position);
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
             playerUI.setPlayerUIInfo(player.username);
             playerUI.setPlayerColorByTeam(player.team);
+            playerUI.setVestLevel(player.vest.level);
+            playerUI.setHelmetLevel(player.helmet.level);
+            playerUI.setVisible(true);
         }
 
-        for (let obsUI of this.obstacleUIs) {
-            obsUI.removeFromParent(true);
-        }
-        this.obstacleUIs = [];
-
-        for (let obs of match.obstacles) {
-            let obsUI;
-            if (obs instanceof TreeData) obsUI = new TreeUI();
-            if (obs instanceof CrateData) {
-                obsUI = new CrateUI();
-                obsUI.setContentSize(obs.width, obs.height);
+        for (let key in match.outSightPlayers) {
+            let player = match.outSightPlayers[key];
+            let playerUI = this.playerUIs[player.username];
+            if (playerUI) {
+                playerUI.setVisible(false);
             }
+        }
+
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
+            let id = obs.getObjectId();
+            let obsUI = this.obstacleUIs[id];
+            if (obsUI) {
+                obsUI.setPosition(obs.position);
+                let hpRatio = obs.hp / Config.MAX_HP;
+                obsUI.setScale(0.5 + 0.5 * hpRatio);
+                obsUI.setVisible(true);
+                continue;
+            }
+            if (obs instanceof TreeData) obsUI = new TreeUI();
+            if (obs instanceof CrateData) obsUI = new CrateUI();
+            if (obs instanceof StoneData) obsUI = new StoneUI();
+            if (obs instanceof WallData) obsUI = new WallUI();
             this.ground.addChild(obsUI, MatchScene.Z_ORDER.OBSTACLE);
             obsUI.setPosition(obs.position);
-            obsUI.setObstacleId(obs.getObjectId());
-            this.obstacleUIs.push(obsUI);
+            obsUI.setObstacleId(id);
+            this.obstacleUIs[id] = obsUI;
         }
 
-        for (let itemUI of this.itemUIs) {
-            itemUI.removeFromParent(true);
+        for (let key in match.outSightObstacles) {
+            let obs = match.outSightObstacles[key];
+            let id = obs.getObjectId();
+            let obsUI = this.obstacleUIs[id];
+            if (obsUI) {
+                obsUI.setVisible(false);
+            }
         }
-        this.itemUIs = [];
 
-        for (let item of match.items) {
-            this.createItem(item);
+        for (let key in match.items) {
+            this.createItem(match.items[key]);
         }
+
+        for (let key in match.outSightItems) {
+            let item = match.outSightItems[key];
+            let id = item.getObjectId();
+            let itemUI = this.obstacleUIs[id];
+            if (itemUI) {
+                itemUI.setVisible(false);
+            }
+        }
+
+        this.safeZoneUI.setPosition(0, 0);
+        this.safeZoneUI.setSafeZoneUI(match.safeZone);
+
+        this.setMyPlayerPosition(match.myPlayer.position);
+        this.myPlayer.setPlayerRotation(Math.round(gm.radToDeg(match.myPlayer.rotation)));
 
         this.updateMyHpProgress(match.myPlayer.hp);
 
-        this.numPlayerLeft.setString(match.players.filter(e => !e.isDead()).length);
+        this.updateMyPlayerItem();
+
+        this.numPlayerLeft.setString(match.getNumberOfAlivePlayers());
+
+        if (this._firstUpdateMatchView) this.effectIntroStartMatch();
+        this._firstUpdateMatchView = false;
     },
 
     update: function (dt) {
@@ -203,16 +349,21 @@ const MatchScene = BaseLayer.extend({
             let oldPos = match.myPlayer.position;
             let unitVector = this.controller.calculateMovementVector();
             let newPos = gm.calculateNextPosition(oldPos, unitVector, Config.PLAYER_BASE_SPEED);
-            if (this.checkPlayerCollision(newPos, match.myPlayer.radius)) {
-                newPos = oldPos;
-                unitVector = gm.vector(0, 0);
-            }
 
-            this.setMyPlayerPosition(newPos);
+            if (Config.CHECK_MOVE_COLLISION) {
+                if (this.checkPlayerCollision(newPos, match.myPlayer.radius)) {
+                    newPos = oldPos;
+                    unitVector = gm.vector(0, 0);
+                }
+            }
 
             let rotation = this.controller.calculateRotation(this.ground2ScenePosition(newPos));
             let degRotation = Math.round(gm.radToDeg(rotation));
-            this.myPlayer.setPlayerRotation(degRotation);
+
+            if (Config.ENABLE_SMOOTH) {
+                this.setMyPlayerPosition(newPos);
+                this.myPlayer.setPlayerRotation(degRotation);
+            }
 
             match.updateMyPlayerMove(unitVector, rotation);
 
@@ -248,12 +399,12 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         let radius = match.myPlayer.radius;
         if (pos.x - radius < 0 || pos.x + radius > match.mapWidth || pos.y - radius < 0 || pos.y + radius > match.mapHeight) return true;
-        for (let obs of match.obstacles) {
-            if (obs instanceof TreeData)
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
+            if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) return true;
-            if (obs instanceof CrateData)
-                if (gm.checkCollisionCircleRectangle(pos, radius,
-                    gm.p(obs.position.x, obs.position.y), obs.width, obs.height)) return true;
+            if (obs instanceof CrateData || obs instanceof WallData)
+                if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) return true;
         }
         return false;
     },
@@ -262,15 +413,15 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         let radius = 0;
         if (pos.x < 0 || pos.x > match.mapWidth || pos.y < 0 || pos.y > match.mapHeight) return true;
-        for (let obs of match.obstacles) {
-            if (obs instanceof TreeData)
+        for (let key in match.obstacles) {
+            let obs = match.obstacles[key];
+            if (obs instanceof TreeData || obs instanceof StoneData)
                 if (gm.checkCollisionCircleCircle(pos, obs.position, radius, obs.radius)) {
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
-            if (obs instanceof CrateData)
-                if (gm.checkCollisionCircleRectangle(pos, radius,
-                    gm.p(obs.position.x, obs.position.y), obs.width, obs.height)) {
+            if (obs instanceof CrateData|| obs instanceof WallData)
+                if (gm.checkCollisionCircleRectangle(pos, radius, obs.position, obs.width, obs.height)) {
                     this.obstacleTakeDamage(obs.getObjectId());
                     return true;
                 }
@@ -300,8 +451,16 @@ const MatchScene = BaseLayer.extend({
     },
 
     playerMove: function (username, position, rotation) {
+        if (username === GameManager.getInstance().userData.username) {
+            this.setMyPlayerPosition(position);
+            this.myPlayer.setPlayerRotation(Math.round(gm.radToDeg(rotation)));
+            return;
+        }
         let playerUI = this.playerUIs[username];
         if (playerUI) {
+            let match = GameManager.getInstance().getCurrentMatch();
+            playerUI.setVisible(true);
+            if (match.outSightPlayers[username]) playerUI.setVisible(false);
             playerUI.setPosition(position);
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(rotation)));
         }
@@ -309,16 +468,45 @@ const MatchScene = BaseLayer.extend({
 
     myPlayerPickItem: function () {
         let match = GameManager.getInstance().getCurrentMatch();
-        for (let item of match.items) {
+        for (let key in match.items) {
+            let item = match.items[key];
             if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, match.myPlayer.radius, item.radius)) {
-                let pk = new SendPlayerTakeItem(item.getObjectId());
-                GameClient.getInstance().sendPacket(pk);
+                if (item instanceof ItemGunData && match.myPlayer.isHaveGun()) return;
 
-                if (Config.IS_OFFLINE)
+                // GameClient.getInstance().sendEmptyPacket(Cmd.TAKE_ITEM);
+                GameClient.getInstance().sendPlayerTakeItem();
+
+                if (Constant.IS_OFFLINE)
                     match.receivedPlayerTakeItem(GameManager.getInstance().userData.username, item.getObjectId());
                 return;
             }
         }
+    },
+
+    updateMyPlayerItem: function () {
+        let myPlayer = GameManager.getInstance().getCurrentMatch().myPlayer;
+
+        if (myPlayer.vest.level === 0) {
+            this.myEquipVest.setOpacity(100);
+        }
+        else {
+            this.myEquipVest.setOpacity(255);
+        }
+
+        if (myPlayer.helmet.level === 0) {
+            this.myEquipHelmet.setOpacity(100);
+        }
+        else {
+            this.myEquipHelmet.setOpacity(255);
+        }
+
+        this.myEquipVest.lblLevel.setString("lv. " + myPlayer.vest.level);
+        this.myEquipHelmet.lblLevel.setString("lv. " + myPlayer.helmet.level);
+
+        this.lblMyAmmoHave.setString(myPlayer.numBackBullets);
+
+        this.lblNumBandage.setString(myPlayer.numBandages);
+        this.lblNumMedKit.setString(myPlayer.numMedKits);
     },
 
     myPlayerChangeWeapon: function (slot) {
@@ -333,6 +521,7 @@ const MatchScene = BaseLayer.extend({
             this.weaponSlotGun.setOpacity(100);
         }
         else {
+            if (!match.myPlayer.isHaveGun()) return;
             if (!this.myPlayer.isEquip()) this.myPlayer.equipGun();
             this.weaponSlotGun.setScale(1.2);
             this.weaponSlotGun.setOpacity(255);
@@ -347,17 +536,20 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         destPos = this.scene2GroundPosition(destPos);
         if (this.myPlayer.isEquip()) {
+            if (!match.myPlayer.gun.canFire()) return;
             let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
             vector.normalize();
             let createPos = gm.p(this.myPlayer.x + vector.x * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius),
                 this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
             this.fire(createPos, vector);
+            match.myPlayer.gun.numBullets--;
         }
         else {
             this.myPlayer.animAttack();
         }
 
-        GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
+        // GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
+        GameClient.getInstance().sendPlayerAttack();
     },
 
     playerChangeWeapon: function (username, weaponId) {
@@ -368,10 +560,10 @@ const MatchScene = BaseLayer.extend({
         }
     },
 
-    playerAttack: function (username, weaponId, direction) {
+    playerAttack: function (username, slot, direction) {
         let playerUI = this.playerUIs[username];
         if (playerUI) {
-            if (weaponId) playerUI.equipGun();
+            if (slot) playerUI.equipGun();
             else playerUI.unEquip();
             let rotation = gm.calculateVectorAngleInclination(direction);
             rotation = Math.round(gm.radToDeg(rotation));
@@ -389,6 +581,13 @@ const MatchScene = BaseLayer.extend({
         if (username === GameManager.getInstance().userData.username) {
             this.updateMyHpProgress(GameManager.getInstance().getCurrentMatch().myPlayer.hp, oldHp);
         }
+    },
+
+    myPlayerHeal: function (oldHp) {
+        this.myPlayer.animHeal();
+        this.updateMyHpProgress(GameManager.getInstance().getCurrentMatch().myPlayer.hp, oldHp);
+
+        this.updateMyPlayerItem();
     },
 
     updateMyHpProgress: function (curHp, oldHp) {
@@ -412,18 +611,18 @@ const MatchScene = BaseLayer.extend({
         if (playerUI) {
             playerUI.animDead();
 
-            let spr = new cc.Sprite("res/Game/Player/dead_blood.png");
+            let spr = new cc.Sprite("res/ui/Game/Player/dead_blood.png");
             this.ground.addChild(spr, MatchScene.Z_ORDER.BG);
             spr.setColor(cc.color("#CA2400"));
             spr.setPosition(playerUI.getPosition());
             spr.setOpacity(0);
-            spr.setScale(0.1);
+            spr.setScale(0.3);
             spr.runAction(cc.sequence(
                 cc.spawn(
                     cc.fadeIn(0.3),
                     cc.sequence(
-                        cc.scaleTo(0.1, 0.3).easing(cc.easeIn(2)),
-                        cc.scaleTo(1, 0.5)
+                        cc.scaleTo(0.1, 1).easing(cc.easeIn(2)),
+                        cc.scaleTo(1, 1.3)
                     ),
                     cc.sequence(
                         cc.delayTime(1),
@@ -440,7 +639,7 @@ const MatchScene = BaseLayer.extend({
             this.hud.runAction(cc.fadeOut(0.3));
         }
 
-        this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().players.filter(e => !e.isDead()).length);
+        this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().getNumberOfAlivePlayers());
     },
 
     fire: function (pos, direction) {
@@ -468,72 +667,69 @@ const MatchScene = BaseLayer.extend({
         return bullet;
     },
 
-    /**
-     * @param {number} obstacleId
-     * @return {null|ObstacleUI}
-     */
-    getObstacleUIById: function (obstacleId) {
-        for (let obsUI of this.obstacleUIs) {
-            if (obsUI.getObstacleId() === obstacleId) return obsUI;
-        }
-
-        return null;
-    },
-
-    /**
-     * @param {number} obstacleId
-     * @return {null|ObstacleUI}
-     */
-    getObstacleUIAndRemoveById: function (obstacleId) {
-        for (let i = 0; i < this.obstacleUIs.length; i++) {
-            let obsUI = this.obstacleUIs[i];
-            if (obsUI.getObstacleId() === obstacleId) {
-                this.obstacleUIs.splice(i, 1);
-                return obsUI;
-            }
-        }
-
-        return null;
-    },
-
     obstacleTakeDamage: function (obstacleId) {
         let obs = GameManager.getInstance().getCurrentMatch().getObstacleById(obstacleId);
-        let obsUI = this.getObstacleUIById(obstacleId);
+        let obsUI = this.obstacleUIs[obstacleId];
         if (obsUI) {
-            let hpRatio = obs.maxHp === 0 ? 0 : obs.hp / obs.maxHp;
+            let hpRatio = obs.hp / Config.MAX_HP;
             obsUI.animTakeDamage(hpRatio);
         }
     },
 
     obstacleDestroyed: function (obstacleId) {
-        let obsUI = this.getObstacleUIAndRemoveById(obstacleId);
+        let obsUI = this.obstacleUIs[obstacleId];
         if (obsUI) {
             obsUI.animDestroyed();
+            delete this.obstacleUIs[obstacleId];
         }
+
+        this.miniMap.obstacleDestroyed(obstacleId);
     },
 
     /**
      * @param {ItemData} item
+     * @param {gm.Position=} fromPosition
      */
-    createItem: function (item) {
-        let itemUI;
+    createItem: function (item, fromPosition) {
+        let id = item.getObjectId();
+        let itemUI = this.itemUIs[id];
+        if (itemUI) {
+            itemUI.setPosition(item.position);
+            itemUI.setVisible(true);
+            return;
+        }
+
+        fromPosition = fromPosition || item.position;
         if (item instanceof ItemGunData) itemUI = new ItemGunUI();
-        if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
+        else if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
+        else if (item instanceof ItemVestData) itemUI = new ItemVestUI();
+        else if (item instanceof ItemHelmetData) itemUI = new ItemHelmetUI();
+        else if (item instanceof ItemBandageData) itemUI = new ItemBandageUI();
+        else if (item instanceof ItemMedKitData) itemUI = new ItemMedKitUI();
+        else return;
+        itemUI.setItemId(id);
+        this.itemUIs[id] = itemUI;
         this.ground.addChild(itemUI, MatchScene.Z_ORDER.ITEM);
-        itemUI.setPosition(item.position);
-        itemUI.setItemId(item.getObjectId());
-        this.itemUIs.push(itemUI);
+        itemUI.setPosition(fromPosition);
+        itemUI.runAction(cc.moveTo(0.3, item.position).easing(cc.easeIn(2.5)));
     },
 
     playerTakeItem: function (itemId) {
-        for (let i = 0; i < this.itemUIs.length; i++) {
-            let itemUI = this.itemUIs[i];
-            if (itemUI.getItemId() === itemId) {
-                this.itemUIs.splice(i, 1);
-
-                itemUI.animTaken();
-            }
+        let itemUI = this.itemUIs[itemId];
+        if (itemUI) {
+            itemUI.animTaken();
+            delete this.itemUIs[itemId];
         }
+    },
+
+    changeSafeZone: function () {
+        let match = GameManager.getInstance().getCurrentMatch();
+        this.safeZoneUI.animChangeSafeZone(match.safeZone);
+        this.miniMap.changeSafeZone();
+    },
+
+    changeNextSafeZone: function () {
+        this.miniMap.changeNextSafeZone();
     },
 
     endMatch: function () {
@@ -548,5 +744,6 @@ MatchScene.Z_ORDER = {
     ITEM: 1,
     PLAYER: 2,
     BULLET: 3,
-    OBSTACLE: 4
+    OBSTACLE: 4,
+    SAFE_ZONE: 5
 }

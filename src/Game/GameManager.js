@@ -6,6 +6,8 @@ const GameManager = cc.Class.extend({
     ctor: function () {
         this.userData = new UserData();
         this.match = null;
+
+        GameManager.preloadResources();
     },
 
     findMatch: function () {
@@ -60,7 +62,7 @@ const GameManager = cc.Class.extend({
         let time = Date.now();
         let oldTime = this._pingTime || 0;
         let ping = time - oldTime;
-        cc.log("--- PING: " + ping + "ms");
+        // cc.log("--- PING: " + ping + "ms");
 
         setTimeout(this.startPing.bind(this), 1000);
     }
@@ -80,4 +82,12 @@ GameManager.getInstance = function () {
 GameManager.newInstance = function () {
     this._instance = new GameManager();
     return this._instance;
+};
+
+GameManager.preloadResources = function () {
+    // for (var i in game_images) {
+    //     cc.textureCache.addImage(game_images[i]);
+    // }
+
+    cc.spriteFrameCache.addSpriteFrames("res/ui/Game/game_art.plist", "res/ui/Game/game_art.png");
 };
