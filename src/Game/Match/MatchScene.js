@@ -37,6 +37,13 @@ const MatchScene = BaseLayer.extend({
 
         this.myPlayer.addChild(drawNode);
 
+        drawNode = new cc.DrawNode();
+        drawNode.drawRect(cc.p(-Constant.WIDTH/2, -Constant.HEIGHT/2),
+            cc.p(Constant.WIDTH/2, Constant.HEIGHT/2),
+            cc.color(0, 0, 0, 0), 4, cc.color(255, 255, 0, 255));
+
+        this.myPlayer.addChild(drawNode);
+
         this.playerUIs[GameManager.getInstance().userData.username] = this.myPlayer;
 
         this.safeZoneUI = new SafeZoneUI();
