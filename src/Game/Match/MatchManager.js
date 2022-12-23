@@ -106,6 +106,10 @@ const MatchManager = cc.Class.extend({
             return {type: type, id: e.getObjectId()}
         })));
 
+        cc.log("players", JSON.stringify(players.map(e => {
+            return e.username
+        })));
+
         for (let player of players) {
             this.players[player.username] = player;
         }
@@ -140,7 +144,7 @@ const MatchManager = cc.Class.extend({
 
         for (let key in this.players) {
             let player = this.players[key];
-            if (!gm.checkCollisionCircleRectangle(player.position, player.radius, gm.p(rect.x, rect.y), rect.w, rect.h)) {
+            if (!gm.checkCollisionCircleRectangle(player.position, 0, gm.p(rect.x, rect.y), rect.w, rect.h)) {
                 this.outSightPlayers[player.username] = player;
                 delete this.players[player.username];
             }
