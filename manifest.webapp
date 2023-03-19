@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "name": "Client",
-  "description": "Client",
+  "name": "Survival2D",
+  "description": "Survival2D",
   "launch_path": "/index.html",
   "icons": {
     "128": "/res/icon.png"
