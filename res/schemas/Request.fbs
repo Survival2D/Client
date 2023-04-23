@@ -1,0 +1,83 @@
+include "common.fbs";
+namespace survival2d.flatbuffers;
+
+table LoginRequest {
+}
+
+table GetUserInfoRequest {
+}
+
+table CreateTeamRequest {
+}
+
+table JoinTeamRequest {
+}
+
+table FindMatchRequest {
+}
+
+table GetConfigRequest {
+}
+
+table MatchInfoRequest {
+}
+
+table PlayerMoveRequest {
+  direction: Vector2Struct;
+  rotation: float;
+}
+
+table PlayerChangeWeaponRequest {
+  slot: byte;
+}
+
+table PlayerAttackRequest {
+}
+
+table PlayerDropItemRequest {
+  id: int;
+}
+
+table PlayerReloadWeaponRequest {
+}
+
+table PlayerTakeItemRequest {
+}
+
+table SetAutoPlayRequest {
+  enable: bool;
+}
+
+table PingRequest {}
+
+table PingByPlayerMoveRequest {
+  direction: Vector2Struct;
+  rotation: double;
+}
+
+table PingByMatchInfoRequest {}
+
+union RequestUnion {
+  LoginRequest,
+  GetUserInfoRequest,
+  CreateTeamRequest,
+  JoinTeamRequest,
+  FindMatchRequest,
+  GetConfigRequest,
+  MatchInfoRequest,
+  PlayerMoveRequest,
+  PlayerAttackRequest,
+  PlayerReloadWeaponRequest,
+  PlayerChangeWeaponRequest,
+  PlayerTakeItemRequest,
+  SetAutoPlayRequest,
+  PingRequest,
+  PingByPlayerMoveRequest,
+  PingByMatchInfoRequest,
+}
+
+table Request {
+  request: RequestUnion;
+}
+
+root_type Request;

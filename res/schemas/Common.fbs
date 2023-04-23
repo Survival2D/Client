@@ -1,0 +1,151 @@
+namespace survival2d.flatbuffers;
+
+struct Vector2Struct {
+  x: float;
+  y: float;
+}
+
+struct CircleStruct {
+  x: float;
+  y: float;
+  radius: float;
+}
+
+table PlayerTable {
+  playerId: int;
+  position: Vector2Struct;
+  rotation: float;
+  team: int;
+}
+
+table TreeTable {
+}
+
+table ContainerTable {
+}
+
+table StoneTable {
+}
+
+table WallTable {
+}
+
+enum GunTypeEnum: byte {
+  NORMAL
+}
+
+table GunItemTable {
+  type: GunTypeEnum;
+  numBullet: int;
+}
+
+enum BulletTypeEnum: byte {
+  NORMAL
+}
+
+table BulletItemTable {
+  type: BulletTypeEnum;
+  numBullet: int;
+}
+
+enum VestTypeEnum: byte {
+  LEVEL_0,
+  LEVEL_1
+}
+
+table VestItemTable {
+  type: VestTypeEnum;
+}
+
+enum HelmetTypeEnum: byte {
+  LEVEL_0,
+  LEVEL_1,
+}
+
+table HelmetItemTable {
+  type: HelmetTypeEnum;
+}
+
+table BandageItemTable {
+}
+
+table MedKitItemTable {
+}
+
+enum BackPackTypeEnum: byte {
+  LEVEL_0,
+  LEVEL_1,
+  LEVEL_2,
+}
+
+table BackPackItemTable {
+  type: BackPackTypeEnum;
+}
+
+union ItemUnion {
+  BulletItemTable,
+  GunItemTable,
+  VestItemTable,
+  HelmetItemTable,
+  BandageItemTable,
+  MedKitItemTable,
+  BackPackItemTable
+}
+
+union MapObjectUnion {
+  //Item
+  BulletItemTable,
+  GunItemTable,
+  VestItemTable,
+  HelmetItemTable,
+  BandageItemTable,
+  MedKitItemTable,
+  BackPackItemTable,
+  //Obstacle
+  TreeTable,
+  ContainerTable,
+  StoneTable,
+  WallTable
+}
+
+table MapObjectTable {
+  id: int;
+  position: Vector2Struct;
+  data: MapObjectTable;
+}
+
+table BulletTable {
+  id: int;
+  position: Vector2Struct;
+  type: BulletTypeEnum;
+  owner: int;
+  direction: Vector2Struct;
+}
+
+table BulletWithQuantityTable {
+  type: BulletTypeEnum;
+  num: int;
+}
+
+table HandTable {
+}
+
+table GunTable {
+  type: GunTypeEnum;
+  remainBullets: int;
+}
+
+union WeaponUnion {
+  HandTable,
+  GunTable
+}
+
+table WeaponTable {
+  data: WeaponUnion;
+}
+
+enum ErrorEnum: byte {
+  SUCCESS,
+  NOT_FOUND_YET,
+  FAILURE,
+}
