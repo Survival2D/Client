@@ -17,10 +17,11 @@
     ],
 
     "jsList" : [
-        "src/Lib/ezyclient.js",
         "src/Lib/flatbuffers.js",
-        "src/Proto/survival2d_generated.js",
-        "src/Test/flatbuffers.js",
+        "src/Network/WsClient.js",
+        "src/Network/CommonGenerated.js",
+        "src/Network/RequestGenerated.js",
+        "src/Network/ResponseGenerated.js",
 
         "src/resource.js",
 
