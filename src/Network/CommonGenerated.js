@@ -1407,19 +1407,27 @@ survival2d.flatbuffers.MapObjectTable.prototype.position = function(obj) {
 };
 
 /**
- * @param {survival2d.flatbuffers.MapObjectTable=} obj
- * @returns {survival2d.flatbuffers.MapObjectTable|null}
+ * @returns {survival2d.flatbuffers.MapObjectUnion}
+ */
+survival2d.flatbuffers.MapObjectTable.prototype.dataType = function() {
+  var offset = this.bb.__offset(this.bb_pos, 8);
+  return offset ? /** @type {survival2d.flatbuffers.MapObjectUnion} */ (this.bb.readUint8(this.bb_pos + offset)) : survival2d.flatbuffers.MapObjectUnion.NONE;
+};
+
+/**
+ * @param {flatbuffers.Table} obj
+ * @returns {?flatbuffers.Table}
  */
 survival2d.flatbuffers.MapObjectTable.prototype.data = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 8);
-  return offset ? (obj || new survival2d.flatbuffers.MapObjectTable).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
+  var offset = this.bb.__offset(this.bb_pos, 10);
+  return offset ? this.bb.__union(obj, this.bb_pos + offset) : null;
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.MapObjectTable.startMapObjectTable = function(builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 };
 
 /**
@@ -1440,10 +1448,18 @@ survival2d.flatbuffers.MapObjectTable.addPosition = function(builder, positionOf
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.MapObjectUnion} dataType
+ */
+survival2d.flatbuffers.MapObjectTable.addDataType = function(builder, dataType) {
+  builder.addFieldInt8(2, dataType, survival2d.flatbuffers.MapObjectUnion.NONE);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} dataOffset
  */
 survival2d.flatbuffers.MapObjectTable.addData = function(builder, dataOffset) {
-  builder.addFieldOffset(2, dataOffset, 0);
+  builder.addFieldOffset(3, dataOffset, 0);
 };
 
 /**
@@ -1459,13 +1475,15 @@ survival2d.flatbuffers.MapObjectTable.endMapObjectTable = function(builder) {
  * @param {flatbuffers.Builder} builder
  * @param {number} id
  * @param {flatbuffers.Offset} positionOffset
+ * @param {survival2d.flatbuffers.MapObjectUnion} dataType
  * @param {flatbuffers.Offset} dataOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.MapObjectTable.createMapObjectTable = function(builder, id, positionOffset, dataOffset) {
+survival2d.flatbuffers.MapObjectTable.createMapObjectTable = function(builder, id, positionOffset, dataType, dataOffset) {
   survival2d.flatbuffers.MapObjectTable.startMapObjectTable(builder);
   survival2d.flatbuffers.MapObjectTable.addId(builder, id);
   survival2d.flatbuffers.MapObjectTable.addPosition(builder, positionOffset);
+  survival2d.flatbuffers.MapObjectTable.addDataType(builder, dataType);
   survival2d.flatbuffers.MapObjectTable.addData(builder, dataOffset);
   return survival2d.flatbuffers.MapObjectTable.endMapObjectTable(builder);
 }

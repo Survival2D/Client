@@ -1365,8 +1365,8 @@ survival2d.flatbuffers.CreateItemOnMapResponse.endCreateItemOnMapResponse = func
 /**
  * @param {flatbuffers.Builder} builder
  * @param {number} id
- * @param {NS13669877506797034321.survival2d.flatbuffers.ItemUnion} itemType
- * @param {NS13669877506797034321.flatbuffers.Offset} itemOffset
+ * @param {NS3237581525310631968.survival2d.flatbuffers.ItemUnion} itemType
+ * @param {NS3237581525310631968.flatbuffers.Offset} itemOffset
  * @param {flatbuffers.Offset} positionOffset
  * @param {flatbuffers.Offset} rawPositionOffset
  * @returns {flatbuffers.Offset}
@@ -3051,8 +3051,8 @@ survival2d.flatbuffers.PingByMatchInfoResponse.endPingByMatchInfoResponse = func
 /**
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} playersOffset
- * @param {NS13669877506797034321.flatbuffers.Offset} mapObjectsTypeOffset
- * @param {NS13669877506797034321.flatbuffers.Offset} mapObjectsOffset
+ * @param {NS3237581525310631968.flatbuffers.Offset} mapObjectsTypeOffset
+ * @param {NS3237581525310631968.flatbuffers.Offset} mapObjectsOffset
  * @param {flatbuffers.Offset} safeZoneOffset
  * @returns {flatbuffers.Offset}
  */

@@ -18,10 +18,10 @@
 
     "jsList" : [
         "src/Lib/flatbuffers.js",
-        "src/Network/WsClient.js",
         "src/Network/CommonGenerated.js",
         "src/Network/RequestGenerated.js",
         "src/Network/ResponseGenerated.js",
+        "src/Network/WsClient.js",
 
         "src/resource.js",
 
