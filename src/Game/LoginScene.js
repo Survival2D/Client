@@ -33,7 +33,7 @@ var LoginScene = BaseLayer.extend({
             cc.log("password: ", password);
             if (!username) username = "";
             if (!password) password = "";
-            GameClient.newInstance().connectClientServer(username, password);
+            fbsClient.connect();
         }
     }
 });

@@ -1,14 +1,5 @@
 const fbs = survival2d.flatbuffers;
 
-const State = {
-  NULL: 0,
-  CONNECTING: 1,
-  CONNECTED: 2,
-  DISCONNECTED: 3,
-  FAILURE: 4,
-  RECONNECTING: 5,
-}
-
 const WsClient = cc.Class.extend({
   ctor: function (url) {
     this.url = url;
@@ -40,12 +31,18 @@ const WsClient = cc.Class.extend({
     fileReader.onloadend = function(event) {
       const buffer = new Uint8Array(event.target.result);
       const buf = new flatbuffers.ByteBuffer(buffer);
-      const response = fbs.Response.getRootAsResponse(buf);
+      const responseData = fbs.Response.getRootAsResponse(buf);
 
-      switch (response.responseType()) {
+      switch (responseData.responseType()) {
+        case fbs.ResponseUnion.LoginResponse: {
+          let response = new fbs.LoginResponse();
+          responseData.response(response);
+          cc.log("login as user ", response.playerId())
+          break;
+        }
         case fbs.ResponseUnion.MatchInfoResponse: {
           let response = new fbs.MatchInfoResponse();
-          response.data(response);
+          response.data(responseData);
           cc.log("RECEIVED MatchInfo");
 
           let players = [];
@@ -381,7 +378,7 @@ const WsClient = cc.Class.extend({
           break;
         }
         default:
-          cc.log("not handle", response.responseType());
+          cc.log("not handle", responseData.responseType());
           break;
       }
     };
@@ -410,9 +407,9 @@ const WsClient = cc.Class.extend({
 });
 
 const fbsClient = new WsClient("ws://localhost:1999/fbs");
-fbsClient.connect();
+// fbsClient.connect();
 
-const jsonClient = new WsClient("ws://localhost:1999/json");
-jsonClient.connect();
-jsonClient.sendText("hello world");
-jsonClient.disconnect();
+// const jsonClient = new WsClient("ws://localhost:1999/json");
+// jsonClient.connect();
+// jsonClient.sendText("hello world");
+// jsonClient.disconnect();

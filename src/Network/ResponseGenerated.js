@@ -17,32 +17,33 @@ survival2d.flatbuffers = survival2d.flatbuffers || {};
  */
 survival2d.flatbuffers.ResponseUnion = {
   NONE: 0,
-  GetUserInfoResponse: 1,
-  CreateTeamResponse: 2,
-  JoinTeamResponse: 3,
-  FindMatchResponse: 4,
-  GetConfigResponse: 5,
-  MatchInfoResponse: 6,
-  PlayerMoveResponse: 7,
-  PlayerAttackResponse: 8,
-  PlayerInfoResponse: 9,
-  CreateBulletOnMapResponse: 10,
-  CreateItemOnMapResponse: 11,
-  ObstacleTakeDamageResponse: 12,
-  ObstacleDestroyResponse: 13,
-  PlayerTakeDamageResponse: 14,
-  PlayerDeadResponse: 15,
-  PlayerReloadWeaponResponse: 16,
-  PlayerChangeWeaponResponse: 17,
-  PlayerTakeItemResponse: 18,
-  StartGameResponse: 19,
-  EndGameResponse: 20,
-  NewSafeZoneResponse: 21,
-  SafeZoneMoveResponse: 22,
-  UseHealItemResponse: 23,
-  PingResponse: 24,
-  PingByPlayerMoveResponse: 25,
-  PingByMatchInfoResponse: 26
+  LoginResponse: 1,
+  GetUserInfoResponse: 2,
+  CreateTeamResponse: 3,
+  JoinTeamResponse: 4,
+  FindMatchResponse: 5,
+  GetConfigResponse: 6,
+  MatchInfoResponse: 7,
+  PlayerMoveResponse: 8,
+  PlayerAttackResponse: 9,
+  PlayerInfoResponse: 10,
+  CreateBulletOnMapResponse: 11,
+  CreateItemOnMapResponse: 12,
+  ObstacleTakeDamageResponse: 13,
+  ObstacleDestroyResponse: 14,
+  PlayerTakeDamageResponse: 15,
+  PlayerDeadResponse: 16,
+  PlayerReloadWeaponResponse: 17,
+  PlayerChangeWeaponResponse: 18,
+  PlayerTakeItemResponse: 19,
+  StartGameResponse: 20,
+  EndGameResponse: 21,
+  NewSafeZoneResponse: 22,
+  SafeZoneMoveResponse: 23,
+  UseHealItemResponse: 24,
+  PingResponse: 25,
+  PingByPlayerMoveResponse: 26,
+  PingByMatchInfoResponse: 27
 };
 
 /**
@@ -50,32 +51,33 @@ survival2d.flatbuffers.ResponseUnion = {
  */
 survival2d.flatbuffers.ResponseUnionName = {
   '0': 'NONE',
-  '1': 'GetUserInfoResponse',
-  '2': 'CreateTeamResponse',
-  '3': 'JoinTeamResponse',
-  '4': 'FindMatchResponse',
-  '5': 'GetConfigResponse',
-  '6': 'MatchInfoResponse',
-  '7': 'PlayerMoveResponse',
-  '8': 'PlayerAttackResponse',
-  '9': 'PlayerInfoResponse',
-  '10': 'CreateBulletOnMapResponse',
-  '11': 'CreateItemOnMapResponse',
-  '12': 'ObstacleTakeDamageResponse',
-  '13': 'ObstacleDestroyResponse',
-  '14': 'PlayerTakeDamageResponse',
-  '15': 'PlayerDeadResponse',
-  '16': 'PlayerReloadWeaponResponse',
-  '17': 'PlayerChangeWeaponResponse',
-  '18': 'PlayerTakeItemResponse',
-  '19': 'StartGameResponse',
-  '20': 'EndGameResponse',
-  '21': 'NewSafeZoneResponse',
-  '22': 'SafeZoneMoveResponse',
-  '23': 'UseHealItemResponse',
-  '24': 'PingResponse',
-  '25': 'PingByPlayerMoveResponse',
-  '26': 'PingByMatchInfoResponse'
+  '1': 'LoginResponse',
+  '2': 'GetUserInfoResponse',
+  '3': 'CreateTeamResponse',
+  '4': 'JoinTeamResponse',
+  '5': 'FindMatchResponse',
+  '6': 'GetConfigResponse',
+  '7': 'MatchInfoResponse',
+  '8': 'PlayerMoveResponse',
+  '9': 'PlayerAttackResponse',
+  '10': 'PlayerInfoResponse',
+  '11': 'CreateBulletOnMapResponse',
+  '12': 'CreateItemOnMapResponse',
+  '13': 'ObstacleTakeDamageResponse',
+  '14': 'ObstacleDestroyResponse',
+  '15': 'PlayerTakeDamageResponse',
+  '16': 'PlayerDeadResponse',
+  '17': 'PlayerReloadWeaponResponse',
+  '18': 'PlayerChangeWeaponResponse',
+  '19': 'PlayerTakeItemResponse',
+  '20': 'StartGameResponse',
+  '21': 'EndGameResponse',
+  '22': 'NewSafeZoneResponse',
+  '23': 'SafeZoneMoveResponse',
+  '24': 'UseHealItemResponse',
+  '25': 'PingResponse',
+  '26': 'PingByPlayerMoveResponse',
+  '27': 'PingByMatchInfoResponse'
 };
 
 /**
@@ -1365,8 +1367,8 @@ survival2d.flatbuffers.CreateItemOnMapResponse.endCreateItemOnMapResponse = func
 /**
  * @param {flatbuffers.Builder} builder
  * @param {number} id
- * @param {NS3237581525310631968.survival2d.flatbuffers.ItemUnion} itemType
- * @param {NS3237581525310631968.flatbuffers.Offset} itemOffset
+ * @param {NS3310184765595907521.survival2d.flatbuffers.ItemUnion} itemType
+ * @param {NS3310184765595907521.flatbuffers.Offset} itemOffset
  * @param {flatbuffers.Offset} positionOffset
  * @param {flatbuffers.Offset} rawPositionOffset
  * @returns {flatbuffers.Offset}
@@ -3051,8 +3053,8 @@ survival2d.flatbuffers.PingByMatchInfoResponse.endPingByMatchInfoResponse = func
 /**
  * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} playersOffset
- * @param {NS3237581525310631968.flatbuffers.Offset} mapObjectsTypeOffset
- * @param {NS3237581525310631968.flatbuffers.Offset} mapObjectsOffset
+ * @param {NS3310184765595907521.flatbuffers.Offset} mapObjectsTypeOffset
+ * @param {NS3310184765595907521.flatbuffers.Offset} mapObjectsOffset
  * @param {flatbuffers.Offset} safeZoneOffset
  * @returns {flatbuffers.Offset}
  */
