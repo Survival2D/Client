@@ -29,6 +29,7 @@ var game_UIs = {
   MATCH_SCENE: "res/ui/MatchScene.json",
 
   MINIMAP_LAYER: "res/ui/MiniMapUI.json",
+  SAFE_ZONE_LAYER: "res/ui/SafeZoneUI.json",
 
   RESULT_LAYER: "res/ui/ResultGUI.json",
   SETTING_LAYER: "res/ui/SettingGUI.json"

@@ -82,20 +82,20 @@ const MiniMap = ccui.Layout.extend({
         let scenePos = this.ground2ScenePosition(pos);
         this.ground.setPosition(this.ground.x + this.width/2 - scenePos.x, this.ground.y + this.height/2 - scenePos.y);
 
-        if (this.lineToSafeZone) {
-            this.lineToSafeZone.removeFromParent();
-        }
-        
-        let safeZoneData = GameManager.getInstance().getCurrentMatch().safeZone;
-        if (safeZoneData.level > 0) {
-            let inZone = gm.calculateDistance_2(this.myPlayer.getPosition(), this.safeZoneUI.getPosition()) <= safeZoneData.radius * safeZoneData.radius;
-
-            let color = inZone ? cc.color("#FFFFFF") : cc.color("#FF0000");
-
-            let drawNode = new cc.DrawNode();
-            drawNode.drawSegment(this.myPlayer.getPosition(), this.safeZoneUI.getPosition(), 5, color);
-            this.lineToSafeZone = drawNode;
-        }
+        // if (this.lineToSafeZone) {
+        //     this.lineToSafeZone.removeFromParent();
+        // }
+        //
+        // let safeZoneData = GameManager.getInstance().getCurrentMatch().safeZone;
+        // if (safeZoneData.level > 0) {
+        //     let inZone = gm.calculateDistance_2(this.myPlayer.getPosition(), this.safeZoneUI.getPosition()) <= safeZoneData.radius * safeZoneData.radius;
+        //
+        //     let color = inZone ? cc.color("#FFFFFF") : cc.color("#FF0000");
+        //
+        //     let drawNode = new cc.DrawNode();
+        //     drawNode.drawSegment(this.myPlayer.getPosition(), this.safeZoneUI.getPosition(), 5, color);
+        //     this.lineToSafeZone = drawNode;
+        // }
     },
 
     ground2ScenePosition: function (pos) {
