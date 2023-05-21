@@ -3,91 +3,103 @@
  */
 
 const GameManager = cc.Class.extend({
-    ctor: function () {
-        this.userData = new UserData();
-        this.match = null;
+  ctor: function () {
+    this.userData = new UserData();
+    this.match = null;
 
-        GameManager.preloadResources();
-    },
+    GameManager.preloadResources();
+  },
 
-    findMatch: function () {
-        GameClient.getInstance().sendEmptyPacket(Cmd.FIND_MATCH);
-    },
+  findMatch: function () {
+    let builder = new flatbuffers.Builder(0);
+    let findMatchRequest = fbs.FindMatchRequest.createFindMatchRequest(builder);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.FindMatchRequest, findMatchRequest);
+    builder.finish(request);
+    fbsClient.sendBinary(builder.asUint8Array());
+  },
 
-    joinTeam: function () {
-        let pk = new SendJoinTeam(0);
-        GameClient.getInstance().sendPacket(pk);
-    },
+  joinTeam: function (teamId = 0) {
+    let builder = new flatbuffers.Builder(0);
+    let joinTeamRequest = fbs.JoinTeamRequest.createJoinTeamRequest(builder,
+        teamId);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.JoinTeamRequest, joinTeamRequest);
+    builder.finish(request);
+    fbsClient.sendBinary(builder.asUint8Array());
+  },
 
-    createTeam: function () {
-        GameClient.getInstance().sendEmptyPacket(Cmd.CREATE_TEAM);
-    },
+  createTeam: function () {
+    let builder = new flatbuffers.Builder(0);
+    let createTeamRequest = fbs.CreateTeamRequest.createCreateTeamRequest(builder);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.CreateTeamRequest, createTeamRequest);
+    builder.finish(request);
+    fbsClient.sendBinary(builder.asUint8Array());
+  },
 
-    findMatchWithTeam: function () {
+  findMatchWithTeam: function () {
 
-    },
+  },
 
-    onReceivedFindMatch: function (error, gameId) {
-        if (error === ErrorCode.SUCCESS) {
-            this.match = new MatchManager();
-            this.match.newMatch(gameId);
-        }
-    },
+  onReceivedFindMatch: function (matchId) {
+    this.match = new MatchManager();
+    this.match.newMatch(matchId);
+  },
 
-    onReceivedCreateTeam: function (error, teamId) {
-        if (error === ErrorCode.SUCCESS) {
-            SceneManager.getInstance().openLobbyScene();
-        }
-    },
+  onReceivedCreateTeam: function (teamId) {
+    SceneManager.getInstance().openLobbyScene();
+  },
 
-    onReceivedJoinTeam: function (error, teamId) {
-        if (error === ErrorCode.SUCCESS) {
-            SceneManager.getInstance().openLobbyScene();
-        }
-    },
+  onReceivedJoinTeam: function (teamId) {
+    SceneManager.getInstance().openLobbyScene();
+  },
 
-    /**
-     * @returns {null|MatchManager}
-     */
-    getCurrentMatch: function () {
-        return this.match;
-    },
+  /**
+   * @returns {null|MatchManager}
+   */
+  getCurrentMatch: function () {
+    return this.match;
+  },
 
-    startPing: function () {
-        this._pingTime = Date.now();
-        GameClient.getInstance().sendEmptyPacket(Cmd.PING_PONG);
-    },
+  startPing: function () {
+    this._pingTime = Date.now();
+    //TODO: start ping pong
+  },
 
-    receivedPong: function () {
-        let time = Date.now();
-        let oldTime = this._pingTime || 0;
-        let ping = time - oldTime;
-        // cc.log("--- PING: " + ping + "ms");
+  receivedPong: function () {
+    let time = Date.now();
+    let oldTime = this._pingTime || 0;
+    let ping = time - oldTime;
+    // cc.log("--- PING: " + ping + "ms");
 
-        setTimeout(this.startPing.bind(this), 1000);
-    }
+    setTimeout(this.startPing.bind(this), 1000);
+  }
 });
 
 /**
  * @returns {GameManager}
  */
 GameManager.getInstance = function () {
-    if (!this._instance) this._instance = new GameManager();
-    return this._instance;
+  if (!this._instance) {
+    this._instance = new GameManager();
+  }
+  return this._instance;
 };
 
 /**
  * @returns {GameManager}
  */
 GameManager.newInstance = function () {
-    this._instance = new GameManager();
-    return this._instance;
+  this._instance = new GameManager();
+  return this._instance;
 };
 
 GameManager.preloadResources = function () {
-    // for (var i in game_images) {
-    //     cc.textureCache.addImage(game_images[i]);
-    // }
+  // for (var i in game_images) {
+  //     cc.textureCache.addImage(game_images[i]);
+  // }
 
-    cc.spriteFrameCache.addSpriteFrames("res/ui/Game/game_art.plist", "res/ui/Game/game_art.png");
+  cc.spriteFrameCache.addSpriteFrames("res/ui/Game/game_art.plist",
+      "res/ui/Game/game_art.png");
 };

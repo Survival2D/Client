@@ -21,29 +21,30 @@ survival2d.flatbuffers.ResponseUnion = {
   GetUserInfoResponse: 2,
   CreateTeamResponse: 3,
   JoinTeamResponse: 4,
-  FindMatchResponse: 5,
-  GetConfigResponse: 6,
-  MatchInfoResponse: 7,
-  PlayerMoveResponse: 8,
-  PlayerAttackResponse: 9,
-  PlayerInfoResponse: 10,
-  CreateBulletOnMapResponse: 11,
-  CreateItemOnMapResponse: 12,
-  ObstacleTakeDamageResponse: 13,
-  ObstacleDestroyResponse: 14,
-  PlayerTakeDamageResponse: 15,
-  PlayerDeadResponse: 16,
-  PlayerReloadWeaponResponse: 17,
-  PlayerChangeWeaponResponse: 18,
-  PlayerTakeItemResponse: 19,
-  StartGameResponse: 20,
-  EndGameResponse: 21,
-  NewSafeZoneResponse: 22,
-  SafeZoneMoveResponse: 23,
-  UseHealItemResponse: 24,
-  PingResponse: 25,
-  PingByPlayerMoveResponse: 26,
-  PingByMatchInfoResponse: 27
+  NewUserJoinTeamResponse: 5,
+  FindMatchResponse: 6,
+  GetConfigResponse: 7,
+  MatchInfoResponse: 8,
+  PlayerMoveResponse: 9,
+  PlayerAttackResponse: 10,
+  PlayerInfoResponse: 11,
+  CreateBulletOnMapResponse: 12,
+  CreateItemOnMapResponse: 13,
+  ObstacleTakeDamageResponse: 14,
+  ObstacleDestroyResponse: 15,
+  PlayerTakeDamageResponse: 16,
+  PlayerDeadResponse: 17,
+  PlayerReloadWeaponResponse: 18,
+  PlayerChangeWeaponResponse: 19,
+  PlayerTakeItemResponse: 20,
+  StartGameResponse: 21,
+  EndGameResponse: 22,
+  NewSafeZoneResponse: 23,
+  SafeZoneMoveResponse: 24,
+  UseHealItemResponse: 25,
+  PingResponse: 26,
+  PingByPlayerMoveResponse: 27,
+  PingByMatchInfoResponse: 28
 };
 
 /**
@@ -55,29 +56,30 @@ survival2d.flatbuffers.ResponseUnionName = {
   '2': 'GetUserInfoResponse',
   '3': 'CreateTeamResponse',
   '4': 'JoinTeamResponse',
-  '5': 'FindMatchResponse',
-  '6': 'GetConfigResponse',
-  '7': 'MatchInfoResponse',
-  '8': 'PlayerMoveResponse',
-  '9': 'PlayerAttackResponse',
-  '10': 'PlayerInfoResponse',
-  '11': 'CreateBulletOnMapResponse',
-  '12': 'CreateItemOnMapResponse',
-  '13': 'ObstacleTakeDamageResponse',
-  '14': 'ObstacleDestroyResponse',
-  '15': 'PlayerTakeDamageResponse',
-  '16': 'PlayerDeadResponse',
-  '17': 'PlayerReloadWeaponResponse',
-  '18': 'PlayerChangeWeaponResponse',
-  '19': 'PlayerTakeItemResponse',
-  '20': 'StartGameResponse',
-  '21': 'EndGameResponse',
-  '22': 'NewSafeZoneResponse',
-  '23': 'SafeZoneMoveResponse',
-  '24': 'UseHealItemResponse',
-  '25': 'PingResponse',
-  '26': 'PingByPlayerMoveResponse',
-  '27': 'PingByMatchInfoResponse'
+  '5': 'NewUserJoinTeamResponse',
+  '6': 'FindMatchResponse',
+  '7': 'GetConfigResponse',
+  '8': 'MatchInfoResponse',
+  '9': 'PlayerMoveResponse',
+  '10': 'PlayerAttackResponse',
+  '11': 'PlayerInfoResponse',
+  '12': 'CreateBulletOnMapResponse',
+  '13': 'CreateItemOnMapResponse',
+  '14': 'ObstacleTakeDamageResponse',
+  '15': 'ObstacleDestroyResponse',
+  '16': 'PlayerTakeDamageResponse',
+  '17': 'PlayerDeadResponse',
+  '18': 'PlayerReloadWeaponResponse',
+  '19': 'PlayerChangeWeaponResponse',
+  '20': 'PlayerTakeItemResponse',
+  '21': 'StartGameResponse',
+  '22': 'EndGameResponse',
+  '23': 'NewSafeZoneResponse',
+  '24': 'SafeZoneMoveResponse',
+  '25': 'UseHealItemResponse',
+  '26': 'PingResponse',
+  '27': 'PingByPlayerMoveResponse',
+  '28': 'PingByMatchInfoResponse'
 };
 
 /**
@@ -128,24 +130,41 @@ survival2d.flatbuffers.LoginResponse.getSizePrefixedRootAsLoginResponse = functi
 /**
  * @returns {number}
  */
-survival2d.flatbuffers.LoginResponse.prototype.playerId = function() {
+survival2d.flatbuffers.LoginResponse.prototype.userId = function() {
   var offset = this.bb.__offset(this.bb_pos, 4);
   return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
+ * @param {flatbuffers.Encoding=} optionalEncoding
+ * @returns {string|Uint8Array|null}
+ */
+survival2d.flatbuffers.LoginResponse.prototype.userName = function(optionalEncoding) {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
 };
 
 /**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.LoginResponse.startLoginResponse = function(builder) {
-  builder.startObject(1);
+  builder.startObject(2);
 };
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {number} playerId
+ * @param {number} userId
  */
-survival2d.flatbuffers.LoginResponse.addPlayerId = function(builder, playerId) {
-  builder.addFieldInt32(0, playerId, 0);
+survival2d.flatbuffers.LoginResponse.addUserId = function(builder, userId) {
+  builder.addFieldInt32(0, userId, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} userNameOffset
+ */
+survival2d.flatbuffers.LoginResponse.addUserName = function(builder, userNameOffset) {
+  builder.addFieldOffset(1, userNameOffset, 0);
 };
 
 /**
@@ -159,12 +178,14 @@ survival2d.flatbuffers.LoginResponse.endLoginResponse = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {number} playerId
+ * @param {number} userId
+ * @param {flatbuffers.Offset} userNameOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.LoginResponse.createLoginResponse = function(builder, playerId) {
+survival2d.flatbuffers.LoginResponse.createLoginResponse = function(builder, userId, userNameOffset) {
   survival2d.flatbuffers.LoginResponse.startLoginResponse(builder);
-  survival2d.flatbuffers.LoginResponse.addPlayerId(builder, playerId);
+  survival2d.flatbuffers.LoginResponse.addUserId(builder, userId);
+  survival2d.flatbuffers.LoginResponse.addUserName(builder, userNameOffset);
   return survival2d.flatbuffers.LoginResponse.endLoginResponse(builder);
 }
 
@@ -284,10 +305,26 @@ survival2d.flatbuffers.CreateTeamResponse.getSizePrefixedRootAsCreateTeamRespons
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.CreateTeamResponse.prototype.teamId = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.CreateTeamResponse.startCreateTeamResponse = function(builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} teamId
+ */
+survival2d.flatbuffers.CreateTeamResponse.addTeamId = function(builder, teamId) {
+  builder.addFieldInt32(0, teamId, 0);
 };
 
 /**
@@ -301,10 +338,12 @@ survival2d.flatbuffers.CreateTeamResponse.endCreateTeamResponse = function(build
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {number} teamId
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.CreateTeamResponse.createCreateTeamResponse = function(builder) {
+survival2d.flatbuffers.CreateTeamResponse.createCreateTeamResponse = function(builder, teamId) {
   survival2d.flatbuffers.CreateTeamResponse.startCreateTeamResponse(builder);
+  survival2d.flatbuffers.CreateTeamResponse.addTeamId(builder, teamId);
   return survival2d.flatbuffers.CreateTeamResponse.endCreateTeamResponse(builder);
 }
 
@@ -354,10 +393,26 @@ survival2d.flatbuffers.JoinTeamResponse.getSizePrefixedRootAsJoinTeamResponse = 
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.JoinTeamResponse.prototype.teamId = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.JoinTeamResponse.startJoinTeamResponse = function(builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} teamId
+ */
+survival2d.flatbuffers.JoinTeamResponse.addTeamId = function(builder, teamId) {
+  builder.addFieldInt32(0, teamId, 0);
 };
 
 /**
@@ -371,11 +426,120 @@ survival2d.flatbuffers.JoinTeamResponse.endJoinTeamResponse = function(builder) 
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {number} teamId
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.JoinTeamResponse.createJoinTeamResponse = function(builder) {
+survival2d.flatbuffers.JoinTeamResponse.createJoinTeamResponse = function(builder, teamId) {
   survival2d.flatbuffers.JoinTeamResponse.startJoinTeamResponse(builder);
+  survival2d.flatbuffers.JoinTeamResponse.addTeamId(builder, teamId);
   return survival2d.flatbuffers.JoinTeamResponse.endJoinTeamResponse(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.NewUserJoinTeamResponse}
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.NewUserJoinTeamResponse=} obj
+ * @returns {survival2d.flatbuffers.NewUserJoinTeamResponse}
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.getRootAsNewUserJoinTeamResponse = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.NewUserJoinTeamResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.NewUserJoinTeamResponse=} obj
+ * @returns {survival2d.flatbuffers.NewUserJoinTeamResponse}
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.getSizePrefixedRootAsNewUserJoinTeamResponse = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.NewUserJoinTeamResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @returns {number}
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.prototype.userId = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
+ * @param {flatbuffers.Encoding=} optionalEncoding
+ * @returns {string|Uint8Array|null}
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.prototype.userName = function(optionalEncoding) {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.startNewUserJoinTeamResponse = function(builder) {
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} userId
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.addUserId = function(builder, userId) {
+  builder.addFieldInt32(0, userId, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} userNameOffset
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.addUserName = function(builder, userNameOffset) {
+  builder.addFieldOffset(1, userNameOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.endNewUserJoinTeamResponse = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} userId
+ * @param {flatbuffers.Offset} userNameOffset
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.NewUserJoinTeamResponse.createNewUserJoinTeamResponse = function(builder, userId, userNameOffset) {
+  survival2d.flatbuffers.NewUserJoinTeamResponse.startNewUserJoinTeamResponse(builder);
+  survival2d.flatbuffers.NewUserJoinTeamResponse.addUserId(builder, userId);
+  survival2d.flatbuffers.NewUserJoinTeamResponse.addUserName(builder, userNameOffset);
+  return survival2d.flatbuffers.NewUserJoinTeamResponse.endNewUserJoinTeamResponse(builder);
 }
 
 /**
@@ -424,10 +588,26 @@ survival2d.flatbuffers.FindMatchResponse.getSizePrefixedRootAsFindMatchResponse 
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.FindMatchResponse.prototype.matchId = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.FindMatchResponse.startFindMatchResponse = function(builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} matchId
+ */
+survival2d.flatbuffers.FindMatchResponse.addMatchId = function(builder, matchId) {
+  builder.addFieldInt32(0, matchId, 0);
 };
 
 /**
@@ -441,10 +621,12 @@ survival2d.flatbuffers.FindMatchResponse.endFindMatchResponse = function(builder
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {number} matchId
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.FindMatchResponse.createFindMatchResponse = function(builder) {
+survival2d.flatbuffers.FindMatchResponse.createFindMatchResponse = function(builder, matchId) {
   survival2d.flatbuffers.FindMatchResponse.startFindMatchResponse(builder);
+  survival2d.flatbuffers.FindMatchResponse.addMatchId(builder, matchId);
   return survival2d.flatbuffers.FindMatchResponse.endFindMatchResponse(builder);
 }
 
@@ -3183,10 +3365,18 @@ survival2d.flatbuffers.Response.getSizePrefixedRootAsResponse = function(bb, obj
 };
 
 /**
+ * @returns {survival2d.flatbuffers.ResponseErrorEnum}
+ */
+survival2d.flatbuffers.Response.prototype.error = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? /** @type {survival2d.flatbuffers.ResponseErrorEnum} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.ResponseErrorEnum.SUCCESS;
+};
+
+/**
  * @returns {survival2d.flatbuffers.ResponseUnion}
  */
 survival2d.flatbuffers.Response.prototype.responseType = function() {
-  var offset = this.bb.__offset(this.bb_pos, 4);
+  var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? /** @type {survival2d.flatbuffers.ResponseUnion} */ (this.bb.readUint8(this.bb_pos + offset)) : survival2d.flatbuffers.ResponseUnion.NONE;
 };
 
@@ -3195,7 +3385,7 @@ survival2d.flatbuffers.Response.prototype.responseType = function() {
  * @returns {?flatbuffers.Table}
  */
 survival2d.flatbuffers.Response.prototype.response = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 6);
+  var offset = this.bb.__offset(this.bb_pos, 8);
   return offset ? this.bb.__union(obj, this.bb_pos + offset) : null;
 };
 
@@ -3203,7 +3393,15 @@ survival2d.flatbuffers.Response.prototype.response = function(obj) {
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.Response.startResponse = function(builder) {
-  builder.startObject(2);
+  builder.startObject(3);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.ResponseErrorEnum} error
+ */
+survival2d.flatbuffers.Response.addError = function(builder, error) {
+  builder.addFieldInt8(0, error, survival2d.flatbuffers.ResponseErrorEnum.SUCCESS);
 };
 
 /**
@@ -3211,7 +3409,7 @@ survival2d.flatbuffers.Response.startResponse = function(builder) {
  * @param {survival2d.flatbuffers.ResponseUnion} responseType
  */
 survival2d.flatbuffers.Response.addResponseType = function(builder, responseType) {
-  builder.addFieldInt8(0, responseType, survival2d.flatbuffers.ResponseUnion.NONE);
+  builder.addFieldInt8(1, responseType, survival2d.flatbuffers.ResponseUnion.NONE);
 };
 
 /**
@@ -3219,7 +3417,7 @@ survival2d.flatbuffers.Response.addResponseType = function(builder, responseType
  * @param {flatbuffers.Offset} responseOffset
  */
 survival2d.flatbuffers.Response.addResponse = function(builder, responseOffset) {
-  builder.addFieldOffset(1, responseOffset, 0);
+  builder.addFieldOffset(2, responseOffset, 0);
 };
 
 /**
@@ -3249,12 +3447,14 @@ survival2d.flatbuffers.Response.finishSizePrefixedResponseBuffer = function(buil
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {NS3310184765595907521.survival2d.flatbuffers.ResponseErrorEnum} error
  * @param {survival2d.flatbuffers.ResponseUnion} responseType
  * @param {flatbuffers.Offset} responseOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.Response.createResponse = function(builder, responseType, responseOffset) {
+survival2d.flatbuffers.Response.createResponse = function(builder, error, responseType, responseOffset) {
   survival2d.flatbuffers.Response.startResponse(builder);
+  survival2d.flatbuffers.Response.addError(builder, error);
   survival2d.flatbuffers.Response.addResponseType(builder, responseType);
   survival2d.flatbuffers.Response.addResponse(builder, responseOffset);
   return survival2d.flatbuffers.Response.endResponse(builder);

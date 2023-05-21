@@ -3,17 +3,19 @@ const fbs = survival2d.flatbuffers;
 const WsClient = cc.Class.extend({
   ctor: function (url) {
     this.url = url;
-  },
-  connect: function () {
+  }, connect: function () {
     cc.log("connect");
     this.ws = new WebSocket(this.url);
     const self = this;
     this.ws.onopen = function () {
       cc.log("connected to: " + self.url);
       let builder = new flatbuffers.Builder(0);
-      let offset = fbs.LoginRequest.createLoginRequest(builder);
-      let packet = fbs.Response.createResponse(builder, fbs.RequestUnion.LoginRequest, offset);
-      builder.finish(packet);
+      let name = builder.createString(
+          "user_" + Math.floor(Math.random() * 1000));
+      let loginRequest = fbs.LoginRequest.createLoginRequest(builder, name);
+      let request = fbs.Request.createRequest(builder,
+          fbs.RequestUnion.LoginRequest, loginRequest);
+      builder.finish(request);
       self.sendBinary(builder.asUint8Array());
     }
     this.ws.onmessage = function (event) {
@@ -31,31 +33,59 @@ const WsClient = cc.Class.extend({
     this.ws.onerror = function (e) {
       cc.log("connect to: " + self.url + " error : " + JSON.stringify(e));
     }
-  },
-  handleBinaryMessage: function (data) {
+  }, handleBinaryMessage: function (data) {
     cc.log("rawData", JSON.stringify(data))
     const fileReader = new FileReader();
-    fileReader.onloadend = function(event) {
+    fileReader.onloadend = function (event) {
       const buffer = new Uint8Array(event.target.result);
       const buf = new flatbuffers.ByteBuffer(buffer);
-      const responseData = fbs.Response.getRootAsResponse(buf);
+      const response = fbs.Response.getRootAsResponse(buf);
 
-      switch (responseData.responseType()) {
+      if (response.error() !== fbs.ResponseErrorEnum.SUCCESS) {
+        cc.log("Packet ", response.responseType(), " error ", response.error());
+        return;
+      }
+
+      switch (response.responseType()) {
         case fbs.ResponseUnion.LoginResponse: {
-          let response = new fbs.LoginResponse();
-          responseData.response(response);
-          cc.log("login as user ", response.playerId())
+          let loginResponse = new fbs.LoginResponse();
+          response.response(loginResponse);
+          cc.log("login as user ", loginResponse.userId(), " name ",
+              loginResponse.userName());
+          GameManager.getInstance().userData.setUserData("" +
+              loginResponse.userId()); //FIXME: convert to int
+          SceneManager.getInstance().openHomeScene();
+          break;
+        }
+        case fbs.ResponseUnion.FindMatchResponse: {
+          let findMatchResponse = new fbs.FindMatchResponse();
+          response.response(findMatchResponse);
+
+          GameManager.getInstance().onReceivedFindMatch(findMatchResponse.matchId());
+          break;
+        }
+        case fbs.ResponseUnion.CreateTeamResponse: {
+          let createTeamResponse = new fbs.CreateTeamResponse();
+          response.response(createTeamResponse);
+          GameManager.getInstance().onReceivedCreateTeam(createTeamResponse.teamId());
+          break;
+        }
+        case fbs.ResponseUnion.JoinTeamResponse: {
+          let joinTeamResponse = new fbs.JoinTeamResponse();
+          response.response(joinTeamResponse);
+          GameManager.getInstance().onReceivedJoinTeam(joinTeamResponse.teamId());
           break;
         }
         case fbs.ResponseUnion.MatchInfoResponse: {
-          let response = new fbs.MatchInfoResponse();
-          response.data(responseData);
+          let matchInfoResponse = new fbs.MatchInfoResponse();
+          response.response(matchInfoResponse);
           cc.log("RECEIVED MatchInfo");
 
           let players = [];
-          for (let i = 0; i < response.playersLength(); i++) {
-            let bfPlayer = response.players(i);
+          for (let i = 0; i < matchInfoResponse.playersLength(); i++) {
+            let bfPlayer = matchInfoResponse.players(i);
             let player = new PlayerData();
+            player.id = bfPlayer.playerId();
             player.username = bfPlayer.playerId();
             player.position.x = bfPlayer.position().x();
             player.position.y = bfPlayer.position().y();
@@ -66,8 +96,8 @@ const WsClient = cc.Class.extend({
           }
 
           let obstacles = [], items = [];
-          for (let i = 0; i < response.mapObjectsLength(); i++) {
-            let bfObj = response.mapObjects(i);
+          for (let i = 0; i < matchInfoResponse.mapObjectsLength(); i++) {
+            let bfObj = matchInfoResponse.mapObjects(i);
             let obj = new MapObjectData();
             switch (bfObj.dataType()) {
               case fbs.MapObjectUnion.TreeTable: {
@@ -163,17 +193,18 @@ const WsClient = cc.Class.extend({
             obj.position.y = bfObj.position().y();
           }
 
-          GameManager.getInstance().getCurrentMatch().updateMatchInfo(players, obstacles, items);
+          GameManager.getInstance().getCurrentMatch().updateMatchInfo(players,
+              obstacles, items);
           break;
         }
         case fbs.ResponseUnion.PlayerInfoResponse: {
-          let response = new fbs.PlayerInfoResponse();
-          response.data(response);
+          let playerInfoResponse = new fbs.PlayerInfoResponse();
+          response.response(playerInfoResponse);
           cc.log("RECEIVED MyPlayerInfo");
-          let hp = response.hp();
+          let hp = playerInfoResponse.hp();
           let haveGun = false;
-          for (let i = 0; i < response.weaponLength(); i++) {
-            let bfWeapon = response.weapon(i);
+          for (let i = 0; i < playerInfoResponse.weaponLength(); i++) {
+            let bfWeapon = playerInfoResponse.weapon(i);
             if (bfWeapon.dataType() === fbs.WeaponUnion.GunTable) {
               let bfGun = new fbs.GunTable();
               bfWeapon.data(bfGun);
@@ -183,65 +214,72 @@ const WsClient = cc.Class.extend({
             }
           }
 
-          GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp, haveGun);
+          GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp,
+              haveGun);
           break;
         }
         case fbs.ResponseUnion.PlayerMoveResponse: {
-          let response = new fbs.PlayerMoveResponse();
-          response.data(response);
+          let playerMoveResponse = new fbs.PlayerMoveResponse();
+          response.response(playerMoveResponse);
           cc.log("RECEIVED PlayerMove");
-          let username = response.username();
-          let position = gm.p(response.position().x(), response.position().y());
-          let rotation = response.rotation();
+          let playerId = playerMoveResponse.playerId();
+          let position = gm.p(playerMoveResponse.position().x(), playerMoveResponse.position().y());
+          let rotation = playerMoveResponse.rotation();
 
-          GameManager.getInstance().getCurrentMatch().receivedPlayerMove(username, position, rotation);
+          GameManager.getInstance().getCurrentMatch().receivedPlayerMove(
+              playerId, position, rotation);
           break;
         }
         case fbs.ResponseUnion.PlayerChangeWeaponResponse: {
-          let response = new fbs.PlayerChangeWeaponResponse();
-          response.data(response);
+          let playerChangeWeaponResponse = new fbs.PlayerChangeWeaponResponse();
+          response.response(playerChangeWeaponResponse);
           cc.log("RECEIVED PlayerChangeWeapon");
-          GameManager.getInstance().getCurrentMatch().receivedPlayerChangeWeapon(response.username(), response.slot());
+          GameManager.getInstance().getCurrentMatch().receivedPlayerChangeWeapon(
+              playerChangeWeaponResponse.playerId(), playerChangeWeaponResponse.slot());
           break;
         }
         case fbs.ResponseUnion.PlayerReloadWeaponResponse: {
-          let response = new fbs.PlayerReloadWeaponResponse();
-          response.data(response);
+          let playerReloadWeaponResponse = new fbs.PlayerReloadWeaponResponse();
+          response.response(playerReloadWeaponResponse);
           cc.log("RECEIVED PlayerReloadWeapon");
-          GameManager.getInstance().getCurrentMatch().receivedPlayerReloadWeapon(response.remainBulletsInGun(), response.remainBullets());
+          GameManager.getInstance().getCurrentMatch().receivedPlayerReloadWeapon(
+              playerReloadWeaponResponse.remainBulletsInGun(), playerReloadWeaponResponse.remainBullets());
           break;
         }
         case fbs.ResponseUnion.PlayerAttackResponse: {
-          let response = new fbs.PlayerAttackResponse();
-          response.data(response);
+          let playerAttackResponse = new fbs.PlayerAttackResponse();
+          response.response(playerAttackResponse);
           cc.log("RECEIVED PlayerAttack");
 
-          let username = response.username();
-          let slot = response.slot();
-          let position = gm.p(response.position().x(), response.position().y());
-          GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(username, slot, position);
+          let username = playerAttackResponse.playerId();
+          let slot = playerAttackResponse.slot();
+          let position = gm.p(playerAttackResponse.position().x(), playerAttackResponse.position().y());
+          GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(
+              username, slot, position);
           break;
         }
         case fbs.ResponseUnion.PlayerTakeDamageResponse: {
-          let response = new fbs.PlayerTakeDamageResponse();
-          response.data(response);
+          let playerTakeDamageResponse = new fbs.PlayerTakeDamageResponse();
+          response.response(playerTakeDamageResponse);
           cc.log("RECEIVED PlayerTakeDamage");
-          GameManager.getInstance().getCurrentMatch().receivedPlayerTakeDamage(response.username(), response.remainHp());
+          GameManager.getInstance().getCurrentMatch().receivedPlayerTakeDamage(
+              playerTakeDamageResponse.playerId(), playerTakeDamageResponse.remainHp());
           break;
         }
         case fbs.ResponseUnion.PlayerDeadResponse: {
-          let response = new fbs.PlayerDeadResponse();
-          response.data(response);
+          let playerDeadResponse = new fbs.PlayerDeadResponse();
+          response.response(playerDeadResponse);
           cc.log("RECEIVED PlayerDead");
-          GameManager.getInstance().getCurrentMatch().receivedPlayerDead(response.username());
+          GameManager.getInstance().getCurrentMatch().receivedPlayerDead(
+              playerDeadResponse.playerId());
           break;
         }
         case fbs.ResponseUnion.CreateBulletOnMapResponse: {
-          let response = new fbs.CreateBulletOnMapResponse();
-          response.data(response);
+          let createBulletOnMapResponse = new fbs.CreateBulletOnMapResponse();
+          response.response(createBulletOnMapResponse);
           cc.log("RECEIVED CreateBullet");
 
-          let bfBullet = response.bullet();
+          let bfBullet = createBulletOnMapResponse.bullet();
           let bullet = new BulletData();
           bullet.id = bfBullet.id();
           bullet.ownerId = bfBullet.owner();
@@ -252,33 +290,34 @@ const WsClient = cc.Class.extend({
           bullet.direction.x = bfBullet.direction().x();
           bullet.direction.y = bfBullet.direction().y();
 
-          GameManager.getInstance().getCurrentMatch().receivedCreateBullet(bullet);
+          GameManager.getInstance().getCurrentMatch().receivedCreateBullet(
+              bullet);
           break;
         }
         case fbs.ResponseUnion.CreateItemOnMapResponse: {
-          let response = new fbs.CreateItemOnMapResponse();
-          response.data(response);
-          cc.log("RECEIVED CreateItem", response.itemType());
+          let createItemOnMapResponse = new fbs.CreateItemOnMapResponse();
+          response.response(createItemOnMapResponse);
+          cc.log("RECEIVED CreateItem", createItemOnMapResponse.itemType());
 
           let item = new ItemData();
-          switch (response.itemType()) {
+          switch (createItemOnMapResponse.itemType()) {
             case fbs.Item.BulletItemTable: {
               let bfBullet = new fbs.BulletItemTable();
-              response.item(bfBullet);
+              createItemOnMapResponse.item(bfBullet);
               item = new ItemBulletData();
               item.setNumBullets(bfBullet.numBullet());
               break;
             }
             case fbs.Item.GunItemTable: {
               let bfGun = new fbs.GunItemTable();
-              response.item(bfGun);
+              createItemOnMapResponse.item(bfGun);
               item = new ItemGunData();
               item.setNumBullets(bfGun.numBullet());
               break;
             }
             case fbs.Item.VestItemTable: {
               let bfVest = new fbs.VestItemTable();
-              response.item(bfVest);
+              createItemOnMapResponse.item(bfVest);
               item = new ItemVestData();
               switch (bfVest.type()) {
                 case fbs.VestTypeEnum.LEVEL_0:
@@ -295,7 +334,7 @@ const WsClient = cc.Class.extend({
             }
             case fbs.Item.HelmetItemTable: {
               let bfHelmet = new fbs.HelmetItemTable();
-              response.item(bfHelmet);
+              createItemOnMapResponse.item(bfHelmet);
               item = new ItemHelmetData();
               switch (bfHelmet.type()) {
                 case fbs.HelmetTypeEnum.LEVEL_0:
@@ -312,13 +351,13 @@ const WsClient = cc.Class.extend({
             }
             case fbs.Item.BandageItemTable: {
               let bfBandage = new fbs.BandageItemTable();
-              response.item(bfBandage);
+              createItemOnMapResponse.item(bfBandage);
               item = new ItemBandageData();
               break;
             }
             case fbs.Item.MedKitItemTable: {
               let bfMedKit = new fbs.MedKitItemTable();
-              response.item(bfMedKit);
+              createItemOnMapResponse.item(bfMedKit);
               item = new ItemMedKitData();
               break;
             }
@@ -326,88 +365,94 @@ const WsClient = cc.Class.extend({
               return;
             }
           }
-          item.setObjectId(response.id());
-          item.position.x = response.position().x();
-          item.position.y = response.position().y();
+          item.setObjectId(createItemOnMapResponse.id());
+          item.position.x = createItemOnMapResponse.position().x();
+          item.position.y = createItemOnMapResponse.position().y();
 
-          let fromPosition = gm.p(response.rawPosition().x(), response.rawPosition().y());
+          let fromPosition = gm.p(createItemOnMapResponse.rawPosition().x(),
+              createItemOnMapResponse.rawPosition().y());
 
-          GameManager.getInstance().getCurrentMatch().receivedItemCreated(item, fromPosition);
+          GameManager.getInstance().getCurrentMatch().receivedItemCreated(item,
+              fromPosition);
           break;
         }
         case fbs.ResponseUnion.ObstacleTakeDamageResponse: {
-          let response = new fbs.ObstacleTakeDamageResponse();
-          response.data(response);
+          let obstacleTakeDamageResponse = new fbs.ObstacleTakeDamageResponse();
+          response.response(obstacleTakeDamageResponse);
           cc.log("RECEIVED ObstacleTakeDamage");
-          GameManager.getInstance().getCurrentMatch().receivedObstacleTakeDamage(response.id(), response.remainHp());
+          GameManager.getInstance().getCurrentMatch().receivedObstacleTakeDamage(
+              obstacleTakeDamageResponse.id(), obstacleTakeDamageResponse.remainHp());
           break;
         }
         case fbs.ResponseUnion.ObstacleDestroyResponse: {
-          let response = new fbs.ObstacleDestroyResponse();
-          response.data(response);
+          let obstacleDestroyResponse = new fbs.ObstacleDestroyResponse();
+          response.response(obstacleDestroyResponse);
           cc.log("RECEIVED ObstacleDestroyed");
-          GameManager.getInstance().getCurrentMatch().receivedObstacleDestroyed(response.id());
+          GameManager.getInstance().getCurrentMatch().receivedObstacleDestroyed(
+              obstacleDestroyResponse.id());
           break;
         }
         case fbs.ResponseUnion.PlayerTakeItemResponse: {
-          let response = new fbs.PlayerTakeItemResponse();
-          response.data(response);
+          let playerTakeItemResponse = new fbs.PlayerTakeItemResponse();
+          response.response(playerTakeItemResponse);
           cc.log("RECEIVED PlayerTakeItem");
-          GameManager.getInstance().getCurrentMatch().receivedPlayerTakeItem(response.username(), response.id());
+          GameManager.getInstance().getCurrentMatch().receivedPlayerTakeItem(
+              playerTakeItemResponse.playerId(), playerTakeItemResponse.id());
           break;
         }
         case fbs.ResponseUnion.UseHealItemResponse: {
-          let response = new fbs.UseHealItemResponse();
-          response.data(response);
+          let useHealItemResponse = new fbs.UseHealItemResponse();
+          response.response(useHealItemResponse);
           cc.log("RECEIVED UseHealItemResponse");
-          GameManager.getInstance().getCurrentMatch().receivedMyPlayerHealed(response.remainHp(), response.itemType(), response.remainItem());
+          GameManager.getInstance().getCurrentMatch().receivedMyPlayerHealed(
+              useHealItemResponse.remainHp(), useHealItemResponse.itemType(), useHealItemResponse.remainItem());
           break;
         }
         case fbs.ResponseUnion.EndGameResponse: {
-          let response = new fbs.EndGameResponse();
-          response.data(response);
+          let endGameResponse = new fbs.EndGameResponse();
+          response.response(endGameResponse);
           cc.log("RECEIVED EndGame");
-          GameManager.getInstance().getCurrentMatch().receivedMatchResult(response.winTeam());
+          GameManager.getInstance().getCurrentMatch().receivedMatchResult(
+              endGameResponse.winTeam());
           break;
         }
         case fbs.ResponseUnion.NewSafeZoneResponse: {
-          let response = new fbs.NewSafeZoneResponse();
-          response.data(response);
+          let newSafeZoneResponse = new fbs.NewSafeZoneResponse();
+          response.response(newSafeZoneResponse);
           cc.log("RECEIVED NewSafeZoneResponse");
-          GameManager.getInstance().getCurrentMatch().receivedNewSafeZone(response.safeZone().x(), response.safeZone().y(), response.radius());
+          GameManager.getInstance().getCurrentMatch().receivedNewSafeZone(
+              newSafeZoneResponse.safeZone().x(), newSafeZoneResponse.safeZone().y(),
+              newSafeZoneResponse.safeZone().radius());
           break;
         }
         case fbs.ResponseUnion.SafeZoneMoveResponse: {
-          let response = new fbs.SafeZoneMoveResponse();
-          response.data(response);
+          let safeZoneMoveResponse = new fbs.SafeZoneMoveResponse();
+          response.response(safeZoneMoveResponse);
           cc.log("RECEIVED SafeZoneMoveResponse");
-          GameManager.getInstance().getCurrentMatch().receivedSafeZoneMove(response.safeZone().x(), response.safeZone().y(), response.radius());
+          GameManager.getInstance().getCurrentMatch().receivedSafeZoneMove(
+              safeZoneMoveResponse.safeZone().x(), safeZoneMoveResponse.safeZone().y(),
+              safeZoneMoveResponse.radius());
           break;
         }
         default:
-          cc.log("not handle", responseData.responseType());
+          cc.log("not handle", response.responseType());
           break;
       }
     };
     fileReader.readAsArrayBuffer(data);
-  },
-  disconnect: function () {
+  }, disconnect: function () {
     cc.log("disconnect from " + this.url);
     this.ws.close();
-  },
-  destroy: function () {
+  }, destroy: function () {
     cc.log("destroy");
     this.disconnect();
-  },
-  sendBinary: function (data) {
+  }, sendBinary: function (data) {
     cc.log("sendBinary: " + data);
     this.ws.send(data);
-  },
-  sendText: function (text) {
+  }, sendText: function (text) {
     cc.log("sendText: " + text);
     this.ws.send(text);
-  },
-  sendData: function (data) {
+  }, sendData: function (data) {
     const json = JSON.stringify(data);
     this.sendText(json);
   }

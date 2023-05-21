@@ -104,10 +104,27 @@ survival2d.flatbuffers.LoginRequest.getSizePrefixedRootAsLoginRequest = function
 };
 
 /**
+ * @param {flatbuffers.Encoding=} optionalEncoding
+ * @returns {string|Uint8Array|null}
+ */
+survival2d.flatbuffers.LoginRequest.prototype.userName = function(optionalEncoding) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.LoginRequest.startLoginRequest = function(builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} userNameOffset
+ */
+survival2d.flatbuffers.LoginRequest.addUserName = function(builder, userNameOffset) {
+  builder.addFieldOffset(0, userNameOffset, 0);
 };
 
 /**
@@ -121,10 +138,12 @@ survival2d.flatbuffers.LoginRequest.endLoginRequest = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} userNameOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.LoginRequest.createLoginRequest = function(builder) {
+survival2d.flatbuffers.LoginRequest.createLoginRequest = function(builder, userNameOffset) {
   survival2d.flatbuffers.LoginRequest.startLoginRequest(builder);
+  survival2d.flatbuffers.LoginRequest.addUserName(builder, userNameOffset);
   return survival2d.flatbuffers.LoginRequest.endLoginRequest(builder);
 }
 
@@ -314,10 +333,26 @@ survival2d.flatbuffers.JoinTeamRequest.getSizePrefixedRootAsJoinTeamRequest = fu
 };
 
 /**
+ * @returns {number}
+ */
+survival2d.flatbuffers.JoinTeamRequest.prototype.teamId = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+};
+
+/**
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.JoinTeamRequest.startJoinTeamRequest = function(builder) {
-  builder.startObject(0);
+  builder.startObject(1);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {number} teamId
+ */
+survival2d.flatbuffers.JoinTeamRequest.addTeamId = function(builder, teamId) {
+  builder.addFieldInt32(0, teamId, 0);
 };
 
 /**
@@ -331,10 +366,12 @@ survival2d.flatbuffers.JoinTeamRequest.endJoinTeamRequest = function(builder) {
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {number} teamId
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.JoinTeamRequest.createJoinTeamRequest = function(builder) {
+survival2d.flatbuffers.JoinTeamRequest.createJoinTeamRequest = function(builder, teamId) {
   survival2d.flatbuffers.JoinTeamRequest.startJoinTeamRequest(builder);
+  survival2d.flatbuffers.JoinTeamRequest.addTeamId(builder, teamId);
   return survival2d.flatbuffers.JoinTeamRequest.endJoinTeamRequest(builder);
 }
 

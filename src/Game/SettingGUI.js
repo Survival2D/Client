@@ -36,7 +36,7 @@ const SettingGUI = BaseLayer.extend({
         Config.ENABLE_AUTO_PLAY = !Config.ENABLE_AUTO_PLAY;
         this.lblEnableAutoPlay.setString(Config.ENABLE_AUTO_PLAY ? "Enabled" : "Disabled");
 
-        GameClient.getInstance().sendAutoPlay(Config.ENABLE_AUTO_PLAY);
+        //TODO: setAutoPlay
     }
 });
 

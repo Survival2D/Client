@@ -473,7 +473,12 @@ const MatchScene = BaseLayer.extend({
                 if (item instanceof ItemGunData && match.myPlayer.isHaveGun()) return;
 
                 // GameClient.getInstance().sendEmptyPacket(Cmd.TAKE_ITEM);
-                GameClient.getInstance().sendPlayerTakeItem();
+                let builder = new flatbuffers.Builder(0);
+                let playerTakeItemRequest = fbs.PlayerTakeItemRequest.createPlayerTakeItemRequest(builder);
+                let request = fbs.Request.createRequest(builder,
+                    fbs.RequestUnion.PlayerTakeItemRequest, playerTakeItemRequest);
+                builder.finish(request);
+                fbsClient.sendBinary(builder.asUint8Array());
 
                 if (Constant.IS_OFFLINE)
                     match.receivedPlayerTakeItem(GameManager.getInstance().userData.username, item.getObjectId());
@@ -547,8 +552,12 @@ const MatchScene = BaseLayer.extend({
             this.myPlayer.animAttack();
         }
 
-        // GameClient.getInstance().sendEmptyPacket(Cmd.PLAYER_ATTACK);
-        GameClient.getInstance().sendPlayerAttack();
+        let builder = new flatbuffers.Builder(0);
+        let playerAttackRequest = fbs.PlayerAttackRequest.createPlayerAttackRequest(builder);
+        let request = fbs.Request.createRequest(builder,
+            fbs.RequestUnion.PlayerAttackRequest, playerAttackRequest);
+        builder.finish(request);
+        fbsClient.sendBinary(builder.asUint8Array());
     },
 
     playerChangeWeapon: function (username, weaponId) {
