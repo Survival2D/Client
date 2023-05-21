@@ -10,8 +10,14 @@ const WsClient = cc.Class.extend({
     const self = this;
     this.ws.onopen = function () {
       cc.log("connected to: " + self.url);
+      let builder = new flatbuffers.Builder(0);
+      let offset = fbs.LoginRequest.createLoginRequest(builder);
+      let packet = fbs.Response.createResponse(builder, fbs.RequestUnion.LoginRequest, offset);
+      builder.finish(packet);
+      self.sendBinary(builder.asUint8Array());
     }
     this.ws.onmessage = function (event) {
+      cc.log("onmessage: ", JSON.stringify(event))
       const data = event.data;
       if (typeof data == "string") {
         cc.log("typeof data is string: " + data);
@@ -27,6 +33,7 @@ const WsClient = cc.Class.extend({
     }
   },
   handleBinaryMessage: function (data) {
+    cc.log("rawData", JSON.stringify(data))
     const fileReader = new FileReader();
     fileReader.onloadend = function(event) {
       const buffer = new Uint8Array(event.target.result);
