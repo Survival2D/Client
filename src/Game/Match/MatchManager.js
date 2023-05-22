@@ -62,8 +62,8 @@ const MatchManager = cc.Class.extend({
 
       this.myPlayer.position = gm.p(this.mapWidth / 2 + 50, this.mapHeight / 2);
       this.myPlayer.hp = Config.PLAYER_MAX_HP;
-      this.myPlayer.playerId = this.myPlayer.username = GameManager.getInstance().userData.username;
-      this.players[GameManager.getInstance().userData.username] = this.myPlayer;
+      this.myPlayer.playerId = this.myPlayer.playerName = GameManager.getInstance().userData.uid;
+      this.players[GameManager.getInstance().userData.uid] = this.myPlayer;
 
       this.myPlayer.vest.level = 1;
       this.myPlayer.helmet.level = 1;
@@ -121,17 +121,17 @@ const MatchManager = cc.Class.extend({
     })));
 
     cc.log("players", JSON.stringify(players.map(e => {
-      return e.username
+      return e.playerName
     })));
 
     for (let player of players) {
-      this.players[player.username] = player;
+      this.players[player.playerId] = player;
     }
 
     cc.log("players", JSON.stringify(this.players))
-    cc.log("myPlayer", JSON.stringify(GameManager.getInstance().userData.username))
+    cc.log("myPlayer", JSON.stringify(GameManager.getInstance().userData.uid))
 
-    this.myPlayer = this.players[GameManager.getInstance().userData.username];
+    this.myPlayer = this.players[GameManager.getInstance().userData.uid];
 
     this._saveMyPlayerMoveAction = {
       position: this.myPlayer.position,
@@ -164,13 +164,16 @@ const MatchManager = cc.Class.extend({
     }
 
     for (let key in this.players) {
+      /**
+       * @type PlayerData
+       */
       let player = this.players[key];
       if (!gm.checkCollisionCircleRectangle(player.position,
           player.radius + 100, gm.p(rect.x, rect.y), rect.w, rect.h)) {
-        this.outSightPlayers[player.username] = player;
-        delete this.players[player.username];
+        this.outSightPlayers[player.playerId] = player;
+        delete this.players[player.playerId];
       } else {
-        delete this.outSightPlayers[player.username];
+        delete this.outSightPlayers[player.playerId];
       }
     }
 
@@ -218,14 +221,14 @@ const MatchManager = cc.Class.extend({
   getPlayerListByTeam: function (team) {
     let list = [];
 
-    for (let username in this.players) {
-      let player = this.players[username];
+    for (let playerId in this.players) {
+      let player = this.players[playerId];
       if (player.team === team) {
         list.push(player);
       }
     }
-    for (let username in this.outSightPlayers) {
-      let player = this.outSightPlayers[username];
+    for (let playerId in this.outSightPlayers) {
+      let player = this.outSightPlayers[playerId];
       if (player.team === team) {
         list.push(player);
       }
@@ -389,22 +392,25 @@ const MatchManager = cc.Class.extend({
     }
   },
 
-  receivedPlayerMove: function (username, pos, rotation) {
-    let player = this.players[username];
+  receivedPlayerMove: function (playerId, pos, rotation) {
+    /**
+     * @type PlayerData
+     */
+    let player = this.players[playerId];
     if (!player) {
-      player = this.outSightPlayers[username];
+      player = this.outSightPlayers[playerId];
       if (!player) {
-        cc.log("Warning: we dont have player " + username + " in match");
+        cc.log("Warning: we dont have player " + playerId + " in match");
         return;
       }
-      this.players[username] = player;
-      delete this.outSightPlayers[username];
+      this.players[playerId] = player;
+      delete this.outSightPlayers[playerId];
     }
 
-    cc.log("receivedPlayerMove " + username + " " + pos.x + " " + pos.y + " " + rotation)
-    cc.log("myPlayer " + GameManager.getInstance().userData.username)
+    cc.log("receivedPlayerMove " + playerId + " " + pos.x + " " + pos.y + " " + rotation)
+    cc.log("myPlayer " + GameManager.getInstance().userData.uid)
 
-    if (username == GameManager.getInstance().userData.username) {
+    if (playerId == GameManager.getInstance().userData.uid) {
       if (Config.ENABLE_SMOOTH) {
         this._saveMyPlayerMoveAction = {
           position: pos,
@@ -426,15 +432,15 @@ const MatchManager = cc.Class.extend({
 
     if (!gm.checkCollisionCircleRectangle(player.position, player.radius + 100,
         gm.p(rect.x, rect.y), rect.w, rect.h)) {
-      this.outSightPlayers[player.username] = player;
-      delete this.players[player.username];
+      this.outSightPlayers[player.playerId] = player;
+      delete this.players[player.playerId];
     } else {
-      this.players[player.username] = player;
-      delete this.outSightPlayers[player.username];
+      this.players[player.playerId] = player;
+      delete this.outSightPlayers[player.playerId];
     }
 
     if (this.isInMatch()) {
-      this.scene.playerMove(username, pos, rotation);
+      this.scene.playerMove(playerId, pos, rotation);
     }
   },
 
@@ -453,19 +459,19 @@ const MatchManager = cc.Class.extend({
     this.myPlayer.rotation = this._saveMyPlayerMoveAction.rotation;
 
     if (this.isInMatch()) {
-      this.scene.playerMove(GameManager.getInstance().userData.username,
+      this.scene.playerMove(GameManager.getInstance().userData.uid,
           this.myPlayer.position, this.myPlayer.rotation);
     }
   },
 
-  receivedPlayerAttack: function (username, slot, position) {
-    let player = this.players[username];
+  receivedPlayerAttack: function (playerId, slot, position) {
+    let player = this.players[playerId];
     if (!player) {
-      cc.log("Warning: we dont have player " + username + " in match");
+      cc.log("Warning: we dont have player " + playerId + " in match");
       return;
     }
 
-    if (username === GameManager.getInstance().userData.username) {
+    if (playerId === GameManager.getInstance().userData.uid) {
       return;
     }
 
@@ -473,21 +479,21 @@ const MatchManager = cc.Class.extend({
         position.y - player.position.y);
 
     if (this.isInMatch()) {
-      this.scene.playerAttack(username, slot, direction);
+      this.scene.playerAttack(playerId, slot, direction);
     }
   },
 
-  receivedPlayerChangeWeapon: function (username, weaponId) {
-    let player = this.players[username];
+  receivedPlayerChangeWeapon: function (playerId, weaponId) {
+    let player = this.players[playerId];
     if (!player) {
-      cc.log("Warning: we dont have player " + username + " in match");
+      cc.log("Warning: we dont have player " + playerId + " in match");
       return;
     }
 
-    // if (username === GameManager.getInstance().userData.username) return;
+    // if (playerId === GameManager.getInstance().userData.uid) return;
 
     if (this.isInMatch()) {
-      this.scene.playerChangeWeapon(username, weaponId);
+      this.scene.playerChangeWeapon(playerId, weaponId);
     }
   },
 
@@ -502,7 +508,7 @@ const MatchManager = cc.Class.extend({
    * @param {BulletData} bullet
    */
   receivedCreateBullet: function (bullet) {
-    if (bullet.ownerId === GameManager.getInstance().userData.username) {
+    if (bullet.ownerId === GameManager.getInstance().userData.uid) {
       return;
     }
     if (this.isInMatch()) {
@@ -510,10 +516,10 @@ const MatchManager = cc.Class.extend({
     }
   },
 
-  receivedPlayerTakeDamage: function (username, hp) {
-    let player = this.players[username];
+  receivedPlayerTakeDamage: function (playerId, hp) {
+    let player = this.players[playerId];
     if (!player) {
-      cc.log("Warning: we dont have player " + username + " in match");
+      cc.log("Warning: we dont have player " + playerId + " in match");
       return;
     }
 
@@ -521,21 +527,21 @@ const MatchManager = cc.Class.extend({
     player.hp = hp;
 
     if (this.isInMatch()) {
-      this.scene.playerTakeDamage(username, oldHp);
+      this.scene.playerTakeDamage(playerId, oldHp);
     }
   },
 
-  receivedPlayerDead: function (username) {
-    let player = this.players[username];
+  receivedPlayerDead: function (playerId) {
+    let player = this.players[playerId];
     if (!player) {
-      cc.log("Warning: we dont have player " + username + " in match");
+      cc.log("Warning: we dont have player " + playerId + " in match");
       return;
     }
 
     player.hp = 0;
 
     if (this.isInMatch()) {
-      this.scene.playerDead(username);
+      this.scene.playerDead(playerId);
     }
   },
 
@@ -579,10 +585,10 @@ const MatchManager = cc.Class.extend({
     }
   },
 
-  receivedPlayerTakeItem: function (username, itemId) {
-    let player = this.players[username];
+  receivedPlayerTakeItem: function (playerId, itemId) {
+    let player = this.players[playerId];
     if (!player) {
-      cc.log("Warning: we dont have player " + username + " in match");
+      cc.log("Warning: we dont have player " + playerId + " in match");
       return;
     }
 
@@ -592,7 +598,7 @@ const MatchManager = cc.Class.extend({
       return;
     }
 
-    if (username === GameManager.getInstance().userData.username) {
+    if (playerId === GameManager.getInstance().userData.uid) {
       this.myPlayer.getItem(item);
       if (this.isInMatch()) {
         this.scene.updateMyPlayerItem();

@@ -3,15 +3,16 @@ const fbs = survival2d.flatbuffers;
 const WsClient = cc.Class.extend({
   ctor: function (url) {
     this.url = url;
-  }, connect: function () {
+  }, connect: function (loginName) {
     cc.log("connect");
     this.ws = new WebSocket(this.url);
     const self = this;
     this.ws.onopen = function () {
       cc.log("connected to: " + self.url);
       let builder = new flatbuffers.Builder(0);
-      let name = builder.createString(
-          "user_" + Math.floor(Math.random() * 1000));
+      // let name = builder.createString(
+      //     "user_" + Math.floor(Math.random() * 1000));
+      let name = builder.createString(loginName);
       let loginRequest = fbs.LoginRequest.createLoginRequest(builder, name);
       let request = fbs.Request.createRequest(builder,
           fbs.RequestUnion.LoginRequest, loginRequest);
@@ -52,8 +53,7 @@ const WsClient = cc.Class.extend({
           response.response(loginResponse);
           cc.log("login as user ", loginResponse.userId(), " name ",
               loginResponse.userName());
-          GameManager.getInstance().userData.setUserData("" +
-              loginResponse.userId()); //FIXME: convert to int
+          GameManager.getInstance().userData.setUserData(loginResponse.userId(), loginResponse.userName());
           SceneManager.getInstance().openHomeScene();
           break;
         }
@@ -85,8 +85,9 @@ const WsClient = cc.Class.extend({
           for (let i = 0; i < matchInfoResponse.playersLength(); i++) {
             let bfPlayer = matchInfoResponse.players(i);
             let player = new PlayerData();
-            player.id = bfPlayer.playerId();
-            player.username = bfPlayer.playerId();
+            player.playerId = bfPlayer.playerId();
+            cc.log("match info player name of " + player.playerId, bfPlayer.playerName());
+            player.playerName = bfPlayer.playerName();
             player.position.x = bfPlayer.position().x();
             player.position.y = bfPlayer.position().y();
             player.rotation = bfPlayer.rotation();
@@ -251,11 +252,11 @@ const WsClient = cc.Class.extend({
           response.response(playerAttackResponse);
           cc.log("RECEIVED PlayerAttack");
 
-          let username = playerAttackResponse.playerId();
+          let playerId = playerAttackResponse.playerId();
           let slot = playerAttackResponse.slot();
           let position = gm.p(playerAttackResponse.position().x(), playerAttackResponse.position().y());
           GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(
-              username, slot, position);
+              playerId, slot, position);
           break;
         }
         case fbs.ResponseUnion.PlayerTakeDamageResponse: {

@@ -4,7 +4,7 @@
 
 const MatchScene = BaseLayer.extend({
     ctor: function () {
-        this.playerUIs = {};    // map by username
+        this.playerUIs = {};    // map by id
         this.obstacleUIs = {};  // map by id
         this.itemUIs = {};      // map by id
         this.bullets = [];
@@ -44,7 +44,7 @@ const MatchScene = BaseLayer.extend({
 
         this.myPlayer.addChild(drawNode);
 
-        this.playerUIs[GameManager.getInstance().userData.username] = this.myPlayer;
+        this.playerUIs[GameManager.getInstance().userData.uid] = this.myPlayer;
 
         this.safeZoneUI = new SafeZoneUI();
         this.safeZoneUI.setMapSize(Config.MAP_WIDTH, Config.MAP_HEIGHT);
@@ -258,18 +258,21 @@ const MatchScene = BaseLayer.extend({
 
         this.miniMap.updateMiniMapView();
 
-        for (let username in match.players) {
-            let player = match.players[username];
-            let playerUI = this.playerUIs[player.username];
+        for (let playerId in match.players) {
+            /**
+             * @type PlayerData
+             */
+            let player = match.players[playerId];
+            let playerUI = this.playerUIs[player.playerId];
             if (!playerUI) {
                 playerUI = new PlayerUI();
                 this.ground.addChild(playerUI, MatchScene.Z_ORDER.PLAYER);
-                this.playerUIs[player.username] = playerUI;
+                this.playerUIs[player.playerId] = playerUI;
                 playerUI.unEquip();
             }
             playerUI.setPosition(player.position);
             playerUI.setPlayerRotation(Math.round(gm.radToDeg(player.rotation)));
-            playerUI.setPlayerUIInfo(player.username);
+            playerUI.setPlayerUIInfo(player.playerName);
             playerUI.setPlayerColorByTeam(player.team);
             playerUI.setVestLevel(player.vest.level);
             playerUI.setHelmetLevel(player.helmet.level);
@@ -291,8 +294,11 @@ const MatchScene = BaseLayer.extend({
         }
 
         for (let key in match.outSightPlayers) {
+            /**
+             * @type PlayerData
+             */
             let player = match.outSightPlayers[key];
-            let playerUI = this.playerUIs[player.username];
+            let playerUI = this.playerUIs[player.playerId];
             if (playerUI) {
                 playerUI.setVisible(false);
             }
@@ -465,13 +471,13 @@ const MatchScene = BaseLayer.extend({
         this.miniMap.setMyPlayerPosition(pos);
     },
 
-    playerMove: function (username, position, rotation) {
-        if (username === GameManager.getInstance().userData.username) {
+    playerMove: function (playerId, position, rotation) {
+        if (playerId === GameManager.getInstance().userData.uid) {
             this.setMyPlayerPosition(position);
             this.myPlayer.setPlayerRotation(Math.round(gm.radToDeg(rotation)));
             return;
         }
-        let playerUI = this.playerUIs[username];
+        let playerUI = this.playerUIs[playerId];
         if (playerUI) {
             let match = GameManager.getInstance().getCurrentMatch();
             playerUI.setVisible(true);
@@ -496,7 +502,7 @@ const MatchScene = BaseLayer.extend({
                 fbsClient.sendBinary(builder.asUint8Array());
 
                 if (Constant.IS_OFFLINE)
-                    match.receivedPlayerTakeItem(GameManager.getInstance().userData.username, item.getObjectId());
+                    match.receivedPlayerTakeItem(GameManager.getInstance().userData.uid, item.getObjectId());
                 return;
             }
         }
@@ -575,16 +581,16 @@ const MatchScene = BaseLayer.extend({
         fbsClient.sendBinary(builder.asUint8Array());
     },
 
-    playerChangeWeapon: function (username, weaponId) {
-        let playerUI = this.playerUIs[username];
+    playerChangeWeapon: function (playerId, weaponId) {
+        let playerUI = this.playerUIs[playerId];
         if (playerUI) {
             if (weaponId) playerUI.equipGun();
             else playerUI.unEquip();
         }
     },
 
-    playerAttack: function (username, slot, direction) {
-        let playerUI = this.playerUIs[username];
+    playerAttack: function (playerId, slot, direction) {
+        let playerUI = this.playerUIs[playerId];
         if (playerUI) {
             if (slot) playerUI.equipGun();
             else playerUI.unEquip();
@@ -595,13 +601,13 @@ const MatchScene = BaseLayer.extend({
         }
     },
 
-    playerTakeDamage: function (username, oldHp) {
-        let playerUI = this.playerUIs[username];
+    playerTakeDamage: function (playerId, oldHp) {
+        let playerUI = this.playerUIs[playerId];
         if (playerUI) {
             playerUI.animTakeDamage();
         }
 
-        if (username === GameManager.getInstance().userData.username) {
+        if (playerId === GameManager.getInstance().userData.uid) {
             this.updateMyHpProgress(GameManager.getInstance().getCurrentMatch().myPlayer.hp, oldHp);
         }
     },
@@ -629,8 +635,8 @@ const MatchScene = BaseLayer.extend({
         }
     },
 
-    playerDead: function (username) {
-        let playerUI = this.playerUIs[username];
+    playerDead: function (playerId) {
+        let playerUI = this.playerUIs[playerId];
         if (playerUI) {
             playerUI.animDead();
 
@@ -656,7 +662,7 @@ const MatchScene = BaseLayer.extend({
             ));
         }
 
-        if (username === GameManager.getInstance().userData.username) {
+        if (playerId === GameManager.getInstance().userData.uid) {
             // TODO: end game
             this.hud.stopAllActions();
             this.hud.runAction(cc.fadeOut(0.3));

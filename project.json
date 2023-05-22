@@ -32,12 +32,6 @@
 
         "src/Utils/GameMath.js",
 
-        "src/Network/Command.js",
-        "src/Network/GameClient.js",
-        "src/Network/InPacket.js",
-        "src/Network/OutPacket.js",
-        "src/Network/ErrorCode.js",
-
         "src/Game/GameConfig.js",
         "src/Game/GameManager.js",
         "src/Game/UserData.js",
