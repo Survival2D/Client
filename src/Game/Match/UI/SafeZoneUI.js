@@ -6,10 +6,36 @@ const SafeZoneUI = cc.Node.extend({
     ctor: function () {
         this._super();
 
-        this.safeZoneCircle = new ccui.ImageView("res/ui/Common/empty_circle.png");
-        this.addChild(this.safeZoneCircle);
-        this.safeZoneCircle.setColor(cc.color("#FF0000"));
-        this.safeZoneCircle.originRadius = this.safeZoneCircle.width/2;
+        let jsonLayout = ccs.load(game_UIs.SAFE_ZONE_LAYER);
+        this._layout = jsonLayout.node;
+        this._action = jsonLayout.action;
+        this._layout.setContentSize(cc.director.getWinSize());
+        ccui.helper.doLayout(this._layout);
+        this.addChild(this._layout);
+        this._layout.setPosition(0, 0);
+
+        this.initGUI();
+
+        this.originRadius = 140;
+    },
+
+    initGUI: function () {
+        this.pSafeZone = ccui.helper.seekWidgetByName(this._layout, "pSafeZone");
+        let circle = ccui.helper.seekWidgetByName(this.pSafeZone, "circle");
+        this.p1 = ccui.helper.seekWidgetByName(circle, "p1");
+        this.p2 = ccui.helper.seekWidgetByName(circle, "p2");
+        this.p3 = ccui.helper.seekWidgetByName(circle, "p3");
+        this.p4 = ccui.helper.seekWidgetByName(circle, "p4");
+
+        this.pSafeZone.setColor(cc.color("#FF0000"));
+        this.pSafeZone.setOpacity(130);
+    },
+
+    setMapSize: function (width, height) {
+        this.p1.setContentSize((width - 1830) / 2, height);
+        this.p2.setContentSize((width - 1830) / 2, height);
+        this.p3.setContentSize(1830, (height - 1000) / 2);
+        this.p4.setContentSize(1830, (height - 1000) / 2);
     },
 
     /**
@@ -25,8 +51,8 @@ const SafeZoneUI = cc.Node.extend({
 
         this.setVisible(true);
 
-        this.safeZoneCircle.setPosition(data.position.x - Config.MAP_WIDTH/2, data.position.y - Config.MAP_HEIGHT/2);
-        this.safeZoneCircle.setScale(data.radius / this.safeZoneCircle.originRadius);
+        this.pSafeZone.setPosition(data.position.x, data.position.y);
+        this.pSafeZone.setScale(data.radius / this.originRadius);
     },
 
     /**
@@ -47,7 +73,7 @@ const SafeZoneUI = cc.Node.extend({
 
         this.setVisible(true);
 
-        this.safeZoneCircle.stopAllActions();
+        this.pSafeZone.stopAllActions();
 
         let deltaRadius = Math.abs(data.radius - this.oldRadius);
         let timeScale = deltaRadius / 1000;
@@ -56,17 +82,17 @@ const SafeZoneUI = cc.Node.extend({
             (data.position.y - this.oldPosition.y)*(data.position.y - this.oldPosition.y);
         let timeMove = Math.sqrt(distance_2) / 1000;
 
-        let destPos = cc.p(data.position.x - Config.MAP_WIDTH/2, data.position.y - Config.MAP_HEIGHT/2);
-        let destScale = data.radius / this.safeZoneCircle.orinWidth;
+        let destPos = cc.p(data.position.x, data.position.y);
+        let destScale = data.radius / this.originRadius;
 
         if (data.level === 1) {
-            this.safeZoneCircle.setPosition(destPos);
-            this.safeZoneCircle.setScale(destScale);
+            this.pSafeZone.setPosition(destPos);
+            this.pSafeZone.setScale(destScale);
             this.setOpacity(0);
             this.runAction(cc.fadeIn(0.2));
         }
         else {
-            this.safeZoneCircle.runAction(cc.spawn(
+            this.pSafeZone.runAction(cc.spawn(
                 cc.moveTo(timeMove, destPos),
                 cc.scaleTo(timeScale, destScale)
             ));

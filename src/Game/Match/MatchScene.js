@@ -47,6 +47,7 @@ const MatchScene = BaseLayer.extend({
         this.playerUIs[GameManager.getInstance().userData.username] = this.myPlayer;
 
         this.safeZoneUI = new SafeZoneUI();
+        this.safeZoneUI.setMapSize(Config.MAP_WIDTH, Config.MAP_HEIGHT);
         this.ground.addChild(this.safeZoneUI, MatchScene.Z_ORDER.SAFE_ZONE);
         this.safeZoneUI.setVisible(false);
 
