@@ -6,6 +6,11 @@ const GunData = cc.Class.extend({
     ctor: function () {
         this.isActive = false;
         this.numBullets = 0;
+
+        /**
+         * @type {GunData.GUN_TYPE}
+         */
+        this.type = GunData.GUN_TYPE.NORMAL
     },
 
     loadBullets: function (numBullets) {
@@ -20,3 +25,9 @@ const GunData = cc.Class.extend({
         return this.isActive;
     }
 });
+
+GunData.GUN_TYPE = {
+    NORMAL: 1,
+    SHORT: 2,
+    LONG: 3,
+}

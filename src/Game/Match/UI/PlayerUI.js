@@ -139,10 +139,22 @@ const PlayerUI = cc.Node.extend({
         this._helmet.setColor(color);
     },
 
+    /**
+     * @param {GunData.GUN_TYPE} type
+     */
+    setGunType: function (type) {
+        this._gun.setGunType(type)
+    },
+
     equipGun: function (id) {
         this._gun.setVisible(true);
         this._leftArm.setPosition(this._body.width/2 + 48, this._body.height/2 + 5);
         this._rightArm.setPosition(this._body.width/2 + 20, this._body.height/2 - 3);
+
+        if (this._gun._type === GunData.GUN_TYPE.SHORT) {
+            this._leftArm.setPosition(this._body.width/2 + 38, this._body.height/2 + 4);
+            this._rightArm.setPosition(this._body.width/2 + 20, this._body.height/2 - 2);
+        }
     },
 
     unEquip: function () {
@@ -199,7 +211,26 @@ const PlayerUI = cc.Node.extend({
 const PlayerGunUI = ccui.ImageView.extend({
     ctor: function (id) {
         this._id = null;
-        this._super("res/ui/Game/Player/gun_1.png");
+        this._type = GunData.GUN_TYPE.NORMAL;
+        this._super();
+    },
+
+    /**
+     * @param {GunData.GUN_TYPE} type
+     */
+    setGunType: function (type) {
+        this._type = type;
+        switch (type) {
+            case GunData.GUN_TYPE.NORMAL:
+                this.loadTexture("res/ui/Game/Player/gun_1.png", ccui.Widget.LOCAL_TEXTURE);
+                break;
+            case GunData.GUN_TYPE.SHORT:
+                this.loadTexture("res/ui/Game/Player/gun_3.png", ccui.Widget.LOCAL_TEXTURE);
+                break;
+            case GunData.GUN_TYPE.LONG:
+                this.loadTexture("res/ui/Game/Player/gun_2.png", ccui.Widget.LOCAL_TEXTURE);
+                break;
+        }
     }
 });
 

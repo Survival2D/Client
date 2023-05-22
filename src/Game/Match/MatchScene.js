@@ -273,6 +273,20 @@ const MatchScene = BaseLayer.extend({
             playerUI.setPlayerColorByTeam(player.team);
             playerUI.setVestLevel(player.vest.level);
             playerUI.setHelmetLevel(player.helmet.level);
+            if (player.weaponSlot !== PlayerData.WEAPON_SLOT.FIST) {
+                switch (player.weaponSlot) {
+                    case PlayerData.WEAPON_SLOT.GUN:
+                        playerUI.setGunType(GunData.GUN_TYPE.NORMAL);
+                        break;
+                    case PlayerData.WEAPON_SLOT.SHORT_GUN:
+                        playerUI.setGunType(GunData.GUN_TYPE.SHORT);
+                        break;
+                    case PlayerData.WEAPON_SLOT.LONG_GUN:
+                        playerUI.setGunType(GunData.GUN_TYPE.LONG);
+                        break;
+                }
+                playerUI.equipGun();
+            }
             playerUI.setVisible(true);
         }
 

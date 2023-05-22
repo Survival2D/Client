@@ -76,5 +76,7 @@ const PlayerData = cc.Class.extend({
 
 PlayerData.WEAPON_SLOT = {
     FIST: 0,
-    GUN: 1
+    GUN: 1,
+    SHORT_GUN: 2,
+    LONG_GUN: 3
 }
