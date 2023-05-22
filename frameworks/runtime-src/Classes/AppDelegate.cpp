@@ -111,9 +111,9 @@ bool AppDelegate::applicationDidFinishLaunching()
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-        glview = cocos2d::GLViewImpl::create("Client");
+        glview = cocos2d::GLViewImpl::create("Survival2D");
 #else
-        glview = cocos2d::GLViewImpl::createWithRect("Client", Rect(0,0,960,640));
+        glview = cocos2d::GLViewImpl::createWithRect("Survival2D", Rect(0,0,960,640));
 #endif
         director->setOpenGLView(glview);
 }

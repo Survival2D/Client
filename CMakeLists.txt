@@ -26,7 +26,7 @@
 
 cmake_minimum_required(VERSION 3.6)
 
-set(APP_NAME Client)
+set(APP_NAME Survival2D)
 
 project(${APP_NAME})
 
