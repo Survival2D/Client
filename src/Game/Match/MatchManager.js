@@ -324,8 +324,7 @@ const MatchManager = cc.Class.extend({
     this.myPlayer.movingUnitVector = unitVector;
 
     if (unitVector.x !== 0 || unitVector.y !== 0 || oldRotation !== rotation) {
-      // let pk = new SendPlayerMoveAction(unitVector, rotation);
-      // GameClient.getInstance().sendPacket(pk);
+      cc.log("Send player move")
       let builder = new flatbuffers.Builder(0);
       let direction = fbs.Vector2Struct.createVector2Struct(builder,
           unitVector.x, unitVector.y);
@@ -410,7 +409,7 @@ const MatchManager = cc.Class.extend({
     cc.log("receivedPlayerMove " + playerId + " " + pos.x + " " + pos.y + " " + rotation)
     cc.log("myPlayer " + GameManager.getInstance().userData.uid)
 
-    if (playerId == GameManager.getInstance().userData.uid) {
+    if (playerId === GameManager.getInstance().userData.uid) {
       if (Config.ENABLE_SMOOTH) {
         this._saveMyPlayerMoveAction = {
           position: pos,

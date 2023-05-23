@@ -573,6 +573,8 @@ const MatchScene = BaseLayer.extend({
             this.myPlayer.animAttack();
         }
 
+        cc.log("myPlayerAttack");
+
         let builder = new flatbuffers.Builder(0);
         let playerAttackRequest = fbs.PlayerAttackRequest.createPlayerAttackRequest(builder);
         let request = fbs.Request.createRequest(builder,

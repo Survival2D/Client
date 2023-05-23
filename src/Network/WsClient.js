@@ -448,7 +448,7 @@ const WsClient = cc.Class.extend({
     cc.log("destroy");
     this.disconnect();
   }, sendBinary: function (data) {
-    cc.log("sendBinary: " + data);
+    // cc.log("sendBinary: " + data);
     this.ws.send(data);
   }, sendText: function (text) {
     cc.log("sendText: " + text);
