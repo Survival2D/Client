@@ -324,7 +324,7 @@ const MatchManager = cc.Class.extend({
     this.myPlayer.movingUnitVector = unitVector;
 
     if (unitVector.x !== 0 || unitVector.y !== 0 || oldRotation !== rotation) {
-      cc.log("Send player move")
+      // cc.log("Send player move")
       let builder = new flatbuffers.Builder(0);
       let direction = fbs.Vector2Struct.createVector2Struct(builder,
           unitVector.x, unitVector.y);
@@ -405,9 +405,6 @@ const MatchManager = cc.Class.extend({
       this.players[playerId] = player;
       delete this.outSightPlayers[playerId];
     }
-
-    cc.log("receivedPlayerMove " + playerId + " " + pos.x + " " + pos.y + " " + rotation)
-    cc.log("myPlayer " + GameManager.getInstance().userData.uid)
 
     if (playerId === GameManager.getInstance().userData.uid) {
       if (Config.ENABLE_SMOOTH) {

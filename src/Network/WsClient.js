@@ -20,7 +20,6 @@ const WsClient = cc.Class.extend({
       self.sendBinary(builder.asUint8Array());
     }
     this.ws.onmessage = function (event) {
-      cc.log("onmessage: ", JSON.stringify(event))
       const data = event.data;
       if (typeof data == "string") {
         cc.log("typeof data is string: " + data);
@@ -35,7 +34,6 @@ const WsClient = cc.Class.extend({
       cc.log("connect to: " + self.url + " error : " + JSON.stringify(e));
     }
   }, handleBinaryMessage: function (data) {
-    cc.log("rawData", JSON.stringify(data))
     const fileReader = new FileReader();
     fileReader.onloadend = function (event) {
       const buffer = new Uint8Array(event.target.result);
@@ -222,7 +220,7 @@ const WsClient = cc.Class.extend({
         case fbs.ResponseUnion.PlayerMoveResponse: {
           let playerMoveResponse = new fbs.PlayerMoveResponse();
           response.response(playerMoveResponse);
-          cc.log("RECEIVED PlayerMove");
+          // cc.log("RECEIVED PlayerMove");
           let playerId = playerMoveResponse.playerId();
           let position = gm.p(playerMoveResponse.position().x(), playerMoveResponse.position().y());
           let rotation = playerMoveResponse.rotation();
@@ -429,10 +427,10 @@ const WsClient = cc.Class.extend({
         case fbs.ResponseUnion.SafeZoneMoveResponse: {
           let safeZoneMoveResponse = new fbs.SafeZoneMoveResponse();
           response.response(safeZoneMoveResponse);
-          cc.log("RECEIVED SafeZoneMoveResponse");
+          cc.log("RECEIVED SafeZoneMoveResponse", safeZoneMoveResponse.safeZone().x(), safeZoneMoveResponse.safeZone().y(), safeZoneMoveResponse.safeZone().radius())
           GameManager.getInstance().getCurrentMatch().receivedSafeZoneMove(
               safeZoneMoveResponse.safeZone().x(), safeZoneMoveResponse.safeZone().y(),
-              safeZoneMoveResponse.radius());
+              safeZoneMoveResponse.safeZone().radius());
           break;
         }
         default:

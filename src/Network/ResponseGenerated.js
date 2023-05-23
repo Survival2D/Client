@@ -2343,10 +2343,18 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.getSizePrefixedRootAsPlayerRel
 };
 
 /**
+ * @returns {survival2d.flatbuffers.GunTypeEnum}
+ */
+survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.gunType = function() {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? /** @type {survival2d.flatbuffers.GunTypeEnum} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.GunTypeEnum.PISTOL;
+};
+
+/**
  * @returns {number}
  */
 survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBulletsInGun = function() {
-  var offset = this.bb.__offset(this.bb_pos, 4);
+  var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
 };
 
@@ -2354,7 +2362,7 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBulletsInGun =
  * @returns {number}
  */
 survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBullets = function() {
-  var offset = this.bb.__offset(this.bb_pos, 6);
+  var offset = this.bb.__offset(this.bb_pos, 8);
   return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
 };
 
@@ -2362,7 +2370,15 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.prototype.remainBullets = func
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponResponse = function(builder) {
-  builder.startObject(2);
+  builder.startObject(3);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {survival2d.flatbuffers.GunTypeEnum} gunType
+ */
+survival2d.flatbuffers.PlayerReloadWeaponResponse.addGunType = function(builder, gunType) {
+  builder.addFieldInt8(0, gunType, survival2d.flatbuffers.GunTypeEnum.PISTOL);
 };
 
 /**
@@ -2370,7 +2386,7 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponRespons
  * @param {number} remainBulletsInGun
  */
 survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBulletsInGun = function(builder, remainBulletsInGun) {
-  builder.addFieldInt32(0, remainBulletsInGun, 0);
+  builder.addFieldInt32(1, remainBulletsInGun, 0);
 };
 
 /**
@@ -2378,7 +2394,7 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBulletsInGun = functi
  * @param {number} remainBullets
  */
 survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBullets = function(builder, remainBullets) {
-  builder.addFieldInt32(1, remainBullets, 0);
+  builder.addFieldInt32(2, remainBullets, 0);
 };
 
 /**
@@ -2392,12 +2408,14 @@ survival2d.flatbuffers.PlayerReloadWeaponResponse.endPlayerReloadWeaponResponse 
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {NS3310184765595907521.survival2d.flatbuffers.GunTypeEnum} gunType
  * @param {number} remainBulletsInGun
  * @param {number} remainBullets
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerReloadWeaponResponse.createPlayerReloadWeaponResponse = function(builder, remainBulletsInGun, remainBullets) {
+survival2d.flatbuffers.PlayerReloadWeaponResponse.createPlayerReloadWeaponResponse = function(builder, gunType, remainBulletsInGun, remainBullets) {
   survival2d.flatbuffers.PlayerReloadWeaponResponse.startPlayerReloadWeaponResponse(builder);
+  survival2d.flatbuffers.PlayerReloadWeaponResponse.addGunType(builder, gunType);
   survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBulletsInGun(builder, remainBulletsInGun);
   survival2d.flatbuffers.PlayerReloadWeaponResponse.addRemainBullets(builder, remainBullets);
   return survival2d.flatbuffers.PlayerReloadWeaponResponse.endPlayerReloadWeaponResponse(builder);
