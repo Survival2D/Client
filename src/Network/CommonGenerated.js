@@ -65,24 +65,6 @@ survival2d.flatbuffers.HelmetTypeEnumName = {
 /**
  * @enum {number}
  */
-survival2d.flatbuffers.BackPackTypeEnum = {
-  LEVEL_0: 0,
-  LEVEL_1: 1,
-  LEVEL_2: 2
-};
-
-/**
- * @enum {string}
- */
-survival2d.flatbuffers.BackPackTypeEnumName = {
-  '0': 'LEVEL_0',
-  '1': 'LEVEL_1',
-  '2': 'LEVEL_2'
-};
-
-/**
- * @enum {number}
- */
 survival2d.flatbuffers.ItemUnion = {
   NONE: 0,
   BulletItemTable: 1,
@@ -90,8 +72,7 @@ survival2d.flatbuffers.ItemUnion = {
   VestItemTable: 3,
   HelmetItemTable: 4,
   BandageItemTable: 5,
-  MedKitItemTable: 6,
-  BackPackItemTable: 7
+  MedKitItemTable: 6
 };
 
 /**
@@ -104,8 +85,7 @@ survival2d.flatbuffers.ItemUnionName = {
   '3': 'VestItemTable',
   '4': 'HelmetItemTable',
   '5': 'BandageItemTable',
-  '6': 'MedKitItemTable',
-  '7': 'BackPackItemTable'
+  '6': 'MedKitItemTable'
 };
 
 /**
@@ -114,16 +94,14 @@ survival2d.flatbuffers.ItemUnionName = {
 survival2d.flatbuffers.MapObjectUnion = {
   NONE: 0,
   BulletItemTable: 1,
-  GunItemTable: 2,
-  VestItemTable: 3,
-  HelmetItemTable: 4,
-  BandageItemTable: 5,
-  MedKitItemTable: 6,
-  BackPackItemTable: 7,
-  TreeTable: 8,
-  ContainerTable: 9,
-  StoneTable: 10,
-  WallTable: 11
+  VestItemTable: 2,
+  HelmetItemTable: 3,
+  BandageItemTable: 4,
+  MedKitItemTable: 5,
+  TreeTable: 6,
+  ContainerTable: 7,
+  StoneTable: 8,
+  WallTable: 9
 };
 
 /**
@@ -132,16 +110,14 @@ survival2d.flatbuffers.MapObjectUnion = {
 survival2d.flatbuffers.MapObjectUnionName = {
   '0': 'NONE',
   '1': 'BulletItemTable',
-  '2': 'GunItemTable',
-  '3': 'VestItemTable',
-  '4': 'HelmetItemTable',
-  '5': 'BandageItemTable',
-  '6': 'MedKitItemTable',
-  '7': 'BackPackItemTable',
-  '8': 'TreeTable',
-  '9': 'ContainerTable',
-  '10': 'StoneTable',
-  '11': 'WallTable'
+  '2': 'VestItemTable',
+  '3': 'HelmetItemTable',
+  '4': 'BandageItemTable',
+  '5': 'MedKitItemTable',
+  '6': 'TreeTable',
+  '7': 'ContainerTable',
+  '8': 'StoneTable',
+  '9': 'WallTable'
 };
 
 /**
@@ -1272,94 +1248,6 @@ survival2d.flatbuffers.MedKitItemTable.createMedKitItemTable = function(builder)
 /**
  * @constructor
  */
-survival2d.flatbuffers.BackPackItemTable = function() {
-  /**
-   * @type {flatbuffers.ByteBuffer}
-   */
-  this.bb = null;
-
-  /**
-   * @type {number}
-   */
-  this.bb_pos = 0;
-};
-
-/**
- * @param {number} i
- * @param {flatbuffers.ByteBuffer} bb
- * @returns {survival2d.flatbuffers.BackPackItemTable}
- */
-survival2d.flatbuffers.BackPackItemTable.prototype.__init = function(i, bb) {
-  this.bb_pos = i;
-  this.bb = bb;
-  return this;
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.BackPackItemTable=} obj
- * @returns {survival2d.flatbuffers.BackPackItemTable}
- */
-survival2d.flatbuffers.BackPackItemTable.getRootAsBackPackItemTable = function(bb, obj) {
-  return (obj || new survival2d.flatbuffers.BackPackItemTable).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.BackPackItemTable=} obj
- * @returns {survival2d.flatbuffers.BackPackItemTable}
- */
-survival2d.flatbuffers.BackPackItemTable.getSizePrefixedRootAsBackPackItemTable = function(bb, obj) {
-  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new survival2d.flatbuffers.BackPackItemTable).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @returns {survival2d.flatbuffers.BackPackTypeEnum}
- */
-survival2d.flatbuffers.BackPackItemTable.prototype.type = function() {
-  var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? /** @type {survival2d.flatbuffers.BackPackTypeEnum} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.BackPackTypeEnum.LEVEL_0;
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- */
-survival2d.flatbuffers.BackPackItemTable.startBackPackItemTable = function(builder) {
-  builder.startObject(1);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.BackPackTypeEnum} type
- */
-survival2d.flatbuffers.BackPackItemTable.addType = function(builder, type) {
-  builder.addFieldInt8(0, type, survival2d.flatbuffers.BackPackTypeEnum.LEVEL_0);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.BackPackItemTable.endBackPackItemTable = function(builder) {
-  var offset = builder.endObject();
-  return offset;
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.BackPackTypeEnum} type
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.BackPackItemTable.createBackPackItemTable = function(builder, type) {
-  survival2d.flatbuffers.BackPackItemTable.startBackPackItemTable(builder);
-  survival2d.flatbuffers.BackPackItemTable.addType(builder, type);
-  return survival2d.flatbuffers.BackPackItemTable.endBackPackItemTable(builder);
-}
-
-/**
- * @constructor
- */
 survival2d.flatbuffers.MapObjectTable = function() {
   /**
    * @type {flatbuffers.ByteBuffer}
@@ -1661,112 +1549,6 @@ survival2d.flatbuffers.BulletTable.createBulletTable = function(builder, id, pos
   survival2d.flatbuffers.BulletTable.addOwner(builder, owner);
   survival2d.flatbuffers.BulletTable.addDirection(builder, directionOffset);
   return survival2d.flatbuffers.BulletTable.endBulletTable(builder);
-}
-
-/**
- * @constructor
- */
-survival2d.flatbuffers.BulletWithQuantityTable = function() {
-  /**
-   * @type {flatbuffers.ByteBuffer}
-   */
-  this.bb = null;
-
-  /**
-   * @type {number}
-   */
-  this.bb_pos = 0;
-};
-
-/**
- * @param {number} i
- * @param {flatbuffers.ByteBuffer} bb
- * @returns {survival2d.flatbuffers.BulletWithQuantityTable}
- */
-survival2d.flatbuffers.BulletWithQuantityTable.prototype.__init = function(i, bb) {
-  this.bb_pos = i;
-  this.bb = bb;
-  return this;
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.BulletWithQuantityTable=} obj
- * @returns {survival2d.flatbuffers.BulletWithQuantityTable}
- */
-survival2d.flatbuffers.BulletWithQuantityTable.getRootAsBulletWithQuantityTable = function(bb, obj) {
-  return (obj || new survival2d.flatbuffers.BulletWithQuantityTable).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.BulletWithQuantityTable=} obj
- * @returns {survival2d.flatbuffers.BulletWithQuantityTable}
- */
-survival2d.flatbuffers.BulletWithQuantityTable.getSizePrefixedRootAsBulletWithQuantityTable = function(bb, obj) {
-  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new survival2d.flatbuffers.BulletWithQuantityTable).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @returns {survival2d.flatbuffers.GunTypeEnum}
- */
-survival2d.flatbuffers.BulletWithQuantityTable.prototype.type = function() {
-  var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? /** @type {survival2d.flatbuffers.GunTypeEnum} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.GunTypeEnum.PISTOL;
-};
-
-/**
- * @returns {number}
- */
-survival2d.flatbuffers.BulletWithQuantityTable.prototype.num = function() {
-  var offset = this.bb.__offset(this.bb_pos, 6);
-  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- */
-survival2d.flatbuffers.BulletWithQuantityTable.startBulletWithQuantityTable = function(builder) {
-  builder.startObject(2);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.GunTypeEnum} type
- */
-survival2d.flatbuffers.BulletWithQuantityTable.addType = function(builder, type) {
-  builder.addFieldInt8(0, type, survival2d.flatbuffers.GunTypeEnum.PISTOL);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {number} num
- */
-survival2d.flatbuffers.BulletWithQuantityTable.addNum = function(builder, num) {
-  builder.addFieldInt32(1, num, 0);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.BulletWithQuantityTable.endBulletWithQuantityTable = function(builder) {
-  var offset = builder.endObject();
-  return offset;
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.GunTypeEnum} type
- * @param {number} num
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.BulletWithQuantityTable.createBulletWithQuantityTable = function(builder, type, num) {
-  survival2d.flatbuffers.BulletWithQuantityTable.startBulletWithQuantityTable(builder);
-  survival2d.flatbuffers.BulletWithQuantityTable.addType(builder, type);
-  survival2d.flatbuffers.BulletWithQuantityTable.addNum(builder, num);
-  return survival2d.flatbuffers.BulletWithQuantityTable.endBulletWithQuantityTable(builder);
 }
 
 /**

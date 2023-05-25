@@ -1796,12 +1796,12 @@ survival2d.flatbuffers.PlayerInfoResponse.prototype.weaponLength = function() {
 
 /**
  * @param {number} index
- * @param {survival2d.flatbuffers.BulletWithQuantityTable=} obj
- * @returns {survival2d.flatbuffers.BulletWithQuantityTable}
+ * @param {survival2d.flatbuffers.BulletItemTable=} obj
+ * @returns {survival2d.flatbuffers.BulletItemTable}
  */
 survival2d.flatbuffers.PlayerInfoResponse.prototype.bullets = function(index, obj) {
   var offset = this.bb.__offset(this.bb_pos, 8);
-  return offset ? (obj || new survival2d.flatbuffers.BulletWithQuantityTable).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+  return offset ? (obj || new survival2d.flatbuffers.BulletItemTable).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
 };
 
 /**
@@ -3265,76 +3265,6 @@ survival2d.flatbuffers.PingByMatchInfoResponse.createPingByMatchInfoResponse = f
   survival2d.flatbuffers.PingByMatchInfoResponse.addMapObjects(builder, mapObjectsOffset);
   survival2d.flatbuffers.PingByMatchInfoResponse.addSafeZone(builder, safeZoneOffset);
   return survival2d.flatbuffers.PingByMatchInfoResponse.endPingByMatchInfoResponse(builder);
-}
-
-/**
- * @constructor
- */
-survival2d.flatbuffers.ErrorResponse = function() {
-  /**
-   * @type {flatbuffers.ByteBuffer}
-   */
-  this.bb = null;
-
-  /**
-   * @type {number}
-   */
-  this.bb_pos = 0;
-};
-
-/**
- * @param {number} i
- * @param {flatbuffers.ByteBuffer} bb
- * @returns {survival2d.flatbuffers.ErrorResponse}
- */
-survival2d.flatbuffers.ErrorResponse.prototype.__init = function(i, bb) {
-  this.bb_pos = i;
-  this.bb = bb;
-  return this;
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.ErrorResponse=} obj
- * @returns {survival2d.flatbuffers.ErrorResponse}
- */
-survival2d.flatbuffers.ErrorResponse.getRootAsErrorResponse = function(bb, obj) {
-  return (obj || new survival2d.flatbuffers.ErrorResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.ErrorResponse=} obj
- * @returns {survival2d.flatbuffers.ErrorResponse}
- */
-survival2d.flatbuffers.ErrorResponse.getSizePrefixedRootAsErrorResponse = function(bb, obj) {
-  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new survival2d.flatbuffers.ErrorResponse).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- */
-survival2d.flatbuffers.ErrorResponse.startErrorResponse = function(builder) {
-  builder.startObject(0);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.ErrorResponse.endErrorResponse = function(builder) {
-  var offset = builder.endObject();
-  return offset;
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.ErrorResponse.createErrorResponse = function(builder) {
-  survival2d.flatbuffers.ErrorResponse.startErrorResponse(builder);
-  return survival2d.flatbuffers.ErrorResponse.endErrorResponse(builder);
 }
 
 /**
