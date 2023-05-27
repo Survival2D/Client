@@ -763,6 +763,125 @@
                         },
                         "Name": "num",
                         "ctype": "TextObjectData"
+                      },
+                      {
+                        "FontSize": 22,
+                        "LabelText": "Ammo:",
+                        "FontResource": {
+                          "Type": "Normal",
+                          "Path": "Font/Roboto-Bold.ttf",
+                          "Plist": ""
+                        },
+                        "VerticalAlignmentType": "VT_Center",
+                        "OutlineColor": {
+                          "R": 0,
+                          "G": 0,
+                          "B": 0
+                        },
+                        "OutlineEnabled": true,
+                        "ShadowColor": {
+                          "R": 110,
+                          "G": 110,
+                          "B": 110
+                        },
+                        "ShadowOffsetX": 2.0,
+                        "ShadowOffsetY": -2.0,
+                        "AnchorPoint": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 0.5
+                        },
+                        "Position": {
+                          "X": -20.0,
+                          "Y": 42.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "RotationSkewX": 7.0,
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.1429,
+                          "Y": 0.7
+                        },
+                        "PreSize": {
+                          "X": 0.5286,
+                          "Y": 0.4667
+                        },
+                        "HorizontalEdge": "RightEdge",
+                        "LeftMargin": -94.0,
+                        "RightMargin": 160.0,
+                        "TopMargin": 4.0,
+                        "BottomMargin": 28.0,
+                        "Tag": 80,
+                        "ActionTag": 1713454874,
+                        "Size": {
+                          "X": 74.0,
+                          "Y": 28.0
+                        },
+                        "Name": "lbBullets",
+                        "ctype": "TextObjectData"
+                      },
+                      {
+                        "FontSize": 24,
+                        "LabelText": "4",
+                        "FontResource": {
+                          "Type": "Normal",
+                          "Path": "Font/Roboto-Bold.ttf",
+                          "Plist": ""
+                        },
+                        "HorizontalAlignmentType": "HT_Right",
+                        "VerticalAlignmentType": "VT_Center",
+                        "OutlineColor": {
+                          "R": 0,
+                          "G": 0,
+                          "B": 0
+                        },
+                        "OutlineEnabled": true,
+                        "ShadowColor": {
+                          "R": 110,
+                          "G": 110,
+                          "B": 110
+                        },
+                        "ShadowOffsetX": 2.0,
+                        "ShadowOffsetY": -2.0,
+                        "AnchorPoint": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 0.5
+                        },
+                        "Position": {
+                          "X": -20.0,
+                          "Y": 15.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.1429,
+                          "Y": 0.25
+                        },
+                        "PreSize": {
+                          "X": 0.1286,
+                          "Y": 0.5
+                        },
+                        "HorizontalEdge": "RightEdge",
+                        "LeftMargin": -38.0,
+                        "RightMargin": 160.0,
+                        "TopMargin": 30.0,
+                        "Tag": 81,
+                        "ActionTag": -1456010459,
+                        "Size": {
+                          "X": 18.0,
+                          "Y": 30.0
+                        },
+                        "Name": "numBullets",
+                        "ctype": "TextObjectData"
                       }
                     ],
                     "ActionTag": 658244451,
@@ -1031,6 +1150,125 @@
                         },
                         "Name": "num",
                         "ctype": "TextObjectData"
+                      },
+                      {
+                        "FontSize": 22,
+                        "LabelText": "Ammo:",
+                        "FontResource": {
+                          "Type": "Normal",
+                          "Path": "Font/Roboto-Bold.ttf",
+                          "Plist": ""
+                        },
+                        "VerticalAlignmentType": "VT_Center",
+                        "OutlineColor": {
+                          "R": 0,
+                          "G": 0,
+                          "B": 0
+                        },
+                        "OutlineEnabled": true,
+                        "ShadowColor": {
+                          "R": 110,
+                          "G": 110,
+                          "B": 110
+                        },
+                        "ShadowOffsetX": 2.0,
+                        "ShadowOffsetY": -2.0,
+                        "AnchorPoint": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 0.5
+                        },
+                        "Position": {
+                          "X": -20.0,
+                          "Y": 42.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "RotationSkewX": 7.0,
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.1429,
+                          "Y": 0.7
+                        },
+                        "PreSize": {
+                          "X": 0.5286,
+                          "Y": 0.4667
+                        },
+                        "HorizontalEdge": "RightEdge",
+                        "LeftMargin": -94.0,
+                        "RightMargin": 160.0,
+                        "TopMargin": 4.0,
+                        "BottomMargin": 28.0,
+                        "Tag": 78,
+                        "ActionTag": -105285468,
+                        "Size": {
+                          "X": 74.0,
+                          "Y": 28.0
+                        },
+                        "Name": "lbBullets",
+                        "ctype": "TextObjectData"
+                      },
+                      {
+                        "FontSize": 24,
+                        "LabelText": "4",
+                        "FontResource": {
+                          "Type": "Normal",
+                          "Path": "Font/Roboto-Bold.ttf",
+                          "Plist": ""
+                        },
+                        "HorizontalAlignmentType": "HT_Right",
+                        "VerticalAlignmentType": "VT_Center",
+                        "OutlineColor": {
+                          "R": 0,
+                          "G": 0,
+                          "B": 0
+                        },
+                        "OutlineEnabled": true,
+                        "ShadowColor": {
+                          "R": 110,
+                          "G": 110,
+                          "B": 110
+                        },
+                        "ShadowOffsetX": 2.0,
+                        "ShadowOffsetY": -2.0,
+                        "AnchorPoint": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 0.5
+                        },
+                        "Position": {
+                          "X": -20.0,
+                          "Y": 15.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.1429,
+                          "Y": 0.25
+                        },
+                        "PreSize": {
+                          "X": 0.1286,
+                          "Y": 0.5
+                        },
+                        "HorizontalEdge": "RightEdge",
+                        "LeftMargin": -38.0,
+                        "RightMargin": 160.0,
+                        "TopMargin": 30.0,
+                        "Tag": 79,
+                        "ActionTag": 1592182762,
+                        "Size": {
+                          "X": 18.0,
+                          "Y": 30.0
+                        },
+                        "Name": "numBullets",
+                        "ctype": "TextObjectData"
                       }
                     ],
                     "ActionTag": 270567943,
@@ -1298,6 +1536,125 @@
                           "Y": 35.0
                         },
                         "Name": "num",
+                        "ctype": "TextObjectData"
+                      },
+                      {
+                        "FontSize": 22,
+                        "LabelText": "Ammo:",
+                        "FontResource": {
+                          "Type": "Normal",
+                          "Path": "Font/Roboto-Bold.ttf",
+                          "Plist": ""
+                        },
+                        "VerticalAlignmentType": "VT_Center",
+                        "OutlineColor": {
+                          "R": 0,
+                          "G": 0,
+                          "B": 0
+                        },
+                        "OutlineEnabled": true,
+                        "ShadowColor": {
+                          "R": 110,
+                          "G": 110,
+                          "B": 110
+                        },
+                        "ShadowOffsetX": 2.0,
+                        "ShadowOffsetY": -2.0,
+                        "AnchorPoint": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 0.5
+                        },
+                        "Position": {
+                          "X": -20.0001,
+                          "Y": 42.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "RotationSkewX": 7.0,
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.1429,
+                          "Y": 0.7
+                        },
+                        "PreSize": {
+                          "X": 0.5286,
+                          "Y": 0.4667
+                        },
+                        "HorizontalEdge": "RightEdge",
+                        "LeftMargin": -94.0001,
+                        "RightMargin": 160.0001,
+                        "TopMargin": 4.0,
+                        "BottomMargin": 28.0,
+                        "Tag": 77,
+                        "ActionTag": 2068690686,
+                        "Size": {
+                          "X": 74.0,
+                          "Y": 28.0
+                        },
+                        "Name": "lbBullets",
+                        "ctype": "TextObjectData"
+                      },
+                      {
+                        "FontSize": 24,
+                        "LabelText": "4",
+                        "FontResource": {
+                          "Type": "Normal",
+                          "Path": "Font/Roboto-Bold.ttf",
+                          "Plist": ""
+                        },
+                        "HorizontalAlignmentType": "HT_Right",
+                        "VerticalAlignmentType": "VT_Center",
+                        "OutlineColor": {
+                          "R": 0,
+                          "G": 0,
+                          "B": 0
+                        },
+                        "OutlineEnabled": true,
+                        "ShadowColor": {
+                          "R": 110,
+                          "G": 110,
+                          "B": 110
+                        },
+                        "ShadowOffsetX": 2.0,
+                        "ShadowOffsetY": -2.0,
+                        "AnchorPoint": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 0.5
+                        },
+                        "Position": {
+                          "X": -20.0,
+                          "Y": 15.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.1429,
+                          "Y": 0.25
+                        },
+                        "PreSize": {
+                          "X": 0.1286,
+                          "Y": 0.5
+                        },
+                        "HorizontalEdge": "RightEdge",
+                        "LeftMargin": -38.0,
+                        "RightMargin": 160.0,
+                        "TopMargin": 30.0,
+                        "Tag": 76,
+                        "ActionTag": -1005632744,
+                        "Size": {
+                          "X": 18.0,
+                          "Y": 30.0
+                        },
+                        "Name": "numBullets",
                         "ctype": "TextObjectData"
                       }
                     ],

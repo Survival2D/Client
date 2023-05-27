@@ -104,6 +104,10 @@ const MatchScene = BaseLayer.extend({
         this.weaponSlotShotgun = this.getControl("slotShotgun", pWeaponPack);
         this.weaponSlotSniper = this.getControl("slotSniper", pWeaponPack);
 
+        this.weaponSlotPistol.lblNumBullets = this.getControl("numBullets", this.weaponSlotPistol);
+        this.weaponSlotShotgun.lblNumBullets = this.getControl("numBullets", this.weaponSlotShotgun);
+        this.weaponSlotSniper.lblNumBullets = this.getControl("numBullets", this.weaponSlotSniper);
+
         this.weaponSlotFist.addTouchEventListener((sender, type) => {
             if (type === ccui.Widget.TOUCH_ENDED) {
                 this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.FIST);
@@ -555,6 +559,10 @@ const MatchScene = BaseLayer.extend({
 
         this.lblNumBandage.setString(myPlayer.numBandages);
         this.lblNumMedKit.setString(myPlayer.numMedKits);
+
+        this.weaponSlotPistol.lblNumBullets.setString(myPlayer.getGun(GunData.GUN_TYPE.PISTOL).numBullets);
+        this.weaponSlotShotgun.lblNumBullets.setString(myPlayer.getGun(GunData.GUN_TYPE.SHOTGUN).numBullets);
+        this.weaponSlotSniper.lblNumBullets.setString(myPlayer.getGun(GunData.GUN_TYPE.SNIPER).numBullets);
     },
 
     myPlayerChangeWeapon: function (slot) {
