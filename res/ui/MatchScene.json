@@ -619,7 +619,7 @@
                         },
                         "Position": {
                           "X": 35.0,
-                          "Y": 29.9
+                          "Y": 29.898
                         },
                         "Scale": {
                           "ScaleX": 1.0,
@@ -639,8 +639,8 @@
                         "HorizontalEdge": "LeftEdge",
                         "LeftMargin": -1.0,
                         "RightMargin": 81.0,
-                        "TopMargin": -1.1,
-                        "BottomMargin": 1.1,
+                        "TopMargin": -1.098,
+                        "BottomMargin": 1.098,
                         "Tag": 19,
                         "ActionTag": 1198688773,
                         "Size": {
@@ -887,7 +887,7 @@
                         },
                         "Position": {
                           "X": 37.0,
-                          "Y": 29.5
+                          "Y": 29.502
                         },
                         "Scale": {
                           "ScaleX": 1.0,
@@ -907,8 +907,8 @@
                         "HorizontalEdge": "LeftEdge",
                         "LeftMargin": -5.0,
                         "RightMargin": 75.0,
-                        "TopMargin": -5.9,
-                        "BottomMargin": -4.1,
+                        "TopMargin": -5.902,
+                        "BottomMargin": -4.098,
                         "Tag": 67,
                         "ActionTag": 1201959721,
                         "Size": {
@@ -1343,7 +1343,7 @@
                 },
                 "Position": {
                   "X": 1905.0,
-                  "Y": 730.0
+                  "Y": 830.0
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1353,7 +1353,7 @@
                 "IconVisible": false,
                 "PrePosition": {
                   "X": 0.9922,
-                  "Y": 0.6759
+                  "Y": 0.7685
                 },
                 "PreSize": {
                   "X": 0.0729,
@@ -1363,8 +1363,8 @@
                 "VerticalEdge": "BottomEdge",
                 "LeftMargin": 1765.0,
                 "RightMargin": 15.0,
-                "TopMargin": 320.0,
-                "BottomMargin": 700.0,
+                "TopMargin": 220.0,
+                "BottomMargin": 800.0,
                 "Tag": 50,
                 "Children": [
                   {
@@ -1555,7 +1555,7 @@
                 },
                 "Position": {
                   "X": 1905.0,
-                  "Y": 630.0
+                  "Y": 750.0
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1565,7 +1565,7 @@
                 "IconVisible": false,
                 "PrePosition": {
                   "X": 0.9922,
-                  "Y": 0.5833
+                  "Y": 0.6944
                 },
                 "PreSize": {
                   "X": 0.0729,
@@ -1575,8 +1575,8 @@
                 "VerticalEdge": "BottomEdge",
                 "LeftMargin": 1765.0,
                 "RightMargin": 15.0,
-                "TopMargin": 420.0,
-                "BottomMargin": 600.0,
+                "TopMargin": 300.0,
+                "BottomMargin": 720.0,
                 "Tag": 54,
                 "Children": [
                   {
@@ -1767,7 +1767,7 @@
                 },
                 "Position": {
                   "X": 1905.0,
-                  "Y": 530.0
+                  "Y": 480.0
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1777,7 +1777,7 @@
                 "IconVisible": false,
                 "PrePosition": {
                   "X": 0.9922,
-                  "Y": 0.4907
+                  "Y": 0.4444
                 },
                 "PreSize": {
                   "X": 0.0729,
@@ -1787,8 +1787,8 @@
                 "VerticalEdge": "BottomEdge",
                 "LeftMargin": 1765.0,
                 "RightMargin": 15.0,
-                "TopMargin": 520.0,
-                "BottomMargin": 500.0,
+                "TopMargin": 570.0,
+                "BottomMargin": 450.0,
                 "Tag": 52,
                 "Children": [
                   {
@@ -1843,13 +1843,13 @@
                   {
                     "FileData": {
                       "Type": "Normal",
-                      "Path": "Game/Item/loot_ammo.png",
+                      "Path": "Game/Item/loot_ammo_pistol.png",
                       "Plist": ""
                     },
-                    "Scale9OriginX": -145,
-                    "Scale9OriginY": -145,
-                    "Scale9Width": 370,
-                    "Scale9Height": 370,
+                    "Scale9OriginX": 26,
+                    "Scale9OriginY": 26,
+                    "Scale9Width": 28,
+                    "Scale9Height": 28,
                     "AnchorPoint": {
                       "ScaleX": 0.6013,
                       "ScaleY": 0.482
@@ -1870,19 +1870,19 @@
                       "Y": 0.5
                     },
                     "PreSize": {
-                      "X": 0.3571,
-                      "Y": 0.8333
+                      "X": 0.2857,
+                      "Y": 0.6667
                     },
                     "HorizontalEdge": "LeftEdge",
-                    "LeftMargin": 5.0,
-                    "RightMargin": 85.0,
-                    "TopMargin": 4.1,
-                    "BottomMargin": 5.9,
+                    "LeftMargin": 11.013,
+                    "RightMargin": 88.987,
+                    "TopMargin": 9.28,
+                    "BottomMargin": 10.72,
                     "Tag": 54,
                     "ActionTag": 772511034,
                     "Size": {
-                      "X": 50.0,
-                      "Y": 50.0
+                      "X": 40.0,
+                      "Y": 40.0
                     },
                     "Name": "img",
                     "ctype": "ImageViewObjectData"
@@ -1951,7 +1951,431 @@
                   "X": 140.0,
                   "Y": 60.0
                 },
-                "Name": "ammoHave",
+                "Name": "ammoPistolHave",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "ClipAble": false,
+                "BackColorAlpha": 102,
+                "SingleColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 1905.0,
+                  "Y": 560.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.9922,
+                  "Y": 0.5185
+                },
+                "PreSize": {
+                  "X": 0.0729,
+                  "Y": 0.0556
+                },
+                "HorizontalEdge": "RightEdge",
+                "VerticalEdge": "BottomEdge",
+                "LeftMargin": 1765.0,
+                "RightMargin": 15.0,
+                "TopMargin": 490.0,
+                "BottomMargin": 530.0,
+                "Tag": 68,
+                "Children": [
+                  {
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Common/square_rounded.png",
+                      "Plist": ""
+                    },
+                    "Scale9Enable": true,
+                    "Scale9OriginX": 21,
+                    "Scale9OriginY": 21,
+                    "Scale9Width": 22,
+                    "Scale9Height": 22,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 70.0,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 1.0,
+                      "Y": 1.0
+                    },
+                    "Tag": 69,
+                    "ActionTag": -877278365,
+                    "Size": {
+                      "X": 140.0,
+                      "Y": 60.0
+                    },
+                    "Alpha": 103,
+                    "Name": "bg",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Game/Item/loot_ammo_shotgun.png",
+                      "Plist": ""
+                    },
+                    "Scale9OriginX": 26,
+                    "Scale9OriginY": 26,
+                    "Scale9Width": 28,
+                    "Scale9Height": 28,
+                    "AnchorPoint": {
+                      "ScaleX": 0.6013,
+                      "ScaleY": 0.482
+                    },
+                    "Position": {
+                      "X": 35.065,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.2505,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.2857,
+                      "Y": 0.6667
+                    },
+                    "HorizontalEdge": "LeftEdge",
+                    "LeftMargin": 11.013,
+                    "RightMargin": 88.987,
+                    "TopMargin": 9.28,
+                    "BottomMargin": 10.72,
+                    "Tag": 70,
+                    "ActionTag": -82849497,
+                    "Size": {
+                      "X": 40.0,
+                      "Y": 40.0
+                    },
+                    "Name": "img",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FontSize": 30,
+                    "LabelText": "1000",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "Font/Roboto-Bold.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Right",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 130.0,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.9286,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.5,
+                      "Y": 0.5833
+                    },
+                    "HorizontalEdge": "RightEdge",
+                    "LeftMargin": 60.0,
+                    "RightMargin": 10.0,
+                    "TopMargin": 12.5,
+                    "BottomMargin": 12.5,
+                    "Tag": 71,
+                    "ActionTag": -914441211,
+                    "Size": {
+                      "X": 70.0,
+                      "Y": 35.0
+                    },
+                    "Name": "num",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 787609985,
+                "Size": {
+                  "X": 140.0,
+                  "Y": 60.0
+                },
+                "Name": "ammoShotgunHave",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "ClipAble": false,
+                "BackColorAlpha": 102,
+                "SingleColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 1905.0,
+                  "Y": 640.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.9922,
+                  "Y": 0.5926
+                },
+                "PreSize": {
+                  "X": 0.0729,
+                  "Y": 0.0556
+                },
+                "HorizontalEdge": "RightEdge",
+                "VerticalEdge": "BottomEdge",
+                "LeftMargin": 1765.0,
+                "RightMargin": 15.0,
+                "TopMargin": 410.0,
+                "BottomMargin": 610.0,
+                "Tag": 72,
+                "Children": [
+                  {
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Common/square_rounded.png",
+                      "Plist": ""
+                    },
+                    "Scale9Enable": true,
+                    "Scale9OriginX": 21,
+                    "Scale9OriginY": 21,
+                    "Scale9Width": 22,
+                    "Scale9Height": 22,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 70.0,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 1.0,
+                      "Y": 1.0
+                    },
+                    "Tag": 73,
+                    "ActionTag": -67554250,
+                    "Size": {
+                      "X": 140.0,
+                      "Y": 60.0
+                    },
+                    "Alpha": 103,
+                    "Name": "bg",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "Normal",
+                      "Path": "Game/Item/loot_ammo_sniper.png",
+                      "Plist": ""
+                    },
+                    "Scale9OriginX": 26,
+                    "Scale9OriginY": 26,
+                    "Scale9Width": 28,
+                    "Scale9Height": 28,
+                    "AnchorPoint": {
+                      "ScaleX": 0.6013,
+                      "ScaleY": 0.482
+                    },
+                    "Position": {
+                      "X": 35.065,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.2505,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.2857,
+                      "Y": 0.6667
+                    },
+                    "HorizontalEdge": "LeftEdge",
+                    "LeftMargin": 11.013,
+                    "RightMargin": 88.987,
+                    "TopMargin": 9.28,
+                    "BottomMargin": 10.72,
+                    "Tag": 74,
+                    "ActionTag": -884248899,
+                    "Size": {
+                      "X": 40.0,
+                      "Y": 40.0
+                    },
+                    "Name": "img",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FontSize": 30,
+                    "LabelText": "1000",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "Font/Roboto-Bold.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Right",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 130.0,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.9286,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.5,
+                      "Y": 0.5833
+                    },
+                    "HorizontalEdge": "RightEdge",
+                    "LeftMargin": 60.0,
+                    "RightMargin": 10.0,
+                    "TopMargin": 12.5,
+                    "BottomMargin": 12.5,
+                    "Tag": 75,
+                    "ActionTag": -2080982609,
+                    "Size": {
+                      "X": 70.0,
+                      "Y": 35.0
+                    },
+                    "Name": "num",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 1824088617,
+                "Size": {
+                  "X": 140.0,
+                  "Y": 60.0
+                },
+                "Name": "ammoSniperHave",
                 "ctype": "PanelObjectData"
               },
               {
@@ -3116,7 +3540,9 @@
         "Common/trapezoid.png",
         "Font/Roboto-Bold.ttf",
         "Font/Roboto-Regular.ttf",
-        "Game/Item/loot_ammo.png",
+        "Game/Item/loot_ammo_pistol.png",
+        "Game/Item/loot_ammo_shotgun.png",
+        "Game/Item/loot_ammo_sniper.png",
         "Game/Item/loot_chest.png",
         "Game/Item/loot_health_care.png",
         "Game/Item/loot_helmet.png",

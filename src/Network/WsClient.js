@@ -125,6 +125,7 @@ const WsClient = cc.Class.extend({
 
                 let bfBullet = new fbs.BulletItemTable();
                 bfObj.data(bfBullet);
+                obj.setGunType(bfBullet.type());
                 obj.setNumBullets(bfBullet.numBullet());
                 break;
               }
@@ -304,6 +305,7 @@ const WsClient = cc.Class.extend({
               let bfBullet = new fbs.BulletItemTable();
               createItemOnMapResponse.item(bfBullet);
               item = new ItemBulletData();
+              item.setGunType(bfBullet.type());
               item.setNumBullets(bfBullet.numBullet());
               break;
             }
@@ -359,9 +361,6 @@ const WsClient = cc.Class.extend({
               createItemOnMapResponse.item(bfMedKit);
               item = new ItemMedKitData();
               break;
-            }
-            case fbs.Item.BackPackItemTable: {
-              return;
             }
           }
           item.setObjectId(createItemOnMapResponse.id());

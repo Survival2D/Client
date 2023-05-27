@@ -75,7 +75,9 @@ const MatchScene = BaseLayer.extend({
             item.lblLevel = this.customTextLabel("level", item);
         }
 
-        this.lblMyAmmoHave = this.getControl("num", this.getControl("ammoHave", this.hud));
+        this.lblMyAmmoPistolHave = this.getControl("num", this.getControl("ammoPistolHave", this.hud));
+        this.lblMyAmmoShotgunHave = this.getControl("num", this.getControl("ammoShotgunHave", this.hud));
+        this.lblMyAmmoSniperHave = this.getControl("num", this.getControl("ammoSniperHave", this.hud));
 
         this.bandage = this.getControl("bandageHave", this.hud);
         this.lblNumBandage = this.getControl("num", this.bandage);
@@ -547,7 +549,9 @@ const MatchScene = BaseLayer.extend({
         this.myEquipVest.lblLevel.setString("lv. " + myPlayer.vest.level);
         this.myEquipHelmet.lblLevel.setString("lv. " + myPlayer.helmet.level);
 
-        this.lblMyAmmoHave.setString(myPlayer.numBackBullets);
+        this.lblMyAmmoPistolHave.setString(myPlayer.numBackBullets[GunData.GUN_TYPE.PISTOL]);
+        this.lblMyAmmoShotgunHave.setString(myPlayer.numBackBullets[GunData.GUN_TYPE.SHOTGUN]);
+        this.lblMyAmmoSniperHave.setString(myPlayer.numBackBullets[GunData.GUN_TYPE.SNIPER]);
 
         this.lblNumBandage.setString(myPlayer.numBandages);
         this.lblNumMedKit.setString(myPlayer.numMedKits);
@@ -771,7 +775,10 @@ const MatchScene = BaseLayer.extend({
 
         fromPosition = fromPosition || item.position;
         if (item instanceof ItemGunData) itemUI = new ItemGunUI();
-        else if (item instanceof ItemBulletData) itemUI = new ItemBulletUI();
+        else if (item instanceof ItemBulletData) {
+            itemUI = new ItemBulletUI();
+            itemUI.setGunType(item.getGunType());
+        }
         else if (item instanceof ItemVestData) itemUI = new ItemVestUI();
         else if (item instanceof ItemHelmetData) itemUI = new ItemHelmetUI();
         else if (item instanceof ItemBandageData) itemUI = new ItemBandageUI();

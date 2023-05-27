@@ -26,7 +26,11 @@ const PlayerData = cc.Class.extend({
 
         this.vest = new VestData();
         this.helmet = new HelmetData();
-        this.numBackBullets = 0;
+        this.numBackBullets = {}; // map from gun type -> number of bullets of that type
+        this.numBackBullets[GunData.GUN_TYPE.PISTOL] = 0;
+        this.numBackBullets[GunData.GUN_TYPE.SHOTGUN] = 0;
+        this.numBackBullets[GunData.GUN_TYPE.SNIPER] = 0;
+
         this.numBandages = 0;
         this.numMedKits = 0;
 
@@ -115,7 +119,7 @@ const PlayerData = cc.Class.extend({
          */
         let gun = this.getCurrentGun();
 
-        if (gun) return gun.isActiveGun() && this.numBackBullets > 0;
+        if (gun) return gun.isActiveGun() && this.numBackBullets[gun.type] > 0;
         else return false;
     },
 
@@ -129,7 +133,7 @@ const PlayerData = cc.Class.extend({
         if (gun) {
             gun.loadBullets(numWeaponBullets);
         }
-        this.numBackBullets = numBulletsRemain;
+        this.numBackBullets[gunType] = numBulletsRemain;
     },
 
     /**
@@ -142,7 +146,7 @@ const PlayerData = cc.Class.extend({
             gun.loadBullets(item.getNumBullets());
         }
         if (item instanceof ItemBulletData) {
-            this.numBackBullets += item.getNumBullets();
+            this.numBackBullets[item.getGunType()] += item.getNumBullets();
         }
         if (item instanceof ItemVestData) {
             this.vest = item.vest;

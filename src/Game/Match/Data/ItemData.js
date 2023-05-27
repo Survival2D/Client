@@ -58,6 +58,7 @@ const ItemBulletData = ItemData.extend({
     ctor: function () {
         this._super();
         this._numBullets = 0;
+        this._type = GunData.GUN_TYPE.PISTOL;
     },
 
     setNumBullets: function (numBullets) {
@@ -66,6 +67,20 @@ const ItemBulletData = ItemData.extend({
 
     getNumBullets: function () {
         return this._numBullets;
+    },
+
+    /**
+     * @param {GunData.GUN_TYPE} gunType
+     */
+    setGunType: function (gunType) {
+        this._type = gunType
+    },
+
+    /**
+     * @return {GunData.GUN_TYPE}
+     */
+    getGunType: function () {
+        return this._type
     }
 });
 

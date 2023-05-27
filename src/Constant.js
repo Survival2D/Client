@@ -12,7 +12,7 @@ Constant.LOGIC_VIEW_HEIGHT = 1200;
 
 Constant.BLOCK_SIGHT = true;
 
-Constant.IS_OFFLINE = true;
+Constant.IS_OFFLINE = false;
 Constant.TEST = true;
 
 Constant.PLAYER_COLOR = [

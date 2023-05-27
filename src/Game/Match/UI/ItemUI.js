@@ -49,7 +49,24 @@ const ItemBulletUI = ItemUI.extend({
         this._super();
         this.loadTexture("res/ui/Game/Item/loot_ammo.png", ccui.Widget.LOCAL_TEXTURE);
         this.setContentSize(70, 70);
-    }
+    },
+
+    /**
+     * @param {GunData.GUN_TYPE} gunType
+     */
+    setGunType: function (gunType) {
+        switch (gunType) {
+            case GunData.GUN_TYPE.PISTOL:
+                this.loadTexture("res/ui/Game/Item/loot_ammo_pistol.png", ccui.Widget.LOCAL_TEXTURE);
+                break;
+            case GunData.GUN_TYPE.SHOTGUN:
+                this.loadTexture("res/ui/Game/Item/loot_ammo_shotgun.png", ccui.Widget.LOCAL_TEXTURE);
+                break;
+            case GunData.GUN_TYPE.SNIPER:
+                this.loadTexture("res/ui/Game/Item/loot_ammo_sniper.png", ccui.Widget.LOCAL_TEXTURE);
+                break;
+        }
+    },
 });
 
 const ItemVestUI = ItemUI.extend({
