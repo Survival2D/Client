@@ -40,7 +40,7 @@ const ItemGunUI = ItemUI.extend({
     ctor: function () {
         this._super();
 
-        this.setItemUI("res/ui/Game/Item/loot_gun.png");
+        this.setItemUI("res/ui/Game/Item/loot_shot_gun.png");
     }
 });
 

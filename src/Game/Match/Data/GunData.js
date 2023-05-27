@@ -10,7 +10,7 @@ const GunData = cc.Class.extend({
         /**
          * @type {GunData.GUN_TYPE}
          */
-        this.type = GunData.GUN_TYPE.NORMAL
+        this.type = GunData.GUN_TYPE.PISTOL
     },
 
     loadBullets: function (numBullets) {
@@ -21,13 +21,17 @@ const GunData = cc.Class.extend({
         return this.isActive && this.numBullets > 0;
     },
 
+    setActive: function (bool) {
+        this.isActive = bool;
+    },
+
     isActiveGun: function () {
         return this.isActive;
     }
 });
 
 GunData.GUN_TYPE = {
-    NORMAL: 1,
-    SHORT: 2,
-    LONG: 3,
+    PISTOL: 1,
+    SHOTGUN: 2,
+    SNIPER: 3,
 }

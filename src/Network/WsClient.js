@@ -242,7 +242,7 @@ const WsClient = cc.Class.extend({
           response.response(playerReloadWeaponResponse);
           cc.log("RECEIVED PlayerReloadWeapon");
           GameManager.getInstance().getCurrentMatch().receivedPlayerReloadWeapon(
-              playerReloadWeaponResponse.remainBulletsInGun(), playerReloadWeaponResponse.remainBullets());
+              playerReloadWeaponResponse.gunType(), playerReloadWeaponResponse.remainBulletsInGun(), playerReloadWeaponResponse.remainBullets());
           break;
         }
         case fbs.ResponseUnion.PlayerAttackResponse: {

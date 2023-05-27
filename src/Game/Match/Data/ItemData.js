@@ -18,45 +18,31 @@ const ItemData = MapObjectData.extend({
     }
 });
 
-ItemData.TYPE = {
-    GUN: "WEAPON",
-    BULLET: "BULLET",
-    VEST: "VEST",
-    HELMET: "HELMET"
-};
-
-ItemData.createItemByType = function (type) {
-    let item = new ItemData();
-
-    switch (type) {
-        case ItemData.TYPE.GUN:
-            item = new ItemGunData();
-            break;
-        case ItemData.TYPE.BULLET:
-            item = new ItemBulletData();
-            break;
-        case ItemData.TYPE.VEST:
-            item = new ItemVestData();
-            break;
-        case ItemData.TYPE.HELMET:
-            item = new ItemHelmetData();
-            break;
-    }
-
-    item.setItemType(type);
-
-    return item;
-};
-
 const ItemGunData = ItemData.extend({
     ctor: function () {
         this._super();
-        this._gunType = 0;
+
+        /**
+         * @type {GunData.GUN_TYPE}
+         * @private
+         */
+        this._gunType = GunData.GUN_TYPE.PISTOL;
+
         this._numBullets = 0;
     },
 
+    /**
+     * @param {GunData.GUN_TYPE} type
+     */
     setGunType: function (type) {
         this._gunType = type;
+    },
+
+    /**
+     * @return {GunData.GUN_TYPE}
+     */
+    getGunType: function () {
+        return this._gunType;
     },
 
     setNumBullets: function (numBullets) {

@@ -65,17 +65,23 @@ const Controller = cc.Class.extend({
                 this.reloadBullets();
                 break;
             case cc.KEY["1"]:
-                this.changeWeaponSlot(PlayerData.WEAPON_SLOT.GUN);
-                break;
-            case cc.KEY["2"]:
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.FIST);
                 break;
-            case cc.KEY["3"]: {
+            case cc.KEY["2"]:
+                this.changeWeaponSlot(PlayerData.WEAPON_SLOT.PISTOL);
+                break;
+            case cc.KEY["3"]:
+                this.changeWeaponSlot(PlayerData.WEAPON_SLOT.SHOTGUN);
+                break;
+            case cc.KEY["4"]:
+                this.changeWeaponSlot(PlayerData.WEAPON_SLOT.SNIPER);
+                break;
+            case cc.KEY["5"]: {
                 let match = GameManager.getInstance().getCurrentMatch();
                 if (match) match.myPlayerUseBandage();
                 break;
             }
-            case cc.KEY["4"]: {
+            case cc.KEY["6"]: {
                 let match = GameManager.getInstance().getCurrentMatch();
                 if (match) match.myPlayerUseMedKit();
                 break;

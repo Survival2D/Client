@@ -13,7 +13,17 @@ const PlayerData = cc.Class.extend({
         this.team = 0;
         this.hp = 0;
 
-        this.gun = new GunData();
+        /**
+         * @type [GunData]
+         */
+        this.guns = [];
+        for (let type of GunData.GUN_TYPE) {
+            let gun = new GunData();
+            gun.type = type;
+            gun.setActive(true);
+            this.guns.push(gun);
+        }
+
         this.vest = new VestData();
         this.helmet = new HelmetData();
         this.numBackBullets = 0;
@@ -29,8 +39,49 @@ const PlayerData = cc.Class.extend({
         return this.hp <= 0;
     },
 
-    isHaveGun: function () {
-        return this.gun.isActiveGun();
+    /**
+     * @param type {GunData.GUN_TYPE}
+     * @return boolean
+     */
+    isHaveGun: function (type) {
+        let gun = this.getGun(type);
+        if (gun) return gun.isActiveGun();
+        else return false;
+    },
+
+    /**
+     * @param type {GunData.GUN_TYPE}
+     * @return GunData|null
+     */
+    getGun: function (type) {
+        for (let gun of this.guns) {
+            if (gun.type === type) return gun;
+        }
+
+        return null;
+    },
+
+    /**
+     * @return {GunData|null}
+     */
+    getCurrentGun: function () {
+        /**
+         * @type GunData
+         */
+        let gun;
+        switch (this.weaponSlot) {
+            case PlayerData.WEAPON_SLOT.PISTOL:
+                gun = this.getGun(GunData.GUN_TYPE.PISTOL);
+                break;
+            case PlayerData.WEAPON_SLOT.SHOTGUN:
+                gun = this.getGun(GunData.GUN_TYPE.SHOTGUN);
+                break;
+            case PlayerData.WEAPON_SLOT.SNIPER:
+                gun = this.getGun(GunData.GUN_TYPE.SNIPER);
+                break;
+            default: gun = null; break;
+        }
+        return gun;
     },
 
     /**
@@ -40,12 +91,44 @@ const PlayerData = cc.Class.extend({
         this.weaponSlot = slot;
     },
 
-    canReloadBullets: function () {
-        return this.gun.isActiveGun() && this.weaponSlot === PlayerData.WEAPON_SLOT.GUN && this.numBackBullets > 0;
+    canFire: function () {
+        /**
+         * @type GunData
+         */
+        let gun = this.getCurrentGun();
+
+        if (gun) return gun.canFire();
+        else return false;
     },
 
-    reloadBullets: function (numWeaponBullets, numBulletsRemain) {
-        this.gun.loadBullets(numWeaponBullets);
+    fire: function () {
+        /**
+         * @type GunData
+         */
+        let gun = this.getCurrentGun();
+        if (gun) return gun.numBullets--;
+    },
+
+    canReloadBullets: function () {
+        /**
+         * @type GunData
+         */
+        let gun = this.getCurrentGun();
+
+        if (gun) return gun.isActiveGun() && this.numBackBullets > 0;
+        else return false;
+    },
+
+    /**
+     * @param {GunData.GUN_TYPE} gunType
+     * @param {number} numWeaponBullets
+     * @param {number} numBulletsRemain
+     */
+    reloadBullets: function (gunType, numWeaponBullets, numBulletsRemain) {
+        let gun = this.getGun(gunType);
+        if (gun) {
+            gun.loadBullets(numWeaponBullets);
+        }
         this.numBackBullets = numBulletsRemain;
     },
 
@@ -54,8 +137,9 @@ const PlayerData = cc.Class.extend({
      */
     getItem: function (item) {
         if (item instanceof ItemGunData) {
-            this.gun.isActive = true;
-            this.gun.loadBullets(item.getNumBullets());
+            let gun = this.getGun(item.getGunType());
+            gun.setActive(true);
+            gun.loadBullets(item.getNumBullets());
         }
         if (item instanceof ItemBulletData) {
             this.numBackBullets += item.getNumBullets();
@@ -77,7 +161,7 @@ const PlayerData = cc.Class.extend({
 
 PlayerData.WEAPON_SLOT = {
     FIST: 0,
-    GUN: 1,
-    SHORT_GUN: 2,
-    LONG_GUN: 3
+    PISTOL: 1,
+    SHOTGUN: 2,
+    SNIPER: 3,
 }

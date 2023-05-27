@@ -98,7 +98,9 @@ const MatchScene = BaseLayer.extend({
 
         let pWeaponPack = this.getControl("pWeaponPack", this.hud);
         this.weaponSlotFist = this.getControl("slotFist", pWeaponPack);
-        this.weaponSlotGun = this.getControl("slotGun", pWeaponPack);
+        this.weaponSlotPistol = this.getControl("slotPistol", pWeaponPack);
+        this.weaponSlotShotgun = this.getControl("slotShotgun", pWeaponPack);
+        this.weaponSlotSniper = this.getControl("slotSniper", pWeaponPack);
 
         this.weaponSlotFist.addTouchEventListener((sender, type) => {
             if (type === ccui.Widget.TOUCH_ENDED) {
@@ -106,11 +108,25 @@ const MatchScene = BaseLayer.extend({
             }
         }, this);
 
-        this.weaponSlotGun.addTouchEventListener((sender, type) => {
+        this.weaponSlotPistol.addTouchEventListener((sender, type) => {
             if (type === ccui.Widget.TOUCH_ENDED) {
-                this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.GUN);
+                this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.PISTOL);
             }
         }, this);
+
+        this.weaponSlotShotgun.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.SHOTGUN);
+            }
+        }, this);
+
+        this.weaponSlotSniper.addTouchEventListener((sender, type) => {
+            if (type === ccui.Widget.TOUCH_ENDED) {
+                this.myPlayerChangeWeapon(PlayerData.WEAPON_SLOT.SNIPER);
+            }
+        }, this);
+
+        this.weaponSlots = [this.weaponSlotFist, this.weaponSlotPistol, this.weaponSlotShotgun, this.weaponSlotSniper];
 
         this.loadingLayer = this.getControl("loadingLayer");
         this.loadingLogo = this.getControl("logo", this.loadingLayer);
@@ -175,10 +191,13 @@ const MatchScene = BaseLayer.extend({
     onEnter: function () {
         this._super();
 
+        for (let slot of this.weaponSlots) {
+            slot.setScale(1);
+            slot.setOpacity(100);
+        }
+
         this.weaponSlotFist.setScale(1.2);
         this.weaponSlotFist.setOpacity(255);
-        this.weaponSlotGun.setScale(1);
-        this.weaponSlotGun.setOpacity(100);
 
         this.updateMatchView();
 
@@ -278,14 +297,14 @@ const MatchScene = BaseLayer.extend({
             playerUI.setHelmetLevel(player.helmet.level);
             if (player.weaponSlot !== PlayerData.WEAPON_SLOT.FIST) {
                 switch (player.weaponSlot) {
-                    case PlayerData.WEAPON_SLOT.GUN:
-                        playerUI.setGunType(GunData.GUN_TYPE.NORMAL);
+                    case PlayerData.WEAPON_SLOT.PISTOL:
+                        playerUI.setGunType(GunData.GUN_TYPE.PISTOL);
                         break;
-                    case PlayerData.WEAPON_SLOT.SHORT_GUN:
-                        playerUI.setGunType(GunData.GUN_TYPE.SHORT);
+                    case PlayerData.WEAPON_SLOT.SHOTGUN:
+                        playerUI.setGunType(GunData.GUN_TYPE.SHOTGUN);
                         break;
-                    case PlayerData.WEAPON_SLOT.LONG_GUN:
-                        playerUI.setGunType(GunData.GUN_TYPE.LONG);
+                    case PlayerData.WEAPON_SLOT.SNIPER:
+                        playerUI.setGunType(GunData.GUN_TYPE.SNIPER);
                         break;
                 }
                 playerUI.equipGun();
@@ -491,7 +510,7 @@ const MatchScene = BaseLayer.extend({
         for (let key in match.items) {
             let item = match.items[key];
             if (gm.checkCollisionCircleCircle(match.myPlayer.position, item.position, match.myPlayer.radius, item.radius)) {
-                if (item instanceof ItemGunData && match.myPlayer.isHaveGun()) return;
+                if (item instanceof ItemGunData && match.myPlayer.isHaveGun(item.getGunType())) return;
 
                 // GameClient.getInstance().sendEmptyPacket(Cmd.TAKE_ITEM);
                 let builder = new flatbuffers.Builder(0);
@@ -538,20 +557,40 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         if (match.myPlayer.isDead()) return;
 
+        for (let slot of this.weaponSlots) {
+            slot.setScale(1);
+            slot.setOpacity(100);
+        }
+
         if (slot === PlayerData.WEAPON_SLOT.FIST) {
             if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
             this.weaponSlotFist.setScale(1.2);
             this.weaponSlotFist.setOpacity(255);
-            this.weaponSlotGun.setScale(1);
-            this.weaponSlotGun.setOpacity(100);
         }
         else {
-            if (!match.myPlayer.isHaveGun()) return;
+            switch (slot) {
+                case PlayerData.WEAPON_SLOT.PISTOL:
+                    if (!match.myPlayer.isHaveGun(GunData.GUN_TYPE.PISTOL)) return;
+                    this.weaponSlotPistol.setScale(1.2);
+                    this.weaponSlotPistol.setOpacity(255);
+                    this.myPlayer.setGunType(GunData.GUN_TYPE.PISTOL);
+                    break;
+                case PlayerData.WEAPON_SLOT.SHOTGUN:
+                    if (!match.myPlayer.isHaveGun(GunData.GUN_TYPE.SHOTGUN)) return;
+                    this.weaponSlotShotgun.setScale(1.2);
+                    this.weaponSlotShotgun.setOpacity(255);
+                    this.myPlayer.setGunType(GunData.GUN_TYPE.SHOTGUN);
+                    break;
+                case PlayerData.WEAPON_SLOT.SNIPER:
+                    if (!match.myPlayer.isHaveGun(GunData.GUN_TYPE.SNIPER)) return;
+                    this.weaponSlotSniper.setScale(1.2);
+                    this.weaponSlotSniper.setOpacity(255);
+                    this.myPlayer.setGunType(GunData.GUN_TYPE.SNIPER);
+                    break;
+                default: break;
+            }
+
             if (!this.myPlayer.isEquip()) this.myPlayer.equipGun();
-            this.weaponSlotGun.setScale(1.2);
-            this.weaponSlotGun.setOpacity(255);
-            this.weaponSlotFist.setScale(1);
-            this.weaponSlotFist.setOpacity(100);
         }
 
         match.updateMyPlayerWeapon(slot);
@@ -561,13 +600,13 @@ const MatchScene = BaseLayer.extend({
         let match = GameManager.getInstance().getCurrentMatch();
         destPos = this.scene2GroundPosition(destPos);
         if (this.myPlayer.isEquip()) {
-            if (!match.myPlayer.gun.canFire()) return;
+            if (!match.myPlayer.canFire()) return;
             let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
             vector.normalize();
             let createPos = gm.p(this.myPlayer.x + vector.x * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius),
                 this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
-            this.fire(createPos, vector);
-            match.myPlayer.gun.numBullets--;
+            this.fireBullet(createPos, vector);
+            match.myPlayer.fire();
         }
         else {
             this.myPlayer.animAttack();
@@ -673,7 +712,7 @@ const MatchScene = BaseLayer.extend({
         this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().getNumberOfAlivePlayers());
     },
 
-    fire: function (pos, direction) {
+    fireBullet: function (pos, direction) {
         let bullet = this.getBulletFromPool();
         this.workingBullets.push(bullet);
         bullet.setPosition(pos);

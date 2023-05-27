@@ -215,7 +215,6 @@ const MatchManager = cc.Class.extend({
 
   updateMyPlayerInfo: function (hp, haveGun) {
     this.myPlayer.hp = hp;
-    this.myPlayer.gun.isActive = !!haveGun;
   },
 
   getPlayerListByTeam: function (team) {
@@ -493,8 +492,13 @@ const MatchManager = cc.Class.extend({
     }
   },
 
-  receivedPlayerReloadWeapon: function (numWeaponBullets, numBulletsRemain) {
-    this.myPlayer.reloadBullets(numWeaponBullets, numBulletsRemain);
+  /**
+   * @param {GunData.GUN_TYPE} gunType
+   * @param {number} numWeaponBullets
+   * @param {number} numBulletsRemain
+   */
+  receivedPlayerReloadWeapon: function (gunType, numWeaponBullets, numBulletsRemain) {
+    this.myPlayer.reloadBullets(gunType, numWeaponBullets, numBulletsRemain);
     if (this.isInMatch()) {
       this.scene.updateMyPlayerItem();
     }
@@ -508,7 +512,7 @@ const MatchManager = cc.Class.extend({
       return;
     }
     if (this.isInMatch()) {
-      this.scene.fire(bullet.rawPosition, bullet.direction);
+      this.scene.fireBullet(bullet.rawPosition, bullet.direction);
     }
   },
 

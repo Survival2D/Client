@@ -151,7 +151,7 @@ const PlayerUI = cc.Node.extend({
         this._leftArm.setPosition(this._body.width/2 + 48, this._body.height/2 + 5);
         this._rightArm.setPosition(this._body.width/2 + 20, this._body.height/2 - 3);
 
-        if (this._gun._type === GunData.GUN_TYPE.SHORT) {
+        if (this._gun._type === GunData.GUN_TYPE.PISTOL) {
             this._leftArm.setPosition(this._body.width/2 + 38, this._body.height/2 + 4);
             this._rightArm.setPosition(this._body.width/2 + 20, this._body.height/2 - 2);
         }
@@ -211,7 +211,7 @@ const PlayerUI = cc.Node.extend({
 const PlayerGunUI = ccui.ImageView.extend({
     ctor: function (id) {
         this._id = null;
-        this._type = GunData.GUN_TYPE.NORMAL;
+        this._type = GunData.GUN_TYPE.PISTOL;
         this._super();
     },
 
@@ -221,13 +221,13 @@ const PlayerGunUI = ccui.ImageView.extend({
     setGunType: function (type) {
         this._type = type;
         switch (type) {
-            case GunData.GUN_TYPE.NORMAL:
+            case GunData.GUN_TYPE.SHOTGUN:
                 this.loadTexture("res/ui/Game/Player/gun_1.png", ccui.Widget.LOCAL_TEXTURE);
                 break;
-            case GunData.GUN_TYPE.SHORT:
+            case GunData.GUN_TYPE.PISTOL:
                 this.loadTexture("res/ui/Game/Player/gun_3.png", ccui.Widget.LOCAL_TEXTURE);
                 break;
-            case GunData.GUN_TYPE.LONG:
+            case GunData.GUN_TYPE.SNIPER:
                 this.loadTexture("res/ui/Game/Player/gun_2.png", ccui.Widget.LOCAL_TEXTURE);
                 break;
         }
