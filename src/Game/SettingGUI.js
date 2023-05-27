@@ -36,7 +36,12 @@ const SettingGUI = BaseLayer.extend({
         Config.ENABLE_AUTO_PLAY = !Config.ENABLE_AUTO_PLAY;
         this.lblEnableAutoPlay.setString(Config.ENABLE_AUTO_PLAY ? "Enabled" : "Disabled");
 
-        //TODO: setAutoPlay
+        let builder = new flatbuffers.Builder(0);
+        let setAutoPlayRequest = fbs.PlayerMoveRequest.createSetAutoPlayRequest(builder, Config.ENABLE_AUTO_PLAY);
+        let request = fbs.Request.createRequest(builder,
+            fbs.RequestUnion.SetAutoPlayRequest, setAutoPlayRequest);
+        builder.finish(request);
+        fbsClient.sendBinary(builder.asUint8Array());
     }
 });
 
