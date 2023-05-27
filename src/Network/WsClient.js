@@ -202,20 +202,34 @@ const WsClient = cc.Class.extend({
           response.response(playerInfoResponse);
           cc.log("RECEIVED MyPlayerInfo");
           let hp = playerInfoResponse.hp();
-          let haveGun = false;
+
+          /**
+           * @type {GunData[]}
+           */
+          let guns = [];
           for (let i = 0; i < playerInfoResponse.weaponLength(); i++) {
             let bfWeapon = playerInfoResponse.weapon(i);
             if (bfWeapon.dataType() === fbs.WeaponUnion.GunTable) {
+              let gun = new GunData();
               let bfGun = new fbs.GunTable();
               bfWeapon.data(bfGun);
-              bfGun.type();
-              bfGun.remainBullets();
-              haveGun = true;
+              gun.type = bfGun.type();
+              gun.numBullets = bfGun.remainBullets();
+              gun.setActive(true);
+              guns.push(gun);
             }
           }
 
-          GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp,
-              haveGun);
+          let remainBullets = {};
+          remainBullets[GunData.GUN_TYPE.PISTOL] = 0;
+          remainBullets[GunData.GUN_TYPE.SHOTGUN] = 0;
+          remainBullets[GunData.GUN_TYPE.SNIPER] = 0;
+          for (let i = 0; i < playerInfoResponse.bulletsLength(); i++) {
+            let bfBullet = playerInfoResponse.bullets(i);
+            remainBullets[bfBullet.type()] = bfBullet.numBullet();
+          }
+
+          GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp, guns, remainBullets);
           break;
         }
         case fbs.ResponseUnion.PlayerMoveResponse: {

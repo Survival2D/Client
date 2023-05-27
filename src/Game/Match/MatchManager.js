@@ -213,8 +213,15 @@ const MatchManager = cc.Class.extend({
     }
   },
 
-  updateMyPlayerInfo: function (hp, haveGun) {
+  /**
+   * @param {number} hp
+   * @param {GunData[]} guns
+   * @param remainBullets
+   */
+  updateMyPlayerInfo: function (hp, guns, remainBullets) {
     this.myPlayer.hp = hp;
+    this.myPlayer.guns = guns;
+    this.myPlayer.numBackBullets = remainBullets;
   },
 
   getPlayerListByTeam: function (team) {
