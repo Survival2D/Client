@@ -31,7 +31,7 @@ const GunData = cc.Class.extend({
 });
 
 GunData.GUN_TYPE = {
-    PISTOL: 1,
-    SHOTGUN: 2,
-    SNIPER: 3,
+    PISTOL: 0,
+    SHOTGUN: 1,
+    SNIPER: 2,
 }
