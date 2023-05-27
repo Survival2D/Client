@@ -107,6 +107,9 @@ const MatchScene = BaseLayer.extend({
         this.weaponSlotPistol.lblNumBullets = this.getControl("numBullets", this.weaponSlotPistol);
         this.weaponSlotShotgun.lblNumBullets = this.getControl("numBullets", this.weaponSlotShotgun);
         this.weaponSlotSniper.lblNumBullets = this.getControl("numBullets", this.weaponSlotSniper);
+        this.weaponSlotPistol.lblNumBullets.ignoreContentAdaptWithSize(true);
+        this.weaponSlotShotgun.lblNumBullets.ignoreContentAdaptWithSize(true);
+        this.weaponSlotSniper.lblNumBullets.ignoreContentAdaptWithSize(true);
 
         this.weaponSlotFist.addTouchEventListener((sender, type) => {
             if (type === ccui.Widget.TOUCH_ENDED) {

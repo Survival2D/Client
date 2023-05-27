@@ -940,6 +940,53 @@
                         },
                         "Name": "numBullets",
                         "ctype": "TextObjectData"
+                      },
+                      {
+                        "FileData": {
+                          "Type": "Normal",
+                          "Path": "Game/Item/loot_ammo_pistol.png",
+                          "Plist": ""
+                        },
+                        "Scale9OriginX": 26,
+                        "Scale9OriginY": 26,
+                        "Scale9Width": 28,
+                        "Scale9Height": 28,
+                        "AnchorPoint": {
+                          "ScaleX": 0.6013,
+                          "ScaleY": 0.482
+                        },
+                        "Position": {
+                          "X": -8.4,
+                          "Y": 42.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentXEnabled": true,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.06,
+                          "Y": 0.7
+                        },
+                        "PreSize": {
+                          "X": 0.1429,
+                          "Y": 0.3333
+                        },
+                        "LeftMargin": -20.426,
+                        "RightMargin": 140.426,
+                        "TopMargin": 7.64,
+                        "BottomMargin": 32.36,
+                        "Tag": 83,
+                        "ActionTag": 1606968988,
+                        "Size": {
+                          "X": 20.0,
+                          "Y": 20.0
+                        },
+                        "Name": "img_0",
+                        "ctype": "ImageViewObjectData"
                       }
                     ],
                     "ActionTag": 658244451,
@@ -1327,6 +1374,53 @@
                         },
                         "Name": "numBullets",
                         "ctype": "TextObjectData"
+                      },
+                      {
+                        "FileData": {
+                          "Type": "Normal",
+                          "Path": "Game/Item/loot_ammo_shotgun.png",
+                          "Plist": ""
+                        },
+                        "Scale9OriginX": 26,
+                        "Scale9OriginY": 26,
+                        "Scale9Width": 28,
+                        "Scale9Height": 28,
+                        "AnchorPoint": {
+                          "ScaleX": 0.6013,
+                          "ScaleY": 0.482
+                        },
+                        "Position": {
+                          "X": -8.4,
+                          "Y": 42.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentXEnabled": true,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.06,
+                          "Y": 0.7
+                        },
+                        "PreSize": {
+                          "X": 0.1429,
+                          "Y": 0.3333
+                        },
+                        "LeftMargin": -20.426,
+                        "RightMargin": 140.426,
+                        "TopMargin": 7.64,
+                        "BottomMargin": 32.36,
+                        "Tag": 84,
+                        "ActionTag": 305518603,
+                        "Size": {
+                          "X": 20.0,
+                          "Y": 20.0
+                        },
+                        "Name": "img_0",
+                        "ctype": "ImageViewObjectData"
                       }
                     ],
                     "ActionTag": 270567943,
@@ -1714,6 +1808,53 @@
                         },
                         "Name": "numBullets",
                         "ctype": "TextObjectData"
+                      },
+                      {
+                        "FileData": {
+                          "Type": "Normal",
+                          "Path": "Game/Item/loot_ammo_sniper.png",
+                          "Plist": ""
+                        },
+                        "Scale9OriginX": 26,
+                        "Scale9OriginY": 26,
+                        "Scale9Width": 28,
+                        "Scale9Height": 28,
+                        "AnchorPoint": {
+                          "ScaleX": 0.6013,
+                          "ScaleY": 0.482
+                        },
+                        "Position": {
+                          "X": -8.4,
+                          "Y": 42.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {},
+                        "IconVisible": false,
+                        "PositionPercentXEnabled": true,
+                        "PositionPercentYEnabled": true,
+                        "PrePosition": {
+                          "X": -0.06,
+                          "Y": 0.7
+                        },
+                        "PreSize": {
+                          "X": 0.1429,
+                          "Y": 0.3333
+                        },
+                        "LeftMargin": -20.426,
+                        "RightMargin": 140.426,
+                        "TopMargin": 7.64,
+                        "BottomMargin": 32.36,
+                        "Tag": 85,
+                        "ActionTag": -1878480939,
+                        "Size": {
+                          "X": 20.0,
+                          "Y": 20.0
+                        },
+                        "Name": "img_0",
+                        "ctype": "ImageViewObjectData"
                       }
                     ],
                     "ActionTag": -2091826756,
