@@ -95,7 +95,7 @@ const ResultGUI = BaseLayer.extend({
             let playerUI = new PlayerUI();
             playerUI.unEquip();
             playerUI.setPlayerRotation(-90);
-            playerUI.setPlayerUIInfo(player.username);
+            playerUI.setPlayerUIInfo(player.playerName);
             playerUI.setPlayerColorByTeam(player.team);
 
             playerUI.setScale(2);

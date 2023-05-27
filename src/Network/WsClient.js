@@ -401,7 +401,7 @@ const WsClient = cc.Class.extend({
           response.response(obstacleDestroyResponse);
           cc.log("RECEIVED ObstacleDestroyed");
           GameManager.getInstance().getCurrentMatch().receivedObstacleDestroyed(
-              obstacleDestroyResponse.id());
+              obstacleDestroyResponse.obstacleId());
           break;
         }
         case fbs.ResponseUnion.PlayerTakeItemResponse: {
@@ -409,7 +409,7 @@ const WsClient = cc.Class.extend({
           response.response(playerTakeItemResponse);
           cc.log("RECEIVED PlayerTakeItem");
           GameManager.getInstance().getCurrentMatch().receivedPlayerTakeItem(
-              playerTakeItemResponse.playerId(), playerTakeItemResponse.id());
+              playerTakeItemResponse.playerId(), playerTakeItemResponse.itemOnMapId());
           break;
         }
         case fbs.ResponseUnion.UseHealItemResponse: {
