@@ -17,9 +17,9 @@ const PlayerData = cc.Class.extend({
          * @type [GunData]
          */
         this.guns = [];
-        for (let type of GunData.GUN_TYPE) {
+        for (let key in GunData.GUN_TYPE) {
             let gun = new GunData();
-            gun.type = type;
+            gun.type = GunData.GUN_TYPE[key];
             gun.setActive(true);
             this.guns.push(gun);
         }
