@@ -653,6 +653,13 @@ const MatchManager = cc.Class.extend({
     if (this.isInMatch()) {
       this.scene.changeSafeZone();
     }
+  },
+
+  receivedSetAutoPlay: function (isAutoPlay) {
+    Config.ENABLE_AUTO_PLAY = isAutoPlay;
+    if (this.isInMatch()) {
+      this.scene.updateAutoPlay();
+    }
   }
 });
 

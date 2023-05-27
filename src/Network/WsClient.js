@@ -446,6 +446,12 @@ const WsClient = cc.Class.extend({
               safeZoneMoveResponse.safeZone().radius());
           break;
         }
+        case fbs.ResponseUnion.SetAutoPlayResponse: {
+          let setAutoPlayResponse = new fbs.SetAutoPlayResponse();
+          response.response(setAutoPlayResponse);
+          GameManager.getInstance().getCurrentMatch().receivedSetAutoPlay(setAutoPlayResponse.enable());
+          break;
+        }
         default:
           cc.log("not handle", response.responseType());
           break;

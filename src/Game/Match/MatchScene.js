@@ -138,6 +138,8 @@ const MatchScene = BaseLayer.extend({
         this.loadingLogo = this.getControl("logo", this.loadingLayer);
 
         this.customButton("btnSetting", this.onSetting, this, this.hud);
+
+        this.lblAutoPlay = this.getControl("lbAutoPlay", this.hud);
     },
 
     initKeyBoardController: function () {
@@ -258,6 +260,15 @@ const MatchScene = BaseLayer.extend({
         else {
             let gui = new SettingGUI();
             SceneManager.getInstance().openGUI(gui, ResultGUI.ZORDER);
+        }
+    },
+
+    updateAutoPlay: function () {
+        if (Config.ENABLE_AUTO_PLAY) {
+            this.lblAutoPlay.setString("Auto play: TRUE");
+        }
+        else {
+            this.lblAutoPlay.setString("Auto play: FALSE");
         }
     },
 
