@@ -315,7 +315,7 @@ const WsClient = cc.Class.extend({
 
           let item = new ItemData();
           switch (createItemOnMapResponse.itemType()) {
-            case fbs.Item.BulletItemTable: {
+            case fbs.ItemUnion.BulletItemTable: {
               let bfBullet = new fbs.BulletItemTable();
               createItemOnMapResponse.item(bfBullet);
               item = new ItemBulletData();
@@ -323,14 +323,14 @@ const WsClient = cc.Class.extend({
               item.setNumBullets(bfBullet.numBullet());
               break;
             }
-            case fbs.Item.GunItemTable: {
+            case fbs.ItemUnion.GunItemTable: {
               let bfGun = new fbs.GunItemTable();
               createItemOnMapResponse.item(bfGun);
               item = new ItemGunData();
               item.setNumBullets(bfGun.numBullet());
               break;
             }
-            case fbs.Item.VestItemTable: {
+            case fbs.ItemUnion.VestItemTable: {
               let bfVest = new fbs.VestItemTable();
               createItemOnMapResponse.item(bfVest);
               item = new ItemVestData();
@@ -347,7 +347,7 @@ const WsClient = cc.Class.extend({
               }
               break;
             }
-            case fbs.Item.HelmetItemTable: {
+            case fbs.ItemUnion.HelmetItemTable: {
               let bfHelmet = new fbs.HelmetItemTable();
               createItemOnMapResponse.item(bfHelmet);
               item = new ItemHelmetData();
@@ -364,13 +364,13 @@ const WsClient = cc.Class.extend({
               }
               break;
             }
-            case fbs.Item.BandageItemTable: {
+            case fbs.ItemUnion.BandageItemTable: {
               let bfBandage = new fbs.BandageItemTable();
               createItemOnMapResponse.item(bfBandage);
               item = new ItemBandageData();
               break;
             }
-            case fbs.Item.MedKitItemTable: {
+            case fbs.ItemUnion.MedKitItemTable: {
               let bfMedKit = new fbs.MedKitItemTable();
               createItemOnMapResponse.item(bfMedKit);
               item = new ItemMedKitData();

@@ -75,6 +75,7 @@ const ObstacleUI = ccui.ImageView.extend({
 
     animDestroyed: function () {
         let residue = this.createResidue();
+        if (!residue) return;
         residue.setVisible(true);
         residue.setPosition(this.width/2, this.height/2);
         residue.stopAllActions();
