@@ -68,11 +68,10 @@ survival2d.flatbuffers.HelmetTypeEnumName = {
 survival2d.flatbuffers.ItemUnion = {
   NONE: 0,
   BulletItemTable: 1,
-  GunItemTable: 2,
-  VestItemTable: 3,
-  HelmetItemTable: 4,
-  BandageItemTable: 5,
-  MedKitItemTable: 6
+  VestItemTable: 2,
+  HelmetItemTable: 3,
+  BandageItemTable: 4,
+  MedKitItemTable: 5
 };
 
 /**
@@ -81,11 +80,10 @@ survival2d.flatbuffers.ItemUnion = {
 survival2d.flatbuffers.ItemUnionName = {
   '0': 'NONE',
   '1': 'BulletItemTable',
-  '2': 'GunItemTable',
-  '3': 'VestItemTable',
-  '4': 'HelmetItemTable',
-  '5': 'BandageItemTable',
-  '6': 'MedKitItemTable'
+  '2': 'VestItemTable',
+  '3': 'HelmetItemTable',
+  '4': 'BandageItemTable',
+  '5': 'MedKitItemTable'
 };
 
 /**
@@ -715,112 +713,6 @@ survival2d.flatbuffers.WallTable.endWallTable = function(builder) {
 survival2d.flatbuffers.WallTable.createWallTable = function(builder) {
   survival2d.flatbuffers.WallTable.startWallTable(builder);
   return survival2d.flatbuffers.WallTable.endWallTable(builder);
-}
-
-/**
- * @constructor
- */
-survival2d.flatbuffers.GunItemTable = function() {
-  /**
-   * @type {flatbuffers.ByteBuffer}
-   */
-  this.bb = null;
-
-  /**
-   * @type {number}
-   */
-  this.bb_pos = 0;
-};
-
-/**
- * @param {number} i
- * @param {flatbuffers.ByteBuffer} bb
- * @returns {survival2d.flatbuffers.GunItemTable}
- */
-survival2d.flatbuffers.GunItemTable.prototype.__init = function(i, bb) {
-  this.bb_pos = i;
-  this.bb = bb;
-  return this;
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.GunItemTable=} obj
- * @returns {survival2d.flatbuffers.GunItemTable}
- */
-survival2d.flatbuffers.GunItemTable.getRootAsGunItemTable = function(bb, obj) {
-  return (obj || new survival2d.flatbuffers.GunItemTable).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {survival2d.flatbuffers.GunItemTable=} obj
- * @returns {survival2d.flatbuffers.GunItemTable}
- */
-survival2d.flatbuffers.GunItemTable.getSizePrefixedRootAsGunItemTable = function(bb, obj) {
-  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new survival2d.flatbuffers.GunItemTable).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @returns {survival2d.flatbuffers.GunTypeEnum}
- */
-survival2d.flatbuffers.GunItemTable.prototype.type = function() {
-  var offset = this.bb.__offset(this.bb_pos, 4);
-  return offset ? /** @type {survival2d.flatbuffers.GunTypeEnum} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.GunTypeEnum.PISTOL;
-};
-
-/**
- * @returns {number}
- */
-survival2d.flatbuffers.GunItemTable.prototype.numBullet = function() {
-  var offset = this.bb.__offset(this.bb_pos, 6);
-  return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- */
-survival2d.flatbuffers.GunItemTable.startGunItemTable = function(builder) {
-  builder.startObject(2);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.GunTypeEnum} type
- */
-survival2d.flatbuffers.GunItemTable.addType = function(builder, type) {
-  builder.addFieldInt8(0, type, survival2d.flatbuffers.GunTypeEnum.PISTOL);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {number} numBullet
- */
-survival2d.flatbuffers.GunItemTable.addNumBullet = function(builder, numBullet) {
-  builder.addFieldInt32(1, numBullet, 0);
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.GunItemTable.endGunItemTable = function(builder) {
-  var offset = builder.endObject();
-  return offset;
-};
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {survival2d.flatbuffers.GunTypeEnum} type
- * @param {number} numBullet
- * @returns {flatbuffers.Offset}
- */
-survival2d.flatbuffers.GunItemTable.createGunItemTable = function(builder, type, numBullet) {
-  survival2d.flatbuffers.GunItemTable.startGunItemTable(builder);
-  survival2d.flatbuffers.GunItemTable.addType(builder, type);
-  survival2d.flatbuffers.GunItemTable.addNumBullet(builder, numBullet);
-  return survival2d.flatbuffers.GunItemTable.endGunItemTable(builder);
 }
 
 /**
