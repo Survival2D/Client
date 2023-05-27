@@ -393,7 +393,7 @@ const WsClient = cc.Class.extend({
           response.response(obstacleTakeDamageResponse);
           cc.log("RECEIVED ObstacleTakeDamage");
           GameManager.getInstance().getCurrentMatch().receivedObstacleTakeDamage(
-              obstacleTakeDamageResponse.id(), obstacleTakeDamageResponse.remainHp());
+              obstacleTakeDamageResponse.obstacleId(), obstacleTakeDamageResponse.remainHp());
           break;
         }
         case fbs.ResponseUnion.ObstacleDestroyResponse: {
