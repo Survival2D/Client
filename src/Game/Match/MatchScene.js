@@ -635,6 +635,7 @@ const MatchScene = BaseLayer.extend({
                 this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
             this.fireBullet(createPos, vector);
             match.myPlayer.fire();
+            this.updateMyPlayerItem();
         }
         else {
             this.myPlayer.animAttack();
