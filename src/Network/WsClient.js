@@ -207,14 +207,15 @@ const WsClient = cc.Class.extend({
            * @type {GunData[]}
            */
           let guns = [];
-          for (let i = 0; i < playerInfoResponse.weaponLength(); i++) {
-            let bfWeapon = playerInfoResponse.weapon(i);
+          for (let i = 0; i < playerInfoResponse.weaponsLength(); i++) {
+            let bfWeapon = playerInfoResponse.weapons(i);
             if (bfWeapon.dataType() === fbs.WeaponUnion.GunTable) {
               let gun = new GunData();
               let bfGun = new fbs.GunTable();
               bfWeapon.data(bfGun);
               gun.type = bfGun.type();
               gun.numBullets = bfGun.remainBullets();
+              cc.log("gun type", gun.type, "num bullets", gun.numBullets)
               gun.setActive(true);
               guns.push(gun);
             }
@@ -228,6 +229,7 @@ const WsClient = cc.Class.extend({
             let bfBullet = playerInfoResponse.bullets(i);
             remainBullets[bfBullet.type()] = bfBullet.numBullet();
           }
+          cc.log("remain bullets", JSON.stringify(remainBullets))
 
           GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp, guns, remainBullets);
           break;

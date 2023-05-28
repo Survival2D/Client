@@ -1783,7 +1783,7 @@ survival2d.flatbuffers.PlayerInfoResponse.prototype.hp = function() {
  * @param {survival2d.flatbuffers.WeaponTable=} obj
  * @returns {survival2d.flatbuffers.WeaponTable}
  */
-survival2d.flatbuffers.PlayerInfoResponse.prototype.weapon = function(index, obj) {
+survival2d.flatbuffers.PlayerInfoResponse.prototype.weapons = function(index, obj) {
   var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? (obj || new survival2d.flatbuffers.WeaponTable).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
 };
@@ -1791,7 +1791,7 @@ survival2d.flatbuffers.PlayerInfoResponse.prototype.weapon = function(index, obj
 /**
  * @returns {number}
  */
-survival2d.flatbuffers.PlayerInfoResponse.prototype.weaponLength = function() {
+survival2d.flatbuffers.PlayerInfoResponse.prototype.weaponsLength = function() {
   var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
 };
@@ -1831,10 +1831,10 @@ survival2d.flatbuffers.PlayerInfoResponse.addHp = function(builder, hp) {
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} weaponOffset
+ * @param {flatbuffers.Offset} weaponsOffset
  */
-survival2d.flatbuffers.PlayerInfoResponse.addWeapon = function(builder, weaponOffset) {
-  builder.addFieldOffset(1, weaponOffset, 0);
+survival2d.flatbuffers.PlayerInfoResponse.addWeapons = function(builder, weaponsOffset) {
+  builder.addFieldOffset(1, weaponsOffset, 0);
 };
 
 /**
@@ -1842,7 +1842,7 @@ survival2d.flatbuffers.PlayerInfoResponse.addWeapon = function(builder, weaponOf
  * @param {Array.<flatbuffers.Offset>} data
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerInfoResponse.createWeaponVector = function(builder, data) {
+survival2d.flatbuffers.PlayerInfoResponse.createWeaponsVector = function(builder, data) {
   builder.startVector(4, data.length, 4);
   for (var i = data.length - 1; i >= 0; i--) {
     builder.addOffset(data[i]);
@@ -1854,7 +1854,7 @@ survival2d.flatbuffers.PlayerInfoResponse.createWeaponVector = function(builder,
  * @param {flatbuffers.Builder} builder
  * @param {number} numElems
  */
-survival2d.flatbuffers.PlayerInfoResponse.startWeaponVector = function(builder, numElems) {
+survival2d.flatbuffers.PlayerInfoResponse.startWeaponsVector = function(builder, numElems) {
   builder.startVector(4, numElems, 4);
 };
 
@@ -1899,14 +1899,14 @@ survival2d.flatbuffers.PlayerInfoResponse.endPlayerInfoResponse = function(build
 /**
  * @param {flatbuffers.Builder} builder
  * @param {number} hp
- * @param {flatbuffers.Offset} weaponOffset
+ * @param {flatbuffers.Offset} weaponsOffset
  * @param {flatbuffers.Offset} bulletsOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.PlayerInfoResponse.createPlayerInfoResponse = function(builder, hp, weaponOffset, bulletsOffset) {
+survival2d.flatbuffers.PlayerInfoResponse.createPlayerInfoResponse = function(builder, hp, weaponsOffset, bulletsOffset) {
   survival2d.flatbuffers.PlayerInfoResponse.startPlayerInfoResponse(builder);
   survival2d.flatbuffers.PlayerInfoResponse.addHp(builder, hp);
-  survival2d.flatbuffers.PlayerInfoResponse.addWeapon(builder, weaponOffset);
+  survival2d.flatbuffers.PlayerInfoResponse.addWeapons(builder, weaponsOffset);
   survival2d.flatbuffers.PlayerInfoResponse.addBullets(builder, bulletsOffset);
   return survival2d.flatbuffers.PlayerInfoResponse.endPlayerInfoResponse(builder);
 }
