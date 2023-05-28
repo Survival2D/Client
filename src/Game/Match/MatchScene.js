@@ -625,20 +625,22 @@ const MatchScene = BaseLayer.extend({
     },
 
     myPlayerAttack: function (destPos = gm.p(0, 0)) {
-        let match = GameManager.getInstance().getCurrentMatch();
-        destPos = this.scene2GroundPosition(destPos);
-        if (this.myPlayer.isEquip()) {
-            if (!match.myPlayer.canFire()) return;
-            let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
-            vector.normalize();
-            let createPos = gm.p(this.myPlayer.x + vector.x * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius),
-                this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
-            this.fireBullet(createPos, vector);
-            match.myPlayer.fire();
-            this.updateMyPlayerItem();
-        }
-        else {
-            this.myPlayer.animAttack();
+        if (Config.ENABLE_SMOOTH) {
+            let match = GameManager.getInstance().getCurrentMatch();
+            destPos = this.scene2GroundPosition(destPos);
+            if (this.myPlayer.isEquip()) {
+                if (!match.myPlayer.canFire()) return;
+                let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
+                vector.normalize();
+                let createPos = gm.p(this.myPlayer.x + vector.x * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius),
+                    this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
+                this.fireBullet(createPos, vector);
+                match.myPlayer.fire();
+                this.updateMyPlayerItem();
+            }
+            else {
+                this.myPlayer.animAttack();
+            }
         }
 
         cc.log("myPlayerAttack");
@@ -675,7 +677,20 @@ const MatchScene = BaseLayer.extend({
     playerAttack: function (playerId, slot, direction) {
         let playerUI = this.playerUIs[playerId];
         if (playerUI) {
-            if (slot) playerUI.equipGun();
+            if (slot) {
+                switch (slot) {
+                    case PlayerData.WEAPON_SLOT.PISTOL:
+                        playerUI.setGunType(GunData.GUN_TYPE.PISTOL);
+                        break;
+                    case PlayerData.WEAPON_SLOT.SHOTGUN:
+                        playerUI.setGunType(GunData.GUN_TYPE.SHOTGUN);
+                        break;
+                    case PlayerData.WEAPON_SLOT.SNIPER:
+                        playerUI.setGunType(GunData.GUN_TYPE.SNIPER);
+                        break;
+                }
+                playerUI.equipGun();
+            }
             else playerUI.unEquip();
             let rotation = gm.calculateVectorAngleInclination(direction);
             rotation = Math.round(gm.radToDeg(rotation));

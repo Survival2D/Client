@@ -477,7 +477,7 @@ const MatchManager = cc.Class.extend({
       return;
     }
 
-    if (playerId === GameManager.getInstance().userData.uid) {
+    if (Config.ENABLE_SMOOTH && playerId === GameManager.getInstance().userData.uid) {
       return;
     }
 
@@ -521,9 +521,19 @@ const MatchManager = cc.Class.extend({
    * @param {BulletData} bullet
    */
   receivedCreateBullet: function (bullet) {
-    if (bullet.ownerId === GameManager.getInstance().userData.uid) {
-      return;
+    let player = this.players[bullet.ownerId];
+    if (!player) {
+      cc.log("Warning: we dont have player " + playerId + " in match");
     }
+
+    let gun = player.getGun(bullet.bulletType);
+    if (gun) gun.numBullets--;
+
+    if (bullet.ownerId === GameManager.getInstance().userData.uid) {
+      if (Config.ENABLE_SMOOTH ) return;
+      this.scene.updateMyPlayerItem();
+    }
+
     if (this.isInMatch()) {
       this.scene.fireBullet(bullet.rawPosition, bullet.direction);
     }
