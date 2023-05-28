@@ -577,6 +577,8 @@ const MatchScene = BaseLayer.extend({
         this.weaponSlotPistol.lblNumBullets.setString(myPlayer.getGun(GunData.GUN_TYPE.PISTOL).numBullets);
         this.weaponSlotShotgun.lblNumBullets.setString(myPlayer.getGun(GunData.GUN_TYPE.SHOTGUN).numBullets);
         this.weaponSlotSniper.lblNumBullets.setString(myPlayer.getGun(GunData.GUN_TYPE.SNIPER).numBullets);
+
+        this.playerChangeWeapon(myPlayer.playerId, myPlayer.weaponSlot);
     },
 
     myPlayerChangeWeapon: function (slot) {
@@ -651,7 +653,20 @@ const MatchScene = BaseLayer.extend({
     playerChangeWeapon: function (playerId, weaponId) {
         let playerUI = this.playerUIs[playerId];
         if (playerUI) {
-            if (weaponId) playerUI.equipGun();
+            if (weaponId) {
+                switch (weaponId) {
+                    case PlayerData.WEAPON_SLOT.PISTOL:
+                        playerUI.setGunType(GunData.GUN_TYPE.PISTOL);
+                        break;
+                    case PlayerData.WEAPON_SLOT.SHOTGUN:
+                        playerUI.setGunType(GunData.GUN_TYPE.SHOTGUN);
+                        break;
+                    case PlayerData.WEAPON_SLOT.SNIPER:
+                        playerUI.setGunType(GunData.GUN_TYPE.SNIPER);
+                        break;
+                }
+                playerUI.equipGun();
+            }
             else playerUI.unEquip();
         }
     },

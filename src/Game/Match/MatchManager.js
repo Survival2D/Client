@@ -222,6 +222,10 @@ const MatchManager = cc.Class.extend({
     this.myPlayer.hp = hp;
     this.myPlayer.guns = guns;
     this.myPlayer.numBackBullets = remainBullets;
+
+    if (this.isInMatch()) {
+      this.scene.updateMyPlayerItem();
+    }
   },
 
   getPlayerListByTeam: function (team) {
@@ -491,6 +495,8 @@ const MatchManager = cc.Class.extend({
       cc.log("Warning: we dont have player " + playerId + " in match");
       return;
     }
+
+    player.weaponSlot = weaponId;
 
     // if (playerId === GameManager.getInstance().userData.uid) return;
 
