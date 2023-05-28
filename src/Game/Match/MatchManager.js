@@ -477,8 +477,24 @@ const MatchManager = cc.Class.extend({
       return;
     }
 
-    if (Config.ENABLE_SMOOTH && playerId === GameManager.getInstance().userData.uid) {
-      return;
+    let gun;
+    switch (slot) {
+      case PlayerData.WEAPON_SLOT.PISTOL:
+        gun = player.getGun(GunData.GUN_TYPE.PISTOL);
+        break;
+      case PlayerData.WEAPON_SLOT.SHOTGUN:
+        gun = player.getGun(GunData.GUN_TYPE.PISTOL);
+        break;
+      case PlayerData.WEAPON_SLOT.SNIPER:
+        gun = player.getGun(GunData.GUN_TYPE.PISTOL);
+        break;
+    }
+
+    if (gun) gun.numBullets--;
+
+    if (playerId === GameManager.getInstance().userData.uid) {
+      if (Config.ENABLE_SMOOTH) return;
+      this.scene.updateMyPlayerItem();
     }
 
     let direction = gm.vector(position.x - player.position.x,
@@ -526,12 +542,8 @@ const MatchManager = cc.Class.extend({
       cc.log("Warning: we dont have player " + playerId + " in match");
     }
 
-    let gun = player.getGun(bullet.bulletType);
-    if (gun) gun.numBullets--;
-
     if (bullet.ownerId === GameManager.getInstance().userData.uid) {
       if (Config.ENABLE_SMOOTH ) return;
-      this.scene.updateMyPlayerItem();
     }
 
     if (this.isInMatch()) {
