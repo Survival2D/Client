@@ -483,10 +483,10 @@ const MatchManager = cc.Class.extend({
         gun = player.getGun(GunData.GUN_TYPE.PISTOL);
         break;
       case PlayerData.WEAPON_SLOT.SHOTGUN:
-        gun = player.getGun(GunData.GUN_TYPE.PISTOL);
+        gun = player.getGun(GunData.GUN_TYPE.SHOTGUN);
         break;
       case PlayerData.WEAPON_SLOT.SNIPER:
-        gun = player.getGun(GunData.GUN_TYPE.PISTOL);
+        gun = player.getGun(GunData.GUN_TYPE.SNIPER);
         break;
     }
 
