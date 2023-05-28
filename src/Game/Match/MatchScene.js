@@ -143,6 +143,7 @@ const MatchScene = BaseLayer.extend({
         this.customButton("btnSetting", this.onSetting, this, this.hud);
 
         this.lblAutoPlay = this.getControl("lbAutoPlay", this.hud);
+        this.lblAutoPlay.ignoreContentAdaptWithSize(true);
     },
 
     initKeyBoardController: function () {

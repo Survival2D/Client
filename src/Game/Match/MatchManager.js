@@ -477,6 +477,10 @@ const MatchManager = cc.Class.extend({
       return;
     }
 
+    if (Config.ENABLE_SMOOTH && playerId === GameManager.getInstance().userData.uid) {
+      return;
+    }
+
     let gun;
     switch (slot) {
       case PlayerData.WEAPON_SLOT.PISTOL:
@@ -493,7 +497,6 @@ const MatchManager = cc.Class.extend({
     if (gun) gun.numBullets--;
 
     if (playerId === GameManager.getInstance().userData.uid) {
-      if (Config.ENABLE_SMOOTH) return;
       this.scene.updateMyPlayerItem();
     }
 
