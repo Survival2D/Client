@@ -1338,8 +1338,17 @@ survival2d.flatbuffers.BulletTable.prototype.id = function() {
  * @param {survival2d.flatbuffers.Vector2Struct=} obj
  * @returns {survival2d.flatbuffers.Vector2Struct|null}
  */
-survival2d.flatbuffers.BulletTable.prototype.position = function(obj) {
+survival2d.flatbuffers.BulletTable.prototype.rawPosition = function(obj) {
   var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? (obj || new survival2d.flatbuffers.Vector2Struct).__init(this.bb_pos + offset, this.bb) : null;
+};
+
+/**
+ * @param {survival2d.flatbuffers.Vector2Struct=} obj
+ * @returns {survival2d.flatbuffers.Vector2Struct|null}
+ */
+survival2d.flatbuffers.BulletTable.prototype.position = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 8);
   return offset ? (obj || new survival2d.flatbuffers.Vector2Struct).__init(this.bb_pos + offset, this.bb) : null;
 };
 
@@ -1347,7 +1356,7 @@ survival2d.flatbuffers.BulletTable.prototype.position = function(obj) {
  * @returns {survival2d.flatbuffers.GunTypeEnum}
  */
 survival2d.flatbuffers.BulletTable.prototype.type = function() {
-  var offset = this.bb.__offset(this.bb_pos, 8);
+  var offset = this.bb.__offset(this.bb_pos, 10);
   return offset ? /** @type {survival2d.flatbuffers.GunTypeEnum} */ (this.bb.readInt8(this.bb_pos + offset)) : survival2d.flatbuffers.GunTypeEnum.PISTOL;
 };
 
@@ -1355,7 +1364,7 @@ survival2d.flatbuffers.BulletTable.prototype.type = function() {
  * @returns {number}
  */
 survival2d.flatbuffers.BulletTable.prototype.owner = function() {
-  var offset = this.bb.__offset(this.bb_pos, 10);
+  var offset = this.bb.__offset(this.bb_pos, 12);
   return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
 };
 
@@ -1364,7 +1373,7 @@ survival2d.flatbuffers.BulletTable.prototype.owner = function() {
  * @returns {survival2d.flatbuffers.Vector2Struct|null}
  */
 survival2d.flatbuffers.BulletTable.prototype.direction = function(obj) {
-  var offset = this.bb.__offset(this.bb_pos, 12);
+  var offset = this.bb.__offset(this.bb_pos, 14);
   return offset ? (obj || new survival2d.flatbuffers.Vector2Struct).__init(this.bb_pos + offset, this.bb) : null;
 };
 
@@ -1372,7 +1381,7 @@ survival2d.flatbuffers.BulletTable.prototype.direction = function(obj) {
  * @param {flatbuffers.Builder} builder
  */
 survival2d.flatbuffers.BulletTable.startBulletTable = function(builder) {
-  builder.startObject(5);
+  builder.startObject(6);
 };
 
 /**
@@ -1385,10 +1394,18 @@ survival2d.flatbuffers.BulletTable.addId = function(builder, id) {
 
 /**
  * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} rawPositionOffset
+ */
+survival2d.flatbuffers.BulletTable.addRawPosition = function(builder, rawPositionOffset) {
+  builder.addFieldStruct(1, rawPositionOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
  * @param {flatbuffers.Offset} positionOffset
  */
 survival2d.flatbuffers.BulletTable.addPosition = function(builder, positionOffset) {
-  builder.addFieldStruct(1, positionOffset, 0);
+  builder.addFieldStruct(2, positionOffset, 0);
 };
 
 /**
@@ -1396,7 +1413,7 @@ survival2d.flatbuffers.BulletTable.addPosition = function(builder, positionOffse
  * @param {survival2d.flatbuffers.GunTypeEnum} type
  */
 survival2d.flatbuffers.BulletTable.addType = function(builder, type) {
-  builder.addFieldInt8(2, type, survival2d.flatbuffers.GunTypeEnum.PISTOL);
+  builder.addFieldInt8(3, type, survival2d.flatbuffers.GunTypeEnum.PISTOL);
 };
 
 /**
@@ -1404,7 +1421,7 @@ survival2d.flatbuffers.BulletTable.addType = function(builder, type) {
  * @param {number} owner
  */
 survival2d.flatbuffers.BulletTable.addOwner = function(builder, owner) {
-  builder.addFieldInt32(3, owner, 0);
+  builder.addFieldInt32(4, owner, 0);
 };
 
 /**
@@ -1412,7 +1429,7 @@ survival2d.flatbuffers.BulletTable.addOwner = function(builder, owner) {
  * @param {flatbuffers.Offset} directionOffset
  */
 survival2d.flatbuffers.BulletTable.addDirection = function(builder, directionOffset) {
-  builder.addFieldStruct(4, directionOffset, 0);
+  builder.addFieldStruct(5, directionOffset, 0);
 };
 
 /**
@@ -1427,15 +1444,17 @@ survival2d.flatbuffers.BulletTable.endBulletTable = function(builder) {
 /**
  * @param {flatbuffers.Builder} builder
  * @param {number} id
+ * @param {flatbuffers.Offset} rawPositionOffset
  * @param {flatbuffers.Offset} positionOffset
  * @param {survival2d.flatbuffers.GunTypeEnum} type
  * @param {number} owner
  * @param {flatbuffers.Offset} directionOffset
  * @returns {flatbuffers.Offset}
  */
-survival2d.flatbuffers.BulletTable.createBulletTable = function(builder, id, positionOffset, type, owner, directionOffset) {
+survival2d.flatbuffers.BulletTable.createBulletTable = function(builder, id, rawPositionOffset, positionOffset, type, owner, directionOffset) {
   survival2d.flatbuffers.BulletTable.startBulletTable(builder);
   survival2d.flatbuffers.BulletTable.addId(builder, id);
+  survival2d.flatbuffers.BulletTable.addRawPosition(builder, rawPositionOffset);
   survival2d.flatbuffers.BulletTable.addPosition(builder, positionOffset);
   survival2d.flatbuffers.BulletTable.addType(builder, type);
   survival2d.flatbuffers.BulletTable.addOwner(builder, owner);
