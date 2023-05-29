@@ -99,7 +99,8 @@ survival2d.flatbuffers.MapObjectUnion = {
   TreeTable: 6,
   ContainerTable: 7,
   StoneTable: 8,
-  WallTable: 9
+  WallTable: 9,
+  BulletTable: 10
 };
 
 /**
@@ -115,7 +116,8 @@ survival2d.flatbuffers.MapObjectUnionName = {
   '6': 'TreeTable',
   '7': 'ContainerTable',
   '8': 'StoneTable',
-  '9': 'WallTable'
+  '9': 'WallTable',
+  '10': 'BulletTable'
 };
 
 /**
