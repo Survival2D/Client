@@ -32,10 +32,12 @@ const SafeZoneUI = cc.Node.extend({
     },
 
     setMapSize: function (width, height) {
-        this.p1.setContentSize((width - 1830) / 2, height);
-        this.p2.setContentSize((width - 1830) / 2, height);
-        this.p3.setContentSize(1830, (height - 1000) / 2);
-        this.p4.setContentSize(1830, (height - 1000) / 2);
+        let szWidth = width * 3;
+        let szHeight = height * 3;
+        this.p1.setContentSize((szWidth - 1830) / 2, szHeight);
+        this.p2.setContentSize((szWidth - 1830) / 2, szHeight);
+        this.p3.setContentSize(1830, (szHeight - 1000) / 2);
+        this.p4.setContentSize(1830, (szHeight - 1000) / 2);
     },
 
     /**
