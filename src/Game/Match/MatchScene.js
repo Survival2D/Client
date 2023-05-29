@@ -143,6 +143,7 @@ const MatchScene = BaseLayer.extend({
         this.customButton("btnSetting", this.onSetting, this, this.hud);
 
         this.lblAutoPlay = this.getControl("lbAutoPlay", this.hud);
+        this.lblAutoPlay.ignoreContentAdaptWithSize(true);
     },
 
     initKeyBoardController: function () {
@@ -397,6 +398,8 @@ const MatchScene = BaseLayer.extend({
         this.updateMyPlayerItem();
 
         this.numPlayerLeft.setString(match.getNumberOfAlivePlayers());
+
+        this.updateAutoPlay();
 
         if (this._firstUpdateMatchView) this.effectIntroStartMatch();
         this._firstUpdateMatchView = false;
