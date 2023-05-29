@@ -399,6 +399,8 @@ const MatchScene = BaseLayer.extend({
 
         this.numPlayerLeft.setString(match.getNumberOfAlivePlayers());
 
+        this.updateAutoPlay();
+
         if (this._firstUpdateMatchView) this.effectIntroStartMatch();
         this._firstUpdateMatchView = false;
     },
