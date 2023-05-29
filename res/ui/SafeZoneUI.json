@@ -29,7 +29,8 @@
             "ColorVector": {
               "ScaleY": 1.0
             },
-            "TouchEnable": true,
+            "Scale9Width": 1,
+            "Scale9Height": 1,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
@@ -109,14 +110,15 @@
                     "ColorVector": {
                       "ScaleY": 1.0
                     },
-                    "TouchEnable": true,
+                    "Scale9Width": 1,
+                    "Scale9Height": 1,
                     "AnchorPoint": {
                       "ScaleX": 1.0,
                       "ScaleY": 0.5
                     },
                     "Position": {
                       "X": 0.0,
-                      "Y": 499.9999
+                      "Y": 500.0
                     },
                     "Scale": {
                       "ScaleX": 1.0,
@@ -135,8 +137,6 @@
                     },
                     "LeftMargin": -200.0,
                     "RightMargin": 1830.0,
-                    "TopMargin": 0.0001,
-                    "BottomMargin": -0.0001,
                     "Tag": 61,
                     "ActionTag": -1664159243,
                     "Size": {
@@ -160,13 +160,12 @@
                     },
                     "Scale9Width": 1,
                     "Scale9Height": 1,
-                    "TouchEnable": true,
                     "AnchorPoint": {
                       "ScaleY": 0.5
                     },
                     "Position": {
-                      "X": 1824.999,
-                      "Y": 500.0001
+                      "X": 1825.0591,
+                      "Y": 500.0
                     },
                     "Scale": {
                       "ScaleX": 1.0,
@@ -184,10 +183,8 @@
                       "X": 0.1093,
                       "Y": 1.0
                     },
-                    "LeftMargin": 1824.999,
-                    "RightMargin": -194.999,
-                    "TopMargin": -0.0001,
-                    "BottomMargin": 0.0001,
+                    "LeftMargin": 1825.0591,
+                    "RightMargin": -195.0591,
                     "Tag": 62,
                     "ActionTag": -1187066523,
                     "Size": {
@@ -211,7 +208,6 @@
                     },
                     "Scale9Width": 1,
                     "Scale9Height": 1,
-                    "TouchEnable": true,
                     "AnchorPoint": {
                       "ScaleX": 0.5
                     },
@@ -260,7 +256,6 @@
                     },
                     "Scale9Width": 1,
                     "Scale9Height": 1,
-                    "TouchEnable": true,
                     "AnchorPoint": {
                       "ScaleX": 0.5,
                       "ScaleY": 1.0
