@@ -6,8 +6,8 @@ const Config = function () {};
 
 Config.FPS = 60;
 
-Config.MAP_WIDTH = 10000;
-Config.MAP_HEIGHT = 10000;
+Config.MAP_WIDTH = 2500;
+Config.MAP_HEIGHT = 2500;
 
 Config.ENABLE_SMOOTH = false;
 Config.ENABLE_AUTO_PLAY = false;
@@ -17,9 +17,16 @@ Config.CHECK_MOVE_COLLISION = false;
  * SPEED: pixel per frame
  */
 Config.PLAYER_BASE_SPEED = 10;
-Config.BULLET_BASE_SPEED = 20;
+Config.BULLET_BASE_SPEED = 30;
 
 Config.BULLET_CREATE_DISTANCE = 10;
+
+Config.RANGE = {
+    FIST: 10,
+    PISTOL: 100,
+    SHOTGUN: 100,
+    SNIPER: 1000,
+}
 
 Config.PLAYER_RADIUS = 30;
 Config.ITEM_RADIUS = 40;

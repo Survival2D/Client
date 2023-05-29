@@ -442,7 +442,8 @@ const MatchScene = BaseLayer.extend({
 
         for (let i = 0; i < this.workingBullets.length; i++) {
             let bullet = this.workingBullets[i];
-            if (this.checkBulletCollision(bullet.getPosition())) {
+            if (this.checkBulletCollision(bullet.getPosition())
+                || bullet.isOutOfRange()) {
                 this.workingBullets.splice(i, 1);
                 i--;
                 bullet.setVisible(false);
@@ -637,7 +638,7 @@ const MatchScene = BaseLayer.extend({
                 vector.normalize();
                 let createPos = gm.p(this.myPlayer.x + vector.x * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius),
                     this.myPlayer.y + vector.y * (Config.BULLET_CREATE_DISTANCE + match.myPlayer.radius));
-                this.fireBullet(createPos, vector);
+                this.fireBullet(match.myPlayer.getCurrentGun().type, createPos, createPos, vector);
                 match.myPlayer.fire();
                 this.updateMyPlayerItem();
             }
@@ -772,9 +773,17 @@ const MatchScene = BaseLayer.extend({
         this.numPlayerLeft.setString(GameManager.getInstance().getCurrentMatch().getNumberOfAlivePlayers());
     },
 
-    fireBullet: function (pos, direction) {
+    /**
+     * @param {GunData.GUN_TYPE} gunType
+     * @param {gm.Position} pos
+     * @param {gm.Position} rawPos
+     * @param {gm.Vector} direction
+     */
+    fireBullet: function (gunType, pos, rawPos, direction) {
         let bullet = this.getBulletFromPool();
         this.workingBullets.push(bullet);
+        bullet.setGunType(gunType);
+        bullet.setRawPosition(rawPos);
         bullet.setPosition(pos);
         bullet.setMoveDirection(direction);
         bullet.animFire();

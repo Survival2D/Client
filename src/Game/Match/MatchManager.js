@@ -562,7 +562,7 @@ const MatchManager = cc.Class.extend({
     }
 
     if (this.isInMatch()) {
-      this.scene.fireBullet(bullet.rawPosition, bullet.direction);
+      this.scene.fireBullet(bullet.bulletType, bullet.position, bullet.rawPosition, bullet.direction);
     }
   },
 

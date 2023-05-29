@@ -302,7 +302,8 @@ const WsClient = cc.Class.extend({
           bullet.bulletType = bfBullet.type();
           bullet.position.x = bfBullet.position().x();
           bullet.position.y = bfBullet.position().y();
-          bullet.rawPosition = bullet.position;
+          bullet.rawPosition.x = bfBullet.rawPosition().x();
+          bullet.rawPosition.y = bfBullet.rawPosition().y();
           bullet.direction.x = bfBullet.direction().x();
           bullet.direction.y = bfBullet.direction().y();
 
