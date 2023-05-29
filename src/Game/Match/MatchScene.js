@@ -433,7 +433,7 @@ const MatchScene = BaseLayer.extend({
             let isAttack = this.controller.checkAttacking();
             if (isAttack && this._cooldownAttack <= 0) {
                 this.myPlayerAttack(this.controller.getDestPosition());
-                if (this.myPlayer.isEquip()) this._cooldownAttack = Config.COOLDOWN_FIRE;
+                if (match.myPlayer.weaponSlot) this._cooldownAttack = Config.COOLDOWN_FIRE;
                 else this._cooldownAttack = Config.COOLDOWN_ATTACK;
             }
         }
@@ -595,7 +595,7 @@ const MatchScene = BaseLayer.extend({
         }
 
         if (slot === PlayerData.WEAPON_SLOT.FIST) {
-            if (this.myPlayer.isEquip()) this.myPlayer.unEquip();
+            this.myPlayer.unEquip();
             this.weaponSlotFist.setScale(1.2);
             this.weaponSlotFist.setOpacity(255);
         }
@@ -622,7 +622,7 @@ const MatchScene = BaseLayer.extend({
                 default: break;
             }
 
-            if (!this.myPlayer.isEquip()) this.myPlayer.equipGun();
+            this.myPlayer.equipGun();
         }
 
         match.updateMyPlayerWeapon(slot);
@@ -632,7 +632,7 @@ const MatchScene = BaseLayer.extend({
         if (Config.ENABLE_SMOOTH) {
             let match = GameManager.getInstance().getCurrentMatch();
             destPos = this.scene2GroundPosition(destPos);
-            if (this.myPlayer.isEquip()) {
+            if (match.myPlayer.weaponSlot) {
                 if (!match.myPlayer.canFire()) return;
                 let vector = gm.vector(destPos.x - this.myPlayer.x, destPos.y - this.myPlayer.y);
                 vector.normalize();

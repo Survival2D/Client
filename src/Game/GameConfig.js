@@ -23,8 +23,8 @@ Config.BULLET_CREATE_DISTANCE = 10;
 
 Config.RANGE = {
     FIST: 10,
-    PISTOL: 100,
-    SHOTGUN: 100,
+    PISTOL: 500,
+    SHOTGUN: 500,
     SNIPER: 1000,
 }
 
