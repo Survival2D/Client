@@ -94,7 +94,7 @@ const WsClient = cc.Class.extend({
             players.push(player);
           }
 
-          let obstacles = [], items = [];
+          let obstacles = [], items = [], bullets = [];
           for (let i = 0; i < matchInfoResponse.mapObjectsLength(); i++) {
             let bfObj = matchInfoResponse.mapObjects(i);
             let obj = new MapObjectData();
@@ -117,6 +117,23 @@ const WsClient = cc.Class.extend({
               case fbs.MapObjectUnion.WallTable: {
                 obj = new WallData();
                 obstacles.push(obj);
+                break;
+              }
+              case fbs.MapObjectUnion.BulletTable: {
+                obj = new BulletData();
+                bullets.push(obj);
+
+                let bfBullet = new fbs.BulletTable();
+                bfObj.data(bfBullet);
+                obj.id = bfBullet.id();
+                obj.ownerId = bfBullet.owner();
+                obj.bulletType = bfBullet.type();
+                obj.position.x = bfBullet.position().x();
+                obj.position.y = bfBullet.position().y();
+                obj.rawPosition.x = bfBullet.rawPosition().x();
+                obj.rawPosition.y = bfBullet.rawPosition().y();
+                obj.direction.x = bfBullet.direction().x();
+                obj.direction.y = bfBullet.direction().y();
                 break;
               }
               case fbs.MapObjectUnion.BulletItemTable: {
@@ -193,8 +210,7 @@ const WsClient = cc.Class.extend({
             obj.position.y = bfObj.position().y();
           }
 
-          GameManager.getInstance().getCurrentMatch().updateMatchInfo(players,
-              obstacles, items);
+          GameManager.getInstance().getCurrentMatch().updateMatchInfo(players, obstacles, items, bullets);
           break;
         }
         case fbs.ResponseUnion.PlayerInfoResponse: {

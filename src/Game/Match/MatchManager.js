@@ -102,8 +102,9 @@ const MatchManager = cc.Class.extend({
    * @param {PlayerData[]} players
    * @param {ObstacleData[]} obstacles
    * @param {ItemData[]} items
+   * @param {BulletData[]} bullets
    */
-  updateMatchInfo: function (players, obstacles, items) {
+  updateMatchInfo: function (players, obstacles, items, bullets) {
     cc.log("obstacles", JSON.stringify(obstacles.map(e => {
       let type = "NONE";
       if (e instanceof TreeData) {
@@ -145,6 +146,10 @@ const MatchManager = cc.Class.extend({
 
     for (let item of items) {
       this.items[item.getObjectId()] = item;
+    }
+
+    for (let bullet of bullets) {
+      this.receivedCreateBullet(bullet);
     }
 
     if (Constant.BLOCK_SIGHT) {
