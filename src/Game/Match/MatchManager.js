@@ -89,6 +89,7 @@ const MatchManager = cc.Class.extend({
     this.matchId = "";
     this.gameState = MatchManager.STATE.PLAY;
     this.scene = SceneManager.getInstance().openMatchScene();
+    this.requestAutoPlay();
     this.scene.updateMatchView();
   },
 
@@ -383,15 +384,26 @@ const MatchManager = cc.Class.extend({
     }
   },
 
+  requestAutoPlay: function () {
+    if (this.gameState !== MatchManager.STATE.PLAY) return;
+
+    let builder = new flatbuffers.Builder(0);
+    let setAutoPlayRequest = fbs.SetAutoPlayRequest.createSetAutoPlayRequest(builder, Config.ENABLE_AUTO_PLAY);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.SetAutoPlayRequest, setAutoPlayRequest);
+    builder.finish(request);
+    fbsClient.sendBinary(builder.asUint8Array());
+  },
+
   receivedMyPlayerHealed: function (remainHp, itemType, remainItem) {
     let oldHp = this.myPlayer.hp;
     this.myPlayer.hp = remainHp;
 
     switch (itemType) {
-      case survival2d.flatbuffers.Item.BandageItem:
+      case survival2d.flatbuffers.ItemUnion.BandageItemTable:
         this.myPlayer.numBandages = remainItem;
         break;
-      case survival2d.flatbuffers.Item.MedKitItem:
+      case survival2d.flatbuffers.ItemUnion.MedKitItemTable:
         this.myPlayer.numMedKits = remainItem;
         break;
     }
