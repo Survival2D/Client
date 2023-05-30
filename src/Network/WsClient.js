@@ -495,7 +495,7 @@ const WsClient = cc.Class.extend({
   }
 });
 
-const fbsClient = new WsClient("ws://localhost:1999/fbs");
+const fbsClient = new WsClient("wss://server.survival2d.app/fbs");
 // fbsClient.connect();
 
 // const jsonClient = new WsClient("ws://localhost:1999/json");
