@@ -64,6 +64,10 @@ const Controller = cc.Class.extend({
             case cc.KEY.r:
                 this.reloadBullets();
                 break;
+            case cc.KEY.b:
+                Config.ENABLE_AUTO_PLAY = !Config.ENABLE_AUTO_PLAY;
+                GameManager.getInstance().getCurrentMatch().requestAutoPlay();
+                break;
             case cc.KEY["1"]:
                 this.changeWeaponSlot(PlayerData.WEAPON_SLOT.FIST);
                 break;

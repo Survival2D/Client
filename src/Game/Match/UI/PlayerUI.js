@@ -241,10 +241,12 @@ const MiniPlayerUI = cc.Node.extend({
     },
 
     initPlayerUI: function () {
-        let drawNode = new cc.DrawNode();
-        drawNode.drawDot(cc.p(0, 0), 20, cc.color("#f8c574"));
-        this.addChild(drawNode);
-        this._body = drawNode;
+        let body = new ccui.ImageView("res/ui/Game/Player/circle.png");
+        body.ignoreContentAdaptWithSize(false);
+        body.setColor(cc.color("#f8c574"));
+        body.setContentSize(Config.PLAYER_RADIUS * 2/3, Config.PLAYER_RADIUS * 2/3);
+        this.addChild(body);
+        this._body = body;
     },
 
     setPlayerColorByTeam: function (team) {

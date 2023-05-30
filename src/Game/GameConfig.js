@@ -40,7 +40,7 @@ Config.WALL_HEIGHT = 100;
 Config.PLAYER_MAX_HP = 100;
 Config.MAX_HP = 100;
 
-Config.MINI_MAP_SCALE = 0.3;
+Config.MINI_MAP_SCALE = 0.2;
 
 Config.COOLDOWN_FIRE = 0.1;     // second
 Config.COOLDOWN_ATTACK = 0.2;   // second
