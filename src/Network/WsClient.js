@@ -53,6 +53,8 @@ const WsClient = cc.Class.extend({
               loginResponse.userName());
           GameManager.getInstance().userData.setUserData(loginResponse.userId(), loginResponse.userName());
           SceneManager.getInstance().openHomeScene();
+
+          GameManager.getInstance().startPing();
           break;
         }
         case fbs.ResponseUnion.FindMatchResponse: {
@@ -469,6 +471,10 @@ const WsClient = cc.Class.extend({
           let setAutoPlayResponse = new fbs.SetAutoPlayResponse();
           response.response(setAutoPlayResponse);
           GameManager.getInstance().getCurrentMatch().receivedSetAutoPlay(setAutoPlayResponse.enable());
+          break;
+        }
+        case fbs.ResponseUnion.PingResponse: {
+          GameManager.getInstance().receivedPong();
           break;
         }
         default:

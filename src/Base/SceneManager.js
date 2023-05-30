@@ -76,10 +76,25 @@ var SceneManager = cc.Class.extend({
         }
 
         return null;
+    },
+
+    showPing: function (ping) {
+        let curScene = this.getRunningScene();
+        if (curScene === undefined || curScene === null) return;
+        let pingLayer = curScene.getChildByTag(SceneManager.PING_LAYER_TAG);
+        if (!pingLayer) {
+            pingLayer = new ccui.Text("Ping asdasdsad");
+            curScene.addChild(pingLayer);
+            pingLayer.setTag(SceneManager.PING_LAYER_TAG);
+            pingLayer.setAnchorPoint(0, 0);
+            pingLayer.setPosition(20, 30);
+        }
+        pingLayer.setString("Ping: " + ping + " ms");
     }
 });
 
 SceneManager.MAIN_LAYER_TAG = 101;
+SceneManager.PING_LAYER_TAG = 102;
 
 /**
  * @returns {SceneManager}

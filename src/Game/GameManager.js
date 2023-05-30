@@ -7,6 +7,8 @@ const GameManager = cc.Class.extend({
     this.userData = new UserData();
     this.match = null;
 
+    this._ping = 0;
+
     GameManager.preloadResources();
   },
 
@@ -64,14 +66,21 @@ const GameManager = cc.Class.extend({
 
   startPing: function () {
     this._pingTime = Date.now();
-    //TODO: start ping pong
+
+    let builder = new flatbuffers.Builder(0);
+    let pingRequest = fbs.PingRequest.createPingRequest(builder);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.PingRequest, pingRequest);
+    builder.finish(request);
+    fbsClient.sendBinary(builder.asUint8Array());
   },
 
   receivedPong: function () {
     let time = Date.now();
     let oldTime = this._pingTime || 0;
-    let ping = time - oldTime;
-    // cc.log("--- PING: " + ping + "ms");
+    this._ping = time - oldTime;
+
+    SceneManager.getInstance().showPing(this._ping);
 
     setTimeout(this.startPing.bind(this), 1000);
   }
