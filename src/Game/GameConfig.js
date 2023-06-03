@@ -6,10 +6,10 @@ const Config = function () {};
 
 Config.FPS = 60;
 
-Config.MAP_WIDTH = 2500;
-Config.MAP_HEIGHT = 2500;
+Config.MAP_WIDTH = 10000;
+Config.MAP_HEIGHT = 10000;
 
-Config.ENABLE_SMOOTH = false;
+Config.ENABLE_SMOOTH = true;
 Config.ENABLE_AUTO_PLAY = false;
 Config.CHECK_MOVE_COLLISION = false;
 
