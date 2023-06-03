@@ -53,6 +53,8 @@ const MatchScene = BaseLayer.extend({
 
         this.hud = this.getControl("hud");
 
+        this.hud.setVisible(false);
+
         let pPlayerLeft = this.getControl("numPlayerLeft", this.hud);
         this.numPlayerLeft = this.customTextLabel("num", pPlayerLeft);
 
