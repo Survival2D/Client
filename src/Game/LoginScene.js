@@ -34,9 +34,9 @@ var LoginScene = BaseLayer.extend({
             if (!username) username = "";
             if (!password) password = "";
             fbsClient.connect(username);
-            if (Config.TEST_PING) {
-                jsonClient.connect(username);
-            }
+            // if (Config.TEST_PING) {
+            //     jsonClient.connect(username);
+            // }
         }
     }
 });

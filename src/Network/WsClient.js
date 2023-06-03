@@ -27,6 +27,7 @@ const WsClient = cc.Class.extend({
           self.sendPingByPlayerMoveFbs();
           self.sendPingByMatchInfoFbs();
         } else {
+          cc.log("send ping json")
           self.sendPingEmptyJson();
           self.sendPingByPlayerMoveJson();
           self.sendPingByMatchInfoJson();
@@ -515,14 +516,17 @@ const WsClient = cc.Class.extend({
           break;
         }
         case fbs.ResponseUnion.PingEmptyResponse: {
+          // cc.log("PingEmptyResponse fbs", event.target.result);
           self.receivePingEmptyFbs();
           break;
         }
         case fbs.ResponseUnion.PingByPlayerMoveResponse: {
+          // cc.log("PingByPlayerMoveResponse fbs", event.target.result);
           self.receivePingByPlayerMoveFbs();
           break;
         }
         case fbs.ResponseUnion.PingByMatchInfoResponse: {
+          // cc.log("PingByMatchInfoResponse fbs", event.target.result);
           self.receivePingByMatchInfoFbs();
           break;
         }
@@ -534,16 +538,20 @@ const WsClient = cc.Class.extend({
     fileReader.readAsArrayBuffer(data);
   }, handleTextMessage: function (data) {
     const json = JSON.parse(data);
+    // cc.log(data)
     switch (json.id) {
       case "PING_EMPTY": {
+        // cc.log("PING_EMPTY", data.length)
         this.receivePingEmptyJson();
         break;
       }
       case "PING_BY_PLAYER_MOVE": {
+        // cc.log("PING_BY_PLAYER_MOVE", data.length)
         this.receivePingByPlayerMoveJson();
         break;
       }
       case "PING_BY_MATCH_INFO": {
+        // cc.log("PING_BY_MATCH_INFO", data.length)
         this.receivePingByMatchInfoJson();
         break;
       }
@@ -558,7 +566,7 @@ const WsClient = cc.Class.extend({
     // cc.log("sendBinary: " + data);
     this.ws.send(data);
   }, sendText: function (text) {
-    cc.log("sendText: " + text);
+    // cc.log("sendText: " + text);
     this.ws.send(text);
   }, sendData: function (data) {
     const json = JSON.stringify(data);
@@ -613,33 +621,33 @@ const WsClient = cc.Class.extend({
   }, receivePingEmptyFbs: function () {
     const now = Date.now();
     const ping = now - this.pingEmptyFbsTime;
-    cc.log("ping empty fbs", ping);
+    // cc.log("ping empty fbs", ping);
     this.sendPingEmptyFbs();
 
   }, receivePingByPlayerMoveFbs: function () {
     const now = Date.now();
     const ping = now - this.pingByPlayerMoveFbsTime;
-    cc.log("ping by player move fbs", ping);
+    // cc.log("ping by player move fbs", ping);
     this.sendPingByPlayerMoveFbs();
   }, receivePingByMatchInfoFbs: function () {
     const now = Date.now();
     const ping = now - this.pingPyMatchInfoFbsTime;
-    cc.log("ping by match info fbs", ping);
+    // cc.log("ping by match info fbs", ping);
     this.sendPingByMatchInfoFbs();
   }, receivePingEmptyJson: function () {
     const now = Date.now();
     const ping = now - this.pingEmptyJsonTime;
-    cc.log("ping empty json", ping);
+    // cc.log("ping empty json", ping);
     this.sendPingEmptyJson();
   }, receivePingByPlayerMoveJson: function () {
     const now = Date.now();
     const ping = now - this.pingPingByPlayerMoveJsonTime;
-    cc.log("ping by player move json", ping);
+    // cc.log("ping by player move json", ping);
     this.sendPingByPlayerMoveJson();
   }, receivePingByMatchInfoJson: function () {
     const now = Date.now();
     const ping = now - this.pingPingByMatchInfoJsonTime;
-    cc.log("ping by match info json", ping);
+    // cc.log("ping by match info json", ping);
     this.sendPingByMatchInfoJson();
   }
 });
