@@ -31,8 +31,9 @@ survival2d.flatbuffers.RequestUnion = {
   PlayerTakeItemRequest: 12,
   SetAutoPlayRequest: 13,
   PingRequest: 14,
-  PingByPlayerMoveRequest: 15,
-  PingByMatchInfoRequest: 16
+  PingEmptyRequest: 15,
+  PingByPlayerMoveRequest: 16,
+  PingByMatchInfoRequest: 17
 };
 
 /**
@@ -54,8 +55,9 @@ survival2d.flatbuffers.RequestUnionName = {
   '12': 'PlayerTakeItemRequest',
   '13': 'SetAutoPlayRequest',
   '14': 'PingRequest',
-  '15': 'PingByPlayerMoveRequest',
-  '16': 'PingByMatchInfoRequest'
+  '15': 'PingEmptyRequest',
+  '16': 'PingByPlayerMoveRequest',
+  '17': 'PingByMatchInfoRequest'
 };
 
 /**
@@ -1146,6 +1148,76 @@ survival2d.flatbuffers.PingRequest.endPingRequest = function(builder) {
 survival2d.flatbuffers.PingRequest.createPingRequest = function(builder) {
   survival2d.flatbuffers.PingRequest.startPingRequest(builder);
   return survival2d.flatbuffers.PingRequest.endPingRequest(builder);
+}
+
+/**
+ * @constructor
+ */
+survival2d.flatbuffers.PingEmptyRequest = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {survival2d.flatbuffers.PingEmptyRequest}
+ */
+survival2d.flatbuffers.PingEmptyRequest.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingEmptyRequest=} obj
+ * @returns {survival2d.flatbuffers.PingEmptyRequest}
+ */
+survival2d.flatbuffers.PingEmptyRequest.getRootAsPingEmptyRequest = function(bb, obj) {
+  return (obj || new survival2d.flatbuffers.PingEmptyRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {survival2d.flatbuffers.PingEmptyRequest=} obj
+ * @returns {survival2d.flatbuffers.PingEmptyRequest}
+ */
+survival2d.flatbuffers.PingEmptyRequest.getSizePrefixedRootAsPingEmptyRequest = function(bb, obj) {
+  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+  return (obj || new survival2d.flatbuffers.PingEmptyRequest).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+survival2d.flatbuffers.PingEmptyRequest.startPingEmptyRequest = function(builder) {
+  builder.startObject(0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingEmptyRequest.endPingEmptyRequest = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+survival2d.flatbuffers.PingEmptyRequest.createPingEmptyRequest = function(builder) {
+  survival2d.flatbuffers.PingEmptyRequest.startPingEmptyRequest(builder);
+  return survival2d.flatbuffers.PingEmptyRequest.endPingEmptyRequest(builder);
 }
 
 /**
