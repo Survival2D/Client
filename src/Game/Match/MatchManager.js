@@ -333,6 +333,8 @@ const MatchManager = cc.Class.extend({
   },
 
   updateMyPlayerMove: function (unitVector, rotation) {
+    if (Config.ENABLE_AUTO_PLAY) return;
+    
     let oldRotation = this.myPlayer.rotation;
     this.myPlayer.position.x += unitVector.x * Config.PLAYER_BASE_SPEED;
     this.myPlayer.position.y += unitVector.y * Config.PLAYER_BASE_SPEED;

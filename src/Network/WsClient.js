@@ -1,28 +1,43 @@
 const fbs = survival2d.flatbuffers;
 
 const WsClient = cc.Class.extend({
-  ctor: function (url) {
-    this.url = url;
-  }, connect: function (loginName) {
+  ctor: function (url, isFbs = true) {
+    this.isFbs = isFbs;
+    this.uri = isFbs ? "/fbs" : "/json";
+    this.url = url + this.uri;
+  }, connect: function (loginName = "") {
     cc.log("connect");
     this.ws = new WebSocket(this.url);
     const self = this;
     this.ws.onopen = function () {
       cc.log("connected to: " + self.url);
-      let builder = new flatbuffers.Builder(0);
-      // let name = builder.createString(
-      //     "user_" + Math.floor(Math.random() * 1000));
-      let name = builder.createString(loginName);
-      let loginRequest = fbs.LoginRequest.createLoginRequest(builder, name);
-      let request = fbs.Request.createRequest(builder,
-          fbs.RequestUnion.LoginRequest, loginRequest);
-      builder.finish(request);
-      self.sendBinary(builder.asUint8Array());
+      if (self.isFbs) {
+        let builder = new flatbuffers.Builder(0);
+        let name = builder.createString(loginName);
+        let loginRequest = fbs.LoginRequest.createLoginRequest(builder, name);
+        let request = fbs.Request.createRequest(builder,
+            fbs.RequestUnion.LoginRequest, loginRequest);
+        builder.finish(request);
+        self.sendBinary(builder.asUint8Array());
+      }
+
+      if (Config.TEST_PING) {
+        if (self.isFbs) {
+          self.sendPingEmptyFbs();
+          self.sendPingByPlayerMoveFbs();
+          self.sendPingByMatchInfoFbs();
+        } else {
+          cc.log("send ping json")
+          self.sendPingEmptyJson();
+          self.sendPingByPlayerMoveJson();
+          self.sendPingByMatchInfoJson();
+        }
+      }
     }
     this.ws.onmessage = function (event) {
       const data = event.data;
       if (typeof data == "string") {
-        cc.log("typeof data is string: " + data);
+        self.handleTextMessage(data);
       } else {
         self.handleBinaryMessage(data);
       }
@@ -34,6 +49,7 @@ const WsClient = cc.Class.extend({
       cc.log("connect to: " + self.url + " error : " + JSON.stringify(e));
     }
   }, handleBinaryMessage: function (data) {
+    const self = this;
     const fileReader = new FileReader();
     fileReader.onloadend = function (event) {
       const buffer = new Uint8Array(event.target.result);
@@ -51,7 +67,8 @@ const WsClient = cc.Class.extend({
           response.response(loginResponse);
           cc.log("login as user ", loginResponse.userId(), " name ",
               loginResponse.userName());
-          GameManager.getInstance().userData.setUserData(loginResponse.userId(), loginResponse.userName());
+          GameManager.getInstance().userData.setUserData(loginResponse.userId(),
+              loginResponse.userName());
           SceneManager.getInstance().openHomeScene();
 
           GameManager.getInstance().startPing();
@@ -61,19 +78,22 @@ const WsClient = cc.Class.extend({
           let findMatchResponse = new fbs.FindMatchResponse();
           response.response(findMatchResponse);
 
-          GameManager.getInstance().onReceivedFindMatch(findMatchResponse.matchId());
+          GameManager.getInstance().onReceivedFindMatch(
+              findMatchResponse.matchId());
           break;
         }
         case fbs.ResponseUnion.CreateTeamResponse: {
           let createTeamResponse = new fbs.CreateTeamResponse();
           response.response(createTeamResponse);
-          GameManager.getInstance().onReceivedCreateTeam(createTeamResponse.teamId());
+          GameManager.getInstance().onReceivedCreateTeam(
+              createTeamResponse.teamId());
           break;
         }
         case fbs.ResponseUnion.JoinTeamResponse: {
           let joinTeamResponse = new fbs.JoinTeamResponse();
           response.response(joinTeamResponse);
-          GameManager.getInstance().onReceivedJoinTeam(joinTeamResponse.teamId());
+          GameManager.getInstance().onReceivedJoinTeam(
+              joinTeamResponse.teamId());
           break;
         }
         case fbs.ResponseUnion.MatchInfoResponse: {
@@ -86,7 +106,8 @@ const WsClient = cc.Class.extend({
             let bfPlayer = matchInfoResponse.players(i);
             let player = new PlayerData();
             player.playerId = bfPlayer.playerId();
-            cc.log("match info player name of " + player.playerId, bfPlayer.playerName());
+            cc.log("match info player name of " + player.playerId,
+                bfPlayer.playerName());
             player.playerName = bfPlayer.playerName();
             player.position.x = bfPlayer.position().x();
             player.position.y = bfPlayer.position().y();
@@ -212,7 +233,8 @@ const WsClient = cc.Class.extend({
             obj.position.y = bfObj.position().y();
           }
 
-          GameManager.getInstance().getCurrentMatch().updateMatchInfo(players, obstacles, items, bullets);
+          GameManager.getInstance().getCurrentMatch().updateMatchInfo(players,
+              obstacles, items, bullets);
           break;
         }
         case fbs.ResponseUnion.PlayerInfoResponse: {
@@ -249,7 +271,8 @@ const WsClient = cc.Class.extend({
           }
           cc.log("remain bullets", JSON.stringify(remainBullets))
 
-          GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp, guns, remainBullets);
+          GameManager.getInstance().getCurrentMatch().updateMyPlayerInfo(hp,
+              guns, remainBullets);
           break;
         }
         case fbs.ResponseUnion.PlayerMoveResponse: {
@@ -257,7 +280,8 @@ const WsClient = cc.Class.extend({
           response.response(playerMoveResponse);
           // cc.log("RECEIVED PlayerMove");
           let playerId = playerMoveResponse.playerId();
-          let position = gm.p(playerMoveResponse.position().x(), playerMoveResponse.position().y());
+          let position = gm.p(playerMoveResponse.position().x(),
+              playerMoveResponse.position().y());
           let rotation = playerMoveResponse.rotation();
 
           GameManager.getInstance().getCurrentMatch().receivedPlayerMove(
@@ -269,7 +293,8 @@ const WsClient = cc.Class.extend({
           response.response(playerChangeWeaponResponse);
           cc.log("RECEIVED PlayerChangeWeapon");
           GameManager.getInstance().getCurrentMatch().receivedPlayerChangeWeapon(
-              playerChangeWeaponResponse.playerId(), playerChangeWeaponResponse.slot());
+              playerChangeWeaponResponse.playerId(),
+              playerChangeWeaponResponse.slot());
           break;
         }
         case fbs.ResponseUnion.PlayerReloadWeaponResponse: {
@@ -277,7 +302,9 @@ const WsClient = cc.Class.extend({
           response.response(playerReloadWeaponResponse);
           cc.log("RECEIVED PlayerReloadWeapon");
           GameManager.getInstance().getCurrentMatch().receivedPlayerReloadWeapon(
-              playerReloadWeaponResponse.gunType(), playerReloadWeaponResponse.remainBulletsInGun(), playerReloadWeaponResponse.remainBullets());
+              playerReloadWeaponResponse.gunType(),
+              playerReloadWeaponResponse.remainBulletsInGun(),
+              playerReloadWeaponResponse.remainBullets());
           break;
         }
         case fbs.ResponseUnion.PlayerAttackResponse: {
@@ -287,7 +314,8 @@ const WsClient = cc.Class.extend({
 
           let playerId = playerAttackResponse.playerId();
           let slot = playerAttackResponse.slot();
-          let position = gm.p(playerAttackResponse.position().x(), playerAttackResponse.position().y());
+          let position = gm.p(playerAttackResponse.position().x(),
+              playerAttackResponse.position().y());
           GameManager.getInstance().getCurrentMatch().receivedPlayerAttack(
               playerId, slot, position);
           break;
@@ -297,7 +325,8 @@ const WsClient = cc.Class.extend({
           response.response(playerTakeDamageResponse);
           cc.log("RECEIVED PlayerTakeDamage");
           GameManager.getInstance().getCurrentMatch().receivedPlayerTakeDamage(
-              playerTakeDamageResponse.playerId(), playerTakeDamageResponse.remainHp());
+              playerTakeDamageResponse.playerId(),
+              playerTakeDamageResponse.remainHp());
           break;
         }
         case fbs.ResponseUnion.PlayerDeadResponse: {
@@ -414,7 +443,8 @@ const WsClient = cc.Class.extend({
           response.response(obstacleTakeDamageResponse);
           cc.log("RECEIVED ObstacleTakeDamage");
           GameManager.getInstance().getCurrentMatch().receivedObstacleTakeDamage(
-              obstacleTakeDamageResponse.obstacleId(), obstacleTakeDamageResponse.remainHp());
+              obstacleTakeDamageResponse.obstacleId(),
+              obstacleTakeDamageResponse.remainHp());
           break;
         }
         case fbs.ResponseUnion.ObstacleDestroyResponse: {
@@ -430,7 +460,8 @@ const WsClient = cc.Class.extend({
           response.response(playerTakeItemResponse);
           cc.log("RECEIVED PlayerTakeItem");
           GameManager.getInstance().getCurrentMatch().receivedPlayerTakeItem(
-              playerTakeItemResponse.playerId(), playerTakeItemResponse.itemOnMapId());
+              playerTakeItemResponse.playerId(),
+              playerTakeItemResponse.itemOnMapId());
           break;
         }
         case fbs.ResponseUnion.UseHealItemResponse: {
@@ -438,7 +469,8 @@ const WsClient = cc.Class.extend({
           response.response(useHealItemResponse);
           cc.log("RECEIVED UseHealItemResponse");
           GameManager.getInstance().getCurrentMatch().receivedMyPlayerHealed(
-              useHealItemResponse.remainHp(), useHealItemResponse.itemType(), useHealItemResponse.remainItem());
+              useHealItemResponse.remainHp(), useHealItemResponse.itemType(),
+              useHealItemResponse.remainItem());
           break;
         }
         case fbs.ResponseUnion.EndGameResponse: {
@@ -454,27 +486,48 @@ const WsClient = cc.Class.extend({
           response.response(newSafeZoneResponse);
           cc.log("RECEIVED NewSafeZoneResponse");
           GameManager.getInstance().getCurrentMatch().receivedNewSafeZone(
-              newSafeZoneResponse.safeZone().x(), newSafeZoneResponse.safeZone().y(),
+              newSafeZoneResponse.safeZone().x(),
+              newSafeZoneResponse.safeZone().y(),
               newSafeZoneResponse.safeZone().radius());
           break;
         }
         case fbs.ResponseUnion.SafeZoneMoveResponse: {
           let safeZoneMoveResponse = new fbs.SafeZoneMoveResponse();
           response.response(safeZoneMoveResponse);
-          cc.log("RECEIVED SafeZoneMoveResponse", safeZoneMoveResponse.safeZone().x(), safeZoneMoveResponse.safeZone().y(), safeZoneMoveResponse.safeZone().radius())
+          cc.log("RECEIVED SafeZoneMoveResponse",
+              safeZoneMoveResponse.safeZone().x(),
+              safeZoneMoveResponse.safeZone().y(),
+              safeZoneMoveResponse.safeZone().radius())
           GameManager.getInstance().getCurrentMatch().receivedSafeZoneMove(
-              safeZoneMoveResponse.safeZone().x(), safeZoneMoveResponse.safeZone().y(),
+              safeZoneMoveResponse.safeZone().x(),
+              safeZoneMoveResponse.safeZone().y(),
               safeZoneMoveResponse.safeZone().radius());
           break;
         }
         case fbs.ResponseUnion.SetAutoPlayResponse: {
           let setAutoPlayResponse = new fbs.SetAutoPlayResponse();
           response.response(setAutoPlayResponse);
-          GameManager.getInstance().getCurrentMatch().receivedSetAutoPlay(setAutoPlayResponse.enable());
+          GameManager.getInstance().getCurrentMatch().receivedSetAutoPlay(
+              setAutoPlayResponse.enable());
           break;
         }
         case fbs.ResponseUnion.PingResponse: {
           GameManager.getInstance().receivedPong();
+          break;
+        }
+        case fbs.ResponseUnion.PingEmptyResponse: {
+          // cc.log("PingEmptyResponse fbs", event.target.result);
+          self.receivePingEmptyFbs();
+          break;
+        }
+        case fbs.ResponseUnion.PingByPlayerMoveResponse: {
+          // cc.log("PingByPlayerMoveResponse fbs", event.target.result);
+          self.receivePingByPlayerMoveFbs();
+          break;
+        }
+        case fbs.ResponseUnion.PingByMatchInfoResponse: {
+          // cc.log("PingByMatchInfoResponse fbs", event.target.result);
+          self.receivePingByMatchInfoFbs();
           break;
         }
         default:
@@ -483,6 +536,26 @@ const WsClient = cc.Class.extend({
       }
     };
     fileReader.readAsArrayBuffer(data);
+  }, handleTextMessage: function (data) {
+    const json = JSON.parse(data);
+    // cc.log(data)
+    switch (json.id) {
+      case "PING_EMPTY": {
+        // cc.log("PING_EMPTY", data.length)
+        this.receivePingEmptyJson();
+        break;
+      }
+      case "PING_BY_PLAYER_MOVE": {
+        // cc.log("PING_BY_PLAYER_MOVE", data.length)
+        this.receivePingByPlayerMoveJson();
+        break;
+      }
+      case "PING_BY_MATCH_INFO": {
+        // cc.log("PING_BY_MATCH_INFO", data.length)
+        this.receivePingByMatchInfoJson();
+        break;
+      }
+    }
   }, disconnect: function () {
     cc.log("disconnect from " + this.url);
     this.ws.close();
@@ -493,18 +566,96 @@ const WsClient = cc.Class.extend({
     // cc.log("sendBinary: " + data);
     this.ws.send(data);
   }, sendText: function (text) {
-    cc.log("sendText: " + text);
+    // cc.log("sendText: " + text);
     this.ws.send(text);
   }, sendData: function (data) {
     const json = JSON.stringify(data);
     this.sendText(json);
+  }, sendPingEmptyFbs: function () {
+    this.pingEmptyFbsTime = Date.now();
+
+    let builder = new flatbuffers.Builder(0);
+    let pingRequest = fbs.PingEmptyRequest.createPingEmptyRequest(builder);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.PingEmptyRequest, pingRequest);
+    builder.finish(request);
+    this.sendBinary(builder.asUint8Array());
+  }, sendPingByPlayerMoveFbs: function () {
+    this.pingByPlayerMoveFbsTime = Date.now();
+
+    let builder = new flatbuffers.Builder(0);
+    let direction = fbs.Vector2Struct.createVector2Struct(builder,
+        Math.sqrt(2) / 2, Math.sqrt(2) / 2);
+    let playerMoveRequest = fbs.PlayerMoveRequest.createPlayerMoveRequest(
+        builder, direction, Math.PI / 4);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.PingByPlayerMoveRequest, playerMoveRequest);
+    builder.finish(request);
+    this.sendBinary(builder.asUint8Array());
+  }, sendPingByMatchInfoFbs: function () {
+    this.pingPyMatchInfoFbsTime = Date.now();
+
+    let builder = new flatbuffers.Builder(0);
+    let pingRequest = fbs.PingByMatchInfoRequest.createPingByMatchInfoRequest(
+        builder);
+    let request = fbs.Request.createRequest(builder,
+        fbs.RequestUnion.PingByMatchInfoRequest, pingRequest);
+    builder.finish(request);
+    this.sendBinary(builder.asUint8Array());
+  }, sendPingEmptyJson: function () {
+    this.pingEmptyJsonTime = Date.now();
+
+    this.sendText(JSON.stringify({id: "PING_EMPTY"}));
+  }, sendPingByPlayerMoveJson: function () {
+    this.pingPingByPlayerMoveJsonTime = Date.now();
+
+    this.sendText(JSON.stringify({
+      id: "PING_BY_PLAYER_MOVE", direction: {
+        x: Math.sqrt(2) / 2, y: Math.sqrt(2) / 2
+      }, rotation: Math.PI / 4
+    }));
+  }, sendPingByMatchInfoJson: function () {
+    this.pingPingByMatchInfoJsonTime = Date.now();
+
+    this.sendText(JSON.stringify({id: "PING_BY_MATCH_INFO"}));
+  }, receivePingEmptyFbs: function () {
+    const now = Date.now();
+    const ping = now - this.pingEmptyFbsTime;
+    // cc.log("ping empty fbs", ping);
+    this.sendPingEmptyFbs();
+
+  }, receivePingByPlayerMoveFbs: function () {
+    const now = Date.now();
+    const ping = now - this.pingByPlayerMoveFbsTime;
+    // cc.log("ping by player move fbs", ping);
+    this.sendPingByPlayerMoveFbs();
+  }, receivePingByMatchInfoFbs: function () {
+    const now = Date.now();
+    const ping = now - this.pingPyMatchInfoFbsTime;
+    // cc.log("ping by match info fbs", ping);
+    this.sendPingByMatchInfoFbs();
+  }, receivePingEmptyJson: function () {
+    const now = Date.now();
+    const ping = now - this.pingEmptyJsonTime;
+    // cc.log("ping empty json", ping);
+    this.sendPingEmptyJson();
+  }, receivePingByPlayerMoveJson: function () {
+    const now = Date.now();
+    const ping = now - this.pingPingByPlayerMoveJsonTime;
+    // cc.log("ping by player move json", ping);
+    this.sendPingByPlayerMoveJson();
+  }, receivePingByMatchInfoJson: function () {
+    const now = Date.now();
+    const ping = now - this.pingPingByMatchInfoJsonTime;
+    // cc.log("ping by match info json", ping);
+    this.sendPingByMatchInfoJson();
   }
 });
 
-const fbsClient = new WsClient("wss://server.survival2d.app/fbs");
+const fbsClient = new WsClient("wss://server.survival2d.app");
 // fbsClient.connect();
 
-// const jsonClient = new WsClient("ws://localhost:1999/json");
+const jsonClient = new WsClient("wss://server.survival2d.app", false);
 // jsonClient.connect();
 // jsonClient.sendText("hello world");
 // jsonClient.disconnect();
