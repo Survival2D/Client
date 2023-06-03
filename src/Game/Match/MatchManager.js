@@ -89,7 +89,7 @@ const MatchManager = cc.Class.extend({
     this.matchId = "";
     this.gameState = MatchManager.STATE.PLAY;
     this.scene = SceneManager.getInstance().openMatchScene();
-    this.requestAutoPlay();
+    if (!Constant.IS_OFFLINE) this.requestAutoPlay();
     this.scene.updateMatchView();
   },
 
@@ -340,6 +340,8 @@ const MatchManager = cc.Class.extend({
     this.myPlayer.position.y += unitVector.y * Config.PLAYER_BASE_SPEED;
     this.myPlayer.rotation = rotation;
     this.myPlayer.movingUnitVector = unitVector;
+
+    if (Constant.IS_OFFLINE) return;
 
     if (unitVector.x !== 0 || unitVector.y !== 0 || oldRotation !== rotation) {
       // cc.log("Send player move")
