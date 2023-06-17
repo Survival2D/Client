@@ -1,4 +1,4 @@
 include ':libcocos2dx'
 project(':libcocos2dx').projectDir = new File(settingsDir, '../../cocos2d-x/cocos/platform/android/libcocos2dx')
-include ':Survival2D'
-project(':Survival2D').projectDir = new File(settingsDir, 'app')
+include ':survival2d'
+project(':survival2d').projectDir = new File(settingsDir, 'app')

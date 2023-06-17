@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "name": "Survival2D",
-  "description": "Survival2D",
+  "name": "survival2d",
+  "description": "survival2d",
   "launch_path": "/index.html",
   "icons": {
     "128": "/res/icon.png"

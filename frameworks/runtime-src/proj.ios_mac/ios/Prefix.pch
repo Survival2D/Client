@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'Survival2D' target in the 'Survival2D' project
+// Prefix header for all source files of the 'survival2d' target in the 'survival2d' project
 //
 
 #ifdef __OBJC__
