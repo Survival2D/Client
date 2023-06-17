@@ -17,6 +17,7 @@
     ],
 
     "jsList" : [
+        "src/Game/GameConfig.js",
         "src/Lib/flatbuffers.js",
         "src/Network/CommonGenerated.js",
         "src/Network/RequestGenerated.js",
@@ -32,7 +33,6 @@
 
         "src/Utils/GameMath.js",
 
-        "src/Game/GameConfig.js",
         "src/Game/GameManager.js",
         "src/Game/UserData.js",
 

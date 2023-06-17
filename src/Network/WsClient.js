@@ -652,10 +652,10 @@ const WsClient = cc.Class.extend({
   }
 });
 
-const fbsClient = new WsClient("wss://server.survival2d.app");
+const fbsClient = new WsClient(Config.SERVER);
 // fbsClient.connect();
 
-const jsonClient = new WsClient("wss://server.survival2d.app", false);
+const jsonClient = new WsClient(Config.SERVER, false);
 // jsonClient.connect();
 // jsonClient.sendText("hello world");
 // jsonClient.disconnect();

@@ -1,0 +1,327 @@
+{
+  "ID": "e460ed1c-dbd3-4530-8390-4b10bb48be81",
+  "Version": "3.10.0.0",
+  "Name": "SafeZoneUI",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 58,
+        "Children": [
+          {
+            "ClipAble": false,
+            "BackColorAlpha": 102,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 960.0,
+              "Y": 540.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 60,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "Common/safe_zone.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 603,
+                "Scale9OriginY": 330,
+                "Scale9Width": 624,
+                "Scale9Height": 340,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 960.0,
+                  "Y": 540.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.9531,
+                  "Y": 0.9259
+                },
+                "LeftMargin": 45.0,
+                "RightMargin": 45.0,
+                "TopMargin": 40.0,
+                "BottomMargin": 40.0,
+                "Tag": 59,
+                "Children": [
+                  {
+                    "ClipAble": false,
+                    "ComboBoxIndex": 1,
+                    "SingleColor": {},
+                    "FirstColor": {
+                      "R": 150,
+                      "G": 200
+                    },
+                    "EndColor": {},
+                    "ColorVector": {
+                      "ScaleY": 1.0
+                    },
+                    "Scale9Width": 1,
+                    "Scale9Height": 1,
+                    "AnchorPoint": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 0.0,
+                      "Y": 500.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.0,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.1093,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": -200.0,
+                    "RightMargin": 1830.0,
+                    "Tag": 61,
+                    "ActionTag": -1664159243,
+                    "Size": {
+                      "X": 200.0,
+                      "Y": 1000.0
+                    },
+                    "Name": "p1",
+                    "ctype": "PanelObjectData"
+                  },
+                  {
+                    "ClipAble": false,
+                    "ComboBoxIndex": 1,
+                    "SingleColor": {},
+                    "FirstColor": {
+                      "R": 150,
+                      "G": 200
+                    },
+                    "EndColor": {},
+                    "ColorVector": {
+                      "ScaleY": 1.0
+                    },
+                    "Scale9Width": 1,
+                    "Scale9Height": 1,
+                    "AnchorPoint": {
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 1825.0591,
+                      "Y": 500.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.9973,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.1093,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 1825.0591,
+                    "RightMargin": -195.0591,
+                    "Tag": 62,
+                    "ActionTag": -1187066523,
+                    "Size": {
+                      "X": 200.0,
+                      "Y": 1000.0
+                    },
+                    "Name": "p2",
+                    "ctype": "PanelObjectData"
+                  },
+                  {
+                    "ClipAble": false,
+                    "ComboBoxIndex": 1,
+                    "SingleColor": {},
+                    "FirstColor": {
+                      "R": 150,
+                      "G": 200
+                    },
+                    "EndColor": {},
+                    "ColorVector": {
+                      "ScaleY": 1.0
+                    },
+                    "Scale9Width": 1,
+                    "Scale9Height": 1,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5
+                    },
+                    "Position": {
+                      "X": 915.0,
+                      "Y": 1000.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 1.0
+                    },
+                    "PreSize": {
+                      "X": 1.0,
+                      "Y": 1.0
+                    },
+                    "TopMargin": -1000.0,
+                    "BottomMargin": 1000.0,
+                    "Tag": 63,
+                    "ActionTag": -248291867,
+                    "Size": {
+                      "X": 1830.0,
+                      "Y": 1000.0
+                    },
+                    "Name": "p3",
+                    "ctype": "PanelObjectData"
+                  },
+                  {
+                    "ClipAble": false,
+                    "ComboBoxIndex": 1,
+                    "SingleColor": {},
+                    "FirstColor": {
+                      "R": 150,
+                      "G": 200
+                    },
+                    "EndColor": {},
+                    "ColorVector": {
+                      "ScaleY": 1.0
+                    },
+                    "Scale9Width": 1,
+                    "Scale9Height": 1,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 1.0
+                    },
+                    "Position": {
+                      "X": 915.0,
+                      "Y": 4.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.004
+                    },
+                    "PreSize": {
+                      "X": 1.0,
+                      "Y": 1.0
+                    },
+                    "TopMargin": 996.0,
+                    "BottomMargin": -996.0,
+                    "Tag": 64,
+                    "ActionTag": -275690578,
+                    "Size": {
+                      "X": 1830.0,
+                      "Y": 1000.0
+                    },
+                    "Name": "p4",
+                    "ctype": "PanelObjectData"
+                  }
+                ],
+                "ActionTag": -253145488,
+                "Size": {
+                  "X": 1830.0,
+                  "Y": 1000.0
+                },
+                "Name": "circle",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1139459909,
+            "Size": {
+              "X": 1920.0,
+              "Y": 1080.0
+            },
+            "Name": "pSafeZone",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 1920.0,
+          "Y": 1080.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "Common/safe_zone.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

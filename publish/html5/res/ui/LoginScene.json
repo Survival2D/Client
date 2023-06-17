@@ -1,0 +1,465 @@
+{
+  "ID": "e50f9a57-b003-4c4e-9a9a-00f537b3bfd8",
+  "Version": "3.10.0.0",
+  "Name": "LoginScene",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 29,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "Game/bg.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 633,
+            "Scale9OriginY": 356,
+            "Scale9Width": 654,
+            "Scale9Height": 368,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 960.0,
+              "Y": 540.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 98,
+              "G": 20,
+              "B": 20
+            },
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PercentWidthEnable": true,
+            "PercentHeightEnable": true,
+            "PercentWidthEnabled": true,
+            "PercentHeightEnabled": true,
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 58,
+            "ActionTag": 200825176,
+            "Size": {
+              "X": 1920.0,
+              "Y": 1080.0
+            },
+            "Name": "bg",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 70,
+            "LabelText": "Survival 2D",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "Font/Roboto-Bold.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 960.0,
+              "Y": 863.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.8
+            },
+            "PreSize": {
+              "X": 0.1859,
+              "Y": 0.0759
+            },
+            "LeftMargin": 781.5,
+            "RightMargin": 781.5,
+            "TopMargin": 175.0001,
+            "BottomMargin": 822.9999,
+            "Tag": 31,
+            "ActionTag": 810016060,
+            "Size": {
+              "X": 357.0,
+              "Y": 82.0
+            },
+            "Name": "lblGameTitle",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 28,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "PressedFileData": {
+              "Type": "Normal",
+              "Path": "Common/rectangle_frame.png",
+              "Plist": ""
+            },
+            "NormalFileData": {
+              "Type": "Normal",
+              "Path": "Common/rectangle_frame.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 100,
+            "Scale9OriginY": 80,
+            "Scale9Width": 200,
+            "Scale9Height": 149,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 960.0,
+              "Y": 324.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.3
+            },
+            "PreSize": {
+              "X": 0.1823,
+              "Y": 0.1481
+            },
+            "LeftMargin": 785.0,
+            "RightMargin": 785.0,
+            "TopMargin": 676.0,
+            "BottomMargin": 244.0,
+            "Tag": 30,
+            "Children": [
+              {
+                "FontSize": 50,
+                "LabelText": "Login",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "Font/Roboto-Bold.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 175.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.36,
+                  "Y": 0.3688
+                },
+                "LeftMargin": 112.0,
+                "RightMargin": 112.0,
+                "TopMargin": 50.5,
+                "BottomMargin": 50.5,
+                "Tag": 15,
+                "ActionTag": 234299876,
+                "Size": {
+                  "X": 126.0,
+                  "Y": 59.0
+                },
+                "Name": "text",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 871770775,
+            "Size": {
+              "X": 350.0,
+              "Y": 160.0
+            },
+            "Name": "btnLogin",
+            "ctype": "ButtonObjectData"
+          },
+          {
+            "FontSize": 50,
+            "IsCustomSize": true,
+            "LabelText": "",
+            "PlaceHolderText": "Guest",
+            "MaxLengthText": 10,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 864.0,
+              "Y": 626.4
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.45,
+              "Y": 0.58
+            },
+            "PreSize": {
+              "X": 0.1042,
+              "Y": 0.0463
+            },
+            "LeftMargin": 864.0,
+            "RightMargin": 856.0,
+            "TopMargin": 428.6,
+            "BottomMargin": 601.4,
+            "Tag": 10,
+            "ActionTag": -433531359,
+            "Size": {
+              "X": 200.0,
+              "Y": 50.0
+            },
+            "Name": "tfUsername",
+            "ctype": "TextFieldObjectData"
+          },
+          {
+            "FontSize": 50,
+            "IsCustomSize": true,
+            "LabelText": "",
+            "PlaceHolderText": "******",
+            "MaxLengthText": 10,
+            "PasswordEnable": true,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 864.0,
+              "Y": 540.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.45,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.1042,
+              "Y": 0.0463
+            },
+            "LeftMargin": 864.0,
+            "RightMargin": 856.0,
+            "TopMargin": 515.0,
+            "BottomMargin": 515.0,
+            "Tag": 11,
+            "ActionTag": 2040157027,
+            "Size": {
+              "X": 200.0,
+              "Y": 50.0
+            },
+            "Name": "tfPassword",
+            "ctype": "TextFieldObjectData"
+          },
+          {
+            "FontSize": 50,
+            "LabelText": "Name",
+            "HorizontalAlignmentType": "HT_Right",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 825.6,
+              "Y": 626.4
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.43,
+              "Y": 0.58
+            },
+            "PreSize": {
+              "X": 0.0688,
+              "Y": 0.0528
+            },
+            "LeftMargin": 693.6,
+            "RightMargin": 1094.3999,
+            "TopMargin": 425.1,
+            "BottomMargin": 597.9,
+            "Tag": 12,
+            "ActionTag": 1513703005,
+            "Size": {
+              "X": 132.0,
+              "Y": 57.0
+            },
+            "Name": "lblUsername",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 50,
+            "LabelText": "Password",
+            "HorizontalAlignmentType": "HT_Right",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 825.6,
+              "Y": 540.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.43,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.1141,
+              "Y": 0.0528
+            },
+            "LeftMargin": 606.6,
+            "RightMargin": 1094.3999,
+            "TopMargin": 511.5,
+            "BottomMargin": 511.5,
+            "Tag": 13,
+            "ActionTag": -2012903210,
+            "Size": {
+              "X": 219.0,
+              "Y": 57.0
+            },
+            "Name": "lblPassword",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 1920.0,
+          "Y": 1080.0
+        },
+        "Name": "Scene",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "Common/rectangle_frame.png",
+        "Font/Roboto-Bold.ttf",
+        "Game/bg.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Scene"
+}

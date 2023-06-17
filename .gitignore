@@ -11,6 +11,5 @@ Release.win32
 build
 debug
 release
-publish
 simulator
 /script

@@ -1,0 +1,226 @@
+{
+  "ID": "b5374575-fe0e-4f67-a85d-1ef3f27f41ef",
+  "Version": "3.10.0.0",
+  "Name": "LobbyScene",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 6,
+        "Children": [
+          {
+            "FontSize": 40,
+            "LabelText": "Waiting for other players...",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "Font/Roboto-Regular.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 960.0,
+              "Y": 324.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "RotationSkewX": 10.0,
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.3
+            },
+            "PreSize": {
+              "X": 0.2448,
+              "Y": 0.0435
+            },
+            "LeftMargin": 725.0,
+            "RightMargin": 725.0,
+            "TopMargin": 732.5,
+            "BottomMargin": 300.5,
+            "Tag": 11,
+            "ActionTag": 265971117,
+            "Size": {
+              "X": 470.0,
+              "Y": 47.0
+            },
+            "Name": "lblLobbyTitle",
+            "ctype": "TextObjectData"
+          },
+          {
+            "ClipAble": false,
+            "BackColorAlpha": 102,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 960.0,
+              "Y": 594.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.55
+            },
+            "PercentWidthEnable": true,
+            "PercentWidthEnabled": true,
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.2778
+            },
+            "TopMargin": 336.0,
+            "BottomMargin": 444.0,
+            "Tag": 12,
+            "ActionTag": -1959159792,
+            "Size": {
+              "X": 1920.0,
+              "Y": 300.0
+            },
+            "Name": "pPlayers",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FontSize": 28,
+            "ButtonText": "Start",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "DisabledFileData": {
+              "Type": "Default",
+              "Path": "Default/Button_Disable.png",
+              "Plist": ""
+            },
+            "PressedFileData": {
+              "Type": "Default",
+              "Path": "Default/Button_Press.png",
+              "Plist": ""
+            },
+            "NormalFileData": {
+              "Type": "Default",
+              "Path": "Default/Button_Normal.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 16,
+            "Scale9Height": 14,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 960.0,
+              "Y": 90.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.0833
+            },
+            "PreSize": {
+              "X": 0.1042,
+              "Y": 0.0741
+            },
+            "VerticalEdge": "BottomEdge",
+            "LeftMargin": 860.0,
+            "RightMargin": 860.0,
+            "TopMargin": 950.0,
+            "BottomMargin": 50.0,
+            "Tag": 13,
+            "ActionTag": -1895336339,
+            "Size": {
+              "X": 200.0,
+              "Y": 80.0
+            },
+            "VisibleForFrame": false,
+            "Name": "btnStart",
+            "ctype": "ButtonObjectData"
+          }
+        ],
+        "Size": {
+          "X": 1920.0,
+          "Y": 1080.0
+        },
+        "Name": "Scene",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "Default/Button_Disable.png",
+        "Default/Button_Normal.png",
+        "Default/Button_Press.png",
+        "Font/Roboto-Regular.ttf"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Scene"
+}
